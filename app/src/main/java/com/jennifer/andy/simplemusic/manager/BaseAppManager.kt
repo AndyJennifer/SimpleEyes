@@ -11,14 +11,16 @@ import android.app.Activity
 
 class BaseAppManager private constructor() {
 
+    val sActivityList = ArrayList<Activity>()
 
     companion object {
-        /**
-         * 创建单例模式
-         */
-        //todo  在研究一下单例
-        private val mInstance: BaseAppManager get() = BaseAppManager()
-        private val sActivityList = ArrayList<Activity>()
+        fun getInstance(): BaseAppManager {
+            return BaseAppManagerHolder.instance
+        }
+    }
+
+    private object BaseAppManagerHolder {
+        val instance = BaseAppManager()
     }
 
     /**
