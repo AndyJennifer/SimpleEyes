@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    
+    <declare-styleable name="MultipleStateView">
+        
+        <attr name="empty_view" format="reference"/>
+        <attr name="error_view" format="reference"/>
+        <attr name="content_view" format="reference"/>
+        <attr name="net_error_view" format="reference"/>
+        <attr name="loading_view" format="reference"/>
+    </declare-styleable>
 </resources>
