@@ -1,9 +1,10 @@
-package com.jennifer.andy.simplemusic
+package com.jennifer.andy.simplemusic.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.jennifer.andy.simplemusic.R
+import me.yokeyword.fragmentation.SupportActivity
 
 
 /**
@@ -12,7 +13,7 @@ import android.view.View
  * Description:
  */
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseAppCompatActivity : SupportActivity() {
 
     /**
      * 上下文对象
@@ -66,7 +67,7 @@ abstract class BaseActivity : AppCompatActivity() {
     /**
      * 设置activity进入动画
      */
-    fun overrideTransitionAnimation() {
+    private fun overrideTransitionAnimation() {
         if (toggleOverridePendingTransition()) {
             when (getOverridePendingTransition()) {
                 TransitionMode.TOP -> overridePendingTransition(R.anim.top_in, R.anim.no_anim)
