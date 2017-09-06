@@ -3,7 +3,9 @@ package com.jennifer.andy.simplemusic.ui
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import butterknife.ButterKnife
 import com.jennifer.andy.simplemusic.R
+import com.jennifer.andy.simplemusic.manager.BaseAppManager
 import me.yokeyword.fragmentation.SupportActivity
 
 
@@ -40,17 +42,27 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         if (extras != null) {
             getBundleExtras(extras)
         }
+        //获取上下文并设置log标记
         TAT_LOG = this.javaClass.simpleName
         mContext = this
+        BaseAppManager.getInstance().addActivity(this)
+
+        //添加相应的布局
+        if (getContentViewLayoutId() != 0) {
+            setContentView(getContentViewLayoutId())
+        } else {
+            throw  IllegalArgumentException("You must return layout id")
+        }
 
     }
 
-    /** 获取bundle 中的数据
-     * @param extras   bundle中的数据
+    /**
+     *  获取bundle 中的数据
      */
     abstract fun getBundleExtras(extras: Bundle)
 
-    /** 获取当前多状态根视图
+    /**
+     *  获取当前多状态根视图
      */
     abstract fun getTargetView(): View?
 
@@ -63,6 +75,11 @@ abstract class BaseAppCompatActivity : SupportActivity() {
      * 获得切换动画的模式
      */
     abstract fun getOverridePendingTransition(): TransitionMode
+
+    /**
+     * 获取当前布局id
+     */
+    abstract fun getContentViewLayoutId(): Int
 
     /**
      * 设置activity进入动画
@@ -82,13 +99,15 @@ abstract class BaseAppCompatActivity : SupportActivity() {
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)
+        ButterKnife.bind(this)
         if (null != getTargetView()) {
-
+            //todo 到底写不写那个状态界面啊
         }
     }
 
 
     override fun onDestroy() {
+        BaseAppManager.getInstance().removeActivity(this)
         super.onDestroy()
     }
 
