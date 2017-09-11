@@ -34,4 +34,8 @@ class MultipleStateView : RelativeLayout {
         a.recycle()
     }
 
+    //todo 可以自定义布局，可以include,可以设置默认布局，可以设置进入动画
+
+
+
 }
