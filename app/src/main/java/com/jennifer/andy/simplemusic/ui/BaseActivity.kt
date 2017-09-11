@@ -10,7 +10,7 @@ import com.jennifer.andy.simplemusic.utils.SystemUtils
  * Description: 基础类activity
  */
 
-abstract class BaseActivity<T : BasePresenter<*, *>, E : BaseModel> : BaseAppCompatActivity() {
+abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatActivity() {
 
 
     protected var mPresenter: T? = null
@@ -21,13 +21,23 @@ abstract class BaseActivity<T : BasePresenter<*, *>, E : BaseModel> : BaseAppCom
         super.onCreate(savedInstanceState)
         mPresenter = SystemUtils.getGenericInstance(this, 0)
         mModel = SystemUtils.getGenericInstance(this, 1)
-
+        if (mModel != null) {
+            mPresenter?.attachModel(mModel)
+        }
+        initView(savedInstanceState)
     }
 
     /**
      *  初始化view
      */
-    fun initView(savedInstanceState: Bundle?) {}
+    abstract fun initView(savedInstanceState: Bundle?)
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mPresenter != null) {
+            mPresenter?.detach()
+        }
+    }
 
 }
