@@ -2,6 +2,7 @@ package com.jennifer.andy.simplemusic.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import com.jennifer.andy.simplemusic.R
@@ -17,10 +18,10 @@ class MultipleStateView : RelativeLayout {
 
 
     private var mEmptyView: View? = null
-    private var mErrorView: View? = null
     private var mNetErrorView: View? = null
-    private var mLoaddingView: View? = null
+    private var mLoadingView: View? = null
     private var mContentView: View? = null
+
 
     private var mEmptyViewResId: Int
 
@@ -34,7 +35,40 @@ class MultipleStateView : RelativeLayout {
         a.recycle()
     }
 
-    //todo 可以自定义布局，可以include,可以设置默认布局，可以设置进入动画。
+    /**
+     * 设置加载中view
+     */
+    fun setLoadingView() {
+        if (mLoadingView == null) {
+            mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, null)
+        } else {
+            mLoadingView!!.visibility = View.VISIBLE
+        }
+
+    }
+
+    /**
+     * 设置网络异常view
+     */
+    fun setNetErrorView() {
+        if (mNetErrorView == null) {
+            mNetErrorView = LayoutInflater.from(context).inflate(R.layout.layout_net_error_view, null)
+        } else {
+            mNetErrorView!!.visibility = View.VISIBLE
+        }
+    }
+
+    /**
+     * 设置空数据view
+     */
+    fun setEmptyView(){
+        if(mEmptyView==null){
+            mEmptyView = LayoutInflater.from(context).inflate(R.layout.layout_empty_view,null)
+        }else{
+            mEmptyView!!.visibility = View.VISIBLE
+        }
+    }
+
 
 
 
