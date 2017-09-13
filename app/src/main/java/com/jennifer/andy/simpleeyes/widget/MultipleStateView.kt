@@ -22,6 +22,10 @@ class MultipleStateView : RelativeLayout {
     private var mLoadingView: View? = null
     private var mContentView: View? = null
 
+    enum class State {
+        EMPTY, NET_ERROR, LOADING
+    }
+
 
     private var mEmptyViewResId: Int
 
@@ -41,9 +45,12 @@ class MultipleStateView : RelativeLayout {
     fun setLoadingView() {
         if (mLoadingView == null) {
             mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, null)
+            addView(mLoadingView)
+
         } else {
             mLoadingView!!.visibility = View.VISIBLE
         }
+        switchContent(State.LOADING)
 
     }
 
@@ -53,23 +60,36 @@ class MultipleStateView : RelativeLayout {
     fun setNetErrorView() {
         if (mNetErrorView == null) {
             mNetErrorView = LayoutInflater.from(context).inflate(R.layout.layout_net_error_view, null)
+            addView(mNetErrorView)
         } else {
             mNetErrorView!!.visibility = View.VISIBLE
         }
+        switchContent(State.NET_ERROR)
     }
 
     /**
      * 设置空数据view
      */
-    fun setEmptyView(){
-        if(mEmptyView==null){
-            mEmptyView = LayoutInflater.from(context).inflate(R.layout.layout_empty_view,null)
-        }else{
+    fun setEmptyView() {
+        if (mEmptyView == null) {
+            mEmptyView = LayoutInflater.from(context).inflate(R.layout.layout_empty_view, null)
+            addView(mEmptyView)
+        } else {
             mEmptyView!!.visibility = View.VISIBLE
         }
+        switchContent(State.EMPTY)
     }
 
 
+    /**
+     * 切换布局
+     */
+    fun switchContent(state: State) {
+        when (state) {
+
+        }
+
+    }
 
 
 }

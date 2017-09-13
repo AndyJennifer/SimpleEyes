@@ -41,5 +41,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'me.yokeyword:fragmentation:0.10.7'
     compile 'com.jakewharton:butterknife:8.5.1'
+    //loadingView
+    compile 'com.wang.avi:library:2.1.3'
 
 }
