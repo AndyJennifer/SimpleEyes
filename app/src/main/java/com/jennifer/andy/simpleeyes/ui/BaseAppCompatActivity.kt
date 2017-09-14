@@ -101,7 +101,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         super.setContentView(layoutResID)
         ButterKnife.bind(this)
         if (null != getTargetView()) {
-            //todo 到底写不写那个状态界面啊
         }
     }
 
