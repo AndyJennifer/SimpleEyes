@@ -1,7 +1,11 @@
 package com.jennifer.andy.simplemusic.ui
 
 import android.os.Bundle
+import android.view.View
+import com.jennifer.andy.simplemusic.R
 import com.jennifer.andy.simplemusic.utils.SystemUtils
+import com.jennifer.andy.simplemusic.widget.MultipleStateView
+import kotterknife.bindView
 
 
 /**
@@ -10,12 +14,13 @@ import com.jennifer.andy.simplemusic.utils.SystemUtils
  * Description: 基础类activity
  */
 
-abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatActivity() {
+abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatActivity(), BaseView {
 
 
     protected var mPresenter: T? = null
     protected var mModel: E? = null
 
+    protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +29,21 @@ abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCom
         if (mModel != null) {
             mPresenter?.attachModel(mModel)
         }
-        initView(savedInstanceState)
     }
 
-    /**
-     *  初始化view
-     */
-    abstract fun initView(savedInstanceState: Bundle?)
 
+
+    override fun showLoading() {
+        mMultipleStateView.showLoading()
+    }
+
+    override fun showNetError(onClickListener: View.OnClickListener) {
+        mMultipleStateView.showNetError(onClickListener)
+    }
+
+    override fun showEmpty(onClickListener: View.OnClickListener) {
+        mMultipleStateView.showEmpty(onClickListener)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

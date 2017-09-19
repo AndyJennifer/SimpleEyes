@@ -2,8 +2,6 @@ package com.jennifer.andy.simplemusic.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
-import butterknife.ButterKnife
 import com.jennifer.andy.simplemusic.R
 import com.jennifer.andy.simplemusic.manager.BaseAppManager
 import me.yokeyword.fragmentation.SupportActivity
@@ -23,6 +21,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     protected var mContext: Context? = null
     protected var TAT_LOG: String? = null
 
+
     /**
      * 跳转到其他Activity启动或者退出的模式
      */
@@ -33,10 +32,11 @@ abstract class BaseAppCompatActivity : SupportActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        init()
+        initData()
+        initView(savedInstanceState)
     }
 
-    private fun init() {
+    private fun initData() {
         overrideTransitionAnimation()
         val extras = intent.extras
         if (extras != null) {
@@ -46,7 +46,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         TAT_LOG = this.javaClass.simpleName
         mContext = this
         BaseAppManager.getInstance().addActivity(this)
-
         //添加相应的布局
         if (getContentViewLayoutId() != 0) {
             setContentView(getContentViewLayoutId())
@@ -55,31 +54,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         }
 
     }
-
-    /**
-     *  获取bundle 中的数据
-     */
-    abstract fun getBundleExtras(extras: Bundle)
-
-    /**
-     *  获取当前多状态根视图
-     */
-    abstract fun getTargetView(): View?
-
-    /**
-     * 是否有切换动画
-     */
-    abstract fun toggleOverridePendingTransition(): Boolean
-
-    /**
-     * 获得切换动画的模式
-     */
-    abstract fun getOverridePendingTransition(): TransitionMode
-
-    /**
-     * 获取当前布局id
-     */
-    abstract fun getContentViewLayoutId(): Int
 
     /**
      * 设置activity进入动画
@@ -97,17 +71,36 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         }
     }
 
-    override fun setContentView(layoutResID: Int) {
-        super.setContentView(layoutResID)
-        ButterKnife.bind(this)
-        if (null != getTargetView()) {
-        }
-    }
-
-
     override fun onDestroy() {
         BaseAppManager.getInstance().removeActivity(this)
         super.onDestroy()
     }
 
+
+    abstract fun initView(savedInstanceState: Bundle?)
+
+    /**
+     *  获取bundle 中的数据
+     */
+    abstract fun getBundleExtras(extras: Bundle)
+
+
+    /**
+     * 是否有切换动画
+     */
+    abstract fun toggleOverridePendingTransition(): Boolean
+
+    /**
+     * 获得切换动画的模式
+     */
+    abstract fun getOverridePendingTransition(): TransitionMode
+
+    /**
+     * 获取当前布局id
+     */
+    abstract fun getContentViewLayoutId(): Int
+
+
 }
+
+

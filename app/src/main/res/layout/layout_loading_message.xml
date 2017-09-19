@@ -13,24 +13,24 @@
         android:layout_marginTop="150dp"/>
 
     <TextView
-        android:id="@+id/message_info"
+        android:id="@+id/tv_message_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="@string/no_data"
         android:textSize="12sp"
     />
 
     <Button
-        android:id="@+id/message_reload"
+        android:id="@+id/btn_message_reload"
         android:layout_width="150dp"
         android:layout_height="36dp"
-        android:layout_below="@+id/message_info"
+        android:layout_below="@+id/tv_message_info"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:gravity="center"
+        android:text="@string/try_again"
         android:textSize="14sp"
     />
 

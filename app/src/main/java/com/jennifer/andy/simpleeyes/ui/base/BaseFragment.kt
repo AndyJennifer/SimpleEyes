@@ -1,7 +1,11 @@
 package com.jennifer.andy.simplemusic.ui
 
 import android.os.Bundle
+import android.view.View
+import com.jennifer.andy.simplemusic.R
 import com.jennifer.andy.simplemusic.utils.SystemUtils
+import com.jennifer.andy.simplemusic.widget.MultipleStateView
+import kotterknife.bindView
 
 
 /**
@@ -10,10 +14,11 @@ import com.jennifer.andy.simplemusic.utils.SystemUtils
  * Description:
  */
 
-abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatFragment() {
+abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatFragment(),BaseView {
 
     protected var mPresenter: T? = null
     protected var mModel: E? = null
+    protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,5 +34,17 @@ abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCom
         if (mPresenter != null) {
             mPresenter?.detach()
         }
+    }
+
+    override fun showLoading() {
+
+    }
+
+    override fun showNetError(onClickListener: View.OnClickListener) {
+
+    }
+
+    override fun showEmpty(onClickListener: View.OnClickListener) {
+
     }
 }
