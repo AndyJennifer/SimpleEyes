@@ -1,4 +1,4 @@
-package com.jennifer.andy.simplemusic.manager
+package com.jennifer.andy.simpleeyes.manager
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

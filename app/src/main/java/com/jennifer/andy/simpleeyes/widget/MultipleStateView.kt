@@ -8,7 +8,7 @@ import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.jennifer.andy.simplemusic.R
+import com.jennifer.andy.simpleeyes.R
 
 
 /**

@@ -1,4 +1,4 @@
-package com.jennifer.andy.simplemusic.utils
+package com.jennifer.andy.simpleeyes.utils
 
 import java.lang.reflect.ParameterizedType
 

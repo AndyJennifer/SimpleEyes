@@ -1,4 +1,4 @@
-package com.jennifer.andy.simplemusic.ui
+package com.jennifer.andy.simpleeyes.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

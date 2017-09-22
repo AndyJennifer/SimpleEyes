@@ -1,9 +1,10 @@
-package com.jennifer.andy.simplemusic.ui
+package com.jennifer.andy.simpleeyes.ui.base
 
 import android.content.Context
 import android.os.Bundle
-import com.jennifer.andy.simplemusic.R
-import com.jennifer.andy.simplemusic.manager.BaseAppManager
+import com.jennifer.andy.simpleeyes.R
+
+import com.jennifer.andy.simpleeyes.manager.BaseAppManager
 import me.yokeyword.fragmentation.SupportActivity
 
 
@@ -88,12 +89,12 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 是否有切换动画
      */
-    abstract fun toggleOverridePendingTransition(): Boolean
+    protected open fun toggleOverridePendingTransition() = false
 
     /**
      * 获得切换动画的模式
      */
-    abstract fun getOverridePendingTransition(): TransitionMode
+    protected open fun getOverridePendingTransition(): TransitionMode? = null
 
     /**
      * 获取当前布局id

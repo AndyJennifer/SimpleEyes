@@ -1,4 +1,4 @@
-package kotterknife
+package com.jennifer.andy.simpleeyes.utils.kotlin
 
 import android.app.Activity
 import android.app.Dialog

@@ -1,11 +1,14 @@
-package com.jennifer.andy.simplemusic.ui
+package com.jennifer.andy.simpleeyes.ui.base
 
 import android.os.Bundle
 import android.view.View
-import com.jennifer.andy.simplemusic.R
-import com.jennifer.andy.simplemusic.utils.SystemUtils
+import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
+import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+
+import com.jennifer.andy.simpleeyes.utils.SystemUtils
 import com.jennifer.andy.simplemusic.widget.MultipleStateView
-import kotterknife.bindView
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 
 
 /**

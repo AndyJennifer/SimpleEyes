@@ -1,7 +1,9 @@
-package com.jennifer.andy.simplemusic.ui
+package com.jennifer.andy.simpleeyes.ui.base.presenter
 
 import android.content.Context
-import com.jennifer.andy.simplemusic.manager.RxManager
+import com.jennifer.andy.simpleeyes.manager.RxManager
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 
 
 /**

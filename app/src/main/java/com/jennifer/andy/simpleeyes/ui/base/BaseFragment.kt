@@ -1,11 +1,13 @@
-package com.jennifer.andy.simplemusic.ui
+package com.jennifer.andy.simpleeyes.ui.base
 
 import android.os.Bundle
 import android.view.View
-import com.jennifer.andy.simplemusic.R
-import com.jennifer.andy.simplemusic.utils.SystemUtils
+import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
+import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.utils.SystemUtils
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simplemusic.widget.MultipleStateView
-import kotterknife.bindView
 
 
 /**
@@ -14,7 +16,7 @@ import kotterknife.bindView
  * Description:
  */
 
-abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatFragment(),BaseView {
+abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatFragment(), BaseView {
 
     protected var mPresenter: T? = null
     protected var mModel: E? = null
