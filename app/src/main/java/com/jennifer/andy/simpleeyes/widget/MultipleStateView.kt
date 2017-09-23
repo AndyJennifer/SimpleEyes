@@ -1,4 +1,4 @@
-package com.jennifer.andy.simplemusic.widget
+package com.jennifer.andy.simpleeyes.widget
 
 import android.content.Context
 import android.util.AttributeSet
