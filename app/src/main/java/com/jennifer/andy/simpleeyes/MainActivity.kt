@@ -41,16 +41,34 @@ class MainActivity : BaseAppCompatActivity() {
     }
 
     private fun initBottomNavigation() {
-        val home = BottomNavigationItem(R.drawable.ic_tab_strip_icon_category, getString(R.string.home))
-        val discover = BottomNavigationItem(R.drawable.ic_tab_strip_icon_feed, getString(R.string.discover))
-        val focus = BottomNavigationItem(R.drawable.ic_tab_strip_icon_feed, getString(R.string.focus))
-        val mine = BottomNavigationItem(R.drawable.ic_tab_strip_icon_feed, getString(R.string.mine))
-        home.setInactiveIconResource(R.drawable.ic_tab_strip_icon_category_selected)
-        discover.setInactiveIconResource(R.drawable.ic_tab_strip_icon_feed_selected)
-        focus.setInactiveIconResource(R.drawable.ic_tab_strip_icon_follow_selected)
-        mine.setInactiveIconResource(R.drawable.ic_tab_strip_icon_profile_selected)
-
+        val home = BottomNavigationItem(R.drawable.ic_tab_strip_icon_feed_selected, getString(R.string.home))
+                .setInactiveIconResource(R.drawable.ic_tab_strip_icon_feed)
+        val discover = BottomNavigationItem(R.drawable.ic_tab_strip_icon_follow_selected, getString(R.string.discover))
+                .setInactiveIconResource(R.drawable.ic_tab_strip_icon_follow)
+        val focus = BottomNavigationItem(R.drawable.ic_tab_strip_icon_category_selected, getString(R.string.focus))
+                .setInactiveIconResource(R.drawable.ic_tab_strip_icon_category)
+        val mine = BottomNavigationItem(R.drawable.ic_tab_strip_icon_profile_selected, getString(R.string.mine))
+                .setInactiveIconResource(R.drawable.ic_tab_strip_icon_profile)
         mBottomNavigation.addItem(home)
+        mBottomNavigation.addItem(discover)
+        mBottomNavigation.addItem(focus)
+        mBottomNavigation.addItem(mine)
+        mBottomNavigation.initialise()
+        mBottomNavigation.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {
+            override fun onTabUnselected(position: Int) {
+                if (position > 1) {
+                    //todo 出栈
+                }
+            }
+
+            override fun onTabReselected(position: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onTabSelected(position: Int) {
+                showHideFragment(mFragments[position])
+            }
+        })
     }
 
     override fun getBundleExtras(extras: Bundle) {
