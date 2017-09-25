@@ -5,10 +5,9 @@ import android.view.View
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-
 import com.jennifer.andy.simpleeyes.utils.SystemUtils
-import com.jennifer.andy.simplemusic.widget.MultipleStateView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 
 
 /**

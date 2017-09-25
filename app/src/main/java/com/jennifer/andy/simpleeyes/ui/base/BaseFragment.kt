@@ -7,7 +7,7 @@ import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.utils.SystemUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
-import com.jennifer.andy.simplemusic.widget.MultipleStateView
+import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 
 
 /**
@@ -25,7 +25,7 @@ abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCom
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPresenter = SystemUtils.getGenericInstance(this, 0)
-        mModel = SystemUtils.getGenericInstance(this, 0)
+        mModel = SystemUtils.getGenericInstance(this, 1)
         if (mModel != null) {
             mPresenter?.attachModel(mModel)
         }
