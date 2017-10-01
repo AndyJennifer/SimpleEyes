@@ -19,8 +19,8 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 上下文对象
      */
-    protected var mContext: Context? = null
-    protected var TAT_LOG: String? = null
+    lateinit var mContext: Context
+    lateinit var TAT_LOG: String
 
 
     /**
