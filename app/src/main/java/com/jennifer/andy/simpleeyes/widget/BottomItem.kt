@@ -9,17 +9,17 @@ import android.graphics.drawable.Drawable
  * Description:
  */
 
-class BottomItem {
+class BottomItem{
 
 
-    private lateinit var mSelectDrawable: Drawable
-    private var mSelectResource = -1
+    var mSelectDrawable: Drawable? = null
+    var mSelectResource = -1
 
-    private var mTitleResource = -1
-    private lateinit var mTitle: String
+    var mTitleResource = -1
+    var mTitle: String? = null
 
-    private lateinit var mUnSelectedDrawable: Drawable
-    private var mUnSelectedResource = -1
+    var mUnSelectedDrawable: Drawable? = null
+    var mUnSelectedResource = -1
 
 
     constructor(selectDrawable: Drawable, title: String) {
