@@ -15,7 +15,7 @@ import me.yokeyword.fragmentation.SupportFragment
 /**
  * Author:  andy.xwt
  * Date:    2017/9/19 18:54
- * Description:主界面
+ * Description:主界面 
  */
 
 class MainActivity : BaseAppCompatActivity() {
@@ -36,7 +36,6 @@ class MainActivity : BaseAppCompatActivity() {
         mFragments[THIRD] = FollowFragment.newInstance()
         mFragments[FOURTH] = ProfileFragment.newInstance()
         loadMultipleRootFragment(R.id.fl_container, FIRST, *mFragments)
-        //初始化
         initBottomNavigation()
     }
 
@@ -57,6 +56,7 @@ class MainActivity : BaseAppCompatActivity() {
         mBottomNavigation.initialise()
         mBottomNavigation.setOnTabSelectedListener(object : BottomBar.onTabSelectedListener {
             override fun onTabSelected(position: Int, prePosition: Int) {
+                showHideFragment(mFragments[position])
             }
 
             override fun onTabUnselected(position: Int) {
@@ -64,7 +64,7 @@ class MainActivity : BaseAppCompatActivity() {
             }
 
             override fun onTabReselected(position: Int) {
-
+                //刷新fragment
             }
         })
     }
