@@ -43,6 +43,8 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'me.yokeyword:fragmentation:0.10.7'
 
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+
     //loadingView
     compile 'com.wang.avi:library:2.1.3'
 

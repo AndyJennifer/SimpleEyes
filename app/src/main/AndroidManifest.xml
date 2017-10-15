@@ -3,6 +3,7 @@
           package="com.jennifer.andy.simpleeyes">
 
     <application
+        android:name=".AndyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

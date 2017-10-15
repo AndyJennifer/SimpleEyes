@@ -13,10 +13,6 @@ import retrofit2.http.GET
 
 interface ApiService {
 
-    /**
-     * 主域名
-     */
-    val BASE_URL: String get() = "http://baobab.kaiyanapp.com/"
 
     /**
      * 首页
