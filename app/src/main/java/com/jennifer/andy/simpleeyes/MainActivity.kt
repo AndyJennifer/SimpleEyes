@@ -40,6 +40,7 @@ class MainActivity : BaseAppCompatActivity() {
     }
 
     private fun initBottomNavigation() {
+
         var home = BottomItem(R.drawable.ic_tab_strip_icon_feed_selected, getString(R.string.home))
         home.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_feed)
         val discover = BottomItem(R.drawable.ic_tab_strip_icon_follow_selected, getString(R.string.discover))

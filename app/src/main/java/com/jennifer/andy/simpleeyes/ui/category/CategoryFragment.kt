@@ -15,9 +15,8 @@ import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 
 class CategoryFragment : BaseFragment<CategoryPresenter, CategoryModel>() {
 
-
     companion object {
-        fun newInstance(): CategoryFragment =CategoryFragment()
+        fun newInstance(): CategoryFragment = CategoryFragment()
     }
 
     override fun getBundleExtras(extras: Bundle) {

@@ -1,6 +1,6 @@
 package com.jennifer.andy.simpleeyes.net
 
-import com.jennifer.andy.simpleeyes.entity.A
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import io.reactivex.Observable
 import retrofit2.http.GET
 
@@ -18,26 +18,26 @@ interface ApiService {
      * 首页
      */
     @GET("api/v4/tabs/selected")
-    fun getCategory(): Observable<A>
+    fun getCategory(): Observable<AndyInfo>
 
     /**
      * 首页关键词搜索
      */
     @GET("api/v3/queries/hot")
-    fun getCategoryHot(): Observable<A>
+    fun getCategoryHot(): Observable<AndyInfo>
 
 
     /**
      * 关注
      */
     @GET("/api/v4/tabs/follow")
-    fun getFollowTabs(): Observable<A>
+    fun getFollowTabs(): Observable<AndyInfo>
 
     /**
      * 发现
      */
     @GET("/api/v4/tabs/discovery")
-    fun getDiscoveryTab(): Observable<A>
+    fun getDiscoveryTab(): Observable<AndyInfo>
 
 
 }
