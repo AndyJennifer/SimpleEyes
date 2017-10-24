@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,27 @@ abstract class BaseAppCompatFragment : SupportFragment() {
         }
     }
 
+    /**
+     * 跳转到相应的activity 并携带bundle数据
+     */
+    protected fun readyGo(clazz: Class<Any>, bundle: Bundle? = null) {
+        val intent = Intent(activity, clazz)
+        bundle?.let {
+            intent.putExtras(bundle)
+        }
+        startActivity(intent)
+    }
+
+    /**
+     * 跳转到相应的activity,并携带bundle数据，接收返回码
+     */
+    protected fun readyGoForResult(clazz: Class<Any>, bundle: Bundle? = null, requestCode: Int) {
+        val intent = Intent(activity, clazz)
+        bundle?.let {
+            intent.putExtras(bundle)
+        }
+        startActivityForResult(intent, requestCode)
+    }
 
     /**
      * 获取bundle中相应data

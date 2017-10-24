@@ -1,6 +1,10 @@
 package com.jennifer.andy.simpleeyes.ui.category.model
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.Api
+import com.jennifer.andy.simpleeyes.rx.RxHelper
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
+import io.reactivex.Observable
 
 
 /**
@@ -10,5 +14,10 @@ import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
  */
 
 class CategoryModel : BaseModel {
+
+    /**
+     * 加载首页信息
+     */
+    fun loadCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().compose(RxHelper.handleResult())
 
 }

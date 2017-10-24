@@ -29,7 +29,7 @@ open class BasePresenter<V, E> {
             this.mContext = view
         }
         if (view is BaseFragment<*, *>) {
-            this.mContext = view.getActivity()
+            this.mContext = view.()
         }
     }
 

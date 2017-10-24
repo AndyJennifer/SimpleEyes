@@ -16,11 +16,11 @@ import com.jennifer.andy.simpleeyes.widget.MultipleStateView
  * Description: 基础类activity
  */
 
-abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatActivity(), BaseView {
+abstract class BaseActivity<T : BasePresenter<Any, Any>, E : BaseModel> : BaseAppCompatActivity(), BaseView {
 
 
-    protected var mPresenter: T? = null
-    protected var mModel: E? = null
+    protected lateinit var mPresenter: T
+    protected lateinit var mModel: E
 
     protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
@@ -28,11 +28,10 @@ abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCom
         super.onCreate(savedInstanceState)
         mPresenter = SystemUtils.getGenericInstance(this, 0)
         mModel = SystemUtils.getGenericInstance(this, 1)
-        if (mModel != null) {
-            mPresenter?.attachModel(mModel)
-        }
-    }
+        mPresenter.attachModel(mModel)
+        mPresenter.attachView(this)
 
+    }
 
 
     override fun showLoading() {
@@ -49,9 +48,8 @@ abstract class BaseActivity<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCom
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mPresenter != null) {
-            mPresenter?.detach()
-        }
+        mPresenter.detach()
+
     }
 
 }

@@ -23,9 +23,6 @@ import java.util.concurrent.TimeUnit
 class RetrofitConfig private constructor() {
 
 
-    private val mRetorfitConfig: RetrofitConfig by lazy { RetrofitConfig() }
-
-
     private lateinit var mRetrofit: Retrofit
     private lateinit var mHttpLoggingInterceptor: HttpLoggingInterceptor
     private lateinit var mRequestInterceptor: Interceptor
@@ -41,6 +38,8 @@ class RetrofitConfig private constructor() {
     private lateinit var mCache: Cache
     private val FILE_CACHE_SIZE = 1024 * 1024 * 100L//缓存大小100Mb
     private val FILE_CACHE_STALE = (60 * 60 * 24 * 2).toLong()//缓存有效期为2天
+
+    private lateinit var apiService: ApiService
 
     init {
         initRequestInterceptor()
@@ -138,13 +137,20 @@ class RetrofitConfig private constructor() {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(Api.BASE_URL)
                 .build()
+        apiService = mRetrofit.create(ApiService::class.java)
 
     }
 
-    /**
-     * 获取默认请求接口
-     */
-    fun getDefaultService(): ApiService {
-        return mRetrofit.create(ApiService::class.java)
+    companion object {
+
+        private val Instance: RetrofitConfig by lazy { RetrofitConfig() }
+        /**
+         * 获取默认请求接口
+         */
+        fun getDefaultService(): ApiService {
+            return Instance.apiService
+        }
     }
+
+
 }

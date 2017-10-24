@@ -13,4 +13,8 @@ import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 
 class CategoryPresenter : BasePresenter<CategoryView, CategoryModel>() {
 
+
+    fun loadCategoryData() {
+
+    }
 }

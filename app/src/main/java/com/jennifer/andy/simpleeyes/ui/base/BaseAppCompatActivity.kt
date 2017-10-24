@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.base
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.jennifer.andy.simpleeyes.R
 
@@ -77,6 +78,41 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         super.onDestroy()
     }
 
+
+    /**
+     * 跳转到相应的activity 并携带bundle数据
+     */
+    protected fun readyGo(clazz: Class<Any>, bundle: Bundle? = null) {
+        val intent = Intent(this, clazz)
+        bundle?.let {
+            intent.putExtras(bundle)
+        }
+        startActivity(intent)
+    }
+
+    /**
+     * 跳转到相应的activity,并携带bundle数据，接收返回码
+     */
+    protected fun readyGoForResult(clazz: Class<Any>, bundle: Bundle? = null, requestCode: Int) {
+        val intent = Intent(this, clazz)
+        bundle?.let {
+            intent.putExtras(bundle)
+        }
+        startActivityForResult(intent, requestCode)
+    }
+
+    /**
+     * 跳转到相应的activity并携带bundle数据，然后干掉自己
+     *
+     */
+    protected fun readyGoThenKillSelf(clazz: Class<Any>, bundle: Bundle? = null) {
+        val intent = Intent(this, clazz)
+        bundle?.let {
+            intent.putExtras(bundle)
+        }
+        startActivity(intent)
+        finish()
+    }
 
     abstract fun initView(savedInstanceState: Bundle?)
 
