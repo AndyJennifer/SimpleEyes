@@ -2,8 +2,8 @@ package com.jennifer.andy.simpleeyes.ui.base.presenter
 
 import android.content.Context
 import com.jennifer.andy.simpleeyes.manager.RxManager
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 
 
 /**
@@ -29,7 +29,7 @@ open class BasePresenter<V, E> {
             this.mContext = view
         }
         if (view is BaseFragment<*, *>) {
-            this.mContext = view.()
+            this.mContext = view.getActivity()
         }
     }
 
