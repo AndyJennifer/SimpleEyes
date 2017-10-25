@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.category
 import android.os.Bundle
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
 import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
+import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 
 
 /**
@@ -13,7 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
  * Description:首页
  */
 
-class CategoryFragment : BaseFragment<CategoryPresenter, CategoryModel>() {
+class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>() {
 
     companion object {
         fun newInstance(): CategoryFragment = CategoryFragment()
@@ -29,4 +29,5 @@ class CategoryFragment : BaseFragment<CategoryPresenter, CategoryModel>() {
 
     }
 
+    override fun initPresenter() = CategoryPresenter(context)
 }

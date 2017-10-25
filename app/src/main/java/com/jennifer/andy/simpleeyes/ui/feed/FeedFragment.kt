@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.feed
 import android.os.Bundle
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
-import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
+import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
+import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 
 
 /**
@@ -13,7 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
  * Description:
  */
 
-class FeedFragment : BaseFragment<CategoryPresenter, CategoryModel>() {
+class FeedFragment : BaseFragment<FeedView, FeedPresenter>() {
 
 
     companion object {
@@ -24,10 +24,11 @@ class FeedFragment : BaseFragment<CategoryPresenter, CategoryModel>() {
 
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_home
-
     override fun initView(savedInstanceState: Bundle?) {
 
     }
 
+    override fun getContentViewLayoutId() = R.layout.fragment_home
+
+    override fun initPresenter() = FeedPresenter(context)
 }

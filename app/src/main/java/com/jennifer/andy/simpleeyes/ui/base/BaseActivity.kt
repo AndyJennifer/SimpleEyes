@@ -3,7 +3,6 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.os.Bundle
 import android.view.View
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.utils.SystemUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -16,20 +15,17 @@ import com.jennifer.andy.simpleeyes.widget.MultipleStateView
  * Description: 基础类activity
  */
 
-abstract class BaseActivity<T : BasePresenter<Any, Any>, E : BaseModel> : BaseAppCompatActivity(), BaseView {
+abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), BaseView {
 
 
     protected lateinit var mPresenter: T
-    protected lateinit var mModel: E
 
     protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPresenter = SystemUtils.getGenericInstance(this, 0)
-        mModel = SystemUtils.getGenericInstance(this, 1)
-        mPresenter.attachModel(mModel)
-        mPresenter.attachView(this)
+        mPresenter.attachView(this as V)
 
     }
 

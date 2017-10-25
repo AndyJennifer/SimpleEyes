@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.category.presenter
 
+import android.content.Context
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
@@ -11,8 +12,12 @@ import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
  * Description:
  */
 
-class CategoryPresenter : BasePresenter<CategoryView, CategoryModel>() {
+class CategoryPresenter(mContext: Context) : BasePresenter<CategoryView>(mContext) {
+    lateinit var categoryModel: CategoryModel
 
+    init {
+        categoryModel = CategoryModel()
+    }
 
     fun loadCategoryData() {
 

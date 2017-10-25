@@ -1,8 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.feed.presenter
 
+import android.content.Context
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
-import com.jennifer.andy.simpleeyes.ui.feed.view.FeedFragmentView
+import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 
 
 /**
@@ -11,6 +11,6 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.FeedFragmentView
  * Description:
  */
 
-class FeedPresenter : BasePresenter<FeedFragmentView, FeedModel>() {
+class FeedPresenter(mContext: Context) : BasePresenter<FeedView>(mContext) {
 
 }

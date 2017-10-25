@@ -1,11 +1,11 @@
 package com.jennifer.andy.simpleeyes.ui.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.utils.SystemUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 
@@ -16,26 +16,25 @@ import com.jennifer.andy.simpleeyes.widget.MultipleStateView
  * Description:
  */
 
-abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCompatFragment(), BaseView {
+abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), BaseView {
 
-    protected var mPresenter: T? = null
-    protected var mModel: E? = null
+    protected lateinit var mPresenter: T
     protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter = SystemUtils.getGenericInstance(this, 0)
-        mModel = SystemUtils.getGenericInstance(this, 1)
-        if (mModel != null) {
-            mPresenter?.attachModel(mModel)
-        }
+        mPresenter = initPresenter()
+    }
+
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
+        mPresenter.attachView(this as V)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mPresenter != null) {
-            mPresenter?.detach()
-        }
+        mPresenter.detach()
     }
 
     override fun showLoading() {
@@ -49,4 +48,9 @@ abstract class BaseFragment<T : BasePresenter<*, E>, E : BaseModel> : BaseAppCom
     override fun showEmpty(onClickListener: View.OnClickListener) {
 
     }
+
+    /**
+     * 初始化Presenter
+     */
+    abstract fun initPresenter(): T
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jennifer.andy.simpleeyes.rx.RxManager
 import me.yokeyword.fragmentation.SupportFragment
 
 
@@ -16,8 +17,8 @@ import me.yokeyword.fragmentation.SupportFragment
 
 abstract class BaseAppCompatFragment : SupportFragment() {
 
-    protected var LOG_TAG: String? = null
-
+    protected lateinit var LOG_TAG: String
+    protected lateinit var mRxManager: RxManager//之所以有这个管理类，是因为不实现presenter的类也可以进行请求的管理
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,7 @@ abstract class BaseAppCompatFragment : SupportFragment() {
         if (arguments != null) {
             getBundleExtras(arguments)
         }
+        mRxManager = RxManager()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +35,11 @@ abstract class BaseAppCompatFragment : SupportFragment() {
         } else {
             super.onCreateView(inflater, container, savedInstanceState)
         }
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView(savedInstanceState)
     }
 
     /**

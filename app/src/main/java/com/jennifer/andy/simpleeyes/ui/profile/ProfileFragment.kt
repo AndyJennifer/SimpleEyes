@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.profile
 import android.os.Bundle
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.profile.model.ProfileModel
 import com.jennifer.andy.simpleeyes.ui.profile.presenter.ProfilePresenter
+import com.jennifer.andy.simpleeyes.ui.profile.view.ProfileView
 
 /**
  * Author:  andy.xwt
@@ -12,7 +12,7 @@ import com.jennifer.andy.simpleeyes.ui.profile.presenter.ProfilePresenter
  * Description:
  */
 
-class ProfileFragment : BaseFragment<ProfilePresenter, ProfileModel>() {
+class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>() {
 
 
     companion object {
@@ -23,10 +23,13 @@ class ProfileFragment : BaseFragment<ProfilePresenter, ProfileModel>() {
 
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_home
-
     override fun initView(savedInstanceState: Bundle?) {
 
     }
+
+    override fun getContentViewLayoutId() = R.layout.fragment_home
+
+    override fun initPresenter() = ProfilePresenter(context)
+
 
 }

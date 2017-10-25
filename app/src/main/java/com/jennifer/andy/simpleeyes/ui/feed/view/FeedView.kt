@@ -7,6 +7,6 @@ package com.jennifer.andy.simpleeyes.ui.feed.view
  * Description:
  */
 
-class FeedFragmentView {
+class FeedView {
 
 }
