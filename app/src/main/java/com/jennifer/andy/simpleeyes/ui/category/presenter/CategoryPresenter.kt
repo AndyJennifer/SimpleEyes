@@ -13,13 +13,17 @@ import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
  */
 
 class CategoryPresenter(mContext: Context) : BasePresenter<CategoryView>(mContext) {
-    lateinit var categoryModel: CategoryModel
 
-    init {
-        categoryModel = CategoryModel()
-    }
+    private var categoryModel: CategoryModel = CategoryModel()
 
     fun loadCategoryData() {
-
+        mRxManager.add(categoryModel.loadCategoryInfo().subscribe({
+            println(it.count)
+            mView?.loadDataSuccess(it)
+        }, {
+            println("fuck")
+        }, {
+            println("success")
+        }))
     }
 }

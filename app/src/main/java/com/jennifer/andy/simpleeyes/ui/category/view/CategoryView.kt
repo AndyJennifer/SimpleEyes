@@ -1,5 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.category.view
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+
 
 /**
  * Author:  andy.xwt
@@ -8,4 +10,9 @@ package com.jennifer.andy.simpleeyes.ui.category.view
  */
 
 interface CategoryView {
+
+    /**
+     * 加载信息成功
+     */
+    fun loadDataSuccess(andyInfo: AndyInfo)
 }
