@@ -67,9 +67,9 @@ class MultipleStateView : RelativeLayout {
             var errorText = mEmptyView!!.findViewById<TextView>(R.id.tv_message_info)
             imageView.setImageResource(R.drawable.ic_eye_black_error)
             errorText.setText(R.string.empty_message)
-            mEmptyView!!.setOnClickListener(onClickListener)
+            mEmptyView?.setOnClickListener(onClickListener)
         } else {
-            mEmptyView!!.visibility = View.VISIBLE
+            mEmptyView?.visibility = View.VISIBLE
         }
     }
 
@@ -102,9 +102,9 @@ class MultipleStateView : RelativeLayout {
             var errorText = mNetErrorView!!.findViewById<TextView>(R.id.tv_message_info)
             imageView.setImageResource(R.drawable.ic_eye_black_error)
             errorText.setText(R.string.net_error_message)
-            mNetErrorView!!.setOnClickListener(onClickListener)
+            mNetErrorView?.setOnClickListener(onClickListener)
         } else {
-            mNetErrorView!!.visibility = View.VISIBLE
+            mNetErrorView?.visibility = View.VISIBLE
         }
     }
 

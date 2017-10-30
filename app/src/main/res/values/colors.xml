@@ -5,4 +5,15 @@
     <color name="colorAccent">#448AFF</color>
     <color name="PrimaryText">#212121</color>
     <color name="SecondaryText">#757575</color>
+
+    <color name="divider">#e5e5e5</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray">#BDBDBD</color>
+    <color name="gray_828885">#828885</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="blue">#4696E5</color>
+    <color name="alpha_4d_dark">#4d000000</color>
+
 </resources>

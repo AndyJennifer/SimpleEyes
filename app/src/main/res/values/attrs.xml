@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ColorTrackView">
+        <attr name="text" format="string"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="text_origin_color" format="color|reference"/>
+        <attr name="text_change_color" format="color|reference"/>
+        <attr name="progress" format="float"/>
+        <attr name="direction">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="CustomFontTextView">
+        <attr name="font_name">
+            <enum name="bold" value=" 0"/>
+            <enum name="future" value="1"/>
+            <enum name="lobster" value="2"/>
+            <enum name="normal" value="3"/>
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="MultipleStateView">
+        <attr name="empty_view" format="reference"/>
+        <attr name="error_view" format="reference"/>
+        <attr name="content_view" format="reference"/>
+        <attr name="net_error_view" format="reference"/>
+        <attr name="loading_view" format="reference"/>
+    </declare-styleable>
+
+</resources>

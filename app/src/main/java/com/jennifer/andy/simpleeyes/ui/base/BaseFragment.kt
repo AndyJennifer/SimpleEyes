@@ -19,7 +19,7 @@ import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), BaseView {
 
     protected lateinit var mPresenter: T
-    protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
+    private val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +38,19 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
     }
 
     override fun showLoading() {
-
+        mMultipleStateView.showLoading()
     }
 
     override fun showNetError(onClickListener: View.OnClickListener) {
-
+        mMultipleStateView.showNetError(onClickListener)
     }
 
     override fun showEmpty(onClickListener: View.OnClickListener) {
+        mMultipleStateView.showEmpty(onClickListener)
+    }
 
+    override fun showContent() {
+        mMultipleStateView.showContent()
     }
 
     /**
