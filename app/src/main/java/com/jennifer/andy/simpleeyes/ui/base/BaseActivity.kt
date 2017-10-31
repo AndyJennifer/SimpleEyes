@@ -20,7 +20,7 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
 
     protected lateinit var mPresenter: T
 
-    protected val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
+    private val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +40,10 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
 
     override fun showEmpty(onClickListener: View.OnClickListener) {
         mMultipleStateView.showEmpty(onClickListener)
+    }
+
+    override fun showContent() {
+        mMultipleStateView.showContent()
     }
 
     override fun onDestroy() {

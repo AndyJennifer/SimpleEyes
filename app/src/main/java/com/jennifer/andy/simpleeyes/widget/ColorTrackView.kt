@@ -7,7 +7,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.kotlin.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.DensityUtils
 
 
 /**

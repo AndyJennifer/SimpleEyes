@@ -16,6 +16,11 @@ interface BaseView {
     fun showLoading()
 
     /**
+     * 显示内容
+     */
+    fun showContent()
+
+    /**
      * 显示网络异常
      */
     fun showNetError(onClickListener: View.OnClickListener)

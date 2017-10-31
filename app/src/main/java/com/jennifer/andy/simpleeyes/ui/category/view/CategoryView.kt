@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.category.view
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 
 /**
@@ -9,7 +10,7 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
  * Description:
  */
 
-interface CategoryView {
+interface CategoryView : BaseView {
 
     /**
      * 加载信息成功

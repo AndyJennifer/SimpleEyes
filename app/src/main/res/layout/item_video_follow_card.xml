@@ -5,16 +5,87 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView android:layout_width="match_parent"
-               android:layout_height="200dp"/>
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:id="@+id/tv_image_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/default_margin_right"
+            android:layout_marginTop="@dimen/default_margin_top"
+            android:background="@drawable/shape_border_label"
+            android:padding="3dp"
+            android:text="机器翻译"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="@dimen/default_margin_left">
 
+        <ImageView
+            android:id="@+id/iv_source"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"/>
 
-    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/iv_source"
+            android:layout_toRightOf="@id/iv_source"
+            android:layout_toStartOf="@+id/btn_reply_more"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当树枝折断时-官方预告片"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="二十世纪福克斯电影公司  /  #预告  /  02' 48"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/btn_reply_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_action_reply_more"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@id/iv_source"
+            android:layout_marginTop="20dp"
+            android:background="@color/divider"/>
+    </RelativeLayout>
 
 </LinearLayout>
