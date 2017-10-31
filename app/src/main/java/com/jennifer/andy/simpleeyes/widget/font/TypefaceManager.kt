@@ -14,16 +14,16 @@ import com.jennifer.andy.simpleeyes.R
  * Description:字体管理工具类
  */
 
-class TypefaceManager(var mContext: Context) {
+class TypefaceManager() {
 
     companion object {
 
-        private var mTypeFaceMap: Map<TypefaceManager.FontType, Typeface> = mutableMapOf()
+        private var mTypeFaceMap: MutableMap<TypefaceManager.FontType, Typeface> = mutableMapOf()
 
-        private var mCurrentType: Int = FontType.NORMAL.ordinal
+        private var mTypeFaceIndex: Int = FontType.NORMAL.ordinal
 
         /**
-         * 设置textView字体
+         * 设置textView字体,如果参数中有字体，就采用本身的，如果没有就
          *
          *@param context
          *@param attributes
@@ -31,25 +31,27 @@ class TypefaceManager(var mContext: Context) {
          */
         fun setTextTypeFace(context: Context, attributes: AttributeSet, textView: TextView) {
             val typeArray = context.obtainStyledAttributes(attributes, R.styleable.CustomFontTextView)
-            mCurrentType = typeArray.getInteger(R.styleable.CustomFontTextView_font_name, mCurrentType)
+            mTypeFaceIndex = typeArray.getInteger(R.styleable.CustomFontTextView_font_name, mTypeFaceIndex)
             typeArray.recycle()
             if (textView.typeface != null && textView.typeface.style != 0) {
                 return
             }
-            if ((mCurrentType >= 0) && mCurrentType < TypefaceManager.FontType.values().size) {
-                TypefaceManager.FontType.values()
+            if ((mTypeFaceIndex >= 0) && mTypeFaceIndex < TypefaceManager.FontType.values().size) {
+                textView.typeface = getTypeFace(TypefaceManager.FontType.values()[mTypeFaceIndex])
             }
         }
 
         /**
          * 根据字体类型获取字体
+         * @param  fontType 字体类型
          */
-        fun getTypeFace(fontType: TypefaceManager.FontType): Typeface {
+        private fun getTypeFace(fontType: TypefaceManager.FontType): Typeface {
             var typeFace = mTypeFaceMap[fontType]
             if (typeFace == null) {
-                typeFace = Typeface.createFromAsset(AndyApplication.mApplication.getAssets(), fontType.path)
+                typeFace = Typeface.createFromAsset(AndyApplication.mApplication.assets, fontType.path)
                 return typeFace
             }
+            mTypeFaceMap.put(fontType, typeFace)
             return typeFace
         }
 
