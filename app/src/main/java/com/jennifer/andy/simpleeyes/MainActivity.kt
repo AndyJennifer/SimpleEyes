@@ -20,6 +20,7 @@ import me.yokeyword.fragmentation.SupportFragment
 
 class MainActivity : BaseAppCompatActivity() {
 
+
     private var mFragments = arrayOfNulls<SupportFragment>(4)
     private val mBottomNavigation: BottomBar by bindView(R.id.bottom_navigation_bar)
 
@@ -61,6 +62,7 @@ class MainActivity : BaseAppCompatActivity() {
             }
 
             override fun onTabUnselected(position: Int) {
+
 
             }
 
