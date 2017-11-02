@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,12 +13,13 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_tab_strip_icon_feed"/>
 
-    <TextView
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="@string/discover"
-        android:textSize="10sp"/>
+        android:textSize="8sp"
+        app:font_name="normal"/>
 </LinearLayout>

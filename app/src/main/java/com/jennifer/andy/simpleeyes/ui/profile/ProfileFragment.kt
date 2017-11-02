@@ -9,7 +9,7 @@ import com.jennifer.andy.simpleeyes.ui.profile.view.ProfileView
 /**
  * Author:  andy.xwt
  * Date:    2017/9/22 13:51
- * Description:
+ * Description:我的
  */
 
 class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>() {
@@ -27,7 +27,7 @@ class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>() {
 
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_home
+    override fun getContentViewLayoutId() = R.layout.fragment_profile
 
     override fun initPresenter() = ProfilePresenter(context)
 

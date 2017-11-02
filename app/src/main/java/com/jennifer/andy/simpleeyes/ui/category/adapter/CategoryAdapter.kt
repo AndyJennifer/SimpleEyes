@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.category.adapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
+import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 
@@ -13,7 +14,7 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
  * Description: 主页信息适配器
  */
 
-class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>?) : BaseQuickAdapter<AndyInfo.ItemListBeanX, BaseViewHolder>(data) {
+class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdapter<AndyInfo.ItemListBeanX, BaseViewHolder>(data) {
 
     /**
      * 卡片类型
@@ -38,24 +39,30 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>?) : BaseQuickAda
         multiTypeDelegate.registerItemType(VIDEO_FOLLOW_CARD_TYPE, R.layout.item_video_follow_card)
     }
 
-    override fun convert(helper: BaseViewHolder?, item: AndyInfo.ItemListBeanX?) {
+    override fun convert(helper: BaseViewHolder?, item: AndyInfo.ItemListBeanX) {
         when (helper?.itemViewType) {
-            VIDEO_BANNER_TYPE -> setVideoBannerInfo(item)
-            VIDEO_FOLLOW_CARD_TYPE -> setVideoFollowCardInfo(item)
+            VIDEO_BANNER_TYPE -> setVideoBannerInfo(helper, item)
+            VIDEO_FOLLOW_CARD_TYPE -> setVideoFollowCardInfo(helper, item)
         }
     }
 
     /**
      * 设置视频banner信息
      */
-    private fun setVideoBannerInfo(item: AndyInfo.ItemListBeanX?) {
+    private fun setVideoBannerInfo(helper: BaseViewHolder, item: AndyInfo.ItemListBeanX) {
 
     }
 
     /**
      * 设置视频卡片信息
      */
-    private fun setVideoFollowCardInfo(item: AndyInfo.ItemListBeanX?) {
-
+    private fun setVideoFollowCardInfo(helper: BaseViewHolder, item: AndyInfo.ItemListBeanX) {
+        val info = item.data
+        helper.setText(R.id.tv_title, info.header.title)
+        helper.setText(R.id.tv_desc, info.header.description)
+        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
+        val sourceImageView = helper.getView<SimpleDraweeView>(R.id.iv_source)
+        //todo 修改
+        imageView.setImageURI(info.content.data.cover?.feed)
     }
 }

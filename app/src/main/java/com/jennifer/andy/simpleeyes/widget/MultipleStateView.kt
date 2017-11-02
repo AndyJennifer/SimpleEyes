@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -35,9 +36,13 @@ class MultipleStateView : RelativeLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    override fun addView(child: View?) {
-        super.addView(child)
-        child?.let { mContentViews.add(it) }
+    override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
+        super.addView(child, params)
+        child?.let {
+            if (child.tag != State.LOADING && child.tag != State.EMPTY && child.tag != State.NET_ERROR) {
+                mContentViews.add(child)
+            }
+        }
     }
 
     fun showLoading() {
@@ -62,12 +67,14 @@ class MultipleStateView : RelativeLayout {
      */
     private fun setEmptyView(onClickListener: OnClickListener) {
         if (mEmptyView == null) {
-            mEmptyView = LayoutInflater.from(context).inflate(R.layout.layout_loading_message, this, true)
-            val imageView = mEmptyView!!.findViewById<ImageView>(R.id.iv_image)
-            var errorText = mEmptyView!!.findViewById<TextView>(R.id.tv_message_info)
-            imageView.setImageResource(R.drawable.ic_eye_black_error)
-            errorText.setText(R.string.empty_message)
+            mEmptyView = LayoutInflater.from(context).inflate(R.layout.layout_loading_message, null)
+            mEmptyView?.tag = State.EMPTY
+            val imageView = mEmptyView?.findViewById<ImageView>(R.id.iv_image)
+            var errorText = mEmptyView?.findViewById<TextView>(R.id.tv_message_info)
+            imageView?.setImageResource(R.drawable.ic_eye_black_error)
+            errorText?.setText(R.string.empty_message)
             mEmptyView?.setOnClickListener(onClickListener)
+            addStateView(mEmptyView)
         } else {
             mEmptyView?.visibility = View.VISIBLE
         }
@@ -97,12 +104,14 @@ class MultipleStateView : RelativeLayout {
      */
     private fun setNetErrorView(onClickListener: OnClickListener) {
         if (mNetErrorView == null) {
-            mNetErrorView = LayoutInflater.from(context).inflate(R.layout.layout_loading_message, this, true)
-            val imageView = mNetErrorView!!.findViewById<ImageView>(R.id.iv_image)
-            var errorText = mNetErrorView!!.findViewById<TextView>(R.id.tv_message_info)
-            imageView.setImageResource(R.drawable.ic_eye_black_error)
-            errorText.setText(R.string.net_error_message)
+            mNetErrorView = LayoutInflater.from(context).inflate(R.layout.layout_loading_message, null)
+            mNetErrorView?.tag = State.NET_ERROR
+            val imageView = mNetErrorView?.findViewById<ImageView>(R.id.iv_image)
+            val errorText = mNetErrorView?.findViewById<TextView>(R.id.tv_message_info)
+            imageView?.setImageResource(R.drawable.ic_eye_black_error)
+            errorText?.setText(R.string.net_error_message)
             mNetErrorView?.setOnClickListener(onClickListener)
+            addStateView(mNetErrorView)
         } else {
             mNetErrorView?.visibility = View.VISIBLE
         }
@@ -130,10 +139,12 @@ class MultipleStateView : RelativeLayout {
      */
     private fun setLoadingView(onClickListener: OnClickListener) {
         if (mLoadingView == null) {
-            mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, this, true)
-            mLoadingView!!.setOnClickListener(onClickListener)
+            mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, null)
+            mLoadingView?.tag = State.LOADING
+            mLoadingView?.setOnClickListener(onClickListener)
+            addStateView(mLoadingView)
         } else {
-            mLoadingView!!.visibility = View.VISIBLE
+            mLoadingView?.visibility = View.VISIBLE
         }
     }
 
@@ -173,6 +184,15 @@ class MultipleStateView : RelativeLayout {
         hideNetErrorView()
         hideLoadingView()
         setContentViewVisible(true)
+    }
+
+    /**
+     * 添加状态布局
+     */
+    private fun addStateView(view: View?) {
+        val layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        layoutParams.addRule(CENTER_IN_PARENT)
+        addView(view, layoutParams)
     }
 
     /**

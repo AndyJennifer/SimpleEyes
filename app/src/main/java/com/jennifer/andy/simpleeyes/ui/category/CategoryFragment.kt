@@ -54,7 +54,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         }
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_home
+    override fun getContentViewLayoutId() = R.layout.fragment_category
 
     override fun initPresenter() = CategoryPresenter(context)
 

@@ -7,39 +7,27 @@ package com.jennifer.andy.simpleeyes.entity
  */
 
 
-class AndyInfo {
+data class AndyInfo(var count: Int, var total: Int,
+                    var nextPageUrl: String, var date: Long,
+                    var nextPublishTime: Long, var dialog: Any,
+                    var topIssue: TopIssueBean, var refreshCount: Int,
+                    var lastStartId: Int, var itemList: MutableList<ItemListBeanX>) {
 
-    var count: Int = 0
-    var total: Int = 0
-    var nextPageUrl: String? = null
-    var date: Long = 0
-    var nextPublishTime: Long = 0
-    var dialog: Any? = null
-    var topIssue: TopIssueBean? = null
-    var refreshCount: Int = 0
-    var lastStartId: Int = 0
-    var itemList: MutableList<ItemListBeanX>? = null
 
-    class TopIssueBean {
-        var type: String? = null
-        var data: DataBeanX? = null
-        var tag: Any? = null
+    data class TopIssueBean(var type: String,
+                            var data: DataBeanX,
+                            var tag: Any) {
 
-        class DataBeanX {
-         
+        data class DataBeanX(var dataType: String,
+                             var count: Int,
+                             var itemList: MutableList<ItemListBean>) {
 
-            var dataType: String? = null
-            var count: Int = 0
-            var itemList: MutableList<ItemListBean>? = null
-
-            class ItemListBean {
-               
-                var type: String? = null
-                var data: DataBean? = null
-                var tag: Any? = null
+            data class ItemListBean(var type: String,
+                                    var data: DataBean,
+                                    var tag: Any) {
 
                 class DataBean {
-                  
+
                     var dataType: String? = null
                     var id: Int = 0
                     var title: String? = null
@@ -178,44 +166,17 @@ class AndyInfo {
         }
     }
 
-    class ItemListBeanX {
-        /**
-         * type : followCard
-         * data : {"dataType":"FollowCard","header":{"id":2508,"title":"韵律中国 2015","font":null,"cover":null,"label":null,"actionUrl":"eyepetizer://pgc/detail/602/?title=%E4%B8%AD%E5%9B%BD%E5%BB%B6%E6%97%B6%E6%91%84%E5%BD%B1%E8%81%94%E7%9B%9F&userType=PGC&tabIndex=0","labelList":null,"icon":"http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg","iconType":"round","description":"中国延时摄影联盟  /  #旅行  /  08' 19\"","time":1443628800000},"content":{"type":"video","data":{"dataType":"VideoBeanForClient","id":2508,"title":"韵律中国 2015","slogan":null,"description":"静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China","provider":{"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"},"category":"旅行","author":{"id":602,"icon":"http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg","name":"中国延时摄影联盟","description":"中国最大的延时摄影社群，策划制作《韵动中国》系列延时摄影影片。公众微信：TimelapseChina","link":"","latestReleaseTime":1489772311000,"videoNum":2,"adTrack":null,"follow":{"itemType":"author","itemId":602,"followed":false},"shield":{"itemType":"author","itemId":602,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/893c145d9e156953195ec2c3e6e300f2.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":499,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=2508","forWeibo":"http://wandou.im/nfs3k"},"releaseTime":1443628800000,"library":"DAILY","playInfo":[{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud","size":58928742},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=ucloud","size":58928742}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud","size":86818871},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=ucloud","size":86818871}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud","size":102044542},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=ucloud","size":102044542}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud"}],"consumption":{"collectionCount":15809,"shareCount":24388,"replyCount":103},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":52,"name":"风光摄影","actionUrl":"eyepetizer://tag/52/?title=%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1","adTrack":null},{"id":342,"name":"中国","actionUrl":"eyepetizer://tag/342/?title=%E4%B8%AD%E5%9B%BD","adTrack":null},{"id":78,"name":"延时","actionUrl":"eyepetizer://tag/78/?title=%E5%BB%B6%E6%97%B6","adTrack":null}],"type":"NORMAL","titlePgc":null,"descriptionPgc":null,"remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1443628800000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null},"adTrack":null}
-         * tag : null
-         */
+    data class ItemListBeanX(var type: String,
+                             var data: DataBeanXXX,
+                             var tag: Any) {
 
-        var type: String? = null
-        var data: DataBeanXXX? = null
-        var tag: Any? = null
 
-        class DataBeanXXX {
-            /**
-             * dataType : FollowCard
-             * header : {"id":2508,"title":"韵律中国 2015","font":null,"cover":null,"label":null,"actionUrl":"eyepetizer://pgc/detail/602/?title=%E4%B8%AD%E5%9B%BD%E5%BB%B6%E6%97%B6%E6%91%84%E5%BD%B1%E8%81%94%E7%9B%9F&userType=PGC&tabIndex=0","labelList":null,"icon":"http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg","iconType":"round","description":"中国延时摄影联盟  /  #旅行  /  08' 19\"","time":1443628800000}
-             * content : {"type":"video","data":{"dataType":"VideoBeanForClient","id":2508,"title":"韵律中国 2015","slogan":null,"description":"静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China","provider":{"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"},"category":"旅行","author":{"id":602,"icon":"http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg","name":"中国延时摄影联盟","description":"中国最大的延时摄影社群，策划制作《韵动中国》系列延时摄影影片。公众微信：TimelapseChina","link":"","latestReleaseTime":1489772311000,"videoNum":2,"adTrack":null,"follow":{"itemType":"author","itemId":602,"followed":false},"shield":{"itemType":"author","itemId":602,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/893c145d9e156953195ec2c3e6e300f2.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":499,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=2508","forWeibo":"http://wandou.im/nfs3k"},"releaseTime":1443628800000,"library":"DAILY","playInfo":[{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud","size":58928742},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=ucloud","size":58928742}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud","size":86818871},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=ucloud","size":86818871}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud","size":102044542},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=ucloud","size":102044542}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud"}],"consumption":{"collectionCount":15809,"shareCount":24388,"replyCount":103},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":52,"name":"风光摄影","actionUrl":"eyepetizer://tag/52/?title=%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1","adTrack":null},{"id":342,"name":"中国","actionUrl":"eyepetizer://tag/342/?title=%E4%B8%AD%E5%9B%BD","adTrack":null},{"id":78,"name":"延时","actionUrl":"eyepetizer://tag/78/?title=%E5%BB%B6%E6%97%B6","adTrack":null}],"type":"NORMAL","titlePgc":null,"descriptionPgc":null,"remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1443628800000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null}
-             * adTrack : null
-             */
+        class DataBeanXXX(var dataType: String,
+                          var header: HeaderBean,
+                          var content: ContentBean,
+                          var adTrack: Any) {
 
-            var dataType: String? = null
-            var header: HeaderBean? = null
-            var content: ContentBean? = null
-            var adTrack: Any? = null
-
-            class HeaderBean {
-                /**
-                 * id : 2508
-                 * title : 韵律中国 2015
-                 * font : null
-                 * cover : null
-                 * label : null
-                 * actionUrl : eyepetizer://pgc/detail/602/?title=%E4%B8%AD%E5%9B%BD%E5%BB%B6%E6%97%B6%E6%91%84%E5%BD%B1%E8%81%94%E7%9B%9F&userType=PGC&tabIndex=0
-                 * labelList : null
-                 * icon : http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg
-                 * iconType : round
-                 * description : 中国延时摄影联盟  /  #旅行  /  08' 19"
-                 * time : 1443628800000
-                 */
+            class HeaderBean() {
 
                 var id: Int = 0
                 var title: String? = null
@@ -230,59 +191,11 @@ class AndyInfo {
                 var time: Long = 0
             }
 
-            class ContentBean {
-                /**
-                 * type : video
-                 * data : {"dataType":"VideoBeanForClient","id":2508,"title":"韵律中国 2015","slogan":null,"description":"静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China","provider":{"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"},"category":"旅行","author":{"id":602,"icon":"http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg","name":"中国延时摄影联盟","description":"中国最大的延时摄影社群，策划制作《韵动中国》系列延时摄影影片。公众微信：TimelapseChina","link":"","latestReleaseTime":1489772311000,"videoNum":2,"adTrack":null,"follow":{"itemType":"author","itemId":602,"followed":false},"shield":{"itemType":"author","itemId":602,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/893c145d9e156953195ec2c3e6e300f2.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":499,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=2508","forWeibo":"http://wandou.im/nfs3k"},"releaseTime":1443628800000,"library":"DAILY","playInfo":[{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud","size":58928742},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=ucloud","size":58928742}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud","size":86818871},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=ucloud","size":86818871}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud","size":102044542},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=ucloud","size":102044542}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud"}],"consumption":{"collectionCount":15809,"shareCount":24388,"replyCount":103},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":52,"name":"风光摄影","actionUrl":"eyepetizer://tag/52/?title=%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1","adTrack":null},{"id":342,"name":"中国","actionUrl":"eyepetizer://tag/342/?title=%E4%B8%AD%E5%9B%BD","adTrack":null},{"id":78,"name":"延时","actionUrl":"eyepetizer://tag/78/?title=%E5%BB%B6%E6%97%B6","adTrack":null}],"type":"NORMAL","titlePgc":null,"descriptionPgc":null,"remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1443628800000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null}
-                 * tag : null
-                 */
-
-                var type: String? = null
-                var data: DataBeanXX? = null
-                var tag: Any? = null
+            class ContentBean(var type: String,
+                              var data: DataBeanXX,
+                              var tag: Any) {
 
                 class DataBeanXX {
-                    /**
-                     * dataType : VideoBeanForClient
-                     * id : 2508
-                     * title : 韵律中国 2015
-                     * slogan : null
-                     * description : 静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China
-                     * provider : {"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"}
-                     * category : 旅行
-                     * author : {"id":602,"icon":"http://img.kaiyanapp.com/20aa1ff5e7a2dccf30c8230fac0a0bfa.jpeg?imageMogr2/quality/60/format/jpg","name":"中国延时摄影联盟","description":"中国最大的延时摄影社群，策划制作《韵动中国》系列延时摄影影片。公众微信：TimelapseChina","link":"","latestReleaseTime":1489772311000,"videoNum":2,"adTrack":null,"follow":{"itemType":"author","itemId":602,"followed":false},"shield":{"itemType":"author","itemId":602,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true}
-                     * cover : {"feed":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/8469265bc4b026850d31037e2778b9a5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/893c145d9e156953195ec2c3e6e300f2.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null}
-                     * playUrl : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=default&source=qcloud
-                     * thumbPlayUrl : null
-                     * duration : 499
-                     * webUrl : {"raw":"http://www.eyepetizer.net/detail.html?vid=2508","forWeibo":"http://wandou.im/nfs3k"}
-                     * releaseTime : 1443628800000
-                     * library : DAILY
-                     * playInfo : [{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud","size":58928742},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=ucloud","size":58928742}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud","size":86818871},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=ucloud","size":86818871}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud","size":102044542},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=ucloud","size":102044542}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=2508&editionType=high&source=qcloud"}]
-                     * consumption : {"collectionCount":15809,"shareCount":24388,"replyCount":103}
-                     * campaign : null
-                     * waterMarks : null
-                     * adTrack : null
-                     * tags : [{"id":52,"name":"风光摄影","actionUrl":"eyepetizer://tag/52/?title=%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1","adTrack":null},{"id":342,"name":"中国","actionUrl":"eyepetizer://tag/342/?title=%E4%B8%AD%E5%9B%BD","adTrack":null},{"id":78,"name":"延时","actionUrl":"eyepetizer://tag/78/?title=%E5%BB%B6%E6%97%B6","adTrack":null}]
-                     * type : NORMAL
-                     * titlePgc : null
-                     * descriptionPgc : null
-                     * remark : null
-                     * idx : 0
-                     * shareAdTrack : null
-                     * favoriteAdTrack : null
-                     * webAdTrack : null
-                     * date : 1443628800000
-                     * promotion : null
-                     * label : null
-                     * labelList : []
-                     * descriptionEditor : 静待日月轮回，走过灯火阑珊。国内外 70 余位顶级延时摄影师历时一年，走遍神州大地，只为寻觅那最绚丽的色彩和最壮­美的风景。感谢@中国延时摄影联盟 的授权和每位摄影师的付出。 From Timelapse China
-                     * collected : false
-                     * played : false
-                     * subtitles : []
-                     * lastViewTime : null
-                     * playlists : null
-                     */
 
                     var dataType: String? = null
                     var id: Int = 0

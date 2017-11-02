@@ -40,11 +40,17 @@ dependencies {
     //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'me.yokeyword:fragmentation:0.10.7'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    //fragmentation
+    compile 'me.yokeyword:fragmentation:0.10.7'
+    //recyclerView
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
-
+    //fresco
+    compile 'com.facebook.fresco:fresco:1.5.0'
+    //ijk
+    compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
+    compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
     //loadingView
     compile 'com.wang.avi:library:2.1.3'
 

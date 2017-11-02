@@ -14,56 +14,67 @@ import com.jennifer.andy.simpleeyes.R
  * Description:字体管理工具类
  */
 
-class TypefaceManager() {
+object TypefaceManager {
 
-    companion object {
+    private var mTypeFaceMap: MutableMap<FontType, Typeface> = mutableMapOf()
+    private var mTypeFaceIndex: Int = FontType.NORMAL.index
 
-        private var mTypeFaceMap: MutableMap<TypefaceManager.FontType, Typeface> = mutableMapOf()
-
-        private var mTypeFaceIndex: Int = FontType.NORMAL.ordinal
-
-        /**
-         * 设置textView字体,如果参数中有字体，就采用本身的，如果没有就
-         *
-         *@param context
-         *@param attributes
-         *@param textView
-         */
-        fun setTextTypeFace(context: Context, attributes: AttributeSet, textView: TextView) {
-            val typeArray = context.obtainStyledAttributes(attributes, R.styleable.CustomFontTextView)
-            mTypeFaceIndex = typeArray.getInteger(R.styleable.CustomFontTextView_font_name, mTypeFaceIndex)
-            typeArray.recycle()
-            if (textView.typeface != null && textView.typeface.style != 0) {
-                return
-            }
-            if ((mTypeFaceIndex >= 0) && mTypeFaceIndex < TypefaceManager.FontType.values().size) {
-                textView.typeface = getTypeFace(TypefaceManager.FontType.values()[mTypeFaceIndex])
-            }
+    /**
+     * 设置textView字体,如果参数中有字体，就采用本身的，如果没有就根据设置的值设置字体
+     *
+     *@param context  上下文
+     *@param attributes 参数
+     *@param textView  textView
+     */
+    fun setTextTypeFace(context: Context, attributes: AttributeSet?, textView: TextView) {
+        if (textView.typeface != null && textView.typeface.style != 0) {
+            return
         }
-
-        /**
-         * 根据字体类型获取字体
-         * @param  fontType 字体类型
-         */
-        private fun getTypeFace(fontType: TypefaceManager.FontType): Typeface {
-            var typeFace = mTypeFaceMap[fontType]
-            if (typeFace == null) {
-                typeFace = Typeface.createFromAsset(AndyApplication.mApplication.assets, fontType.path)
-                return typeFace
-            }
-            mTypeFaceMap.put(fontType, typeFace)
-            return typeFace
+        val typeArray = context.obtainStyledAttributes(attributes, R.styleable.CustomFontTextView)
+        mTypeFaceIndex = typeArray.getInteger(R.styleable.CustomFontTextView_font_name, mTypeFaceIndex)
+        if ((mTypeFaceIndex > 0) && mTypeFaceIndex <= FontType.values().size) {
+            textView.typeface = getTypeFace(FontType.values()[mTypeFaceIndex - 1])
         }
+        typeArray.recycle()
+
 
     }
 
     /**
-     * 字体常量
+     * 根据字体设置textVie显示的字体
      */
-    enum class FontType(val path: String) {
-        BOLD("font/FZLanTingHeiS-DB1-GB-Regular.TTF"),
-        FUTURE("Futura-CondensedMedium.ttf"),
-        LOBSTER("font/Lobster-1.4.otf"),
-        NORMAL("FZLanTingHeiS-L-GB-Regular.TTF")
+    fun setTextTypeFace(textView: TextView, fontType: FontType?) {
+        val localTypeFace = getTypeFace(fontType)
+        localTypeFace?.let {
+            setTextTypeFace(AndyApplication.getAppContext(), null, textView)
+        }
     }
+
+    /**
+     * 根据名称获取字体类型
+     * @return  字体类型
+     */
+    fun getFontTypeByName(fontName: String): FontType? {
+        return FontType.values().firstOrNull { it.fontName == fontName }
+    }
+
+
+    /**
+     * 根据字体类型获取字体
+     * @param  fontType 字体类型
+     */
+    private fun getTypeFace(fontType: FontType?): Typeface? {
+        return fontType?.let {
+            var typeFace = mTypeFaceMap[fontType]
+            if (typeFace == null) {
+                typeFace = Typeface.createFromAsset(AndyApplication.getAppContext().assets, fontType.path)
+                return typeFace
+            }
+            mTypeFaceMap.put(fontType, typeFace)
+        }
+    }
+
 }
+
+
+

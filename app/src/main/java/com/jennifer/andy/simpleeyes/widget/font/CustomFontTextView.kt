@@ -18,10 +18,29 @@ class CustomFontTextView : TextView {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-
         if (!isInEditMode) {
+            TypefaceManager.setTextTypeFace(context, attrs, this)
+        }
+    }
+
+    /**
+     * 根据字体类型设置字体
+     *
+     * @param fontType
+     */
+    fun setFontType(fontType: FontType) {
+        if (!isInEditMode) {
+            TypefaceManager.setTextTypeFace(this, fontType)
+        }
+    }
+
+    fun setFontType(fontName: String) {
+        if (!isInEditMode) {
+            val fontType = TypefaceManager.getFontTypeByName(fontName)
+            TypefaceManager.setTextTypeFace(this, fontType)
 
         }
     }
+
 
 }
