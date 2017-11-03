@@ -16,10 +16,10 @@
 
     <declare-styleable name="CustomFontTextView">
         <attr name="font_name">
-            <enum name="bold" value=" 0"/>
-            <enum name="future" value="1"/>
-            <enum name="lobster" value="2"/>
-            <enum name="normal" value="3"/>
+            <enum name="normal" value="1"/>
+            <enum name="bold" value=" 2"/>
+            <enum name="future" value="3"/>
+            <enum name="lobster" value="4"/>
         </attr>
     </declare-styleable>
 

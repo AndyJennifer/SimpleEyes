@@ -20,12 +20,12 @@ abstract class UpdateApplication<T : LocalUpdateService> : Application() {
     override fun onCreate() {
         super.onCreate()
         GlobalConfig.setApplicationContext(applicationContext)
-        UpdateHelper.setUpdateService((javaClass.genericSuperclass as ParameterizedType) as Class<T>)
+        UpdateHelper.setUpdateService((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<T>)
         val currentProcessName = ProcessUtils.getProcessName(applicationContext)
         val currentPageName = applicationContext.packageName
         if (currentPageName == currentProcessName) {
             mUpdateParams = initUpdateParams()
-            if (mUpdateParams.checkUpdateProtocol == null || (mUpdateParams.checkUpdateProtocol?.isValid()!!)) {
+            if (mUpdateParams.checkUpdateProtocol == null || (!mUpdateParams.checkUpdateProtocol!!.isValid())) {
                 throw  IllegalArgumentException("invalid parameters!")
             } else {
                 UpdateHelper.startLocalUpdateService(applicationContext, mUpdateParams)

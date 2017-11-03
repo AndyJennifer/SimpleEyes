@@ -17,6 +17,9 @@ class CategoryPresenter(mContext: Context) : BasePresenter<CategoryView>(mContex
 
     private var categoryModel: CategoryModel = CategoryModel()
 
+    /**
+     * 加载首页信息
+     */
     fun loadCategoryData() {
         mView?.showLoading()
         mRxManager.add(categoryModel.loadCategoryInfo().subscribe({

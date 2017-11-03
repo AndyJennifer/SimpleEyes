@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
+import com.facebook.drawee.backends.pipeline.Fresco
 import com.jennifer.andy.simpleeyes.config.GlobalConfig
 import com.jennifer.andy.simpleeyes.update.CheckUpdateProtocol
 import com.jennifer.andy.simpleeyes.update.LocalUpdateService
@@ -22,7 +23,8 @@ import java.util.*
 class AndyApplication : UpdateApplication<LocalUpdateService>() {
 
     companion object {
-        lateinit var mApplication: Application
+
+        private lateinit var mApplication: Application
         /**
          * 获取当前应用上下文对象
          */
@@ -40,13 +42,14 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
     }
 
     override fun onCreate() {
+        super.onCreate()
         GlobalConfig.setApplicationContext(this)
         GlobalConfig.setAppDebug(false)
         GlobalConfig.setApplicationRootDir("simpleeyes")
-        //todo ijk player 的初始化
         mApplication = this
-        super.onCreate()
-        //todo 这里还要做崩溃检查
+        Fresco.initialize(this)
+        //todo 这里还要做崩溃检查 腾讯的bugly 热更新等操作
+
 
     }
 
@@ -66,4 +69,6 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
         updateParams.checkUpdateProtocol = localCheckUpdateProtocol
         return updateParams
     }
+
+
 }

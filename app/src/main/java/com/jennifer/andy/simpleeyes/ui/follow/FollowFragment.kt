@@ -9,7 +9,7 @@ import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
 /**
  * Author:  andy.xwt
  * Date:    2017/9/22 13:51
- * Description:
+ * Description: 关注
  */
 
 class FollowFragment : BaseFragment<FollowView, FollowPresenter>() {
@@ -27,7 +27,7 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>() {
 
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_home
+    override fun getContentViewLayoutId() = R.layout.fragment_follow
 
     override fun initPresenter() = FollowPresenter(context)
 }

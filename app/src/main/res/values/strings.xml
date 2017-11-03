@@ -5,7 +5,7 @@
     <string name="focus">关注</string>
     <string name="mine">我的</string>
     <string name="no_data">没有数据</string>
-    <string name="try_again">再试一次</string>
     <string name="net_error_message">网络错误\n点击屏幕重试</string>
     <string name="empty_message">没有数据\n点击屏幕重试</string>
+    <string name="show_all">查看全部</string>
 </resources>

@@ -10,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 /**
  * Author:  andy.xwt
  * Date:    2017/9/22 13:51
- * Description:
+ * Description:发现
  */
 
 class FeedFragment : BaseFragment<FeedView, FeedPresenter>() {
@@ -28,7 +28,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>() {
 
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_home
+    override fun getContentViewLayoutId() = R.layout.fragment_feed
 
     override fun initPresenter() = FeedPresenter(context)
 }
