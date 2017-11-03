@@ -51,16 +51,28 @@ class RetrofitConfig private constructor() {
     }
 
     /**
-     * 初始化请求拦截，添加缓存头
+     * 初始化请求拦截，添加缓存头,与全局请求参数
      */
     private fun initRequestInterceptor() {
         mRequestInterceptor = Interceptor { chain ->
-            val request = chain!!.request().newBuilder()
+            //注意全局请求参数都是死的
+            val urlBuilder = chain.request().url()
+                    .newBuilder()
+                    .setEncodedQueryParameter("udid", "d0f6190461864a3a978bdbcb3fe9b48709f1f390")
+                    .setEncodedQueryParameter("vc", "225")
+                    .setEncodedQueryParameter("vn", "3.12.0")
+                    .setEncodedQueryParameter("deviceModel", "Redmi%204")
+                    .setEncodedQueryParameter("first_channel", "eyepetizer_xiaomi_market")
+                    .setEncodedQueryParameter("last_channel", "eyepetizer_xiaomi_market")
+                    .setEncodedQueryParameter("system_version_code", "23")
+
+            val request = chain.request().newBuilder()
                     .addHeader("Cache-Control", ": public, max-age=120,max-stale=120")//配置全局缓存时间 120秒
                     .addHeader("Content-Type", "application/json")
+                    .url(urlBuilder.build())
                     .build()
 
-            chain!!.proceed(request)
+            chain.proceed(request)
         }
     }
 
@@ -84,8 +96,8 @@ class RetrofitConfig private constructor() {
      */
     private fun initResponseCacheTime() {
         mResponseInterceptor = Interceptor { chain ->
-            val originalCacheString = chain!!.request().cacheControl().toString()
-            setResponseCacheTime(chain!!.proceed(chain.request()), originalCacheString)
+            val originalCacheString = chain.request().cacheControl().toString()
+            setResponseCacheTime(chain.proceed(chain.request()), originalCacheString)
         }
     }
 
