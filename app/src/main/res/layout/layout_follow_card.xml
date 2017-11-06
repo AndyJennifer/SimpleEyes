@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.jennifer.andy.simpleeyes.widget.EliteImageView
+        android:id="@+id/elite_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.jennifer.andy.simpleeyes.widget.CardNormalBottom
+        android:id="@+id/card_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

@@ -63,7 +63,7 @@ object TypefaceManager {
      * 根据字体类型获取字体
      * @param  fontType 字体类型
      */
-    private fun getTypeFace(fontType: FontType?): Typeface? {
+    fun getTypeFace(fontType: FontType?): Typeface? {
         return fontType?.let {
             var typeFace = mTypeFaceMap[fontType]
             if (typeFace == null) {
@@ -71,6 +71,7 @@ object TypefaceManager {
                 return typeFace
             }
             mTypeFaceMap.put(fontType, typeFace)
+            return null
         }
     }
 

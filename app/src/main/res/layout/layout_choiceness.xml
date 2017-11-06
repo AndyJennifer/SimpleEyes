@@ -6,9 +6,10 @@
     android:layout_height="@dimen/default_card_height">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iv_image"
+        android:id="@+id/iv_elite_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+    />
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
         android:id="@+id/tv_translate"
@@ -45,5 +46,6 @@
         android:layout_marginBottom="@dimen/default_margin_bottom"
         android:layout_marginEnd="@dimen/default_margin_right"
         android:src="@drawable/daily_label"
-        android:visibility="gone"/>
+        android:visibility="gone"
+    />
 </RelativeLayout>

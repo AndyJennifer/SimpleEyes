@@ -149,15 +149,18 @@ data class AndyInfo(var count: Int, var total: Int,
                                 var description: String,
                                 var image: String,
                                 var actionUrl: String,
+                                var text: String,
                                 var adTrack: Any,
-                                var shade: Boolean
+                                var shade: Boolean,
+                                var library: String,
+                                var cover: ContentBean.DataBeanXX.CoverBeanX
                 )
             }
 
             data class HeaderBean(var id: Int,
                                   var title: String,
                                   var font: Any,
-                                  var cover: Any,
+                                  var cover: String,
                                   var label: Any,
                                   var actionUrl: String,
                                   var labelList: Any,

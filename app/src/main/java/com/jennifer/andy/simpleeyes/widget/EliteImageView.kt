@@ -14,7 +14,7 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 /**
  * Author:  andy.xwt
  * Date:    2017/11/3 17:44
- * Description:精选imageView 包含翻译图片
+ * Description:精选imageView 包含翻译图片 翻译
  */
 
 class EliteImageView : FrameLayout {
@@ -32,9 +32,9 @@ class EliteImageView : FrameLayout {
         init(context)
     }
 
-    fun init(context: Context) {
+    private fun init(context: Context) {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_choiceness, this, true)
-        ivImageView = view.findViewById(R.id.iv_image)
+        ivImageView = view.findViewById(R.id.iv_elite_image)
         tvTranslate = view.findViewById(R.id.tv_translate)
         ivArrow = view.findViewById(R.id.iv_arrow)
         ivDaily = view.findViewById(R.id.iv_daily)

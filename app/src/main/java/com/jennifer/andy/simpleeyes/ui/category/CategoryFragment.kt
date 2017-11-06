@@ -46,6 +46,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
                         val item = adapter.getItem(position) as AndyInfo.ItemListBeanX
                         startBannerDetailActivity()
                     }
+            mCateGoryAdapter?.bindToRecyclerView(mRecycler)
             mRecycler.adapter = mCateGoryAdapter
             mRecycler.layoutManager = LinearLayoutManager(_mActivity)
             mRecycler.itemAnimator = DefaultItemAnimator()

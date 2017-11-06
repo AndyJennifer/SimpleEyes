@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.jennifer.andy.simpleeyes.widget.EliteImageView
+        android:id="@+id/iv_collection_cover_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.jennifer.andy.simpleeyes.widget.CardNormalBottom
+        android:id="@+id/card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_collection_cover_image"/>
+
+</RelativeLayout>

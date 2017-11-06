@@ -12,6 +12,7 @@
 
     <color name="black">#000000</color>
     <color name="black_alpha_4D">#4D000000</color>
+    <color name="black_alpha_33">#33000000</color>
 
     <color name="divider">#e5e5e5</color>
     <color name="transparent">#00000000</color>
