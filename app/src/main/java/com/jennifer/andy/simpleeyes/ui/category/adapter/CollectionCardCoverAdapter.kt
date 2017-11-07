@@ -1,12 +1,11 @@
 package com.jennifer.andy.simpleeyes.ui.category.adapter
 
-import android.view.View
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
-import com.jennifer.andy.simpleeyes.widget.EliteImageView
 
 
 /**
@@ -18,22 +17,15 @@ import com.jennifer.andy.simpleeyes.widget.EliteImageView
 class CollectionCardCoverAdapter(data: MutableList<AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData>) : BaseQuickAdapter<AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData, BaseViewHolder>(R.layout.item_collection_card_cover, data) {
 
     override fun convert(helper: BaseViewHolder, item: AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData) {
-        var imageCover = helper.getView<EliteImageView>(R.id.iv_collection_cover_image)
-        val cardBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
+        val imageCover = helper.getView<SimpleDraweeView>(R.id.iv_image)
+        val title = helper.getView<TextView>(R.id.tv_title)
+        helper.setGone(R.id.iv_daily, item.data.library == "DAILY")
         if (item.type != "actionCard") {//集合
-            imageCover.setDailyVisible(item.data.library == "DAILY")
-            imageCover.setImageUrl(item.data.cover.feed)
-            cardBottom.setIconVisible(false)
-            cardBottom.setLineVisible(false)
-            cardBottom.setMoreOperateVisible(false)
+            imageCover.setImageURI(item.data.cover.feed)
             //todo 拼接信息
-            cardBottom.setTitle(item.data.title)
-            cardBottom.visibility = View.VISIBLE
+            title.text = item.data.title
         } else {//显示全部
-            cardBottom.visibility = View.GONE
-
         }
-        //todo 这里改一下吧，感觉不能复用
     }
 
 

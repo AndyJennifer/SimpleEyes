@@ -131,7 +131,6 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         val collectionRecycler = helper.getView<RecyclerView>(R.id.rv_collection_cover_recycler)
         val collectionCardCoverAdapter = CollectionCardCoverAdapter(item.itemList)
         collectionRecycler.isNestedScrollingEnabled = false
-        collectionRecycler.recycledViewPool = recyclerView.recycledViewPool
         collectionRecycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
         collectionRecycler.adapter = collectionCardCoverAdapter
         eliteImageView.setImageUrl(item.header.cover)
@@ -146,11 +145,9 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         val squareRecycler = helper.getView<RecyclerView>(R.id.rv_square_recycler)
         val showAllContainer = helper.getView<RelativeLayout>(R.id.ll_more_container)
         squareRecycler.isNestedScrollingEnabled = false
-        squareRecycler.recycledViewPool = recyclerView.recycledViewPool //使用同一个缓存池
         val squareCollectionAdapter = SquareCollectionAdapter(itemList)
         squareRecycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
         squareRecycler.adapter = squareCollectionAdapter
-
         squareCollectionAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
             //todo 跳转到分类详情
         }

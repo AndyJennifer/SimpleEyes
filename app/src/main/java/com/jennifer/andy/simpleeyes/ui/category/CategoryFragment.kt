@@ -40,6 +40,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
     override fun loadDataSuccess(andyInfo: AndyInfo) {
         if (mCateGoryAdapter == null) {
             mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
+            val linearLayoutManager = LinearLayoutManager(_mActivity)
             mCateGoryAdapter?.onItemClickListener =
                     BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
                         //跳转到详情界面
@@ -48,7 +49,8 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
                     }
             mCateGoryAdapter?.bindToRecyclerView(mRecycler)
             mRecycler.adapter = mCateGoryAdapter
-            mRecycler.layoutManager = LinearLayoutManager(_mActivity)
+            mRecycler.setItemViewCacheSize(10)
+            mRecycler.layoutManager = linearLayoutManager
             mRecycler.itemAnimator = DefaultItemAnimator()
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)

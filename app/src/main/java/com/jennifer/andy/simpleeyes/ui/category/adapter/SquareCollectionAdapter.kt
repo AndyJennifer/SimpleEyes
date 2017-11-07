@@ -17,9 +17,9 @@ import com.jennifer.andy.simpleeyes.widget.font.TypefaceManager
  */
 
 class SquareCollectionAdapter(data: MutableList<AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData>) : BaseQuickAdapter<AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData, BaseViewHolder>(R.layout.item_square_collection, data) {
-    
+
     override fun convert(helper: BaseViewHolder, item: AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData) {
-        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_square_image)
+        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_simple_image)
         val coverView = helper.getView<FrameLayout>(R.id.fl_cover)
         if (item.type != "actionCard") {//分类
             imageView.setImageURI(item.data.image)

@@ -46,6 +46,5 @@
         android:layout_marginBottom="@dimen/default_margin_bottom"
         android:layout_marginEnd="@dimen/default_margin_right"
         android:src="@drawable/daily_label"
-        android:visibility="gone"
     />
 </RelativeLayout>
