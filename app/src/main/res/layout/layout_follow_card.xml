@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.jennifer.andy.simpleeyes.widget.EliteImageView
+        android:id="@+id/elite_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:actualImageScaleType="focusCrop"
+        app:viewAspectRatio="1.33"/>
+
+    <com.jennifer.andy.simpleeyes.widget.CardNormalBottom
+        android:id="@+id/card_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

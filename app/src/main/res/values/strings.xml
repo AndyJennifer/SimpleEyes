@@ -8,4 +8,5 @@
     <string name="net_error_message">网络错误\n点击屏幕重试</string>
     <string name="empty_message">没有数据\n点击屏幕重试</string>
     <string name="show_all">查看全部</string>
+    <string name="all_category">全部分类</string>
 </resources>

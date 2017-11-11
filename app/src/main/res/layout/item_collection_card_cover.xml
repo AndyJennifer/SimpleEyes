@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+    />
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_translate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/default_margin_right"
+        android:layout_marginTop="@dimen/default_margin_top"
+        android:background="@drawable/shape_translate_border"
+        android:padding="3dp"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:font_name="bold"/>
+
+
+    <ImageView
+        android:id="@+id/iv_daily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_image"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/daily_label"
+        android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            app:font_name="bold"/>
+
+
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="二十世纪福克斯电影公司  /  #预告  /  02' 48"
+            android:textColor="@color/SecondaryText"
+            android:textSize="12sp"
+            app:font_name="normal"/>
+    </LinearLayout>
+
+</RelativeLayout>

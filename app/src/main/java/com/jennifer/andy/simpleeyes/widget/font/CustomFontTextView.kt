@@ -8,7 +8,7 @@ import android.widget.TextView
 /**
  * Author:  andy.xwt
  * Date:    2017/10/30 16:45
- * Description:
+ * Description:自定义字体textView
  */
 
 class CustomFontTextView : TextView {
