@@ -48,6 +48,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
                         startBannerDetailActivity()
                     }
             mCateGoryAdapter?.bindToRecyclerView(mRecycler)
+//            mCateGoryAdapter?.addHeaderView()
             mRecycler.adapter = mCateGoryAdapter
             mRecycler.setItemViewCacheSize(10)
             mRecycler.layoutManager = linearLayoutManager
