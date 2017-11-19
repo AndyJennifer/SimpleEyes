@@ -35,12 +35,14 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         private val VIDEO_HORIZONTAL_SCROLL_CARD_TYPE = 2
         private val VIDEO_COLLECTION_WITH_COVER_TYPE = 3
         private val VIDEO_SQUARE_CARD_COLLECTION_TYPE = 4
+        private val VIDEO_BANNER_THREE_TYPE = 8
 
         private val VIDEO_BANNER = "banner"
         private val VIDEO_FOLLOW_CARD = "followCard"
         private val VIDEO_HORIZONTAL_CARD = "horizontalScrollCard"
         private val VIDEO_COLLECTION_WITH_COVER = "videoCollectionWithCover"
         private val VIDEO_SQUARE_CARD_COLLECTION = "squareCardCollection"
+        private val VIDEO_BANNER_THREE = "banner3"
     }
 
 
@@ -53,6 +55,7 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
                     VIDEO_HORIZONTAL_CARD -> return VIDEO_HORIZONTAL_SCROLL_CARD_TYPE
                     VIDEO_COLLECTION_WITH_COVER -> return VIDEO_COLLECTION_WITH_COVER_TYPE
                     VIDEO_SQUARE_CARD_COLLECTION -> return VIDEO_SQUARE_CARD_COLLECTION_TYPE
+                    VIDEO_BANNER_THREE -> return VIDEO_BANNER_THREE_TYPE
                 }
                 return VIDEO_FOLLOW_CARD_TYPE
             }
@@ -62,6 +65,7 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         multiTypeDelegate.registerItemType(VIDEO_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
         multiTypeDelegate.registerItemType(VIDEO_COLLECTION_WITH_COVER_TYPE, R.layout.layout_collection_with_cover)
         multiTypeDelegate.registerItemType(VIDEO_SQUARE_CARD_COLLECTION_TYPE, R.layout.layout_square_collection)
+        multiTypeDelegate.registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
     }
 
     override fun convert(helper: BaseViewHolder?, item: AndyInfo.ItemListBeanX) {
@@ -71,6 +75,7 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
             VIDEO_HORIZONTAL_SCROLL_CARD_TYPE -> setHorizontalCardInfo(helper, item.data.itemList)
             VIDEO_COLLECTION_WITH_COVER_TYPE -> setCollectionCardWithCoverInfo(helper, item.data)
             VIDEO_SQUARE_CARD_COLLECTION_TYPE -> setSquareCollectionInfo(helper, item.data.itemList)
+            VIDEO_BANNER_THREE_TYPE -> setBanner3Info(helper, item.data)
         }
     }
 
@@ -82,6 +87,24 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.content.data.cover.feed)
     }
+
+    /**
+     * 设置banner3信息
+     */
+    private fun setBanner3Info(helper: BaseViewHolder, data: AndyInfo.ItemListBeanX.DataBeanXXX) {
+        val cardNormalBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
+        cardNormalBottom.setTitle(data.title)
+        cardNormalBottom.setDescription(data.description)
+        cardNormalBottom.setIconUrl(data.header.icon)
+        cardNormalBottom.setIconType(data.header.iconType == "round")//设置图标形状
+        cardNormalBottom.setMoreOperateVisible(false)
+
+        val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
+        eliteView.setImageUrl(data.image)
+        eliteView.setDailyVisible(false)
+        eliteView.setTranslateText("广告")
+    }
+
 
     /**
      * 设置单视频卡片信息

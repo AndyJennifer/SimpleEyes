@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.widget
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +61,12 @@ class EliteImageView : FrameLayout {
      * 设置翻译文字
      */
     fun setTranslateText(text: String) {
-        tvTranslate.text = text
+        if (TextUtils.isEmpty(text)) {
+            tvTranslate.visibility = View.VISIBLE
+            tvTranslate.text = text
+        } else {
+            tvTranslate.visibility = View.GONE
+        }
     }
 
     /**
