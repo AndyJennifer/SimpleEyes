@@ -102,7 +102,7 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
         eliteView.setImageUrl(data.image)
         eliteView.setDailyVisible(false)
-        eliteView.setTranslateText("广告")
+        eliteView.setTranslateText(mContext.getString(R.string.advert))
     }
 
 

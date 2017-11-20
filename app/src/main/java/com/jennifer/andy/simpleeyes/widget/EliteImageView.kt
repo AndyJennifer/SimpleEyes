@@ -61,7 +61,7 @@ class EliteImageView : FrameLayout {
      * 设置翻译文字
      */
     fun setTranslateText(text: String) {
-        if (TextUtils.isEmpty(text)) {
+        if (!TextUtils.isEmpty(text)) {
             tvTranslate.visibility = View.VISIBLE
             tvTranslate.text = text
         } else {

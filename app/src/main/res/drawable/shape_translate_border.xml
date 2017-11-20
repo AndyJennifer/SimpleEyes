@@ -6,8 +6,8 @@
         android:color="@color/black_alpha_4D"/>
 
     <stroke
-        android:width="2dp"
-        android:color="@color/white"/>
+        android:width="1dp"
+        android:color="@color/gray_828885"/>
 
     <corners
         android:radius="4dp"/>
