@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.utils.TimeUtils
 
 
 /**
@@ -19,12 +20,19 @@ class CollectionCardCoverAdapter(data: MutableList<AndyInfo.ItemListBeanX.DataBe
     override fun convert(helper: BaseViewHolder, item: AndyInfo.ItemListBeanX.DataBeanXXX.ItemListData) {
         val imageCover = helper.getView<SimpleDraweeView>(R.id.iv_image)
         val title = helper.getView<TextView>(R.id.tv_title)
+        val desc = helper.getView<TextView>(R.id.tv_desc)
         helper.setGone(R.id.iv_daily, item.data.library == "DAILY")
         if (item.type != "actionCard") {//集合
             imageCover.setImageURI(item.data.cover.feed)
-            //todo 拼接信息
             title.text = item.data.title
+            val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+            val elite = if (item.data.library == "DAILY")
+                "   /   ${mContext.getString(R.string.elite)}" else ""
+            desc.text = description + elite
         } else {//显示全部
+            helper.setGone(R.id.tv_show_all, true)
+            helper.setGone(R.id.ll_container, false)
+            helper.addOnClickListener(R.id.tv_show_all)
         }
     }
 

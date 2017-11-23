@@ -89,7 +89,7 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
     }
 
     /**
-     * 设置banner3信息
+     * 设置banner3（广告信息）信息
      */
     private fun setBanner3Info(helper: BaseViewHolder, data: AndyInfo.ItemListBeanX.DataBeanXXX) {
         val cardNormalBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
@@ -116,7 +116,6 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         cardNormalBottom.setDescription(info.header.description)
         cardNormalBottom.setIconUrl(info.header.icon)
         cardNormalBottom.setIconType(info.header.iconType == "round")//设置图标形状
-        //todo 设置翻译
         val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
         eliteView.setImageUrl(info.content.data.cover.feed)
         eliteView.setDailyVisible(info.content.data.library == "DAILY")

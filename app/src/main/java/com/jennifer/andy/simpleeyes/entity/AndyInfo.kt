@@ -155,12 +155,14 @@ data class AndyInfo(var count: Int, var total: Int,
                                 var id: Int,
                                 var title: String,
                                 var description: String,
+                                var category: String,
                                 var image: String,
                                 var actionUrl: String,
                                 var text: String,
                                 var adTrack: Any,
                                 var shade: Boolean,
                                 var library: String,
+                                var duration: Int,
                                 var cover: ContentBean.DataBeanXX.CoverBeanX
                 )
             }
