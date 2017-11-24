@@ -15,12 +15,12 @@ interface PullToZoom<out T : View> {
     /**
      * 获取变焦的view
      */
-    fun getZoomView(): View
+    fun getZoomView(): View?
 
     /**
      * 获取头布局
      */
-    fun getHeaderView(): View
+    fun getHeaderView(): View?
 
     /**
      * 获取下拉变焦根布局
@@ -47,5 +47,8 @@ interface PullToZoom<out T : View> {
      */
     fun isHideHeader(): Boolean
 
+    /**
+     * 处理配置的zoomView与headerView
+     */
     fun handleStyledAttributes(typedArray: TypedArray)
 }

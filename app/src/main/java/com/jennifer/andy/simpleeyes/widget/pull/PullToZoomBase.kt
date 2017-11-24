@@ -20,9 +20,9 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     private var mScreenHeight = 0
     private var mScreenWidth = 0
 
-    private lateinit var mRootView: T
-    private lateinit var mZoomView: View
-    private lateinit var mHeadView: View
+    protected lateinit var mRootView: T
+    protected var mZoomView: View? = null
+    protected var mHeadView: View? = null
 
     private var isParallax = true
     private var isZoomEnable = true
@@ -181,12 +181,12 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     /**
      * 设置头view
      */
-    abstract fun setHeaderView(headerView: View)
+    abstract fun setHeaderView(headerView: View?)
 
     /**
      * 设置变焦view
      */
-    abstract fun setZoomView(zoomView: View)
+    abstract fun setZoomView(zoomView: View?)
 
     /**
      * 处理下拉事件
@@ -235,6 +235,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     interface onPullZoomListener {
         /**
          * 正在变焦
+         * @param scrollValue 滑动距离
          */
         fun onPullZooming(scrollValue: Int)
 
