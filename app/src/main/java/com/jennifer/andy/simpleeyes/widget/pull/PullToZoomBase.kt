@@ -184,6 +184,11 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     abstract fun setHeaderView(headerView: View?)
 
     /**
+     * 设置头布局的高度
+     */
+    abstract fun setHeaderViewLayoutParams(layoutParams: ViewGroup.LayoutParams)
+
+    /**
      * 设置变焦view
      */
     abstract fun setZoomView(zoomView: View?)

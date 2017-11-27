@@ -1,9 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.category
 
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
@@ -11,7 +10,9 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.category.adapter.CategoryAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
+import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
 
 
 /**
@@ -22,7 +23,7 @@ import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 
 class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), CategoryView {
 
-    private val mRecycler: RecyclerView by bindView(R.id.rv_recycler)
+    private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_recycler)
     private var mCateGoryAdapter: CategoryAdapter? = null
 
     companion object {
@@ -39,28 +40,27 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
     override fun loadDataSuccess(andyInfo: AndyInfo) {
         if (mCateGoryAdapter == null) {
+
             mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
             val linearLayoutManager = LinearLayoutManager(_mActivity)
-            mCateGoryAdapter?.onItemClickListener =
-                    BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
+            mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
                         //跳转到详情界面
                         val item = adapter.getItem(position) as AndyInfo.ItemListBeanX
                         startBannerDetailActivity()
                     }
-            mCateGoryAdapter?.bindToRecyclerView(mRecycler)
-//            mCateGoryAdapter?.addHeaderView()
-            mRecycler.adapter = mCateGoryAdapter
-            mRecycler.setItemViewCacheSize(10)
-            mRecycler.layoutManager = linearLayoutManager
-            mRecycler.itemAnimator = DefaultItemAnimator()
+
+            val recyclerView = mPullToZoomRecycler.getPullRootView()
+            recyclerView.setItemViewCacheSize(10)
+            mCateGoryAdapter?.bindToRecyclerView(recyclerView)
+            mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, linearLayoutManager)
+
+            //设置头布局的高度
+            val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
+            mPullToZoomRecycler.setHeaderViewLayoutParams(ViewGroup.LayoutParams(lp))
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }
     }
-
-    override fun getContentViewLayoutId() = R.layout.fragment_category
-
-    override fun initPresenter() = CategoryPresenter(context)
 
     /**
      * 跳转到视频banner详情界面
@@ -75,5 +75,10 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
     private fun startFollowCardDetailActivity() {
 
     }
+
+    override fun getContentViewLayoutId() = R.layout.fragment_category
+
+    override fun initPresenter() = CategoryPresenter(context)
+
 
 }

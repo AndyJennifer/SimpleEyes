@@ -11,7 +11,7 @@ import android.widget.TextView
  * Description:自定义字体textView
  */
 
-class CustomFontTextView : TextView {
+open class CustomFontTextView : TextView {
 
     constructor(context: Context) : this(context, null)
 
