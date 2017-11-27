@@ -8,9 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 
 
@@ -25,39 +25,13 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
 
     private lateinit var mHeaderContainer: FrameLayout
     private var mHeaderHeight: Int = 0
-    private var mValueAnimator: ValueAnimator
+    private var mValueAnimator: ValueAnimator? = null
 
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        //添加视差效果
-        mRootView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (mZoomView != null && !isHideHeader() && isPullToZoomEnabled()) {
-                    val dy = mHeaderHeight - mHeaderContainer.bottom
-                    if (isParallax()) {
-                        if (dy in 1..(mHeaderHeight - 1)) {
-                            val parallaxDy = 0.65 * dy
-                            mHeaderContainer.scrollTo(0, parallaxDy.toInt())
-                        } else if (mHeaderContainer.scrollY != 0) {
-                            mHeaderContainer.scrollTo(0, 0)
-                        }
-                    }
-                }
-            }
-        })
-        mValueAnimator = ValueAnimator.ofInt(mHeaderContainer.bottom, mHeaderHeight)
-        mValueAnimator.duration = 500
-        mValueAnimator.interpolator = DecelerateInterpolator()
-        mValueAnimator.addUpdateListener {
-            val lp = mHeaderContainer.layoutParams
-            lp.height = it.animatedValue as Int
-            mHeaderContainer.layoutParams = lp
-        }
-    }
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     /**
      * 添加头布局在recyclerView中，头布局包括 zoomView与headView
@@ -106,11 +80,13 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
      * 改变头部布局高度
      */
     override fun pullHeadToZoom(scrollValue: Int) {
-        if (mValueAnimator.isStarted) {
-            mValueAnimator.cancel()
+        mValueAnimator?.let {
+            if (mValueAnimator!!.isStarted) {
+                mValueAnimator?.cancel()
+            }
         }
         val lp = mHeaderContainer.layoutParams
-        lp.height = Math.abs(scrollValue) + lp.height
+        lp.height = Math.abs(scrollValue) + mHeaderHeight
         mHeaderContainer.layoutParams = lp
     }
 
@@ -118,7 +94,15 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
      * 滑动到顶部
      */
     override fun smoothScrollToTop() {
-        mValueAnimator.start()
+        mValueAnimator = ValueAnimator.ofInt(mHeaderContainer.bottom, mHeaderHeight)
+        mValueAnimator?.duration = 200
+        mValueAnimator?.interpolator = DecelerateInterpolator()
+        mValueAnimator?.addUpdateListener {
+            val lp = mHeaderContainer.layoutParams
+            lp.height = it.animatedValue as Int
+            mHeaderContainer.layoutParams = lp
+        }
+        mValueAnimator?.start()
 
     }
 
@@ -133,13 +117,13 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
     }
 
 
-
     /**
      * 设置头布局的高度，与宽度，该方法必须要调用
      */
-    override fun setHeaderViewLayoutParams(lp: ViewGroup.LayoutParams) {
+    override fun setHeaderViewLayoutParams(lp: LinearLayout.LayoutParams) {
         mHeaderContainer?.let {
             mHeaderContainer.layoutParams = lp
+            mHeaderHeight = lp.height
         }
     }
 

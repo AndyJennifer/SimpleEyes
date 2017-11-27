@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.category
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
@@ -56,7 +57,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
             //设置头布局的高度
             val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
-            mPullToZoomRecycler.setHeaderViewLayoutParams(ViewGroup.LayoutParams(lp))
+            mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }

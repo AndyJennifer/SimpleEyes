@@ -108,6 +108,8 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
                         mInterceptPressedX = event.x
                         mInterceptPressedY = event.y
                         mIsBeingDragged = false
+                        mTouchPressedY = event.y
+                        mTouchPressedX = event.x
                     }
                 }
             }
@@ -186,7 +188,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     /**
      * 设置头布局的高度
      */
-    abstract fun setHeaderViewLayoutParams(layoutParams: ViewGroup.LayoutParams)
+    abstract fun setHeaderViewLayoutParams(layoutParams: LinearLayout.LayoutParams)
 
     /**
      * 设置变焦view
@@ -196,7 +198,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     /**
      * 处理下拉事件
      */
-    fun dispatchPullEvent() {
+    private fun dispatchPullEvent() {
         val scrollValue = Math.round(Math.min(mTouchPressedY - mInterceptPressedY, 0f) / DAMPING)
         pullHeadToZoom(scrollValue)
         mPullZoomListener?.onPullZooming(scrollValue)
