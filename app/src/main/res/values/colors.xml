@@ -18,7 +18,10 @@
     <color name="transparent">#00000000</color>
 
     <color name="gray">#BDBDBD</color>
+    <color name="gray_666666">#666666</color>
+    <color name="gray_BBBBBB">#BBBBBB</color>
     <color name="gray_828885">#828885</color>
+    <color name="gray_66A2A2A2">#66A2A2A2</color>
     <color name="gray_EDEEEC">#EDEEEC</color>
 
     <color name="red">#FF0000</color>

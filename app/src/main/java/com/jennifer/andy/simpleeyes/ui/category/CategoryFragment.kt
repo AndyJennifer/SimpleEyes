@@ -13,6 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.HomePageHeaderView
 import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
 
 
@@ -46,10 +47,14 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
             val linearLayoutManager = LinearLayoutManager(_mActivity)
             mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
                 //跳转到详情界面
-                val item = adapter.getItem(position) as AndyInfo.ItemListBeanX
+                val item = adapter.getItem(position) as AndyInfo
                 startBannerDetailActivity()
             }
+            //添加头布局
+            val homePageHeaderView = HomePageHeaderView(context)
+            homePageHeaderView.setHeaderInfo(andyInfo.topIssue)
 
+            mPullToZoomRecycler.setHeaderView(homePageHeaderView)
             val recyclerView = mPullToZoomRecycler.getPullRootView()
             recyclerView.setItemViewCacheSize(10)
             mCateGoryAdapter?.bindToRecyclerView(recyclerView)
