@@ -172,7 +172,9 @@ class CategoryAdapter(data: MutableList<AndyInfo.ItemListBeanX>) : BaseQuickAdap
         squareRecycler.adapter = squareCollectionAdapter
         squareCollectionAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
             //todo 跳转到分类详情
+
         }
+
         showAllContainer.setOnClickListener {
             //todo 查看更多
         }

@@ -45,10 +45,10 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
             mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
             val linearLayoutManager = LinearLayoutManager(_mActivity)
             mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
-                        //跳转到详情界面
-                        val item = adapter.getItem(position) as AndyInfo.ItemListBeanX
-                        startBannerDetailActivity()
-                    }
+                //跳转到详情界面
+                val item = adapter.getItem(position) as AndyInfo.ItemListBeanX
+                startBannerDetailActivity()
+            }
 
             val recyclerView = mPullToZoomRecycler.getPullRootView()
             recyclerView.setItemViewCacheSize(10)
