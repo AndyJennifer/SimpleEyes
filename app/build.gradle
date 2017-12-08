@@ -45,7 +45,7 @@ dependencies {
     //fragmentation
     compile 'me.yokeyword:fragmentation:0.10.7'
     //recyclerView
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
     //fresco
     compile 'com.facebook.fresco:fresco:1.5.0'
     //ijk

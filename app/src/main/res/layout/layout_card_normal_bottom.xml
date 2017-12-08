@@ -36,6 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="二十世纪福克斯电影公司  /  #预告  /  02' 48"
             android:textColor="@color/SecondaryText"
             android:textSize="12sp"

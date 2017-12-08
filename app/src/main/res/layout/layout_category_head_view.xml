@@ -15,9 +15,9 @@
         app:image_scale_type="center_crop"
         app:indicator_drawable_selected="@drawable/shape_indicator_selected"
         app:indicator_drawable_unselected="@drawable/shape_indicator_unselected"
-        app:indicator_height="5dp"
+        app:indicator_height="6dp"
         app:indicator_margin="3dp"
-        app:indicator_width="5dp"/>
+        app:indicator_width="6dp"/>
 
 
     <LinearLayout
@@ -39,7 +39,9 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="center_horizontal"
+            android:maxLines="1"
             android:textColor="@color/white"
             app:font_name="bold"/>
 
@@ -47,7 +49,9 @@
             android:id="@+id/tv_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="center_horizontal"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:font_name="bold"/>
@@ -56,7 +60,7 @@
     <RelativeLayout
         android:id="@+id/rl_more_container"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_border_bottom_top">
 

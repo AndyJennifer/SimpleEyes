@@ -14,7 +14,7 @@ import android.widget.TextView
  * Description:
  */
 
-class PrintSpanGroup constructor(private val printText: CharSequence, private val textView: TextView) {
+class PrintSpanGroup constructor(printText: CharSequence) {
 
     private var mSpans: MutableList<PrintSpan> = mutableListOf()
     private var spannableString: SpannableString = SpannableString(printText)
@@ -52,7 +52,7 @@ class PrintSpanGroup constructor(private val printText: CharSequence, private va
      */
     private fun setAlpha(alpha: Float) {
         val size = mSpans.size
-        val total = size * 1f * alpha//计算范围，哪个范围显示，哪个范围不显示
+        var total = size * 1f * alpha//计算范围，哪个范围显示，哪个范围不显示
         for (i in 0 until size) {
             val printSpan = mSpans[i]
             if (i <= total) {
@@ -66,7 +66,7 @@ class PrintSpanGroup constructor(private val printText: CharSequence, private va
     /**
      * 执行打印请求
      */
-    fun startPrint() {
+    fun startPrint(textView: TextView) {
         val objectAnimator = ObjectAnimator.ofFloat(this, TYPE_WRITER_GROUP_ALPHA_PROPERTY, 0f, 1f)
         objectAnimator.duration = 500
         objectAnimator.start()

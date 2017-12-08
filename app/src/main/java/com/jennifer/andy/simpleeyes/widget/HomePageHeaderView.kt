@@ -10,6 +10,7 @@ import com.jennifer.andy.simpleeyes.entity.ItemListBean
 import com.jennifer.andy.simpleeyes.entity.TopIssueBean
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+import com.jennifer.andy.simpleeyes.widget.font.PrintSpanGroup
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 
@@ -27,6 +28,8 @@ class HomePageHeaderView : FrameLayout {
     private lateinit var mTitle: CustomFontTextView
     private lateinit var mText: CustomFontTextView
     private lateinit var mTopIssueBean: TopIssueBean
+    private lateinit var mSloganSpanGroup: PrintSpanGroup
+    private lateinit var mTitleSpanGroup: PrintSpanGroup
 
     constructor(context: Context) : this(context, null)
 
@@ -45,7 +48,6 @@ class HomePageHeaderView : FrameLayout {
         mTitle = view.findViewById(R.id.tv_title)
         mText = view.findViewById(R.id.tv_text)
 
-        //设置基本信息
         //设置banner滑动监听
         mBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -56,8 +58,10 @@ class HomePageHeaderView : FrameLayout {
 
             override fun onPageSelected(position: Int) {
                 //播放动画，并设置打印文字
-                mTitle.text = mTopIssueBean.data.itemList[position].data.title
-                mText.text = mTopIssueBean.data.itemList[position].data.slogan
+                mSloganSpanGroup = PrintSpanGroup(mTopIssueBean.data.itemList[position].data.slogan)
+                mTitleSpanGroup = PrintSpanGroup(mTopIssueBean.data.itemList[position].data.title)
+                mSloganSpanGroup.startPrint(mText)
+                mTitleSpanGroup.startPrint(mTitle)
             }
         })
         //下拉刷新的时候停止滑动，并显示加载动画
@@ -74,7 +78,7 @@ class HomePageHeaderView : FrameLayout {
         mBanner.setIndicatorGravity(BannerConfig.CENTER)
         mBanner.isAutoPlay(true)
         mBanner.start()
-        mBanner.setDelayTime(5000)
+        mBanner.setDelayTime(6000)
         mBanner.setOnBannerListener {
             //todo 点击跳转
         }
@@ -84,5 +88,6 @@ class HomePageHeaderView : FrameLayout {
      * 获取顶部图片地址集合
      */
     private fun getTopIssueCardUrl(itemList: MutableList<ItemListBean>) = itemList.map { it.data.cover.feed }
+
 
 }
