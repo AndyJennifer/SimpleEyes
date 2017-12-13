@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <!--这里加前景是为了处理，有些图片背景是白色的情况-->
     <com.youth.banner.Banner
         android:id="@+id/banner"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_category_header"/>
 
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
             android:textColor="@color/white"
             app:font_name="bold"/>
 
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
             android:id="@+id/tv_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,8 +55,24 @@
             android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:font_name="bold"/>
+            app:font_name="normal"/>
     </LinearLayout>
+
+    <com.jennifer.andy.simpleeyes.widget.HeaderRefreshView
+        android:id="@+id/head_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_more_container"/>
+
+
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_action_search_white"/>
+
 
     <RelativeLayout
         android:id="@+id/rl_more_container"

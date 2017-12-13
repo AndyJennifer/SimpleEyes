@@ -14,6 +14,7 @@ import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.HomePageHeaderView
+import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomBase
 import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
 
 
@@ -26,6 +27,7 @@ import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
 class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), CategoryView {
 
     private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_recycler)
+    private lateinit var mHomePageHeaderView: HomePageHeaderView
     private var mCateGoryAdapter: CategoryAdapter? = null
 
     companion object {
@@ -38,34 +40,55 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
     override fun initView(savedInstanceState: Bundle?) {
         mPresenter.loadCategoryData()
+        mPullToZoomRecycler.setOnPullZoomListener(object : PullToZoomBase.onPullZoomListener {
+            override fun onPullZooming(scrollValue: Int) {
+                mHomePageHeaderView.showRefreshCover(scrollValue)
+            }
+
+            override fun onPullZoomEnd() {
+                mHomePageHeaderView.hideRefreshCover()
+            }
+        })
     }
 
     override fun loadDataSuccess(andyInfo: AndyInfo) {
         if (mCateGoryAdapter == null) {
 
             mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
-            val linearLayoutManager = LinearLayoutManager(_mActivity)
             mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
                 //跳转到详情界面
                 val item = adapter.getItem(position) as AndyInfo
                 startBannerDetailActivity()
             }
-            //添加头布局
-            val homePageHeaderView = HomePageHeaderView(context)
-            homePageHeaderView.setHeaderInfo(andyInfo.topIssue)
 
-            mPullToZoomRecycler.setHeaderView(homePageHeaderView)
-            val recyclerView = mPullToZoomRecycler.getPullRootView()
-            recyclerView.setItemViewCacheSize(10)
-            mCateGoryAdapter?.bindToRecyclerView(recyclerView)
-            mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, linearLayoutManager)
+            addCategoryHeader(andyInfo)
+            setVideoInfo()
 
-            //设置头布局的高度
-            val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
-            mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }
+    }
+
+    /**
+     * 添加头布局
+     */
+    private fun addCategoryHeader(andyInfo: AndyInfo) {
+        mHomePageHeaderView = HomePageHeaderView(context)
+        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
+        mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
+        val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
+        mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
+    }
+
+    /**
+     * 设置视频信息
+     */
+    private fun setVideoInfo() {
+        val linearLayoutManager = LinearLayoutManager(_mActivity)
+        val recyclerView = mPullToZoomRecycler.getPullRootView()
+        recyclerView.setItemViewCacheSize(10)
+        mCateGoryAdapter?.bindToRecyclerView(recyclerView)
+        mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, linearLayoutManager)
     }
 
     /**

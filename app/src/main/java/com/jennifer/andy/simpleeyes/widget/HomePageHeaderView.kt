@@ -9,8 +9,7 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.ItemListBean
 import com.jennifer.andy.simpleeyes.entity.TopIssueBean
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
-import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-import com.jennifer.andy.simpleeyes.widget.font.PrintSpanGroup
+import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 
@@ -25,11 +24,10 @@ class HomePageHeaderView : FrameLayout {
 
 
     private lateinit var mBanner: Banner
-    private lateinit var mTitle: CustomFontTextView
-    private lateinit var mText: CustomFontTextView
+    private lateinit var mTitle: CustomFontTypeWriterTextView
+    private lateinit var mText: CustomFontTypeWriterTextView
+    private lateinit var mHeadRefreshView: HeaderRefreshView
     private lateinit var mTopIssueBean: TopIssueBean
-    private lateinit var mSloganSpanGroup: PrintSpanGroup
-    private lateinit var mTitleSpanGroup: PrintSpanGroup
 
     constructor(context: Context) : this(context, null)
 
@@ -47,6 +45,7 @@ class HomePageHeaderView : FrameLayout {
         mBanner = view.findViewById(R.id.banner)
         mTitle = view.findViewById(R.id.tv_title)
         mText = view.findViewById(R.id.tv_text)
+        mHeadRefreshView = view.findViewById(R.id.head_refresh)
 
         //设置banner滑动监听
         mBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -58,10 +57,8 @@ class HomePageHeaderView : FrameLayout {
 
             override fun onPageSelected(position: Int) {
                 //播放动画，并设置打印文字
-                mSloganSpanGroup = PrintSpanGroup(mTopIssueBean.data.itemList[position].data.slogan)
-                mTitleSpanGroup = PrintSpanGroup(mTopIssueBean.data.itemList[position].data.title)
-                mSloganSpanGroup.startPrint(mText)
-                mTitleSpanGroup.startPrint(mTitle)
+                mTitle.printText(mTopIssueBean.data.itemList[position].data.title)
+                mText.printText(mTopIssueBean.data.itemList[position].data.slogan)
             }
         })
         //下拉刷新的时候停止滑动，并显示加载动画
@@ -82,6 +79,20 @@ class HomePageHeaderView : FrameLayout {
         mBanner.setOnBannerListener {
             //todo 点击跳转
         }
+    }
+
+    /**
+     * 显示刷新遮罩
+     */
+    fun showRefreshCover(scrollValue: Int) {
+        mHeadRefreshView.showRefreshCover(scrollValue)
+    }
+
+    /**
+     * 关闭刷新遮罩
+     */
+    fun hideRefreshCover() {
+        mHeadRefreshView.hideRefreshCover()
     }
 
     /**
