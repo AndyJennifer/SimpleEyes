@@ -61,7 +61,6 @@ class HomePageHeaderView : FrameLayout {
                 mText.printText(mTopIssueBean.data.itemList[position].data.slogan)
             }
         })
-        //下拉刷新的时候停止滑动，并显示加载动画
     }
 
     /**

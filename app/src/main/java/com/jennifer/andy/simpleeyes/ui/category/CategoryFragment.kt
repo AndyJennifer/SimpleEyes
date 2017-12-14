@@ -57,38 +57,27 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
             mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
             mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
                 //跳转到详情界面
-                val item = adapter.getItem(position) as AndyInfo
-                startBannerDetailActivity()
+//                val item = adapter.getItem(position) as AndyInfo
+//                startBannerDetailActivity()
             }
 
-            addCategoryHeader(andyInfo)
-            setVideoInfo()
+            //添加头布局
+            mHomePageHeaderView= HomePageHeaderView(context)
+            mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
+
+            mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
+            val recyclerView = mPullToZoomRecycler.getPullRootView()
+            recyclerView.setItemViewCacheSize(10)
+            mCateGoryAdapter?.bindToRecyclerView(recyclerView)
+            mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(_mActivity))
+
+            //设置头布局的高度
+            val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
+            mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
 
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }
-    }
-
-    /**
-     * 添加头布局
-     */
-    private fun addCategoryHeader(andyInfo: AndyInfo) {
-        mHomePageHeaderView = HomePageHeaderView(context)
-        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
-        mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
-        val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
-        mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
-    }
-
-    /**
-     * 设置视频信息
-     */
-    private fun setVideoInfo() {
-        val linearLayoutManager = LinearLayoutManager(_mActivity)
-        val recyclerView = mPullToZoomRecycler.getPullRootView()
-        recyclerView.setItemViewCacheSize(10)
-        mCateGoryAdapter?.bindToRecyclerView(recyclerView)
-        mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, linearLayoutManager)
     }
 
     /**

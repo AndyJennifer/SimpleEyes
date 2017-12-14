@@ -23,11 +23,12 @@ class HeaderRefreshView : FrameLayout {
 
     private lateinit var mRefreshContainer: RelativeLayout
     private lateinit var mIvRefresh: ImageView
+    private var mRotateAnimation: RotateAnimation? = null
 
     /**
      * 执行刷新阀值 40个像素
      */
-    private val VALUE_TO_REFRESH = 40
+    private val VALUE_TO_REFRESH = 60
 
     constructor(context: Context) : this(context, null)
 
@@ -41,8 +42,8 @@ class HeaderRefreshView : FrameLayout {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_header_refresh, this, true)
         mRefreshContainer = view.findViewById(R.id.rl_refresh_container)
         mIvRefresh = view.findViewById(R.id.iv_refresh)
-        mRefreshContainer.alpha = 0f
-        mIvRefresh.alpha = 0f
+        mRefreshContainer.background.alpha = 0
+        mIvRefresh.imageAlpha = 0
     }
 
     /**
@@ -50,10 +51,12 @@ class HeaderRefreshView : FrameLayout {
      */
     fun showRefreshCover(scrollValue: Int) {
         if (scrollValue in 1..VALUE_TO_REFRESH) {
-            val percent = (scrollValue / VALUE_TO_REFRESH).toFloat()
-            mRefreshContainer.alpha = percent
+            val percent = (scrollValue.toFloat() / VALUE_TO_REFRESH.toFloat())
+            mRefreshContainer.background.alpha = (percent * 255).toInt()
+            mIvRefresh.imageAlpha = (percent * 255).toInt()
             mIvRefresh.scaleX = percent
             mIvRefresh.scaleY = percent
+            println("---->$percent")
         } else {
             startRefreshAnimation()
         }
@@ -64,29 +67,48 @@ class HeaderRefreshView : FrameLayout {
      * 执行刷新动画
      */
     private fun startRefreshAnimation() {
-        val rotateAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotateAnimation.interpolator = LinearInterpolator()
-        rotateAnimation.repeatCount = -1
-        rotateAnimation.duration = 1000
-        mIvRefresh.startAnimation(rotateAnimation)
+        if (mRotateAnimation == null) {
+            mRotateAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+            mRotateAnimation?.interpolator = LinearInterpolator()
+            mRotateAnimation?.repeatCount = -1
+            mRotateAnimation?.duration = 1000
+            mIvRefresh.startAnimation(mRotateAnimation)
+        }
     }
 
     /**
      * 关闭刷新遮罩
      */
     fun hideRefreshCover() {
-        stopRefreshAnimation()
-        //执行消失动画
+        mIvRefresh.clearAnimation()
         val alphaAnimation = AlphaAnimation(1f, 0f)
         alphaAnimation.interpolator = LinearInterpolator()
         alphaAnimation.duration = 500
         mIvRefresh.startAnimation(alphaAnimation)
         mRefreshContainer.startAnimation(alphaAnimation)
 
+        alphaAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                resetAnimationAndAlpha()
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+            }
+        })
+
     }
 
-    private fun stopRefreshAnimation() {
-        mIvRefresh.clearAnimation()
+    /**
+     * 重置动画与透明度
+     */
+    private fun resetAnimationAndAlpha() {
+        mRotateAnimation = null
+        mRefreshContainer.background.alpha = 0
+        mIvRefresh.imageAlpha = 0
     }
+
 
 }

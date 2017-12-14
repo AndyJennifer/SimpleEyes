@@ -86,6 +86,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center_vertical"
+            android:letterSpacing="0.5"
             android:text="@string/more_andy_elite"
             app:font_name="normal"/>
 

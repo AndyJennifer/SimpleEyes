@@ -36,7 +36,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     private var mTouchPressedX = 0f
     private var mTouchPressedY = 0f
 
-    private val DAMPING = 2f//阻尼系数
+    private val DAMPING = 4f//阻尼系数
 
     private var mPullZoomListener: onPullZoomListener? = null
 
@@ -201,7 +201,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     private fun dispatchPullEvent() {
         val scrollValue = Math.round(Math.min(mTouchPressedY - mInterceptPressedY, 0f) / DAMPING)
         pullHeadToZoom(scrollValue)
-        mPullZoomListener?.onPullZooming(scrollValue)
+        mPullZoomListener?.onPullZooming(Math.abs(scrollValue))
     }
 
 
