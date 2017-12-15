@@ -67,8 +67,9 @@ class RetrofitConfig private constructor() {
                     .setEncodedQueryParameter("system_version_code", "23")
 
             val request = chain.request().newBuilder()
-                    .addHeader("Cache-Control", ": public, max-age=120,max-stale=120")//配置全局缓存时间 120秒
                     .addHeader("Content-Type", "application/json")
+                    .addHeader("Cookie", "ky_auth=;sdk=23")
+                    .addHeader("model", "Android")
                     .url(urlBuilder.build())
                     .build()
 

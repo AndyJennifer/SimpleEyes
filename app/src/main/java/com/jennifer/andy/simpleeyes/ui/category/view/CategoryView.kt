@@ -16,4 +16,10 @@ interface CategoryView : BaseView {
      * 加载信息成功
      */
     fun loadDataSuccess(andyInfo: AndyInfo)
+
+    /**
+     * 加载信息成功
+     */
+    fun refreshDataSuccess(andyInfo: AndyInfo)
+
 }

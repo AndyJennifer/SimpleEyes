@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.DecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -96,7 +96,7 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
     override fun smoothScrollToTop() {
         mValueAnimator = ValueAnimator.ofInt(mHeaderContainer.bottom, mHeaderHeight)
         mValueAnimator?.duration = 200
-        mValueAnimator?.interpolator = DecelerateInterpolator()
+        mValueAnimator?.interpolator = AccelerateInterpolator()
         mValueAnimator?.addUpdateListener {
             val lp = mHeaderContainer.layoutParams
             lp.height = it.animatedValue as Int

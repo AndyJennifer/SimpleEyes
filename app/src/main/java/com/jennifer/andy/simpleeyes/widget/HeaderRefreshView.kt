@@ -1,9 +1,9 @@
 package com.jennifer.andy.simpleeyes.widget
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.utils.DensityUtils
 
 
 /**
@@ -26,9 +27,9 @@ class HeaderRefreshView : FrameLayout {
     private var mRotateAnimation: RotateAnimation? = null
 
     /**
-     * 执行刷新阀值 40个像素
+     * 执行刷新阀值 50dp
      */
-    private val VALUE_TO_REFRESH = 60
+    private val REFRESH_THRESHOLD_VALUE = DensityUtils.dip2px(context, 50f)
 
     constructor(context: Context) : this(context, null)
 
@@ -50,14 +51,15 @@ class HeaderRefreshView : FrameLayout {
      * 显示刷新遮罩
      */
     fun showRefreshCover(scrollValue: Int) {
-        if (scrollValue in 1..VALUE_TO_REFRESH) {
-            val percent = (scrollValue.toFloat() / VALUE_TO_REFRESH.toFloat())
+        if (scrollValue in 1..REFRESH_THRESHOLD_VALUE) {
+            val percent = (scrollValue.toFloat() / REFRESH_THRESHOLD_VALUE.toFloat())
             mRefreshContainer.background.alpha = (percent * 255).toInt()
             mIvRefresh.imageAlpha = (percent * 255).toInt()
             mIvRefresh.scaleX = percent
             mIvRefresh.scaleY = percent
-            println("---->$percent")
         } else {
+            mRefreshContainer.background.alpha = 255
+            mIvRefresh.imageAlpha = 255
             startRefreshAnimation()
         }
 
@@ -81,34 +83,21 @@ class HeaderRefreshView : FrameLayout {
      */
     fun hideRefreshCover() {
         mIvRefresh.clearAnimation()
-        val alphaAnimation = AlphaAnimation(1f, 0f)
-        alphaAnimation.interpolator = LinearInterpolator()
-        alphaAnimation.duration = 500
-        mIvRefresh.startAnimation(alphaAnimation)
-        mRefreshContainer.startAnimation(alphaAnimation)
-
-        alphaAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                resetAnimationAndAlpha()
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-
+        mRotateAnimation = null
+        val valueAnimator = ValueAnimator.ofFloat(1f, 0f)
+        valueAnimator.duration = 500
+        valueAnimator.start()
+        valueAnimator.addUpdateListener {
+            val animatedValue = (it.animatedValue) as Float
+            mRefreshContainer.background.alpha = (animatedValue * 255).toInt()
+            mIvRefresh.imageAlpha = animatedValue.toInt()
+        }
     }
 
     /**
-     * 重置动画与透明度
+     * 获取刷新阀值
      */
-    private fun resetAnimationAndAlpha() {
-        mRotateAnimation = null
-        mRefreshContainer.background.alpha = 0
-        mIvRefresh.imageAlpha = 0
-    }
+    fun getRefreshThresholdValue() = REFRESH_THRESHOLD_VALUE
 
 
 }

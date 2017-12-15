@@ -39,16 +39,20 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        mPresenter.loadCategoryData()
         mPullToZoomRecycler.setOnPullZoomListener(object : PullToZoomBase.onPullZoomListener {
             override fun onPullZooming(scrollValue: Int) {
                 mHomePageHeaderView.showRefreshCover(scrollValue)
             }
 
             override fun onPullZoomEnd() {
-                mHomePageHeaderView.hideRefreshCover()
+                if (mHomePageHeaderView.judgeCanRefresh()) {//只有达到刷新的阀值，上升才刷新，其他情况不刷新
+                    mPresenter.refreshCategoryData()
+                } else {
+                    mHomePageHeaderView.hideRefreshCover()
+                }
             }
         })
+        mPresenter.loadCategoryData()
     }
 
     override fun loadDataSuccess(andyInfo: AndyInfo) {
@@ -62,7 +66,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
             }
 
             //添加头布局
-            mHomePageHeaderView= HomePageHeaderView(context)
+            mHomePageHeaderView = HomePageHeaderView(context)
             mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
 
             mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
@@ -78,6 +82,11 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }
+    }
+
+    override fun refreshDataSuccess(andyInfo: AndyInfo) {
+        mCateGoryAdapter?.setNewData(andyInfo.itemList)
+        mHomePageHeaderView.hideRefreshCover()
     }
 
     /**

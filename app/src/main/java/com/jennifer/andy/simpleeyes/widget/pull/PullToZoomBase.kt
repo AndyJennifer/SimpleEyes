@@ -36,7 +36,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     private var mTouchPressedX = 0f
     private var mTouchPressedY = 0f
 
-    private val DAMPING = 4f//阻尼系数
+    private val DAMPING = 3f//阻尼系数
 
     private var mPullZoomListener: onPullZoomListener? = null
 

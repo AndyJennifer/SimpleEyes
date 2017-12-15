@@ -31,4 +31,18 @@ class CategoryPresenter(mContext: Context) : BasePresenter<CategoryView>(mContex
             })
         }))
     }
+
+    /**
+     * 刷新首页信息延迟1秒执行
+     */
+    fun refreshCategoryData() {
+        mRxManager.add(categoryModel.refreshCategoryInfo().subscribe({
+            mView?.showContent()
+            mView?.refreshDataSuccess(it)
+        }, {
+            mView?.showNetError(View.OnClickListener {
+                loadCategoryData()
+            })
+        }))
+    }
 }

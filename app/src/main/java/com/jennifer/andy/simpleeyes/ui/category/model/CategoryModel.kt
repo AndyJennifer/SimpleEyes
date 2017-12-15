@@ -5,6 +5,7 @@ import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.rx.RxHelper
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 import io.reactivex.Observable
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -19,5 +20,10 @@ class CategoryModel : BaseModel {
      * 加载首页信息
      */
     fun loadCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().compose(RxHelper.handleResult())
+
+    /**
+     * 刷新主页信息，延迟1秒执行
+     */
+    fun refreshCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().delay(1000, TimeUnit.MILLISECONDS).compose(RxHelper.handleResult())
 
 }

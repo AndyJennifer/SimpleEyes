@@ -29,6 +29,9 @@ class HomePageHeaderView : FrameLayout {
     private lateinit var mHeadRefreshView: HeaderRefreshView
     private lateinit var mTopIssueBean: TopIssueBean
 
+    private var mScrollValue = 0
+    private var currentPosition = -1
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -57,8 +60,11 @@ class HomePageHeaderView : FrameLayout {
 
             override fun onPageSelected(position: Int) {
                 //播放动画，并设置打印文字
-                mTitle.printText(mTopIssueBean.data.itemList[position].data.title)
-                mText.printText(mTopIssueBean.data.itemList[position].data.slogan)
+                if (currentPosition != position) {//处理banner的position问题
+                    mTitle.printText(mTopIssueBean.data.itemList[position].data.title)
+                    mText.printText(mTopIssueBean.data.itemList[position].data.slogan)
+                    currentPosition = position
+                }
             }
         })
     }
@@ -84,7 +90,9 @@ class HomePageHeaderView : FrameLayout {
      * 显示刷新遮罩
      */
     fun showRefreshCover(scrollValue: Int) {
+        mScrollValue = scrollValue
         mHeadRefreshView.showRefreshCover(scrollValue)
+        mBanner.stopAutoPlay()
     }
 
     /**
@@ -92,12 +100,18 @@ class HomePageHeaderView : FrameLayout {
      */
     fun hideRefreshCover() {
         mHeadRefreshView.hideRefreshCover()
+        mBanner.startAutoPlay()
     }
 
     /**
      * 获取顶部图片地址集合
      */
     private fun getTopIssueCardUrl(itemList: MutableList<ItemListBean>) = itemList.map { it.data.cover.feed }
+
+    /**
+     * 判断是否达到刷新阀值,
+     */
+    fun judgeCanRefresh() = mScrollValue >= mHeadRefreshView.getRefreshThresholdValue()
 
 
 }
