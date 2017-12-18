@@ -12,4 +12,6 @@
     <string name="advert">广告</string>
     <string name="elite">Andy精选</string>
     <string name="more_andy_elite">更多开眼编辑精选</string>
+    <string name="no_more_string">-The End-</string>
+    <string name="loading_message">正在加载中…</string>
 </resources>

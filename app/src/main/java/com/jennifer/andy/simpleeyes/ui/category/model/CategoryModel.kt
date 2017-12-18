@@ -26,4 +26,8 @@ class CategoryModel : BaseModel {
      */
     fun refreshCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().delay(1000, TimeUnit.MILLISECONDS).compose(RxHelper.handleResult())
 
+    /**
+     * 加载更多主页信息
+     */
+    fun loadMoreCategoryInfo(nextPageUrl: String?): Observable<AndyInfo> = Api.getDefault().getMoreCategoryInfo(nextPageUrl).compose(RxHelper.handleResult())
 }

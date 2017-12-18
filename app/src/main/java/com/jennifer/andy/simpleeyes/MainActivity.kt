@@ -15,7 +15,7 @@ import me.yokeyword.fragmentation.SupportFragment
 /**
  * Author:  andy.xwt
  * Date:    2017/9/19 18:54
- * Description:主界面 
+ * Description:主界面
  */
 
 class MainActivity : BaseAppCompatActivity() {
@@ -67,7 +67,10 @@ class MainActivity : BaseAppCompatActivity() {
             }
 
             override fun onTabReselected(position: Int) {
-                //刷新fragment
+                if (position == FIRST) {
+                    val categoryFragment = mFragments[FIRST] as CategoryFragment
+                    categoryFragment.scrollToTop()
+                }
             }
         })
     }

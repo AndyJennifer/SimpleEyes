@@ -13,6 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.HomePageHeaderView
 import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomBase
 import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
@@ -57,34 +58,38 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
     override fun loadDataSuccess(andyInfo: AndyInfo) {
         if (mCateGoryAdapter == null) {
-
-            mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
-            mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
-                //跳转到详情界面
-//                val item = adapter.getItem(position) as AndyInfo
-//                startBannerDetailActivity()
-            }
-
-            //添加头布局
-            mHomePageHeaderView = HomePageHeaderView(context)
-            mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
-
-            mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
-            val recyclerView = mPullToZoomRecycler.getPullRootView()
-            recyclerView.setItemViewCacheSize(10)
-            mCateGoryAdapter?.bindToRecyclerView(recyclerView)
-            mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(_mActivity))
-
-            //设置头布局的高度
-            val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
-            mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
-
+            setHeaderInfo(andyInfo)
+            setAdapterAndListener(andyInfo)
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }
     }
 
+    private fun setAdapterAndListener(andyInfo: AndyInfo) {
+        val recyclerView = mPullToZoomRecycler.getPullRootView()
+        recyclerView.setItemViewCacheSize(10)
+        mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
+        mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
+            //跳转到详情界面
+            //                val item = adapter.getItem(position) as AndyInfo
+            //                startBannerDetailActivity()
+        }
+        mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
+        mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())
+        mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(_mActivity))
+    }
+
+    private fun setHeaderInfo(andyInfo: AndyInfo) {
+        mHomePageHeaderView = HomePageHeaderView(context)
+        val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
+        mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
+        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
+        mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
+    }
+
+
     override fun refreshDataSuccess(andyInfo: AndyInfo) {
+        mCateGoryAdapter?.removeAllFooterView()
         mCateGoryAdapter?.setNewData(andyInfo.itemList)
         mHomePageHeaderView.hideRefreshCover()
     }
@@ -101,6 +106,20 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
      */
     private fun startFollowCardDetailActivity() {
 
+    }
+
+
+    override fun loadMoreSuccess(andyInfo: AndyInfo) {
+        mCateGoryAdapter?.loadMoreComplete()
+        mCateGoryAdapter?.addData(andyInfo.itemList)
+    }
+
+    override fun showNoMore() {
+        mCateGoryAdapter?.loadMoreEnd()
+    }
+
+    fun scrollToTop() {
+        mPullToZoomRecycler.scrollToTop()
     }
 
     override fun getContentViewLayoutId() = R.layout.fragment_category

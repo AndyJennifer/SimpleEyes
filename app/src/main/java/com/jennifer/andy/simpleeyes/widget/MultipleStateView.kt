@@ -131,7 +131,7 @@ class MultipleStateView : RelativeLayout {
      * 隐藏网络异常view
      */
     private fun hideNetErrorView() {
-        mLoadingView?.let { it.visibility = View.GONE }
+        mNetErrorView?.let { it.visibility = View.GONE }
     }
 
     /**

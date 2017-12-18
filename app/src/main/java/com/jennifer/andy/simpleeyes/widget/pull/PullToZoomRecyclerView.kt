@@ -171,9 +171,13 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
             mHeaderContainer.removeAllViews()
             updateZoomAndHeaderView()
             //获取头布局的高度
-            mHeaderHeight = mHeaderContainer.height
+            mHeaderHeight = mHeaderContainer.layoutParams.height
             adapter.addHeaderView(mHeaderContainer)
         }
+    }
+
+    fun scrollToTop() {
+        mRootView.smoothScrollToPosition(0)
     }
 
 }

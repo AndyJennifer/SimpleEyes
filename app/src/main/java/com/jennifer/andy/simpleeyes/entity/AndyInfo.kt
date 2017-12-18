@@ -8,7 +8,7 @@ package com.jennifer.andy.simpleeyes.entity
 
 
 data class AndyInfo(var count: Int, var total: Int,
-                    var nextPageUrl: String, var date: Long,
+                    var nextPageUrl: String?, var date: Long,
                     var nextPublishTime: Long, var dialog: Any,
                     var topIssue: TopIssueBean, var refreshCount: Int,
                     var lastStartId: Int, var itemList: MutableList<ItemListBean>)

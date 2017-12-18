@@ -15,17 +15,20 @@ import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 
 class CategoryPresenter(mContext: Context) : BasePresenter<CategoryView>(mContext) {
 
-    private var categoryModel: CategoryModel = CategoryModel()
+    private var mCategoryModel: CategoryModel = CategoryModel()
+    private var mNextPageUrl: String? = null
 
     /**
      * 加载首页信息
      */
     fun loadCategoryData() {
         mView?.showLoading()
-        mRxManager.add(categoryModel.loadCategoryInfo().subscribe({
+        mRxManager.add(mCategoryModel.loadCategoryInfo().subscribe({
             mView?.showContent()
+            mNextPageUrl = it.nextPageUrl
             mView?.loadDataSuccess(it)
         }, {
+            println(it.message)
             mView?.showNetError(View.OnClickListener {
                 loadCategoryData()
             })
@@ -36,12 +39,32 @@ class CategoryPresenter(mContext: Context) : BasePresenter<CategoryView>(mContex
      * 刷新首页信息延迟1秒执行
      */
     fun refreshCategoryData() {
-        mRxManager.add(categoryModel.refreshCategoryInfo().subscribe({
+        mRxManager.add(mCategoryModel.refreshCategoryInfo().subscribe({
             mView?.showContent()
+            mNextPageUrl = it.nextPageUrl
             mView?.refreshDataSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener {
-                loadCategoryData()
+                refreshCategoryData()
+            })
+        }))
+    }
+
+    /**
+     * 加载更多首页信息
+     */
+    fun loadMoreCategoryData() {
+        mRxManager.add(mCategoryModel.loadMoreCategoryInfo(mNextPageUrl).subscribe({
+            mView?.showContent()
+            if (it.nextPageUrl == null) {
+                mView?.showNoMore()
+            } else {
+                mNextPageUrl = it.nextPageUrl
+                mView?.loadMoreSuccess(it)
+            }
+        }, {
+            mView?.showNetError(View.OnClickListener {
+                loadMoreCategoryData()
             })
         }))
     }

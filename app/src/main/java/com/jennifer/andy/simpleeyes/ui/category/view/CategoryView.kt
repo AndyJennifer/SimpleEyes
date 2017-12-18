@@ -22,4 +22,14 @@ interface CategoryView : BaseView {
      */
     fun refreshDataSuccess(andyInfo: AndyInfo)
 
+    /**
+     * 加载更多成功
+     */
+    fun loadMoreSuccess(andyInfo: AndyInfo)
+
+    /**
+     * 没有更多
+     */
+    fun showNoMore()
+
 }
