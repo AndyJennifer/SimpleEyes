@@ -38,7 +38,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
 
     private val DAMPING = 3f//阻尼系数
 
-    private var mPullZoomListener: onPullZoomListener? = null
+    protected var mPullZoomListener: onPullZoomListener? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -148,7 +148,6 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
                         if (isZooming()) {
                             smoothScrollToTop()
                             isZooming = false
-                            mPullZoomListener?.onPullZoomEnd()
                         }
                     }
                     return true

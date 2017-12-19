@@ -95,12 +95,15 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
      */
     override fun smoothScrollToTop() {
         mValueAnimator = ValueAnimator.ofInt(mHeaderContainer.bottom, mHeaderHeight)
-        mValueAnimator?.duration = 200
+        mValueAnimator?.duration = 350
         mValueAnimator?.interpolator = AccelerateInterpolator()
         mValueAnimator?.addUpdateListener {
             val lp = mHeaderContainer.layoutParams
             lp.height = it.animatedValue as Int
             mHeaderContainer.layoutParams = lp
+            if (lp.height == mHeaderHeight) {
+                mPullZoomListener?.onPullZoomEnd()
+            }
         }
         mValueAnimator?.start()
 
