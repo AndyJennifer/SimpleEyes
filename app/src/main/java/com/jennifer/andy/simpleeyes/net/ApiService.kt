@@ -22,6 +22,13 @@ interface ApiService {
     fun getCategory(): Observable<AndyInfo>
 
     /**
+     * 下载视频
+     * http://baobab.kaiyanapp.com/api/v1/playUrl?vid=10556&editionType=high&source=aliyun&udid=d0f6190461864a3a978bdbcb3fe9b48709f1f390&token=55675f3722ad26dc
+     */
+    @GET("api/v1/playUrl")
+    fun getVideoInfo()
+
+    /**
      * 获取首页更多信息
      * @param url 下一页请求地址
      */

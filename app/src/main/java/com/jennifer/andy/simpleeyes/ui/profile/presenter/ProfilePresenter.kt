@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.ui.profile.presenter
 
-import android.content.Context
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.profile.view.ProfileView
 
@@ -11,6 +10,6 @@ import com.jennifer.andy.simpleeyes.ui.profile.view.ProfileView
  * Description:
  */
 
-class ProfilePresenter(mContext: Context) : BasePresenter<ProfileView>(mContext) {
+class ProfilePresenter : BasePresenter<ProfileView>() {
 
 }

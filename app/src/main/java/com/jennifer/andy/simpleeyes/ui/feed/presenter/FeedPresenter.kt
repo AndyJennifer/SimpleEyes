@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.ui.feed.presenter
 
-import android.content.Context
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 
@@ -11,6 +10,6 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
  * Description:
  */
 
-class FeedPresenter(mContext: Context) : BasePresenter<FeedView>(mContext) {
+class FeedPresenter : BasePresenter<FeedView>() {
 
 }

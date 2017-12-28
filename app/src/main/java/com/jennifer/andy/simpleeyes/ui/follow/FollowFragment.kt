@@ -29,5 +29,5 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>() {
 
     override fun getContentViewLayoutId() = R.layout.fragment_follow
 
-    override fun initPresenter() = FollowPresenter(context)
+    override fun initPresenter() = FollowPresenter()
 }

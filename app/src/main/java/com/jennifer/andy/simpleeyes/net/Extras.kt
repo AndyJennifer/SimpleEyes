@@ -13,4 +13,5 @@ object Extras {
      * 更新参数
      */
     var UPDATE_PARAMS = "update_params"
+    var VIDEO_INFO = "video_info"
 }

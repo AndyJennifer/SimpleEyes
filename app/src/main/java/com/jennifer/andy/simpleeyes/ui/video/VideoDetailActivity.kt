@@ -1,6 +1,9 @@
 package com.jennifer.andy.simpleeyes.ui.video
 
 import android.os.Bundle
+import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
@@ -14,16 +17,18 @@ import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
 
 class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>() {
 
+    private lateinit var mVideoInfo: ContentBean
 
     override fun initView(savedInstanceState: Bundle?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //加载背景图
+        //加载视频
+        //加载相关
+
     }
 
     override fun getBundleExtras(extras: Bundle) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as ContentBean
     }
 
-    override fun getContentViewLayoutId(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getContentViewLayoutId() = R.layout.activity_video_detail
 }

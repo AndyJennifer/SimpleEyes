@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.ui.base.presenter
 
-import android.content.Context
 import com.jennifer.andy.simpleeyes.rx.RxManager
 
 
@@ -10,7 +9,7 @@ import com.jennifer.andy.simpleeyes.rx.RxManager
  * Description:
  */
 
-open class BasePresenter<V>(var mContext: Context) {
+open class BasePresenter<V> {
 
     protected var mView: V? = null
     protected val mRxManager: RxManager = RxManager()

@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.ui.follow.presenter
 
-import android.content.Context
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
 
@@ -11,6 +10,6 @@ import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
  * Description:
  */
 
-class FollowPresenter(mContext: Context) : BasePresenter<FollowView>(mContext) {
+class FollowPresenter: BasePresenter<FollowView>() {
 
 }

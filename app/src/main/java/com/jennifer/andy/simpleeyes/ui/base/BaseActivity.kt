@@ -24,7 +24,7 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter = SystemUtils.getGenericInstance(this, 0)
+        mPresenter = SystemUtils.getGenericInstance(this, 1)
         mPresenter.attachView(this as V)
 
     }

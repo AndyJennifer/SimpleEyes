@@ -7,10 +7,12 @@ import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.category.adapter.CategoryAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
+import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
@@ -70,9 +72,10 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         recyclerView.setItemViewCacheSize(10)
         mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
         mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
-            //跳转到详情界面
-            //                val item = adapter.getItem(position) as AndyInfo
-            //                startBannerDetailActivity()
+            val item = mCateGoryAdapter?.getItem(position)
+            val bundle = Bundle()
+            bundle.putSerializable(Extras.VIDEO_INFO, item?.data?.content)
+            readyGo(VideoDetailActivity::class.java, bundle)//跳转到视频详情界面
         }
         mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())
@@ -94,20 +97,6 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mHomePageHeaderView.hideRefreshCover()
     }
 
-    /**
-     * 跳转到视频banner详情界面
-     */
-    private fun startBannerDetailActivity() {
-
-    }
-
-    /**
-     * 跳转到视频followCard详情界面
-     */
-    private fun startFollowCardDetailActivity() {
-
-    }
-
 
     override fun loadMoreSuccess(andyInfo: AndyInfo) {
         mCateGoryAdapter?.loadMoreComplete()
@@ -124,7 +113,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
     override fun getContentViewLayoutId() = R.layout.fragment_category
 
-    override fun initPresenter() = CategoryPresenter(context)
+    override fun initPresenter() = CategoryPresenter()
 
 
 }
