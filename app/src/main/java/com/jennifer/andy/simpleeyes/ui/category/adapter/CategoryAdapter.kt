@@ -86,7 +86,7 @@ class CategoryAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemLi
      */
     private fun setBannerInfo(helper: BaseViewHolder, item: ItemListBean) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
-        imageView.setImageURI(item.data.content.data.cover.feed)
+        imageView.setImageURI(item.data.image)
     }
 
     /**
