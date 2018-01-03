@@ -41,7 +41,7 @@
         android:orientation="horizontal">
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
-            android:id="@+id/favorite"
+            android:id="@+id/tv_favorite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -11,4 +11,6 @@ import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
  */
 class VideoDetailPresenter : BasePresenter<VideoDetailView>() {
 
+
+
 }
