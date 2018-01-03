@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
-import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 
 
 /**
@@ -19,7 +16,7 @@ import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), BaseView {
 
     protected lateinit var mPresenter: T
-    private val mMultipleStateView by bindView<MultipleStateView>(R.id.multiple_state_view)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

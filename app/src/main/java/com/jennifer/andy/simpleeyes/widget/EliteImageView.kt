@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 
@@ -20,10 +21,10 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 class EliteImageView : FrameLayout {
 
-    private lateinit var ivImageView: SimpleDraweeView
-    private lateinit var tvTranslate: CustomFontTextView
-    private lateinit var ivArrow: ImageView
-    private lateinit var ivDaily: ImageView
+    private val ivImageView by bindView<SimpleDraweeView>(R.id.iv_elite_image)
+    private val tvTranslate by bindView<CustomFontTextView>(R.id.tv_translate)
+    private val ivArrow by bindView<ImageView>(R.id.iv_arrow)
+    private val ivDaily by bindView<ImageView>(R.id.iv_daily)
 
     constructor(context: Context) : this(context, null)
 
@@ -34,11 +35,7 @@ class EliteImageView : FrameLayout {
     }
 
     private fun init(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_choiceness, this, true)
-        ivImageView = view.findViewById(R.id.iv_elite_image)
-        tvTranslate = view.findViewById(R.id.tv_translate)
-        ivArrow = view.findViewById(R.id.iv_arrow)
-        ivDaily = view.findViewById(R.id.iv_daily)
+        LayoutInflater.from(context).inflate(R.layout.layout_choiceness, this, true)
     }
 
     /**

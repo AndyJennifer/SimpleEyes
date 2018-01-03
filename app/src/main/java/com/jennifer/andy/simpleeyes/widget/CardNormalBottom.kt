@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 
 
 /**
@@ -21,11 +22,11 @@ import com.jennifer.andy.simpleeyes.R
 class CardNormalBottom : FrameLayout {
 
 
-    private lateinit var mIcon: SimpleDraweeView
-    private lateinit var mTvTitle: TextView
-    private lateinit var mTvDescription: TextView
-    private lateinit var mBtnMoreOperate: ImageButton
-    private lateinit var mLine: View
+    private val mIcon by bindView<SimpleDraweeView>(R.id.iv_source)
+    private val mTvTitle by bindView<TextView>(R.id.tv_title)
+    private val mTvDescription by bindView<TextView>(R.id.tv_desc)
+    private val mBtnMoreOperate by bindView<ImageButton>(R.id.btn_reply_more)
+    private val mLine by bindView<View>(R.id.view_line)
 
     constructor(context: Context) : this(context, null)
 
@@ -36,12 +37,7 @@ class CardNormalBottom : FrameLayout {
     }
 
     private fun init(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_card_normal_bottom, this, true)
-        mIcon = view.findViewById(R.id.iv_source)
-        mTvTitle = view.findViewById(R.id.tv_title)
-        mTvDescription = view.findViewById(R.id.tv_desc)
-        mBtnMoreOperate = view.findViewById(R.id.btn_reply_more)
-        mLine = view.findViewById(R.id.view_line)
+        LayoutInflater.from(context).inflate(R.layout.layout_card_normal_bottom, this, true)
     }
 
 

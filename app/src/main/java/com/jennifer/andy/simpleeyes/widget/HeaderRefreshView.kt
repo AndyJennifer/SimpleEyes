@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 
 
 /**
@@ -22,8 +23,8 @@ import com.jennifer.andy.simpleeyes.utils.DensityUtils
 
 class HeaderRefreshView : FrameLayout {
 
-    private lateinit var mRefreshContainer: RelativeLayout
-    private lateinit var mIvRefresh: ImageView
+    private val mRefreshContainer by bindView<RelativeLayout>(R.id.rl_refresh_container)
+    private val mIvRefresh by bindView<ImageView>(R.id.iv_refresh)
     private var mRotateAnimation: RotateAnimation? = null
 
     /**
@@ -40,9 +41,7 @@ class HeaderRefreshView : FrameLayout {
     }
 
     private fun init(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_header_refresh, this, true)
-        mRefreshContainer = view.findViewById(R.id.rl_refresh_container)
-        mIvRefresh = view.findViewById(R.id.iv_refresh)
+        LayoutInflater.from(context).inflate(R.layout.layout_header_refresh, this, true)
         mRefreshContainer.background.alpha = 0
         mIvRefresh.imageAlpha = 0
     }

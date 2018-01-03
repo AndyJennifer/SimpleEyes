@@ -3,9 +3,10 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.jennifer.andy.simpleeyes.R
-
 import com.jennifer.andy.simpleeyes.manager.BaseAppManager
+import com.jennifer.andy.simpleeyes.widget.MultipleStateView
 import me.yokeyword.fragmentation.SupportActivity
 
 
@@ -20,8 +21,9 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 上下文对象
      */
-    lateinit var mContext: Context
-    lateinit var TAT_LOG: String
+    protected lateinit var mContext: Context
+    protected lateinit var TAT_LOG: String
+    protected lateinit var mMultipleStateView: MultipleStateView
 
 
     /**
@@ -50,7 +52,9 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         BaseAppManager.getInstance().addActivity(this)
         //添加相应的布局
         if (getContentViewLayoutId() != 0) {
-            setContentView(getContentViewLayoutId())
+            mMultipleStateView = MultipleStateView(this)
+            val view = View.inflate(this, getContentViewLayoutId(), mMultipleStateView)
+            setContentView(view)
         } else {
             throw  IllegalArgumentException("You must return layout id")
         }

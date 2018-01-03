@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 
 
@@ -17,13 +18,14 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 
 class VideoHeadView : FrameLayout, View.OnClickListener {
 
-    private lateinit var mTitle: CustomFontTypeWriterTextView
-    private lateinit var mTime: CustomFontTypeWriterTextView
-    private lateinit var mDescription: CustomFontTypeWriterTextView
-    private lateinit var mFavorite: CustomFontTypeWriterTextView
-    private lateinit var mShare: CustomFontTypeWriterTextView
-    private lateinit var mReply: CustomFontTypeWriterTextView
-    private lateinit var mDownload: CustomFontTypeWriterTextView
+    private val mTitle by bindView<CustomFontTypeWriterTextView>(R.id.tv_title)
+    private val mTime by bindView<CustomFontTypeWriterTextView>(R.id.tv_time)
+    private val mDescription by bindView<CustomFontTypeWriterTextView>(R.id.tv_desc)
+    private val mFavorite by bindView<CustomFontTypeWriterTextView>(R.id.tv_favorite)
+    private val mShare by bindView<CustomFontTypeWriterTextView>(R.id.tv_share)
+    private val mReply by bindView<CustomFontTypeWriterTextView>(R.id.tv_reply)
+    private val mDownload by bindView<CustomFontTypeWriterTextView>(R.id.tv_download)
+
 
     constructor(context: Context) : this(context, null)
 
@@ -34,14 +36,7 @@ class VideoHeadView : FrameLayout, View.OnClickListener {
     }
 
     private fun init(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_video_head_view, this, true)
-        mTitle = view.findViewById(R.id.tv_title)
-        mTime = view.findViewById(R.id.tv_time)
-        mDescription = view.findViewById(R.id.tv_desc)
-        mFavorite = view.findViewById(R.id.tv_favorite)
-        mShare = view.findViewById(R.id.tv_share)
-        mReply = view.findViewById(R.id.tv_reply)
-        mDownload = view.findViewById(R.id.tv_download)
+        LayoutInflater.from(context).inflate(R.layout.layout_video_head_view, this, true)
         mFavorite.setOnClickListener(this)
         mShare.setOnClickListener(this)
         mReply.setOnClickListener(this)
