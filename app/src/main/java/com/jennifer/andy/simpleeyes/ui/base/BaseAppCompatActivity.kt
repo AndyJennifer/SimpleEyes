@@ -77,6 +77,21 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         }
     }
 
+    override fun finish() {
+        super.finish()
+        if (toggleOverridePendingTransition()) {
+            when (getOverridePendingTransition()) {
+                TransitionMode.TOP -> overridePendingTransition(0, R.anim.top_out)
+                TransitionMode.BOTTOM -> overridePendingTransition(0, R.anim.bottom_out)
+                TransitionMode.LEFT -> overridePendingTransition(0, R.anim.left_out)
+                TransitionMode.RIGHT -> overridePendingTransition(0, R.anim.right_out)
+                TransitionMode.FADE -> overridePendingTransition(0, R.anim.fade_out)
+                TransitionMode.SCALE -> overridePendingTransition(0, R.anim.scale_out)
+            }
+        }
+
+    }
+
     override fun onDestroy() {
         BaseAppManager.getInstance().removeActivity(this)
         super.onDestroy()

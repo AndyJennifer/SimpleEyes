@@ -15,8 +15,8 @@
     <string name="no_more_string">-The End-</string>
     <string name="loading_message">正在加载中…</string>
 
-
-    <string name="VideoView_error_text_invalid_progressive_playback">Invalid progressive playback</string>
+    <string name="VideoView_error_text_invalid_progressive_playback">Invalid progressive playback
+    </string>
     <string name="VideoView_error_text_unknown">Unknown</string>
     <string name="VideoView_error_button">OK</string>
 
