@@ -71,11 +71,13 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         val recyclerView = mPullToZoomRecycler.getPullRootView()
         recyclerView.setItemViewCacheSize(10)
         mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
-        mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, _, position ->
+        mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, view, position ->
             val item = mCateGoryAdapter?.getItem(position)
-            val bundle = Bundle()
+            var bundle = Bundle()
+
             bundle.putSerializable(Extras.VIDEO_INFO, item?.data?.content)
-            readyGo(VideoDetailActivity::class.java, bundle)//跳转到视频详情界面
+            readyGo(VideoDetailActivity::class.java, bundle)
+
         }
         mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())

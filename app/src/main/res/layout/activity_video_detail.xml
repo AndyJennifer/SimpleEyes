@@ -7,10 +7,22 @@
     android:background="@drawable/shape_video_detail_placeholder"
     android:orientation="vertical">
 
-    <com.jennifer.andy.simpleeyes.player.IjkVideoView
-        android:id="@+id/video_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="200dp">
+
+
+        <com.jennifer.andy.simpleeyes.player.IjkVideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -31,19 +31,19 @@ class CategoryAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemLi
      */
     companion object {
 
-        private val VIDEO_BANNER_TYPE = 0
-        private val VIDEO_FOLLOW_CARD_TYPE = 1
-        private val VIDEO_HORIZONTAL_SCROLL_CARD_TYPE = 2
-        private val VIDEO_COLLECTION_WITH_COVER_TYPE = 3
-        private val VIDEO_SQUARE_CARD_COLLECTION_TYPE = 4
-        private val VIDEO_BANNER_THREE_TYPE = 8
+        val VIDEO_BANNER_TYPE = 0
+        val VIDEO_FOLLOW_CARD_TYPE = 1
+        val VIDEO_HORIZONTAL_SCROLL_CARD_TYPE = 2
+        val VIDEO_COLLECTION_WITH_COVER_TYPE = 3
+        val VIDEO_SQUARE_CARD_COLLECTION_TYPE = 4
+        val VIDEO_BANNER_THREE_TYPE = 8
 
-        private val VIDEO_BANNER = "banner"
-        private val VIDEO_FOLLOW_CARD = "followCard"
-        private val VIDEO_HORIZONTAL_CARD = "horizontalScrollCard"
-        private val VIDEO_COLLECTION_WITH_COVER = "videoCollectionWithCover"
-        private val VIDEO_SQUARE_CARD_COLLECTION = "squareCardCollection"
-        private val VIDEO_BANNER_THREE = "banner3"
+        val VIDEO_BANNER = "banner"
+        val VIDEO_FOLLOW_CARD = "followCard"
+        val VIDEO_HORIZONTAL_CARD = "horizontalScrollCard"
+        val VIDEO_COLLECTION_WITH_COVER = "videoCollectionWithCover"
+        val VIDEO_SQUARE_CARD_COLLECTION = "squareCardCollection"
+        val VIDEO_BANNER_THREE = "banner3"
     }
 
 
