@@ -27,7 +27,6 @@ class CategoryPresenter : BasePresenter<CategoryView>() {
             mNextPageUrl = it.nextPageUrl
             mView?.loadDataSuccess(it)
         }, {
-            println(it.message)
             mView?.showNetError(View.OnClickListener {
                 loadCategoryData()
             })

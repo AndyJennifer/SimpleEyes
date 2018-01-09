@@ -61,12 +61,15 @@ class CategoryAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemLi
                 return VIDEO_FOLLOW_CARD_TYPE
             }
         }
-        multiTypeDelegate.registerItemType(VIDEO_BANNER_TYPE, R.layout.layout_card_banner)
-        multiTypeDelegate.registerItemType(VIDEO_FOLLOW_CARD_TYPE, R.layout.layout_follow_card)
-        multiTypeDelegate.registerItemType(VIDEO_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
-        multiTypeDelegate.registerItemType(VIDEO_COLLECTION_WITH_COVER_TYPE, R.layout.layout_collection_with_cover)
-        multiTypeDelegate.registerItemType(VIDEO_SQUARE_CARD_COLLECTION_TYPE, R.layout.layout_square_collection)
-        multiTypeDelegate.registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
+        with(multiTypeDelegate) {
+            registerItemType(VIDEO_BANNER_TYPE, R.layout.layout_card_banner)
+            registerItemType(VIDEO_FOLLOW_CARD_TYPE, R.layout.layout_follow_card)
+            registerItemType(VIDEO_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
+            registerItemType(VIDEO_COLLECTION_WITH_COVER_TYPE, R.layout.layout_collection_with_cover)
+            registerItemType(VIDEO_SQUARE_CARD_COLLECTION_TYPE, R.layout.layout_square_collection)
+            registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
+        }
+
     }
 
     override fun convert(helper: BaseViewHolder?, item: ItemListBean) {
@@ -94,16 +97,20 @@ class CategoryAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemLi
      */
     private fun setBanner3Info(helper: BaseViewHolder, data: DataBeanXX) {
         val cardNormalBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
-        cardNormalBottom.setTitle(data.title)
-        cardNormalBottom.setDescription(data.description)
-        cardNormalBottom.setIconUrl(data.header.icon)
-        cardNormalBottom.setIconType(data.header.iconType == "round")//设置图标形状
-        cardNormalBottom.setMoreOperateVisible(false)
+        with(cardNormalBottom) {
+            setTitle(data.title)
+            setDescription(data.description)
+            setIconUrl(data.header.icon)
+            setIconType(data.header.iconType == "round")//设置图标形状
+            setMoreOperateVisible(false)
+        }
 
         val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
-        eliteView.setImageUrl(data.image)
-        eliteView.setDailyVisible(false)
-        eliteView.setTranslateText(mContext.getString(R.string.advert))
+        with(eliteView) {
+            setImageUrl(data.image)
+            setDailyVisible(false)
+            setTranslateText(mContext.getString(R.string.advert))
+        }
     }
 
 
@@ -113,13 +120,18 @@ class CategoryAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemLi
     private fun setFollowCardInfo(helper: BaseViewHolder, item: ItemListBean) {
         val info = item.data
         val cardNormalBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
-        cardNormalBottom.setTitle(info.header.title)
-        cardNormalBottom.setDescription(info.header.description)
-        cardNormalBottom.setIconUrl(info.header.icon)
-        cardNormalBottom.setIconType(info.header.iconType == "round")//设置图标形状
+        with(cardNormalBottom) {
+            setTitle(info.header.title)
+            setDescription(info.header.description)
+            setIconUrl(info.header.icon)
+            setIconType(info.header.iconType == "round")//设置图标形状
+        }
+
         val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
-        eliteView.setImageUrl(info.content.data.cover.feed)
-        eliteView.setDailyVisible(info.content.data.library == "DAILY")
+        with(eliteView) {
+            setImageUrl(info.content.data.cover.feed)
+            setDailyVisible(info.content.data.library == "DAILY")
+        }
 
     }
 
@@ -128,15 +140,17 @@ class CategoryAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemLi
      */
     private fun setHorizontalCardInfo(helper: BaseViewHolder, itemList: MutableList<ItemListBean>) {
         val banner = helper.getView<Banner>(R.id.banner)
-        banner.setImageLoader(FrescoImageLoader())
-        banner.setImages(getHorizonTalCardUrl(itemList))
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-        banner.setIndicatorGravity(BannerConfig.CENTER)
-        banner.isAutoPlay(true)
-        banner.start()
-        banner.setDelayTime(5000)
-        banner.setOnBannerListener {
-            //todo 点击跳转
+        with(banner) {
+            setImageLoader(FrescoImageLoader())
+            setImages(getHorizonTalCardUrl(itemList))
+            setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+            setIndicatorGravity(BannerConfig.CENTER)
+            isAutoPlay(true)
+            start()
+            setDelayTime(5000)
+            setOnBannerListener {
+                //todo 点击跳转
+            }
         }
     }
 
