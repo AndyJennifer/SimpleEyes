@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.jennifer.andy.simpleeyes.R;
 
 import java.util.Formatter;
 
@@ -33,12 +36,15 @@ public class IjkMediaController extends FrameLayout {
     private WindowManager.LayoutParams mDecorLayoutParams;
     private Window mWindow;
     private View mDecor;
+    private View mRoot;
 
     private boolean mShowing;
     private View mAnchor;
     private boolean mDragging;
     private ProgressBar mProgress;
     private TextView mEndTime, mCurrentTime;
+
+    private static final int sDefaultTimeout = 3000;
 
     private final Context mContext;
     StringBuilder mFormatBuilder;
@@ -48,10 +54,11 @@ public class IjkMediaController extends FrameLayout {
     public IjkMediaController(@NonNull Context context) {
         super(context);
         mContext = context;
-        // TODO: 2018/1/9  xwt 完善监听事件。
+        mRoot = this;
         initFloatingWindowLayout();
         initFloatingWindow();
     }
+
 
     /**
      * 初始化悬浮window布局
@@ -92,6 +99,21 @@ public class IjkMediaController extends FrameLayout {
         setFocusableInTouchMode(true);
         setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
         requestFocus();
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        if (mRoot != null) {
+            initControllerView(mRoot);
+        }
+    }
+
+    /**
+     * 初始化控制层视图
+     */
+    private void initControllerView(View root) {
+
     }
 
     /**
@@ -191,6 +213,20 @@ public class IjkMediaController extends FrameLayout {
         updatePausePlay();
     }
 
+
+    private void updatePausePlay() {
+//        if (mRoot == null || mPauseButton == null)
+//            return;
+//
+//        if (mPlayer.isPlaying()) {
+//            mPauseButton.setImageResource(com.android.internal.R.drawable.ic_media_pause);
+//            mPauseButton.setContentDescription(mPauseDescription);
+//        } else {
+//            mPauseButton.setImageResource(com.android.internal.R.drawable.ic_media_play);
+//            mPauseButton.setContentDescription(mPlayDescription);
+//        }
+    }
+
     /**
      * Set the view that acts as the anchor for the control view.
      * This can for example be a VideoView, or your Activity's main view.
@@ -200,13 +236,13 @@ public class IjkMediaController extends FrameLayout {
      * @param view The view to which to anchor the controller when it is visible.
      */
     public void setAnchorView(View view) {
-        if (mAnchor != null) {
-            mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
-        }
-        mAnchor = view;
-        if (mAnchor != null) {
-            mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
-        }
+//        if (mAnchor != null) {
+//            mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
+//        }
+//        mAnchor = view;
+//        if (mAnchor != null) {
+//            mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
+//        }
 
         FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -219,6 +255,15 @@ public class IjkMediaController extends FrameLayout {
     }
 
     /**
+     * 创建控制层View
+     */
+    private View makeControllerView() {
+        mRoot = LayoutInflater.from(mContext).inflate(R.layout.layout_media_controller, null);
+        initControllerView(mRoot);
+        return mRoot;
+    }
+
+    /**
      * Show the controller on screen. It will go away
      * automatically after 3 seconds of inactivity.
      */
@@ -227,34 +272,32 @@ public class IjkMediaController extends FrameLayout {
     }
 
     /**
-     * Show the controller on screen. It will go away
-     * automatically after 'timeout' milliseconds of inactivity.
+     * 将控制器显示在屏幕上，当到达过期时间时会自动消失。
      *
-     * @param timeout The timeout in milliseconds. Use 0 to show
-     *                the controller until hide() is called.
+     * @param timeout 过期时间(毫秒) 如果设置为0直到调用hide方法才会消失
      */
     public void show(int timeout) {
-        if (!mShowing && mAnchor != null) {
-            setProgress();
-            if (mPauseButton != null) {
-                mPauseButton.requestFocus();
-            }
-            disableUnsupportedButtons();
-            updateFloatingWindowLayout();
-            mWindowManager.addView(mDecor, mDecorLayoutParams);
-            mShowing = true;
-        }
-        updatePausePlay();
-
-        // cause the progress bar to be updated even if mShowing
-        // was already true.  This happens, for example, if we're
-        // paused with the progress bar showing the user hits play.
-        post(mShowProgress);
-
-        if (timeout != 0 && !mAccessibilityManager.isTouchExplorationEnabled()) {
-            removeCallbacks(mFadeOut);
-            postDelayed(mFadeOut, timeout);
-        }
+//        if (!mShowing && mAnchor != null) {
+//            setProgress();
+//            if (mPauseButton != null) {
+//                mPauseButton.requestFocus();
+//            }
+//            disableUnsupportedButtons();
+//            updateFloatingWindowLayout();
+//            mWindowManager.addView(mDecor, mDecorLayoutParams);
+//            mShowing = true;
+//        }
+//        updatePausePlay();
+//
+//        // cause the progress bar to be updated even if mShowing
+//        // was already true.  This happens, for example, if we're
+//        // paused with the progress bar showing the user hits play.
+//        post(mShowProgress);
+//
+//        if (timeout != 0 && !mAccessibilityManager.isTouchExplorationEnabled()) {
+//            removeCallbacks(mFadeOut);
+//            postDelayed(mFadeOut, timeout);
+//        }
     }
 
     public boolean isShowing() {
