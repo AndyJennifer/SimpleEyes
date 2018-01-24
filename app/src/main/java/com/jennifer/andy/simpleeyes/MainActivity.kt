@@ -24,12 +24,11 @@ class MainActivity : BaseAppCompatActivity() {
     private var mFragments = arrayOfNulls<SupportFragment>(4)
     private val mBottomNavigation: BottomBar by bindView(R.id.bottom_navigation_bar)
 
-    companion object {
-        val FIRST = 0
-        val SECOND = 1
-        val THIRD = 2
-        val FOURTH = 3
-    }
+    private val FIRST = 0
+    private val SECOND = 1
+    private val THIRD = 2
+    private val FOURTH = 3
+
 
     override fun initView(savedInstanceState: Bundle?) {
         mFragments[FIRST] = CategoryFragment.newInstance()
@@ -51,28 +50,32 @@ class MainActivity : BaseAppCompatActivity() {
         val mine = BottomItem(R.drawable.ic_tab_strip_icon_profile_selected, getString(R.string.mine))
         mine.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_profile)
 
-        mBottomNavigation.addItem(home)
-        mBottomNavigation.addItem(discover)
-        mBottomNavigation.addItem(focus)
-        mBottomNavigation.addItem(mine)
-        mBottomNavigation.initialise()
-        mBottomNavigation.setOnTabSelectedListener(object : BottomBar.onTabSelectedListener {
-            override fun onTabSelected(position: Int, prePosition: Int) {
-                showHideFragment(mFragments[position])
-            }
-
-            override fun onTabUnselected(position: Int) {
-
-
-            }
-
-            override fun onTabReselected(position: Int) {
-                if (position == FIRST) {
-                    val categoryFragment = mFragments[FIRST] as CategoryFragment
-                    categoryFragment.scrollToTop()
+        with(mBottomNavigation) {
+            addItem(home)
+            addItem(discover)
+            addItem(focus)
+            addItem(mine)
+            initialise()
+            setOnTabSelectedListener(object : BottomBar.onTabSelectedListener {
+                override fun onTabSelected(position: Int, prePosition: Int) {
+                    showHideFragment(mFragments[position])
                 }
-            }
-        })
+
+                override fun onTabUnselected(position: Int) {
+
+
+                }
+
+                override fun onTabReselected(position: Int) {
+                    if (position == FIRST) {
+                        val categoryFragment = mFragments[FIRST] as CategoryFragment
+                        categoryFragment.scrollToTop()
+                    }
+                }
+            })
+
+        }
+
     }
 
     override fun getBundleExtras(extras: Bundle) {

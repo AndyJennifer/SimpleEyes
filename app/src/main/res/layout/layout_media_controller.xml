@@ -35,13 +35,6 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_player_play"/>
-
-    <ImageView
         android:id="@+id/iv_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +45,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_play"
+        android:layout_below="@id/iv_pause"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp">
 
@@ -74,8 +67,17 @@
         android:id="@+id/iv_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_player_next"/>
+
+    <SeekBar
+        android:id="@+id/sb_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="32dip"
+        android:layout_alignParentBottom="true"
+        android:thumb="@drawable/ic_player_progress_handle"
+    />
 
 </RelativeLayout>

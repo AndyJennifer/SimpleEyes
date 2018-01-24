@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,8 +40,10 @@ public class IjkMediaController extends FrameLayout {
     private View mRoot;
 
     private boolean mShowing;
-    private View mAnchor;
     private boolean mDragging;
+
+
+    private View mAnchor;
     private ProgressBar mProgress;
     private TextView mEndTime, mCurrentTime;
 
@@ -50,6 +53,10 @@ public class IjkMediaController extends FrameLayout {
     StringBuilder mFormatBuilder;
     Formatter mFormatter;
 
+    private ImageView mPauseButton;
+    private ImageView mNextButton;
+    private View.OnClickListener mNextListener, mPrevListener;
+    private boolean mListenersSet;
 
     public IjkMediaController(@NonNull Context context) {
         super(context);
@@ -101,6 +108,23 @@ public class IjkMediaController extends FrameLayout {
         requestFocus();
     }
 
+    //动态更新根布局的高度与宽度，注意：需要mAnchor != NULL
+    private void updateFloatingWindowLayout() {
+        int[] anchorPos = new int[2];
+        mAnchor.getLocationOnScreen(anchorPos);
+
+        // we need to know the size of the controller so we can properly position it
+        // within its space
+        mDecor.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(), MeasureSpec.AT_MOST),
+                MeasureSpec.makeMeasureSpec(mAnchor.getHeight(), MeasureSpec.AT_MOST));
+
+        WindowManager.LayoutParams p = mDecorLayoutParams;
+        p.width = mAnchor.getWidth();
+        p.x = anchorPos[0] + (mAnchor.getWidth() - p.width) / 2;
+        p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
+    }
+
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -109,12 +133,19 @@ public class IjkMediaController extends FrameLayout {
         }
     }
 
-    /**
-     * 初始化控制层视图
-     */
-    private void initControllerView(View root) {
-
-    }
+    // 当锚点view布局发生改变的时候会调用
+    private final OnLayoutChangeListener mLayoutChangeListener =
+            new OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right,
+                                           int bottom, int oldLeft, int oldTop, int oldRight,
+                                           int oldBottom) {
+                    updateFloatingWindowLayout();
+                    if (mShowing) {
+                        mWindowManager.updateViewLayout(mDecor, mDecorLayoutParams);
+                    }
+                }
+            };
 
     /**
      * 触摸监听，如果按下且正在播放，隐藏
@@ -190,7 +221,7 @@ public class IjkMediaController extends FrameLayout {
     }
 
     /**
-     * 把控制器移除屏幕
+     * 隐藏控制器
      */
     public void hide() {
         if (mAnchor == null)
@@ -213,42 +244,34 @@ public class IjkMediaController extends FrameLayout {
         updatePausePlay();
     }
 
-
+    /**
+     * 更新暂停按钮显示内容，播放->暂停  暂停->播放
+     */
     private void updatePausePlay() {
-//        if (mRoot == null || mPauseButton == null)
-//            return;
-//
-//        if (mPlayer.isPlaying()) {
-//            mPauseButton.setImageResource(com.android.internal.R.drawable.ic_media_pause);
-//            mPauseButton.setContentDescription(mPauseDescription);
-//        } else {
-//            mPauseButton.setImageResource(com.android.internal.R.drawable.ic_media_play);
-//            mPauseButton.setContentDescription(mPlayDescription);
-//        }
+        if (mRoot == null || mPauseButton == null)
+            return;
+        if (mPlayer.isPlaying()) {
+            mPauseButton.setImageResource(R.drawable.ic_player_pause);
+        } else {
+            mPauseButton.setImageResource(R.drawable.ic_player_play);
+        }
     }
 
     /**
-     * Set the view that acts as the anchor for the control view.
-     * This can for example be a VideoView, or your Activity's main view.
-     * When VideoView calls this method, it will use the VideoView's parent
-     * as the anchor.
-     *
-     * @param view The view to which to anchor the controller when it is visible.
+     * 将控制层view与视屏播放view进行关联，并且将视屏播放view添加进控制层view
      */
     public void setAnchorView(View view) {
-//        if (mAnchor != null) {
-//            mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
-//        }
-//        mAnchor = view;
-//        if (mAnchor != null) {
-//            mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
-//        }
+        if (mAnchor != null) {
+            mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
+        }
+        mAnchor = view;
+        if (mAnchor != null) {
+            mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
+        }
 
+        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
         FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        );
-
+                mAnchorLayoutParams.width, mAnchorLayoutParams.height);
         removeAllViews();
         View v = makeControllerView();
         addView(v, frameParams);
@@ -263,13 +286,58 @@ public class IjkMediaController extends FrameLayout {
         return mRoot;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    // 控制层监听
+    ///////////////////////////////////////////////////////////////////////////
+    private final View.OnClickListener mPauseListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            doPauseResume();
+            show(sDefaultTimeout);
+        }
+    };
+
+    private void doPauseResume() {
+        if (mPlayer.isPlaying()) {
+            mPlayer.pause();
+        } else {
+            mPlayer.start();
+        }
+        updatePausePlay();//更新暂停按钮
+    }
+
+
     /**
-     * Show the controller on screen. It will go away
-     * automatically after 3 seconds of inactivity.
+     * 初始化控制层视图
+     */
+    private void initControllerView(View root) {
+
+        mPauseButton = root.findViewById(R.id.iv_pause);
+        if (mPauseButton != null) {
+            mPauseButton.setOnClickListener(mPauseListener);
+        }
+        mNextButton = root.findViewById(R.id.iv_next);
+        if (mNextButton != null) {
+
+        }
+    }
+
+    /**
+     * 显示当前控制层view，3秒之后会自动消失
      */
     public void show() {
         show(sDefaultTimeout);
     }
+
+    /**
+     * 隐藏控制层view
+     */
+    private final Runnable mFadeOut = new Runnable() {
+        @Override
+        public void run() {
+            hide();
+        }
+    };
 
     /**
      * 将控制器显示在屏幕上，当到达过期时间时会自动消失。
@@ -277,27 +345,26 @@ public class IjkMediaController extends FrameLayout {
      * @param timeout 过期时间(毫秒) 如果设置为0直到调用hide方法才会消失
      */
     public void show(int timeout) {
-//        if (!mShowing && mAnchor != null) {
-//            setProgress();
-//            if (mPauseButton != null) {
-//                mPauseButton.requestFocus();
-//            }
-//            disableUnsupportedButtons();
-//            updateFloatingWindowLayout();
-//            mWindowManager.addView(mDecor, mDecorLayoutParams);
-//            mShowing = true;
-//        }
-//        updatePausePlay();
-//
-//        // cause the progress bar to be updated even if mShowing
-//        // was already true.  This happens, for example, if we're
-//        // paused with the progress bar showing the user hits play.
-//        post(mShowProgress);
-//
-//        if (timeout != 0 && !mAccessibilityManager.isTouchExplorationEnabled()) {
-//            removeCallbacks(mFadeOut);
-//            postDelayed(mFadeOut, timeout);
-//        }
+        if (!mShowing && mAnchor != null) {
+            setProgress();
+            if (mPauseButton != null) {
+                mPauseButton.requestFocus();
+            }
+            updateFloatingWindowLayout();
+            mWindowManager.addView(mDecor, mDecorLayoutParams);
+            mShowing = true;
+        }
+        updatePausePlay();
+
+        // cause the progress bar to be updated even if mShowing
+        // was already true.  This happens, for example, if we're
+        // paused with the progress bar showing the user hits play.
+        post(mShowProgress);
+
+        if (timeout != 0) {
+            removeCallbacks(mFadeOut);
+            postDelayed(mFadeOut, timeout);
+        }
     }
 
     public boolean isShowing() {
