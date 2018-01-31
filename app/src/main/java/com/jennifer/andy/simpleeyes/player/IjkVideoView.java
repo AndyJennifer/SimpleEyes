@@ -97,6 +97,35 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private long mSeekStartTime = 0;
     private long mSeekEndTime = 0;
 
+    /**
+     * 视频宽高比
+     */
+    private static final int[] s_allAspectRatio = {
+            IRenderView.AR_ASPECT_FIT_PARENT,
+            IRenderView.AR_ASPECT_FILL_PARENT,
+            IRenderView.AR_ASPECT_WRAP_CONTENT,
+            // IRenderView.AR_MATCH_PARENT,
+            IRenderView.AR_16_9_FIT_PARENT,
+            IRenderView.AR_4_3_FIT_PARENT};
+    private int mCurrentAspectRatio = s_allAspectRatio[0];
+
+
+    public static final int RENDER_NONE = 0;
+    public static final int RENDER_SURFACE_VIEW = 1;
+    public static final int RENDER_TEXTURE_VIEW = 2;
+    private int mCurrentRender = RENDER_NONE;
+
+    /**
+     * 设置宽高比
+     */
+    public int toggleAspectRatio(int currentAspectRatio) {
+        if (mRenderView != null)
+            mRenderView.setAspectRatio(currentAspectRatio);
+        mCurrentAspectRatio = currentAspectRatio;
+        return mCurrentAspectRatio;
+    }
+
+
     public IjkVideoView(Context context) {
         super(context);
         initVideoView(context);
@@ -176,6 +205,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     }
 
+
     /**
      * 设置渲染界面，移除原有的渲染界面，并初始化当前的渲染界面参数，并设置渲染回调等初始化操作
      */
@@ -183,7 +213,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         if (mRenderView != null) {
             if (mMediaPlayer != null)
                 mMediaPlayer.setDisplay(null);
-
             View renderUIView = mRenderView.getView();
             mRenderView.removeRenderCallback(mSHCallback);
             mRenderView = null;
@@ -207,7 +236,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 Gravity.CENTER);
         renderUIView.setLayoutParams(lp);
         addView(renderUIView);
-
         mRenderView.addRenderCallback(mSHCallback);//添加回调
         mRenderView.setVideoRotation(mVideoRotationDegree);//设置视频旋转
     }
@@ -358,6 +386,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     }
                 }
             };
+
     /**
      * 视频播放准备完成监听
      */
@@ -394,9 +423,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                         // start the video here instead of in the callback.
                         if (mTargetState == STATE_PLAYING) {
                             start();
-                            if (mMediaController != null) {
-                                mMediaController.show();
-                            }
                         } else if (!isPlaying() &&
                                 (seekToPosition != 0 || getCurrentPosition() > 0)) {
                             if (mMediaController != null) {
@@ -842,33 +868,6 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public int getAudioSessionId() {
         return 0;
     }
-
-
-    private static final int[] s_allAspectRatio = {
-            IRenderView.AR_ASPECT_FIT_PARENT,
-            IRenderView.AR_ASPECT_FILL_PARENT,
-            IRenderView.AR_ASPECT_WRAP_CONTENT,
-            // IRenderView.AR_MATCH_PARENT,
-            IRenderView.AR_16_9_FIT_PARENT,
-            IRenderView.AR_4_3_FIT_PARENT};
-    private int mCurrentAspectRatioIndex = 0;
-    private int mCurrentAspectRatio = s_allAspectRatio[0];
-
-    public int toggleAspectRatio() {
-        mCurrentAspectRatioIndex++;
-        mCurrentAspectRatioIndex %= s_allAspectRatio.length;
-
-        mCurrentAspectRatio = s_allAspectRatio[mCurrentAspectRatioIndex];
-        if (mRenderView != null)
-            mRenderView.setAspectRatio(mCurrentAspectRatio);
-        return mCurrentAspectRatio;
-    }
-
-
-    public static final int RENDER_NONE = 0;
-    public static final int RENDER_SURFACE_VIEW = 1;
-    public static final int RENDER_TEXTURE_VIEW = 2;
-    private int mCurrentRender = RENDER_NONE;
 
 
     public IMediaPlayer createPlayer() {

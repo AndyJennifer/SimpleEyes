@@ -7,6 +7,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.Extras
+import com.jennifer.andy.simpleeyes.player.IRenderView
 import com.jennifer.andy.simpleeyes.player.IjkMediaController
 import com.jennifer.andy.simpleeyes.player.IjkVideoView
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
@@ -53,21 +54,26 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private fun playVideo() {
         mBlurredImage.setImageURI(mVideoInfo.data.cover.blurred)
         val videoPath = "http://baobab.kaiyanapp.com/api/v1/playUrl?vid=${mVideoInfo.data.id}&editionType=high&source=aliyun&d0f6190461864a3a978bdbcb3fe9b48709f1f390&token=55675f3722ad26dc"
-        mVideoView.setVideoPath(videoPath)
-        mVideoView.setMediaController(IjkMediaController(mContext))
-        mVideoView.start()
+        with(mVideoView) {
+            setVideoPath(videoPath)
+            setMediaController(IjkMediaController(mContext))
+            start()
+            //设置准备完成监听
+            setOnPreparedListener {
+                //隐藏进度条
+                handler.postDelayed({
+                    mShareImage.visibility = View.GONE
+                    mProgress.visibility = View.GONE
+                }, 500)
 
-        //设置准备完成监听
-        mVideoView.setOnPreparedListener {
-            //隐藏进度条
-            mShareImage.visibility = View.GONE
-            mProgress.visibility = View.GONE
+            }
+            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
+            //设置完成监听
+            setOnCompletionListener {
+                // todo 完成后更改布局
+            }
         }
 
-        //设置完成监听
-        mVideoView.setOnCompletionListener {
-            // todo 完成后更改布局
-        }
 
     }
 

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_alpha_33">
+    android:background="@color/black_alpha_66">
 
     <ImageView
         android:id="@+id/iv_back"
@@ -34,13 +34,22 @@
             android:src="@drawable/ic_menu_more_white"/>
     </LinearLayout>
 
-    <ImageView
+
+    <ImageButton
         android:id="@+id/iv_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@null"
         android:src="@drawable/ic_player_pause"/>
 
+    <ImageView
+        android:id="@+id/iv_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_pause"
+        android:src="@drawable/ic_player_next"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -63,21 +72,6 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_player_next"/>
 
-    <SeekBar
-        android:id="@+id/sb_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="32dip"
-        android:layout_alignParentBottom="true"
-        android:thumb="@drawable/ic_player_progress_handle"
-    />
 
 </RelativeLayout>
