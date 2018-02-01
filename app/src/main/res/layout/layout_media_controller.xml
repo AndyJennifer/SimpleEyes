@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_alpha_66">
+    android:background="@color/translucent_black_95">
 
     <ImageView
         android:id="@+id/iv_back"
@@ -73,5 +73,16 @@
     </LinearLayout>
 
 
+    <SeekBar
+        android:id="@+id/sb_progress"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="11dp"
+        android:background="@color/transparent"
+        android:progressDrawable="@drawable/seek_bar_layer"
+        android:thumb="@drawable/ic_player_progress_handle"
+        android:thumbOffset="0dp"
+    />
 
 </RelativeLayout>

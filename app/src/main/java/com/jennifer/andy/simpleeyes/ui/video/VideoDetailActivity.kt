@@ -31,33 +31,37 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private val mBlurredImage by bindView<SimpleDraweeView>(R.id.iv_blurred)
     private val mVideoView by bindView<IjkVideoView>(R.id.video_view)
     private val mProgress by bindView<ProgressBar>(R.id.progress)
+    private val mHorizontalProgress by bindView<ProgressBar>(R.id.sb_progress)
 
     private var mBackPressed = false
 
+    private lateinit var ijkMediaController: IjkMediaController
 
     override fun getBundleExtras(extras: Bundle) {
         mVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as ContentBean
+
     }
 
 
     override fun initView(savedInstanceState: Bundle?) {
-        setPlaceHolder()
+        initPlaceHolder()
+        initMediaController()
         playVideo()
-        // todo 添加视频播放延迟，显示进度条判断当前视频下载进度，自定义medialController
     }
 
 
-    private fun setPlaceHolder() {
+    private fun initPlaceHolder() {
         mShareImage.setImageURI(mVideoInfo.data.cover.detail)
+        mBlurredImage.setImageURI(mVideoInfo.data.cover.blurred)
     }
 
     private fun playVideo() {
-        mBlurredImage.setImageURI(mVideoInfo.data.cover.blurred)
         val videoPath = "http://baobab.kaiyanapp.com/api/v1/playUrl?vid=${mVideoInfo.data.id}&editionType=high&source=aliyun&d0f6190461864a3a978bdbcb3fe9b48709f1f390&token=55675f3722ad26dc"
         with(mVideoView) {
             setVideoPath(videoPath)
-            setMediaController(IjkMediaController(mContext))
+            setMediaController(ijkMediaController)
             start()
+
             //设置准备完成监听
             setOnPreparedListener {
                 //隐藏进度条
@@ -68,6 +72,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
             }
             toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
+
             //设置完成监听
             setOnCompletionListener {
                 // todo 完成后更改布局
@@ -75,6 +80,15 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         }
 
 
+    }
+
+    private fun initMediaController() {
+        mHorizontalProgress.max = 1000
+        ijkMediaController = IjkMediaController(mContext)
+        ijkMediaController.setOnProgressChangeListener { progress, secondaryProgress ->
+            mHorizontalProgress.progress = progress
+            mHorizontalProgress.secondaryProgress = secondaryProgress
+        }
     }
 
 

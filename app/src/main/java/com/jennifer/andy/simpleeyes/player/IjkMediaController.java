@@ -1,11 +1,13 @@
 package com.jennifer.andy.simpleeyes.player;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.jennifer.andy.simpleeyes.R;
@@ -47,7 +50,7 @@ public class IjkMediaController extends FrameLayout {
     private ProgressBar mProgress;
     private TextView mEndTime, mCurrentTime;
 
-    private static final int sDefaultTimeout = 3000;
+    private static final int sDefaultTimeout = 3500;
 
     private final Context mContext;
     StringBuilder mFormatBuilder;
@@ -162,6 +165,17 @@ public class IjkMediaController extends FrameLayout {
         }
     };
 
+
+    public void setOnProgressChangeListener(OnProgressChangeListener onProgressChangeListener) {
+        mOnProgressChangeListener = onProgressChangeListener;
+    }
+
+    private OnProgressChangeListener mOnProgressChangeListener;
+
+    public interface OnProgressChangeListener {
+        void onProgressChanged(int progress, int secondaryProgress);
+    }
+
     /**
      * 设置进度条
      */
@@ -186,6 +200,9 @@ public class IjkMediaController extends FrameLayout {
         if (mCurrentTime != null)
             mCurrentTime.setText(stringForTime(position));
 
+        if (mOnProgressChangeListener != null && !mDragging) {
+            mOnProgressChangeListener.onProgressChanged((int) (1000L * position / duration), mPlayer.getBufferPercentage() * 10);
+        }
         return position;
     }
 
@@ -196,7 +213,7 @@ public class IjkMediaController extends FrameLayout {
         @Override
         public void run() {
             int pos = setProgress();
-            if (!mDragging && mShowing && mPlayer.isPlaying()) {
+            if (!mDragging && mPlayer.isPlaying()) {
                 postDelayed(mShowProgress, 1000 - (pos % 1000));
             }
         }
@@ -226,10 +243,8 @@ public class IjkMediaController extends FrameLayout {
     public void hide() {
         if (mAnchor == null)
             return;
-
         if (mShowing) {
             try {
-                removeCallbacks(mShowProgress);
                 mWindowManager.removeView(mDecor);
             } catch (IllegalArgumentException ex) {
                 Log.w("MediaController", "already removed");
@@ -264,7 +279,7 @@ public class IjkMediaController extends FrameLayout {
         if (mAnchor != null) {
             mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
         }
-        mAnchor = view;
+        mAnchor = (View) view.getParent();
         if (mAnchor != null) {
             mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
         }
@@ -297,6 +312,51 @@ public class IjkMediaController extends FrameLayout {
         }
     };
 
+    private final SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onStartTrackingTouch(SeekBar bar) {
+            show(3600000);
+
+            mDragging = true;
+
+            // By removing these pending progress messages we make sure
+            // that a) we won't update the progress while the user adjusts
+            // the seekbar and b) once the user is done dragging the thumb
+            // we will post one of these messages to the queue again and
+            // this ensures that there will be exactly one message queued up.
+            removeCallbacks(mShowProgress);
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
+            if (!fromuser) {
+                // We're not interested in programmatically generated changes to
+                // the progress bar's position.
+                return;
+            }
+
+            long duration = mPlayer.getDuration();
+            long newposition = (duration * progress) / 1000L;
+            mPlayer.seekTo((int) newposition);
+            if (mCurrentTime != null)
+                mCurrentTime.setText(stringForTime((int) newposition));
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar bar) {
+            mDragging = false;
+            setProgress();
+            updatePausePlay();
+            show(sDefaultTimeout);
+
+            // Ensure that progress is properly updated in the future,
+            // the call to show() does not guarantee this because it is a
+            // no-op if we are already showing.
+            post(mShowProgress);
+        }
+    };
+
+
     private void doPauseResume() {
         if (mPlayer.isPlaying()) {
             mPlayer.pause();
@@ -320,6 +380,15 @@ public class IjkMediaController extends FrameLayout {
         if (mNextButton != null) {
 
         }
+        mProgress = root.findViewById(R.id.sb_progress);
+        if (mProgress != null) {
+            if (mProgress instanceof SeekBar) {
+                SeekBar seeker = (SeekBar) mProgress;
+                seeker.setOnSeekBarChangeListener(mSeekListener);
+            }
+            mProgress.setPadding(0, 0, 0, 0);
+            mProgress.setMax(1000);
+        }
     }
 
     /**
@@ -328,6 +397,7 @@ public class IjkMediaController extends FrameLayout {
     public void show() {
         show(sDefaultTimeout);
     }
+
 
     /**
      * 隐藏控制层view
@@ -365,6 +435,25 @@ public class IjkMediaController extends FrameLayout {
             removeCallbacks(mFadeOut);
             postDelayed(mFadeOut, timeout);
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        final boolean uniqueDown = event.getRepeatCount() == 0
+                && event.getAction() == KeyEvent.ACTION_DOWN;
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
+            if (uniqueDown) {
+                hide();
+                removeCallbacks(mShowProgress);
+                //如果传入的是activity直接退出
+                if (mContext instanceof Activity) {
+                    ((Activity) mContext).finish();
+                }
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     public boolean isShowing() {
