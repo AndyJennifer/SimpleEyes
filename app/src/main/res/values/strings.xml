@@ -27,4 +27,10 @@
     <string name="VideoView_ar_16_9_fit_parent">16:9 / Fit parent</string>
     <string name="VideoView_ar_4_3_fit_parent">4:3 / Fit parent</string>
     <string name="N_A">N/A</string>
+    <string name="open_eyes_chinese">开眼</string>
+    <string name="open_eyes_english">Eyepetizer</string>
+    <string name="today_chose"><![CDATA[今日精选>>]]></string>
+    <string name="for_today">for \n Today</string>
+    <string name="ad_english_message">Daily appetizes for your eyes.Bon eyepetit.</string>
+    <string name="ad_chinese_message">每日精选视频推介，让你大开眼界。</string>
 </resources>

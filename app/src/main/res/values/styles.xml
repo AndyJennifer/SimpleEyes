@@ -8,10 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!--闪屏页背景，防止启动白屏或者黑屏-->
-    <!--<style name="SplashTheme" parent="AppTheme">-->
-        <!--<item name="windowBackground"></item>-->
-        <!--<item name="android:windowFullscreen">true</item>-->
-    <!--</style>-->
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/landing_background</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
 </resources>

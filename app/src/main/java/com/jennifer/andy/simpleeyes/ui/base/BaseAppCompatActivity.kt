@@ -101,7 +101,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 跳转到相应的activity 并携带bundle数据
      */
-    protected fun readyGo(clazz: Class<Any>, bundle: Bundle? = null) {
+    protected fun readyGo(clazz: Class<out Any>, bundle: Bundle? = null) {
         val intent = Intent(this, clazz)
         bundle?.let {
             intent.putExtras(bundle)
@@ -112,7 +112,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 跳转到相应的activity,并携带bundle数据，接收返回码
      */
-    protected fun readyGoForResult(clazz: Class<Any>, bundle: Bundle? = null, requestCode: Int) {
+    protected fun readyGoForResult(clazz: Class<out Any>, bundle: Bundle? = null, requestCode: Int) {
         val intent = Intent(this, clazz)
         bundle?.let {
             intent.putExtras(bundle)
@@ -124,7 +124,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
      * 跳转到相应的activity并携带bundle数据，然后干掉自己
      *
      */
-    protected fun readyGoThenKillSelf(clazz: Class<Any>, bundle: Bundle? = null) {
+    protected fun readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) {
         val intent = Intent(this, clazz)
         bundle?.let {
             intent.putExtras(bundle)

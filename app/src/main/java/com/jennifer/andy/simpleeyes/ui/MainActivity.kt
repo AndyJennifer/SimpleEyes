@@ -1,6 +1,7 @@
-package com.jennifer.andy.simpleeyes
+package com.jennifer.andy.simpleeyes.ui
 
 import android.os.Bundle
+import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
 import com.jennifer.andy.simpleeyes.ui.category.CategoryFragment
 import com.jennifer.andy.simpleeyes.ui.feed.FeedFragment
