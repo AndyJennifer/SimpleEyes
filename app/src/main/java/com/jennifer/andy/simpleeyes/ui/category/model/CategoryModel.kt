@@ -29,5 +29,6 @@ class CategoryModel : BaseModel {
     /**
      * 加载更多主页信息
      */
-    fun loadMoreCategoryInfo(nextPageUrl: String?): Observable<AndyInfo> = Api.getDefault().getMoreCategoryInfo(nextPageUrl).compose(RxHelper.handleResult())
+    fun loadMoreCategoryInfo(nextPageUrl: String?) = Api.getDefault().getMoreCategoryInfo(nextPageUrl).compose(RxHelper.handleResult())
+
 }

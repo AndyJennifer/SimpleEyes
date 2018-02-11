@@ -1,5 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.video
 
+import com.jennifer.andy.simpleeyes.net.Api
+import com.jennifer.andy.simpleeyes.rx.RxHelper
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 
 
@@ -12,4 +14,8 @@ import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 class VideoDetailModel : BaseModel {
 
 
+    /**
+     * 获取相关视频信息
+     */
+    fun getRelatedVideoInfo(id: String) = Api.getDefault().getRelatedVido(id).compose(RxHelper.handleResult())
 }

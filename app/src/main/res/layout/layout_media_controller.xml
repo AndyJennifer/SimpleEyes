@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_translucent_65">
+    android:background="@color/black_translucent_60"
+>
 
     <ImageView
         android:id="@+id/iv_back"
@@ -55,8 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_pause"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp">
+        android:layout_centerInParent="true">
 
         <TextView
             android:id="@+id/tv_currentTime"
@@ -65,7 +65,7 @@
             android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/tv_total_time"
+            android:id="@+id/tv_end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"/>

@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.video.view
 
+import com.jennifer.andy.simpleeyes.entity.ItemListBean
 import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 
@@ -10,5 +11,15 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  */
 
 interface VideoDetailView : BaseView {
+
+    /**
+     * 获取相关视频成功
+     */
+    fun getRelatedVideoInfoSuccess(itemList: MutableList<ItemListBean>)
+
+    /**
+     * 获取相关视屏失败
+     */
+    fun getRelatedVideoFail()
 
 }

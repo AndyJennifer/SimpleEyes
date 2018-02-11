@@ -46,7 +46,7 @@ data class ContentBean(var type: String,
                        var tag: String) : Serializable
 
 data class DataBeanXX(var dataType: String,
-                      var id: Int,
+                      var id: String,
                       var title: String,
                       var slogan: String,
                       var description: String,

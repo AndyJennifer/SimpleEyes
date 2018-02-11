@@ -423,7 +423,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                         // start the video here instead of in the callback.
                         if (mTargetState == STATE_PLAYING) {
                             start();
-                            mMediaController.show();
+                            mMediaController.firstShow();
                         } else if (!isPlaying() &&
                                 (seekToPosition != 0 || getCurrentPosition() > 0)) {
                             if (mMediaController != null) {

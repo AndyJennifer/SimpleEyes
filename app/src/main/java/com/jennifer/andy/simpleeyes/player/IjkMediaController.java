@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.jennifer.andy.simpleeyes.R;
 
 import java.util.Formatter;
+import java.util.Locale;
 
 /**
  * Author:  andy.xwt
@@ -196,7 +197,7 @@ public class IjkMediaController extends FrameLayout {
         }
 
         if (mEndTime != null)
-            mEndTime.setText(stringForTime(duration));
+            mEndTime.setText("/" + stringForTime(duration));
         if (mCurrentTime != null)
             mCurrentTime.setText(stringForTime(position));
 
@@ -318,13 +319,9 @@ public class IjkMediaController extends FrameLayout {
             show(3600000);
 
             mDragging = true;
-
-            // By removing these pending progress messages we make sure
-            // that a) we won't update the progress while the user adjusts
-            // the seekbar and b) once the user is done dragging the thumb
-            // we will post one of these messages to the queue again and
-            // this ensures that there will be exactly one message queued up.
+            //控制的时候停止更新进度条，同时禁止隐藏
             removeCallbacks(mShowProgress);
+            removeCallbacks(mFadeOut);
         }
 
         @Override
@@ -349,14 +346,16 @@ public class IjkMediaController extends FrameLayout {
             updatePausePlay();
             show(sDefaultTimeout);
 
-            // Ensure that progress is properly updated in the future,
-            // the call to show() does not guarantee this because it is a
-            // no-op if we are already showing.
+            //拖动结束的时候，更新进度条，开始隐藏
             post(mShowProgress);
+            post(mFadeOut);
         }
     };
 
 
+    /**
+     * 如果正在播放就停止
+     */
     private void doPauseResume() {
         if (mPlayer.isPlaying()) {
             mPlayer.pause();
@@ -380,6 +379,7 @@ public class IjkMediaController extends FrameLayout {
         if (mNextButton != null) {
 
         }
+
         mProgress = root.findViewById(R.id.sb_progress);
         if (mProgress != null) {
             if (mProgress instanceof SeekBar) {
@@ -389,6 +389,11 @@ public class IjkMediaController extends FrameLayout {
             mProgress.setPadding(0, 0, 0, 0);
             mProgress.setMax(1000);
         }
+        //总时间与当前时间
+        mCurrentTime = root.findViewById(R.id.tv_currentTime);
+        mEndTime = root.findViewById(R.id.tv_end_time);
+        mFormatBuilder = new StringBuilder();
+        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
     }
 
     /**
@@ -398,6 +403,15 @@ public class IjkMediaController extends FrameLayout {
         show(sDefaultTimeout);
     }
 
+    /**
+     * 第一次显示，不显示控制层
+     */
+    public void firstShow() {
+        if (!mShowing && mAnchor != null) {
+            setProgress();
+            post(mShowProgress);
+        }
+    }
 
     /**
      * 隐藏控制层view
@@ -405,7 +419,9 @@ public class IjkMediaController extends FrameLayout {
     private final Runnable mFadeOut = new Runnable() {
         @Override
         public void run() {
-            hide();
+            if (!mDragging) {//如果正在拖动就不隐藏
+                hide();
+            }
         }
     };
 
