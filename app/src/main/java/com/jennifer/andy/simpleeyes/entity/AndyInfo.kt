@@ -128,9 +128,9 @@ data class CoverBean(var feed: String,
 data class WebUrlBean(var raw: String,
                       var forWeibo: String) : Serializable
 
-data class ConsumptionBean(var collectionCount: Int,
-                           var shareCount: Int,
-                           var replyCount: Int) : Serializable
+data class ConsumptionBean(var collectionCount: String,
+                           var shareCount: String,
+                           var replyCount: String) : Serializable
 
 data class PlayInfoBean(var height: Int,
                         var width: Int,

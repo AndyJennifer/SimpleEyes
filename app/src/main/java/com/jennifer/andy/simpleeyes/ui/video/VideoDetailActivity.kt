@@ -20,6 +20,8 @@ import com.jennifer.andy.simpleeyes.ui.video.adapter.VideoDetailAdapter
 import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
+import com.jennifer.andy.simpleeyes.widget.VideoDetailHeadView
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
@@ -67,26 +69,24 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      */
     private fun playVideo() {
         val videoPath = "http://baobab.kaiyanapp.com/api/v1/playUrl?vid=${mVideoInfo.data.id}&editionType=high&source=aliyun&d0f6190461864a3a978bdbcb3fe9b48709f1f390&token=55675f3722ad26dc"
-        with(mVideoView) {
-            setVideoPath(videoPath)
-            setMediaController(ijkMediaController)
-            start()
-            //设置准备完成监听
-            setOnPreparedListener {
-                //隐藏进度条
-                handler.postDelayed({
-                    mShareImage.visibility = View.GONE
-                    mProgress.visibility = View.GONE
-                }, 600)
-                //获取相关视屏信息
-                mPresenter.getRelatedVideoInfo(mVideoInfo.data.id)
-            }
-            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
 
-            //设置完成监听
-            setOnCompletionListener {
-                // todo 完成后更改布局
-            }
+        mVideoView.setVideoPath(videoPath)
+        mVideoView.setMediaController(ijkMediaController)
+        mVideoView.start()
+        //设置准备完成监听
+        mVideoView.setOnPreparedListener {
+            //隐藏进度条
+            mShareImage.visibility = View.GONE
+            mProgress.visibility = View.GONE
+            //获取相关视屏信息
+            mPresenter.getRelatedVideoInfo(mVideoInfo.data.id)
+        }
+        mVideoView.toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
+
+        //设置完成监听
+        mVideoView.setOnCompletionListener {
+            // todo 完成后更改布局
+
         }
 
     }
@@ -94,19 +94,33 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     /**
      * 添加标题
      */
-    private fun addTitle() {
-        //todo 添加videoDetailView
+    private fun getVideoDetailView(): View {
+        val view = VideoDetailHeadView(mContext)
+        with(view) {
+            setTitle(mVideoInfo.data.title)
+            setCategoryAndTime(mVideoInfo.data.category, mVideoInfo.data.duration)
+            setFavoriteCount(mVideoInfo.data.consumption.collectionCount)
+            setShareCount(mVideoInfo.data.consumption.replyCount)
+            setReplayCount(mVideoInfo.data.consumption.replyCount)
+            setDescription(mVideoInfo.data.description)
+        }
+        view.startScrollAnimation()
+        return view
     }
 
     /**
      * 设置相关视频信息
      */
-    private fun setRelationVideoInfo() {
-
+    private fun getRelationVideoInfo(): View {
+        val view = VideoDetailAuthorView(mContext)
+        view.setVideoAuthorInfo(mVideoInfo.data.author)
+        return view
     }
 
     override fun getRelatedVideoInfoSuccess(itemList: MutableList<ItemListBean>) {
         mVideoDetailAdapter = VideoDetailAdapter(itemList)
+        mVideoDetailAdapter.addHeaderView(getVideoDetailView())
+        mVideoDetailAdapter.addHeaderView(getRelationVideoInfo())
         mVideoDetailAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN)
         mVideoDetailAdapter.setFooterView(LayoutInflater.from(mContext).inflate(R.layout.item_the_end, null))
         mRecycler.layoutManager = LinearLayoutManager(mContext)
@@ -123,6 +137,14 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         ijkMediaController.setOnProgressChangeListener { progress, secondaryProgress ->
             mHorizontalProgress.progress = progress
             mHorizontalProgress.secondaryProgress = secondaryProgress
+        }
+        ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
+            override fun onBackClick() {
+                finish()
+            }
+
+            override fun onNextClick() {
+            }
         }
     }
 

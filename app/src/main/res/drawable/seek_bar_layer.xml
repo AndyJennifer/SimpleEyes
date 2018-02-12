@@ -3,15 +3,15 @@
 
     <!--背景进度条-->
     <item android:id="@android:id/background">
-        <shape android:shape="line">
-            <stroke android:width="2dp" android:color="#73ffffff"/>
+        <shape>
+            <solid android:color="#73ffffff"/>
         </shape>
     </item>
     <!--第二进度条-->
     <item android:id="@android:id/secondaryProgress">
         <clip>
-            <shape android:shape="line">
-                <stroke android:width="2dp" android:color="#f2ffffff"/>
+            <shape>
+                <solid android:color="#f2ffffff"/>
             </shape>
         </clip>
     </item>
@@ -19,9 +19,8 @@
     <!--第一进度条-->
     <item android:id="@android:id/progress">
         <clip>
-
-            <shape android:shape="line">
-                <stroke android:width="2dp" android:color="#4B86C6"/>
+            <shape>
+                <solid android:color="#4B86C6"/>
             </shape>
         </clip>
     </item>

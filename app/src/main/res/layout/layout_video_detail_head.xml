@@ -22,60 +22,79 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
         android:layout_marginTop="10dp"
-        android:text="#记录 / 0324"
         android:textColor="@color/white"
+        android:textSize="12sp"
         app:font_name="normal"/>
 
-    <ImageView
-        android:id="@+id/iv_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_action_down"/>
 
-    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
         android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_time"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/white"/>
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="10sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tv_desc"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
-        <TextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_favorite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_action_favorites_without_padding"/>
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_action_favorites_without_padding"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:font_name="normal"
+        />
 
-        <TextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_share"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_action_share_without_padding"/>
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_action_share_without_padding"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:font_name="normal"
+        />
 
-        <TextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_reply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_action_reply_without_padding"/>
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_action_reply_without_padding"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:font_name="normal"
+        />
 
 
-        <TextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_download"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_action_offline_without_padding"/>
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_action_offline_without_padding"
+            android:gravity="center_vertical"
+            android:text="@string/cache"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:font_name="normal"/>
 
 
     </LinearLayout>

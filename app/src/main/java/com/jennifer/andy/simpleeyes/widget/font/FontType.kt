@@ -8,9 +8,9 @@ package com.jennifer.andy.simpleeyes.widget.font
  */
 enum class FontType(var index: Int, var fontName: String, val path: String) {
 
-    NORMAL(1, "Normal", "fonts/FZLanTingHeiS-L-GB-Regular.TTF"),
-    BOLD(2, "Bold", "fonts/FZLanTingHeiS-DB1-GB-Regular.TTF"),
-    FUTURE(3, "Future", "fonts/Futura-CondensedMedium.ttf"),
-    LOBSTER(4, "Lobster", "fonts/Lobster-1.4.otf");
+    NORMAL(0, "Normal", "fonts/FZLanTingHeiS-L-GB-Regular.TTF"),
+    BOLD(1, "Bold", "fonts/FZLanTingHeiS-DB1-GB-Regular.TTF"),
+    FUTURE(2, "Future", "fonts/Futura-CondensedMedium.ttf"),
+    LOBSTER(3, "Lobster", "fonts/Lobster-1.4.otf");
 
 }

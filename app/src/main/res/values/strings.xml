@@ -33,4 +33,6 @@
     <string name="for_today">for \n Today</string>
     <string name="ad_english_message">Daily appetizes for your eyes.Bon eyepetit.</string>
     <string name="ad_chinese_message">每日精选视频推介，让你大开眼界。</string>
+    <string name="cache">缓存</string>
+    <string name="add_follow">+ 关注</string>
 </resources>

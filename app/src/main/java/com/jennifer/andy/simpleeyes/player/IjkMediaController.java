@@ -59,8 +59,7 @@ public class IjkMediaController extends FrameLayout {
 
     private ImageView mPauseButton;
     private ImageView mNextButton;
-    private View.OnClickListener mNextListener, mPrevListener;
-    private boolean mListenersSet;
+    private ImageView mBackButton;
 
     public IjkMediaController(@NonNull Context context) {
         super(context);
@@ -333,10 +332,10 @@ public class IjkMediaController extends FrameLayout {
             }
 
             long duration = mPlayer.getDuration();
-            long newposition = (duration * progress) / 1000L;
-            mPlayer.seekTo((int) newposition);
+            long newPosition = (duration * progress) / 1000L;
+            mPlayer.seekTo((int) newPosition);
             if (mCurrentTime != null)
-                mCurrentTime.setText(stringForTime((int) newposition));
+                mCurrentTime.setText(stringForTime((int) newPosition));
         }
 
         @Override
@@ -375,9 +374,21 @@ public class IjkMediaController extends FrameLayout {
         if (mPauseButton != null) {
             mPauseButton.setOnClickListener(mPauseListener);
         }
+
         mNextButton = root.findViewById(R.id.iv_next);
         if (mNextButton != null) {
 
+        }
+        mBackButton = root.findViewById(R.id.iv_back);
+        if (mBackButton != null) {
+            mBackButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onBackClick();
+                    }
+                }
+            });
         }
 
         mProgress = root.findViewById(R.id.sb_progress);
@@ -476,4 +487,22 @@ public class IjkMediaController extends FrameLayout {
         return mShowing;
     }
 
+    private ControllerListener mControllerListener;
+
+    public ControllerListener getControllerListener() {
+        return mControllerListener;
+    }
+
+    public void setControllerListener(ControllerListener controllerListener) {
+        mControllerListener = controllerListener;
+    }
+
+    /**
+     * 控制层监听
+     */
+    public interface ControllerListener {
+        void onBackClick();
+
+        void onNextClick();
+    }
 }

@@ -16,7 +16,7 @@ import com.jennifer.andy.simpleeyes.R
 
 object TypefaceManager {
 
-    private var mTypeFaceMap: MutableMap<FontType, Typeface> = mutableMapOf()
+    private val mTypeFaceMap: MutableMap<FontType, Typeface> = mutableMapOf()
     private var mTypeFaceIndex: Int = FontType.NORMAL.index
 
     /**
@@ -32,11 +32,10 @@ object TypefaceManager {
         }
         val typeArray = context.obtainStyledAttributes(attributes, R.styleable.CustomFontTextView)
         mTypeFaceIndex = typeArray.getInteger(R.styleable.CustomFontTextView_font_name, mTypeFaceIndex)
-        if ((mTypeFaceIndex > 0) && mTypeFaceIndex <= FontType.values().size) {
-            textView.typeface = getTypeFace(FontType.values()[mTypeFaceIndex - 1])
+        if (mTypeFaceIndex in 0..FontType.values().size) {
+            textView.typeface = getTypeFace(FontType.values()[mTypeFaceIndex])
         }
         typeArray.recycle()
-
 
     }
 
@@ -68,10 +67,9 @@ object TypefaceManager {
             var typeFace = mTypeFaceMap[fontType]
             if (typeFace == null) {
                 typeFace = Typeface.createFromAsset(AndyApplication.getAppContext().assets, fontType.path)
-                return typeFace
+                mTypeFaceMap[fontType] = typeFace
             }
-            mTypeFaceMap.put(fontType, typeFace)
-            return null
+            return typeFace
         }
     }
 

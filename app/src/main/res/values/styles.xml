@@ -8,10 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
+    <!--闪屏页-->
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/landing_background</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="ProgressBarStyle">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/seek_bar_layer</item>
+        <item name="android:minHeight">2dip</item>
+        <item name="android:maxHeight">2dip</item>
+        <item name="android:mirrorForRtl">true</item>
     </style>
 
 </resources>

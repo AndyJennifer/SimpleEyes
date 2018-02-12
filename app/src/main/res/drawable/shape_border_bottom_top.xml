@@ -8,8 +8,8 @@
     </item>
 
     <item
-        android:bottom="1dp"
-        android:top="1dp">
+        android:bottom="1px"
+        android:top="1px">
         <shape>
             <solid android:color="@color/white"/>
         </shape>

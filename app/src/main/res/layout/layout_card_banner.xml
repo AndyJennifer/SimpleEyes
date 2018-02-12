@@ -4,4 +4,5 @@
     android:id="@+id/iv_image"
     android:layout_width="match_parent"
     android:layout_height="@dimen/default_card_height"
+    android:layout_marginBottom="20dp"
 />

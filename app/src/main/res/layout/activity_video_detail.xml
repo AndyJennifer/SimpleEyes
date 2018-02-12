@@ -67,15 +67,21 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
 
-        <ProgressBar
-            android:id="@+id/sb_progress"
-            style="@android:style/Widget.ProgressBar.Horizontal"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="11dp"
-            android:progressDrawable="@drawable/seek_bar_layer"
-        />
+            android:layout_marginBottom="11dp">
+
+            <ProgressBar
+                android:id="@+id/sb_progress"
+                style="@style/ProgressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+            />
+        </FrameLayout>
+
     </RelativeLayout>
 
 

@@ -33,14 +33,13 @@
         android:layout_below="@+id/tv_title"
         android:layout_marginTop="15dp"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        app:font_name="normal"/>
+        android:textSize="11sp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray_66A2A2A2"/>
+        android:background="@color/divider"/>
 
 
 </RelativeLayout>
