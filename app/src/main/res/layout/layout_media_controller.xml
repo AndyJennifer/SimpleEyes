@@ -79,15 +79,22 @@
 
     </RelativeLayout>
 
-    <SeekBar
-        android:id="@+id/sb_progress"
-        style="@style/ProgressBarStyle"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="11dp"
-        android:background="@color/transparent"
-        android:thumb="@drawable/ic_player_progress_handle"
-        android:thumbOffset="0dp"
-    />
+        android:layout_marginBottom="11dp">
+
+        <SeekBar
+            android:id="@+id/sb_progress"
+            style="@style/ProgressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:thumb="@drawable/ic_player_progress_handle"
+            android:thumbOffset="0dp"
+        />
+    </FrameLayout>
+
 </RelativeLayout>
