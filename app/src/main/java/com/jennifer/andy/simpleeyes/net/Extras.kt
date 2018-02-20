@@ -12,6 +12,8 @@ object Extras {
     /**
      * 更新参数
      */
-    var UPDATE_PARAMS = "update_params"
-    var VIDEO_INFO = "video_info"
+    val UPDATE_PARAMS = "update_params"
+    val VIDEO_INFO = "video_info"
+    val VIDEO_INFO_INDEX = "video_info_index"
+    val VIDEO_LIST_INFO = "video_list_info"
 }

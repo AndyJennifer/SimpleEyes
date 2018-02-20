@@ -20,6 +20,7 @@ package com.jennifer.andy.simpleeyes.player;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -34,10 +35,12 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
 import com.jennifer.andy.simpleeyes.R;
+import com.jennifer.andy.simpleeyes.utils.VideoPlayerUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,6 +117,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public static final int RENDER_SURFACE_VIEW = 1;
     public static final int RENDER_TEXTURE_VIEW = 2;
     private int mCurrentRender = RENDER_NONE;
+    private View mRenderUIView;
 
     /**
      * 设置宽高比
@@ -229,13 +233,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         if (mVideoSarNum > 0 && mVideoSarDen > 0)
             renderView.setVideoSampleAspectRatio(mVideoSarNum, mVideoSarDen);
 
-        View renderUIView = mRenderView.getView();
+        mRenderUIView = mRenderView.getView();
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
-        renderUIView.setLayoutParams(lp);
-        addView(renderUIView);
+        mRenderUIView.setLayoutParams(lp);
+        addView(mRenderUIView);
         mRenderView.addRenderCallback(mSHCallback);//添加回调
         mRenderView.setVideoRotation(mVideoRotationDegree);//设置视频旋转
     }
@@ -885,6 +889,28 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
         }
         return ijkMediaPlayer;
+    }
+
+    /**
+     * 进入全屏
+     */
+    public void enterFullScreen() {
+        //隐藏toolbar,并横屏
+        VideoPlayerUtils.INSTANCE.hideActionBar(getContext());
+        VideoPlayerUtils.INSTANCE.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        ViewGroup contentView = VideoPlayerUtils.INSTANCE.getActivity(getContext()).findViewById(android.R.id.content);
+        //将视图移除
+        removeView(mRenderUIView);
+        //重新添加到当前视图
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        contentView.addView(mRenderUIView, params);
+    }
+
+    /**
+     * 退出全屏
+     */
+    public void exitFullScreen() {
+
     }
 
 

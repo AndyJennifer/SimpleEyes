@@ -19,6 +19,7 @@ import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.HomePageHeaderView
 import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomBase
 import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
+import java.util.*
 
 
 /**
@@ -29,7 +30,7 @@ import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
 
 class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), CategoryView {
 
-    private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_recycler)
+    private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_category_recycler)
     private lateinit var mHomePageHeaderView: HomePageHeaderView
     private var mCateGoryAdapter: CategoryAdapter? = null
 
@@ -71,11 +72,12 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         val recyclerView = mPullToZoomRecycler.getPullRootView()
         recyclerView.setItemViewCacheSize(10)
         mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
-        mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, view, position ->
+        mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
             val item = mCateGoryAdapter?.getItem(position)
-            var bundle = Bundle()
-
+            val bundle = Bundle()
+            bundle.putSerializable(Extras.VIDEO_LIST_INFO, mCateGoryAdapter?.data as ArrayList)
             bundle.putSerializable(Extras.VIDEO_INFO, item?.data?.content)
+            bundle.putInt(Extras.VIDEO_INFO_INDEX, position)
             readyGo(VideoDetailActivity::class.java, bundle)
 
         }
@@ -88,7 +90,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mHomePageHeaderView = HomePageHeaderView(context)
         val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
         mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
-        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue)
+        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.itemList)
         mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
     }
 

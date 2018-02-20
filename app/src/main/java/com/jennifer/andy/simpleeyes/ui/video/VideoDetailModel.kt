@@ -17,5 +17,5 @@ class VideoDetailModel : BaseModel {
     /**
      * 获取相关视频信息
      */
-    fun getRelatedVideoInfo(id: String) = Api.getDefault().getRelatedVido(id).compose(RxHelper.handleResult())
+    fun getRelatedVideoInfo(id: String) = Api.getDefault().getRelatedVideo(id).compose(RxHelper.handleResult())
 }

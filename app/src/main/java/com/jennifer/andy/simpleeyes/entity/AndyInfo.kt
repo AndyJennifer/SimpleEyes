@@ -12,81 +12,114 @@ import java.io.Serializable
 data class AndyInfo(var count: Int, var total: Int,
                     var nextPageUrl: String?, var date: Long,
                     var nextPublishTime: Long, var dialog: String,
-                    var topIssue: TopIssueBean, var refreshCount: Int,
-                    var lastStartId: Int, var itemList: MutableList<ItemListBean>) : Serializable
+                    var topIssue: TopIssue, var refreshCount: Int,
+                    var lastStartId: Int, var itemList: MutableList<ItemList>) : Serializable
 
 
-data class TopIssueBean(var type: String,
-                        var data: DataBeanX,
-                        var tag: String) : Serializable
-
-data class DataBeanX(var dataType: String,
-                     var count: Int,
-                     var itemList: MutableList<ItemListBean>) : Serializable
+data class ItemList(var type: String,
+                    var data: ItemBean,
+                    var id: String,
+                    var tag: String) : Serializable
 
 
-data class ItemListBean(var type: String,
-                        var data: DataBeanXX,
-                        var tag: String) : Serializable
+data class ItemBean(var dataType: String,
+                    var header: Header,
+                    var image: String,
+                    var title: String,
+                    var description: String,
+                    var library: String,
+                    var category: String,
+                    var duration: Int,
+                    var cover: CoverBean,
+                    var text: String,
+                    var itemList: MutableList<ItemList>,
+                    var content: Content) : Serializable
 
-data class HeaderBean(var id: Int,
-                      var title: String,
-                      var font: String,
-                      var cover: String,
-                      var label: Any,
-                      var actionUrl: String,
-                      var labelList: MutableList<*>,
-                      var icon: String,
-                      var iconType: String,
-                      var description: String,
-                      var time: Long) : Serializable
 
-data class ContentBean(var type: String,
-                       var data: DataBeanXX,
-                       var tag: String) : Serializable
+data class Header(var id: Int,
+                  var title: String,
+                  var font: String,
+                  var cover: String,
+                  var label: Any,
+                  var actionUrl: String,
+                  var labelList: MutableList<*>,
+                  var icon: String,
+                  var iconType: String,
+                  var description: String,
+                  var time: Long) : Serializable
 
-data class DataBeanXX(var dataType: String,
-                      var id: String,
-                      var title: String,
-                      var slogan: String,
-                      var description: String,
-                      var provider: ProviderBean,
-                      var category: String,
-                      var author: AuthorBean,
-                      var cover: CoverBean,
-                      var playUrl: String,
-                      var thumbPlayUrl: String,
-                      var duration: Int,
-                      var webUrl: WebUrlBean,
-                      var releaseTime: Long,
-                      var library: String,
-                      var consumption: ConsumptionBean,
-                      var campaign: String,
-                      var waterMarks: String,
-                      var type: String,
-                      var titlePgc: String,
-                      var descriptionPgc: String,
-                      var remark: String,
-                      var idx: Int,
-                      var shareAdTrack: String,
-                      var favoriteAdTrack: String,
-                      var webAdTrack: String,
-                      var date: Long,
-                      var label: Any,
-                      var descriptionEditor: String,
-                      var isCollected: Boolean,
-                      var isPlayed: Boolean,
-                      var lastViewTime: String,
-                      var playlists: String,
-                      var playInfo: MutableList<PlayInfoBean>,
-                      var tags: MutableList<TagsBean>,
-                      var itemList: MutableList<ItemListBean>,
-                      var labelList: MutableList<*>,
-                      var header: HeaderBean,
-                      var image: String,
-                      var text: String,
-                      var content: ContentBean,
-                      var subtitles: MutableList<*>) : Serializable
+
+data class Content(var type: String,
+                   var data: ContentBean,
+                   var id: String,
+                   var tag: String) : Serializable
+
+
+data class ContentBean(var dataType: String,
+                       var id: String,
+                       var title: String,
+                       var description: String,
+                       var library: String,
+                       var tags: MutableList<TagsBean>,
+                       var consumption: ConsumptionBean,
+                       var resourceType: String,
+                       var slogan: String,
+                       var provider: ProviderBean,
+                       var category: String,
+                       var author: AuthorBean,
+                       var cover: CoverBean,
+                       var playUrl: String,
+                       var thumbPlayUrl: String,
+                       var duration: Int,
+                       var webUrl: WebUrlBean,
+                       var releaseTime: Long,
+                       var playInfo: MutableList<PlayInfoBean>,
+                       var campaign: String,
+                       var waterMarks: String,
+                       var type: String,
+                       var titlePgc: String,
+                       var descriptionPgc: String,
+                       var remark: String,
+                       var idx: Int,
+                       var shareAdTrack: String,
+                       var favoriteAdTrack: String,
+                       var webAdTrack: String,
+                       var date: Long,
+                       var promotion: String,
+                       var label: String,
+                       var labelList: MutableList<*>,
+                       var descriptionEditor: String,
+                       var isCollected: Boolean,
+                       var isPlayed: Boolean,
+                       var subtitles: MutableList<*>,
+                       var lastViewTime: String,
+                       var playlists: String,
+                       var text: String,
+                       var src: Int
+) : Serializable
+
+
+data class TagsBean(var id: Int,
+                    var name: String,
+                    var actionUrl: String,
+                    var adTrack: String) : Serializable
+
+
+data class ConsumptionBean(var collectionCount: String,
+                           var shareCount: String,
+                           var replyCount: String) : Serializable
+
+
+data class TopIssue(var type: String,
+                    var data: TopIssueBean,
+                    var tag: String) : Serializable
+
+data class TopIssueBean(var dataType: String,
+                        var count: Int,
+                        var itemList: MutableList<Content>) : Serializable
+
+
+data class ContentListBean(var itemList: MutableList<Content>) : Serializable
 
 
 data class ProviderBean(var name: String,
@@ -128,9 +161,6 @@ data class CoverBean(var feed: String,
 data class WebUrlBean(var raw: String,
                       var forWeibo: String) : Serializable
 
-data class ConsumptionBean(var collectionCount: String,
-                           var shareCount: String,
-                           var replyCount: String) : Serializable
 
 data class PlayInfoBean(var height: Int,
                         var width: Int,
@@ -144,10 +174,6 @@ data class UrlListBean(var name: String,
                        var size: Int) : Serializable
 
 
-data class TagsBean(var id: Int,
-                    var name: String,
-                    var actionUrl: String,
-                    var adTrack: String) : Serializable
 
 
 

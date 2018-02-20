@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.ItemListBean
+import com.jennifer.andy.simpleeyes.entity.ItemList
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.font.TypefaceManager
 
@@ -16,9 +16,9 @@ import com.jennifer.andy.simpleeyes.widget.font.TypefaceManager
  * Description:矩形卡片适配器
  */
 
-class SquareCollectionAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemListBean, BaseViewHolder>(R.layout.item_square_collection, data) {
+class SquareCollectionAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, BaseViewHolder>(R.layout.item_square_collection, data) {
 
-    override fun convert(helper: BaseViewHolder, item: ItemListBean) {
+    override fun convert(helper: BaseViewHolder, item: ItemList) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_simple_image)
         val coverView = helper.getView<FrameLayout>(R.id.fl_cover)
         if (item.type != "actionCard") {//分类

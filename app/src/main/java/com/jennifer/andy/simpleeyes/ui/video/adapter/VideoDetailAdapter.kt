@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.ItemListBean
+import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
 
 
@@ -15,7 +15,7 @@ import com.jennifer.andy.simpleeyes.utils.TimeUtils
  * Description:
  */
 
-class VideoDetailAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemListBean, BaseViewHolder>(data) {
+class VideoDetailAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
 
     val TEXT_CARD = "textCard"
     val VIDEO_SMALL_CARD = "videoSmallCard"
@@ -25,9 +25,9 @@ class VideoDetailAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<Ite
 
 
     init {
-        multiTypeDelegate = object : MultiTypeDelegate<ItemListBean>() {
-            override fun getItemType(andyInfoItem: ItemListBean?): Int {
-                when (andyInfoItem?.type) {
+        multiTypeDelegate = object : MultiTypeDelegate<Content>() {
+            override fun getItemType(andyInfoItem: Content): Int {
+                when (andyInfoItem.type) {
                     TEXT_CARD -> return TEXT_CARD_TYPE
                     VIDEO_SMALL_CARD -> return VIDEO_SMALL_CARD_TYPE
                 }
@@ -41,7 +41,7 @@ class VideoDetailAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<Ite
 
     }
 
-    override fun convert(helper: BaseViewHolder?, item: ItemListBean) {
+    override fun convert(helper: BaseViewHolder?, item: Content) {
         when (helper?.itemViewType) {
             TEXT_CARD_TYPE -> setTextCardInfo(helper, item)
             VIDEO_SMALL_CARD_TYPE -> setVideoSmallCardInfo(helper, item)
@@ -51,7 +51,7 @@ class VideoDetailAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<Ite
     /**
      * 设置卡片信息
      */
-    private fun setTextCardInfo(helper: BaseViewHolder, item: ItemListBean) {
+    private fun setTextCardInfo(helper: BaseViewHolder, item: Content) {
         helper.setText(R.id.tv_text, item.data.text)
 
     }
@@ -59,7 +59,7 @@ class VideoDetailAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<Ite
     /**
      * 设置视频信息
      */
-    private fun setVideoSmallCardInfo(helper: BaseViewHolder, item: ItemListBean) {
+    private fun setVideoSmallCardInfo(helper: BaseViewHolder, item: Content) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.cover.feed)
         helper.setText(R.id.tv_title, item.data.title)

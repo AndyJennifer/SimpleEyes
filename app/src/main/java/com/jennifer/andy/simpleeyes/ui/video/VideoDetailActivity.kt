@@ -9,8 +9,8 @@ import android.widget.ProgressBar
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.ContentBean
-import com.jennifer.andy.simpleeyes.entity.ItemListBean
+import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.entity.ItemList
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.player.IRenderView
 import com.jennifer.andy.simpleeyes.player.IjkMediaController
@@ -33,44 +33,46 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(), VideoDetailView {
 
-    private lateinit var mVideoInfo: ContentBean
-
     private val mShareImage by bindView<SimpleDraweeView>(R.id.iv_place_image)
     private val mBlurredImage by bindView<SimpleDraweeView>(R.id.iv_blurred)
     private val mVideoView by bindView<IjkVideoView>(R.id.video_view)
     private val mProgress by bindView<ProgressBar>(R.id.progress)
     private val mHorizontalProgress by bindView<ProgressBar>(R.id.sb_progress)
-    private val mRecycler by bindView<RecyclerView>(R.id.rv_recycler)
+    private val mRecycler by bindView<RecyclerView>(R.id.rv_video_recycler)
 
+    private lateinit var mCurrentVideoInfo: Content
+    private var mCurrentIndex = 0
+    private lateinit var mVideoListInfo: MutableList<ItemList>
     private var mBackPressed = false
 
     private lateinit var mVideoDetailAdapter: VideoDetailAdapter
     private lateinit var ijkMediaController: IjkMediaController
 
     override fun getBundleExtras(extras: Bundle) {
-        mVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as ContentBean
-
+        mCurrentVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as Content
+        mVideoListInfo = extras.getSerializable(Extras.VIDEO_LIST_INFO) as MutableList<ItemList>
+        mCurrentIndex = extras.getInt(Extras.VIDEO_INFO_INDEX, 0)
     }
 
     override fun initView(savedInstanceState: Bundle?) {
         initPlaceHolder()
         initMediaController()
-        playVideo()
+        playVideo(mCurrentVideoInfo)
     }
 
 
     private fun initPlaceHolder() {
-        mShareImage.setImageURI(mVideoInfo.data.cover.detail)
-        mBlurredImage.setImageURI(mVideoInfo.data.cover.blurred)
+        mShareImage.setImageURI(mCurrentVideoInfo.data.cover.detail)
+        mBlurredImage.setImageURI(mCurrentVideoInfo.data.cover.blurred)
     }
 
     /**
      * 播放视频
      */
-    private fun playVideo() {
-        val videoPath = "http://baobab.kaiyanapp.com/api/v1/playUrl?vid=${mVideoInfo.data.id}&editionType=high&source=aliyun&d0f6190461864a3a978bdbcb3fe9b48709f1f390&token=55675f3722ad26dc"
-
-        mVideoView.setVideoPath(videoPath)
+    private fun playVideo(currentVideoInfo: Content) {
+        mShareImage.visibility = View.VISIBLE
+        mProgress.visibility = View.VISIBLE
+        mVideoView.setVideoPath(currentVideoInfo.data.playUrl)
         mVideoView.setMediaController(ijkMediaController)
         mVideoView.start()
         //设置准备完成监听
@@ -79,7 +81,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             mShareImage.visibility = View.GONE
             mProgress.visibility = View.GONE
             //获取相关视屏信息
-            mPresenter.getRelatedVideoInfo(mVideoInfo.data.id)
+            mPresenter.getRelatedVideoInfo(currentVideoInfo.data.id)
         }
         mVideoView.toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
 
@@ -97,12 +99,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private fun getVideoDetailView(): View {
         val view = VideoDetailHeadView(mContext)
         with(view) {
-            setTitle(mVideoInfo.data.title)
-            setCategoryAndTime(mVideoInfo.data.category, mVideoInfo.data.duration)
-            setFavoriteCount(mVideoInfo.data.consumption.collectionCount)
-            setShareCount(mVideoInfo.data.consumption.replyCount)
-            setReplayCount(mVideoInfo.data.consumption.replyCount)
-            setDescription(mVideoInfo.data.description)
+            setTitle(mCurrentVideoInfo.data.title)
+            setCategoryAndTime(mCurrentVideoInfo.data.category, mCurrentVideoInfo.data.duration)
+            setFavoriteCount(mCurrentVideoInfo.data.consumption.collectionCount)
+            setShareCount(mCurrentVideoInfo.data.consumption.replyCount)
+            setReplayCount(mCurrentVideoInfo.data.consumption.replyCount)
+            setDescription(mCurrentVideoInfo.data.description)
         }
         view.startScrollAnimation()
         return view
@@ -113,41 +115,78 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      */
     private fun getRelationVideoInfo(): View {
         val view = VideoDetailAuthorView(mContext)
-        view.setVideoAuthorInfo(mVideoInfo.data.author)
+        view.setVideoAuthorInfo(mCurrentVideoInfo.data.author)
         return view
     }
 
-    override fun getRelatedVideoInfoSuccess(itemList: MutableList<ItemListBean>) {
+    override fun getRelatedVideoInfoSuccess(itemList: MutableList<Content>) {
+        mRecycler.visibility = View.VISIBLE
         mVideoDetailAdapter = VideoDetailAdapter(itemList)
         mVideoDetailAdapter.addHeaderView(getVideoDetailView())
         mVideoDetailAdapter.addHeaderView(getRelationVideoInfo())
         mVideoDetailAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN)
         mVideoDetailAdapter.setFooterView(LayoutInflater.from(mContext).inflate(R.layout.item_the_end, null))
+        mVideoDetailAdapter.setOnItemClickListener { _, _, position ->
+            if (mVideoDetailAdapter.getItemViewType(position) != BaseQuickAdapter.HEADER_VIEW) {
+                val item = mVideoDetailAdapter.getItem(position)
+                refreshVideo(item!!)
+            }
+        }
         mRecycler.layoutManager = LinearLayoutManager(mContext)
         mRecycler.adapter = mVideoDetailAdapter
     }
 
     override fun getRelatedVideoFail() {
-        //todo 加载空界面，
+
     }
 
     private fun initMediaController() {
         mHorizontalProgress.max = 1000
         ijkMediaController = IjkMediaController(mContext)
+
+        if (mCurrentIndex == mVideoListInfo.size) {
+            ijkMediaController.hide()
+        }
+
         ijkMediaController.setOnProgressChangeListener { progress, secondaryProgress ->
             mHorizontalProgress.progress = progress
             mHorizontalProgress.secondaryProgress = secondaryProgress
         }
+
         ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
             override fun onBackClick() {
                 finish()
             }
 
             override fun onNextClick() {
+                //先判断当前角标的位置，然后判断是否有下一页
+                if (mCurrentIndex < mVideoListInfo.size) {
+                    refreshVideo(mVideoListInfo[++mCurrentIndex].data.content)
+
+                } else {
+                    //否则则隐藏下一页
+                    ijkMediaController.hideNextButton()
+                }
+            }
+
+            override fun onFullScreenClick() {
+                mVideoView.enterFullScreen()
             }
         }
     }
 
+    /**
+     * 重置视频信息
+     */
+    private fun refreshVideo(videoInfo: Content) {
+        mCurrentVideoInfo = videoInfo
+        if (mVideoView.isPlaying) {
+            mVideoView.stopPlayback()
+            mVideoView.release(true)
+        }
+        mRecycler.visibility = View.INVISIBLE
+        initView(null)
+    }
 
     override fun onBackPressedSupport() {
         super.onBackPressedSupport()

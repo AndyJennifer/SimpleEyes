@@ -51,7 +51,7 @@ public class IjkMediaController extends FrameLayout {
     private ProgressBar mProgress;
     private TextView mEndTime, mCurrentTime;
 
-    private static final int sDefaultTimeout = 3500;
+    private static final int sDefaultTimeout = 4000;
 
     private final Context mContext;
     StringBuilder mFormatBuilder;
@@ -60,6 +60,7 @@ public class IjkMediaController extends FrameLayout {
     private ImageView mPauseButton;
     private ImageView mNextButton;
     private ImageView mBackButton;
+    private ImageView mFullScreen;
 
     public IjkMediaController(@NonNull Context context) {
         super(context);
@@ -104,7 +105,6 @@ public class IjkMediaController extends FrameLayout {
         // While the media controller is up, the volume control keys should
         // affect the media stream type
         mWindow.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
         setFocusable(true);
         setFocusableInTouchMode(true);
         setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
@@ -312,6 +312,7 @@ public class IjkMediaController extends FrameLayout {
         }
     };
 
+    private int mChangeProgress;
     private final SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onStartTrackingTouch(SeekBar bar) {
@@ -333,7 +334,7 @@ public class IjkMediaController extends FrameLayout {
 
             long duration = mPlayer.getDuration();
             long newPosition = (duration * progress) / 1000L;
-            mPlayer.seekTo((int) newPosition);
+            mChangeProgress = progress;
             if (mCurrentTime != null)
                 mCurrentTime.setText(stringForTime((int) newPosition));
         }
@@ -345,6 +346,9 @@ public class IjkMediaController extends FrameLayout {
             updatePausePlay();
             show(sDefaultTimeout);
 
+            //定位都拖动位置
+            long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
+            mPlayer.seekTo((int) newPosition);
             //拖动结束的时候，更新进度条，开始隐藏
             post(mShowProgress);
             post(mFadeOut);
@@ -377,7 +381,14 @@ public class IjkMediaController extends FrameLayout {
 
         mNextButton = root.findViewById(R.id.iv_next);
         if (mNextButton != null) {
-
+            mNextButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onNextClick();
+                    }
+                }
+            });
         }
         mBackButton = root.findViewById(R.id.iv_back);
         if (mBackButton != null) {
@@ -386,6 +397,24 @@ public class IjkMediaController extends FrameLayout {
                 public void onClick(View v) {
                     if (mControllerListener != null) {
                         mControllerListener.onBackClick();
+                    }
+                }
+            });
+        }
+        mFullScreen = root.findViewById(R.id.iv_full_screen);
+        if (mFullScreen != null) {
+            mFullScreen.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onFullScreenClick();
+                        // TODO: 2018/2/20  xwt  获取竖直方向上的view
+                        //重写竖直方向上的view
+                        FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                        );
+                        mRoot.setLayoutParams(frameParams);
                     }
                 }
             });
@@ -400,6 +429,7 @@ public class IjkMediaController extends FrameLayout {
             mProgress.setPadding(0, 0, 0, 0);
             mProgress.setMax(1000);
         }
+
         //总时间与当前时间
         mCurrentTime = root.findViewById(R.id.tv_currentTime);
         mEndTime = root.findViewById(R.id.tv_end_time);
@@ -435,6 +465,15 @@ public class IjkMediaController extends FrameLayout {
             }
         }
     };
+
+    /**
+     * 隐藏下一页按钮
+     */
+    public void hideNextButton() {
+        if (mNextButton != null && mNextButton.getVisibility() == VISIBLE) {
+            mNextButton.setVisibility(View.GONE);
+        }
+    }
 
     /**
      * 将控制器显示在屏幕上，当到达过期时间时会自动消失。
@@ -501,8 +540,15 @@ public class IjkMediaController extends FrameLayout {
      * 控制层监听
      */
     public interface ControllerListener {
+
+        //退出点击
         void onBackClick();
 
+        //下一页点击
         void onNextClick();
+
+        //全屏点击
+        void onFullScreenClick();
+
     }
 }

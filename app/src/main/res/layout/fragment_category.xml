@@ -11,7 +11,7 @@
 
 
         <com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
-            android:id="@+id/rv_recycler"
+            android:id="@+id/rv_category_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

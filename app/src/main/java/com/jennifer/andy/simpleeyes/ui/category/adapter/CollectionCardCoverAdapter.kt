@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.ItemListBean
+import com.jennifer.andy.simpleeyes.entity.ItemList
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
 
 
@@ -15,9 +15,9 @@ import com.jennifer.andy.simpleeyes.utils.TimeUtils
  * Description:集合卡片适配器
  */
 
-class CollectionCardCoverAdapter(data: MutableList<ItemListBean>) : BaseQuickAdapter<ItemListBean, BaseViewHolder>(R.layout.item_collection_card_cover, data) {
+class CollectionCardCoverAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, BaseViewHolder>(R.layout.item_collection_card_cover, data) {
 
-    override fun convert(helper: BaseViewHolder, item: ItemListBean) {
+    override fun convert(helper: BaseViewHolder, item: ItemList) {
         val imageCover = helper.getView<SimpleDraweeView>(R.id.iv_image)
         val title = helper.getView<TextView>(R.id.tv_title)
         val desc = helper.getView<TextView>(R.id.tv_desc)

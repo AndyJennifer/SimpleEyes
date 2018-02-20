@@ -1,14 +1,19 @@
 package com.jennifer.andy.simpleeyes.widget
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.ItemListBean
-import com.jennifer.andy.simpleeyes.entity.TopIssueBean
+import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.entity.ItemList
+import com.jennifer.andy.simpleeyes.entity.TopIssue
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
+import com.jennifer.andy.simpleeyes.net.Extras
+import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
@@ -27,7 +32,7 @@ class HomePageHeaderView : FrameLayout {
     private lateinit var mTitle: CustomFontTypeWriterTextView
     private lateinit var mText: CustomFontTypeWriterTextView
     private lateinit var mHeadRefreshView: HeaderRefreshView
-    private lateinit var mTopIssueBean: TopIssueBean
+    private lateinit var mTopIssue: TopIssue
 
     private var mScrollValue = 0
     private var currentPosition = -1
@@ -61,28 +66,35 @@ class HomePageHeaderView : FrameLayout {
             override fun onPageSelected(position: Int) {
                 //播放动画，并设置打印文字
                 if (currentPosition != position) {//处理banner的position问题
-                    mTitle.printText(mTopIssueBean.data.itemList[position].data.title)
-                    mText.printText(mTopIssueBean.data.itemList[position].data.slogan)
+                    mTitle.printText(mTopIssue.data.itemList[position].data.title)
+                    mText.printText(mTopIssue.data.itemList[position].data.slogan)
                     currentPosition = position
                 }
             }
         })
+
     }
 
     /**
      * 设置头部信息
      */
-    fun setHeaderInfo(topIssueBean: TopIssueBean) {
-        mTopIssueBean = topIssueBean
+    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<ItemList>) {
+        mTopIssue = topIssue
         mBanner.setImageLoader(FrescoImageLoader())
-        mBanner.setImages(getTopIssueCardUrl(topIssueBean.data.itemList))
+        mBanner.setImages(getTopIssueCardUrl(topIssue.data.itemList))
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
         mBanner.setIndicatorGravity(BannerConfig.CENTER)
         mBanner.isAutoPlay(true)
         mBanner.start()
         mBanner.setDelayTime(6000)
         mBanner.setOnBannerListener {
-            //todo 点击跳转
+            val item = mTopIssue.data.itemList[it]
+            val bundle = Bundle()
+            bundle.putSerializable(Extras.VIDEO_LIST_INFO, videoListInfo as ArrayList)
+            bundle.putSerializable(Extras.VIDEO_INFO, item)
+            val intent = Intent(context, VideoDetailActivity::class.java)
+            intent.putExtras(bundle)
+            context.startActivity(intent)
         }
     }
 
@@ -106,7 +118,7 @@ class HomePageHeaderView : FrameLayout {
     /**
      * 获取顶部图片地址集合
      */
-    private fun getTopIssueCardUrl(itemList: MutableList<ItemListBean>) = itemList.map { it.data.cover.feed }
+    private fun getTopIssueCardUrl(itemList: MutableList<Content>) = itemList.map { it.data.cover.feed }
 
     /**
      * 判断是否达到刷新阀值,

@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.net
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.entity.ContentListBean
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -52,7 +53,7 @@ interface ApiService {
      * 获取相关视频信息
      */
     @GET("api/v4/video/related")
-    fun getRelatedVido(@Query("id") id: String): Observable<AndyInfo>
+    fun getRelatedVideo(@Query("id") id: String): Observable<ContentListBean>
 
 
 }
