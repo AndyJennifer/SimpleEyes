@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,12 +17,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.jennifer.andy.simpleeyes.R;
+import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
+import com.jennifer.andy.simpleeyes.utils.VideoPlayerUtils;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -40,18 +44,17 @@ public class IjkMediaController extends FrameLayout {
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mDecorLayoutParams;
     private Window mWindow;
+
     private View mDecor;
-    private View mRoot;
+    private ViewGroup mRoot;
 
     private boolean mShowing;
     private boolean mDragging;
-
+    private boolean isFullScreen;
 
     private View mAnchor;
     private ProgressBar mProgress;
     private TextView mEndTime, mCurrentTime;
-
-    private static final int sDefaultTimeout = 4000;
 
     private final Context mContext;
     StringBuilder mFormatBuilder;
@@ -62,10 +65,25 @@ public class IjkMediaController extends FrameLayout {
     private ImageView mBackButton;
     private ImageView mFullScreen;
 
+
+    private ProgressBar mVolumeProgress;
+    private ProgressBar mLightProgress;
+    private LinearLayout mVolumeContainer;
+    private LinearLayout mLightContainer;
+
+    private int mScreenHeight;
+    private AudioManager mAudioManager;
+
+    private static final int sDefaultTimeout = 4000;
+    private View mTinyView;
+    private View mFullScreenView;
+
     public IjkMediaController(@NonNull Context context) {
         super(context);
         mContext = context;
         mRoot = this;
+        mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        mScreenHeight = ScreenUtils.INSTANCE.getScreenHeight(getContext());
         initFloatingWindowLayout();
         initFloatingWindow();
     }
@@ -101,10 +119,8 @@ public class IjkMediaController extends FrameLayout {
         mDecor.setOnTouchListener(mTouchListener);
         mWindow.setContentView(this);
         mWindow.setBackgroundDrawableResource(android.R.color.transparent);
-
-        // While the media controller is up, the volume control keys should
-        // affect the media stream type
         mWindow.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
         setFocusable(true);
         setFocusableInTouchMode(true);
         setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
@@ -116,8 +132,6 @@ public class IjkMediaController extends FrameLayout {
         int[] anchorPos = new int[2];
         mAnchor.getLocationOnScreen(anchorPos);
 
-        // we need to know the size of the controller so we can properly position it
-        // within its space
         mDecor.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(mAnchor.getHeight(), MeasureSpec.AT_MOST));
 
@@ -132,7 +146,7 @@ public class IjkMediaController extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         if (mRoot != null) {
-            initControllerView(mRoot);
+            initTinyControllerView(mRoot);
         }
     }
 
@@ -288,22 +302,175 @@ public class IjkMediaController extends FrameLayout {
         FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
                 mAnchorLayoutParams.width, mAnchorLayoutParams.height);
         removeAllViews();
-        View v = makeControllerView();
-        addView(v, frameParams);
+        addView(makeTinyControllerView(), frameParams);
     }
 
     /**
      * 创建控制层View
      */
-    private View makeControllerView() {
-        mRoot = LayoutInflater.from(mContext).inflate(R.layout.layout_media_controller, null);
-        initControllerView(mRoot);
-        return mRoot;
+    private View makeTinyControllerView() {
+        mTinyView = LayoutInflater.from(mContext).inflate(R.layout.layout_media_controller_vertical, null);
+        initTinyControllerView(mTinyView);
+        return mTinyView;
     }
+
+    /**
+     * 初始小视图化控制层
+     */
+    private void initTinyControllerView(View root) {
+        //暂停按钮
+        mPauseButton = root.findViewById(R.id.iv_pause);
+        if (mPauseButton != null) {
+            mPauseButton.setOnClickListener(mPauseListener);
+        }
+        //下一个按钮
+        mNextButton = root.findViewById(R.id.iv_next);
+        if (mNextButton != null) {
+            mNextButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onNextClick();
+                    }
+                }
+            });
+        }
+        //回退键
+        mBackButton = root.findViewById(R.id.iv_back);
+        if (mBackButton != null) {
+            mBackButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onBackClick();
+                    }
+                }
+            });
+        }
+        //全屏按钮
+        mFullScreen = root.findViewById(R.id.iv_full_screen);
+        if (mFullScreen != null) {
+            mFullScreen.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onFullScreenClick();
+                    }
+                    mRoot.removeAllViews();
+                    mRoot.addView(makeFullScreenView());
+                    isFullScreen = true;
+                }
+            });
+        }
+        //拖拽进度
+        mProgress = root.findViewById(R.id.sb_progress);
+        if (mProgress != null) {
+            if (mProgress instanceof SeekBar) {
+                SeekBar seeker = (SeekBar) mProgress;
+                seeker.setOnSeekBarChangeListener(mSeekListener);
+            }
+            mProgress.setPadding(0, 0, 0, 0);
+            mProgress.setMax(1000);
+        }
+
+        //总时间与当前时间
+        mCurrentTime = root.findViewById(R.id.tv_currentTime);
+        mEndTime = root.findViewById(R.id.tv_end_time);
+        mFormatBuilder = new StringBuilder();
+        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
+
+    }
+
+
+    /**
+     * 初始化全屏View
+     */
+    private View makeFullScreenView() {
+        mFullScreenView = LayoutInflater.from(mContext).inflate(R.layout.layout_media_controller_full_screen, null);
+        initFullScreenControllerView(mFullScreenView);
+        return mFullScreenView;
+    }
+
+    /**
+     * 初始化全屏视图控制层
+     */
+    private void initFullScreenControllerView(View root) {
+
+        ImageView minScreen = root.findViewById(R.id.iv_min_screen);
+        if (minScreen != null) {
+            minScreen.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mControllerListener != null) {
+                        mControllerListener.onTinyScreenClick();
+                        mRoot.removeAllViews();
+                        mRoot.addView(mTinyView);
+                    }
+                }
+            });
+        }
+
+        mVolumeContainer = root.findViewById(R.id.ll_volume_container);
+        mVolumeProgress = root.findViewById(R.id.pb_volume_progress);
+
+        mLightContainer = root.findViewById(R.id.ll_light_container);
+        mLightProgress = root.findViewById(R.id.pb_light_progress);
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////
     // 控制层监听
     ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * 显示声音控制
+     *
+     * @param deltaY 竖直方向偏移量
+     */
+    private void showVolumeController(float deltaY) {
+        float y = -deltaY;
+        int gestureDownVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int deltaV = (int) (max * deltaY / mScreenHeight);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, gestureDownVolume + deltaV, 0);
+        int volumePercent = (int) (gestureDownVolume * 100 / max + y * 100 / mScreenHeight);
+        mVolumeProgress.setProgress(volumePercent);
+    }
+
+    /**
+     * 显示亮度控制
+     *
+     * @param deltaY 竖直方向偏移量
+     */
+    private void showLightController(float deltaY) {
+        float y = -deltaY;
+        float gestureDownLight = 0;
+        WindowManager.LayoutParams lp = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
+        if (lp.screenBrightness < 0) {
+            try {
+                gestureDownLight = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            gestureDownLight = lp.screenBrightness * 255;
+        }
+
+        int deltaV = (int) (255 * deltaY * 3 / mScreenHeight);
+        if (((gestureDownLight + deltaV) / 255) >= 1) {//这和声音有区别，必须自己过滤一下负值
+            lp.screenBrightness = 1;
+        } else if (((gestureDownLight + deltaV) / 255) <= 0) {
+            lp.screenBrightness = 0.01f;
+        } else {
+            lp.screenBrightness = (gestureDownLight + deltaV) / 255;
+        }
+        VideoPlayerUtils.INSTANCE.getWindow(getContext()).setAttributes(lp);
+        int lightPercent = (int) (gestureDownLight * 100 / 255 + y * 100 / mScreenHeight);
+        mLightProgress.setProgress(lightPercent);
+    }
+
+
     private final View.OnClickListener mPauseListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -370,74 +537,6 @@ public class IjkMediaController extends FrameLayout {
 
 
     /**
-     * 初始化控制层视图
-     */
-    private void initControllerView(View root) {
-
-        mPauseButton = root.findViewById(R.id.iv_pause);
-        if (mPauseButton != null) {
-            mPauseButton.setOnClickListener(mPauseListener);
-        }
-
-        mNextButton = root.findViewById(R.id.iv_next);
-        if (mNextButton != null) {
-            mNextButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onNextClick();
-                    }
-                }
-            });
-        }
-        mBackButton = root.findViewById(R.id.iv_back);
-        if (mBackButton != null) {
-            mBackButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onBackClick();
-                    }
-                }
-            });
-        }
-        mFullScreen = root.findViewById(R.id.iv_full_screen);
-        if (mFullScreen != null) {
-            mFullScreen.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onFullScreenClick();
-                        // TODO: 2018/2/20  xwt  获取竖直方向上的view
-                        //重写竖直方向上的view
-                        FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT
-                        );
-                        mRoot.setLayoutParams(frameParams);
-                    }
-                }
-            });
-        }
-
-        mProgress = root.findViewById(R.id.sb_progress);
-        if (mProgress != null) {
-            if (mProgress instanceof SeekBar) {
-                SeekBar seeker = (SeekBar) mProgress;
-                seeker.setOnSeekBarChangeListener(mSeekListener);
-            }
-            mProgress.setPadding(0, 0, 0, 0);
-            mProgress.setMax(1000);
-        }
-
-        //总时间与当前时间
-        mCurrentTime = root.findViewById(R.id.tv_currentTime);
-        mEndTime = root.findViewById(R.id.tv_end_time);
-        mFormatBuilder = new StringBuilder();
-        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
-    }
-
-    /**
      * 显示当前控制层view，3秒之后会自动消失
      */
     public void show() {
@@ -492,9 +591,6 @@ public class IjkMediaController extends FrameLayout {
         }
         updatePausePlay();
 
-        // cause the progress bar to be updated even if mShowing
-        // was already true.  This happens, for example, if we're
-        // paused with the progress bar showing the user hits play.
         post(mShowProgress);
 
         if (timeout != 0) {
@@ -549,6 +645,9 @@ public class IjkMediaController extends FrameLayout {
 
         //全屏点击
         void onFullScreenClick();
+
+        //退出全屏
+        void onTinyScreenClick();
 
     }
 }

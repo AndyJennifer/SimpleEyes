@@ -172,6 +172,10 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             override fun onFullScreenClick() {
                 mVideoView.enterFullScreen()
             }
+
+            override fun onTinyScreenClick() {
+                mVideoView.exitFullScreen()
+            }
         }
     }
 

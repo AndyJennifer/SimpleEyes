@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ContextThemeWrapper
+import android.view.Window
 import android.view.WindowManager
 
 
@@ -26,6 +27,18 @@ object VideoPlayerUtils {
             supportActionBar.hide()
         }
         getActivity(context)?.window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    /**
+     * 显示ActionBar并退出全屏
+     */
+    fun showActionBar(context: Context?) {
+        val supportActionBar = getAppCompatActivity(context)?.supportActionBar
+        supportActionBar?.let {
+            supportActionBar.setShowHideAnimationEnabled(false)
+            supportActionBar.show()
+        }
+        getActivity(context)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
     /**
@@ -56,6 +69,17 @@ object VideoPlayerUtils {
             return getActivity(context.baseContext)
         }
         return null
+    }
+
+    /**
+     * 获取Window
+     */
+    fun getWindow(context: Context?): Window? {
+        return if (getAppCompatActivity(context) != null) {
+            getAppCompatActivity(context)?.window
+        } else {
+            getActivity(context)?.window
+        }
     }
 
 }
