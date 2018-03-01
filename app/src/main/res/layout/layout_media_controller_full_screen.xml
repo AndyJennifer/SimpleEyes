@@ -79,34 +79,6 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/ll_volume_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/action_volume_up"/>
-
-
-        <ProgressBar
-            android:id="@+id/pb_volume_progress"
-            style="@style/ProgressBarStyle"
-            android:layout_width="3dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/action_volume_down"/>
-
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_pause"
@@ -121,38 +93,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/iv_pause"
+        android:layout_toEndOf="@id/iv_pause"
         android:src="@drawable/ic_player_next"/>
 
 
-    <LinearLayout
-        android:id="@+id/ll_light_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/action_light_up"/>
-
-
-        <ProgressBar
-            android:id="@+id/pb_light_progress"
-            style="@style/ProgressBarStyle"
-            android:layout_width="3dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/action_light_down"/>
-
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

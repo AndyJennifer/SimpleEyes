@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,15 +16,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.jennifer.andy.simpleeyes.R;
-import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
-import com.jennifer.andy.simpleeyes.utils.VideoPlayerUtils;
 
 import java.util.Formatter;
 import java.util.Locale;
@@ -68,11 +64,8 @@ public class IjkMediaController extends FrameLayout {
 
     private ProgressBar mVolumeProgress;
     private ProgressBar mLightProgress;
-    private LinearLayout mVolumeContainer;
-    private LinearLayout mLightContainer;
 
-    private int mScreenHeight;
-    private AudioManager mAudioManager;
+
 
     private static final int sDefaultTimeout = 4000;
     private View mTinyView;
@@ -82,8 +75,6 @@ public class IjkMediaController extends FrameLayout {
         super(context);
         mContext = context;
         mRoot = this;
-        mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-        mScreenHeight = ScreenUtils.INSTANCE.getScreenHeight(getContext());
         initFloatingWindowLayout();
         initFloatingWindow();
     }
@@ -410,11 +401,6 @@ public class IjkMediaController extends FrameLayout {
             });
         }
 
-        mVolumeContainer = root.findViewById(R.id.ll_volume_container);
-        mVolumeProgress = root.findViewById(R.id.pb_volume_progress);
-
-        mLightContainer = root.findViewById(R.id.ll_light_container);
-        mLightProgress = root.findViewById(R.id.pb_light_progress);
     }
 
 
@@ -422,53 +408,6 @@ public class IjkMediaController extends FrameLayout {
     // 控制层监听
     ///////////////////////////////////////////////////////////////////////////
 
-
-    /**
-     * 显示声音控制
-     *
-     * @param deltaY 竖直方向偏移量
-     */
-    private void showVolumeController(float deltaY) {
-        float y = -deltaY;
-        int gestureDownVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        int max = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        int deltaV = (int) (max * deltaY / mScreenHeight);
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, gestureDownVolume + deltaV, 0);
-        int volumePercent = (int) (gestureDownVolume * 100 / max + y * 100 / mScreenHeight);
-        mVolumeProgress.setProgress(volumePercent);
-    }
-
-    /**
-     * 显示亮度控制
-     *
-     * @param deltaY 竖直方向偏移量
-     */
-    private void showLightController(float deltaY) {
-        float y = -deltaY;
-        float gestureDownLight = 0;
-        WindowManager.LayoutParams lp = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
-        if (lp.screenBrightness < 0) {
-            try {
-                gestureDownLight = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            gestureDownLight = lp.screenBrightness * 255;
-        }
-
-        int deltaV = (int) (255 * deltaY * 3 / mScreenHeight);
-        if (((gestureDownLight + deltaV) / 255) >= 1) {//这和声音有区别，必须自己过滤一下负值
-            lp.screenBrightness = 1;
-        } else if (((gestureDownLight + deltaV) / 255) <= 0) {
-            lp.screenBrightness = 0.01f;
-        } else {
-            lp.screenBrightness = (gestureDownLight + deltaV) / 255;
-        }
-        VideoPlayerUtils.INSTANCE.getWindow(getContext()).setAttributes(lp);
-        int lightPercent = (int) (gestureDownLight * 100 / 255 + y * 100 / mScreenHeight);
-        mLightProgress.setProgress(lightPercent);
-    }
 
 
     private final View.OnClickListener mPauseListener = new View.OnClickListener() {

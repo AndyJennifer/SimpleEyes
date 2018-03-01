@@ -18,14 +18,17 @@
 package com.jennifer.andy.simpleeyes.player;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -33,13 +36,15 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 
 import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
@@ -54,7 +59,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 
-public class IjkVideoView extends FrameLayout implements MediaController.MediaPlayerControl {
+public class IjkVideoView extends FrameLayout implements MediaController.MediaPlayerControl, View.OnTouchListener {
 
     private String TAG = "IjkVideoView";
     private Uri mUri;
@@ -72,6 +77,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private static final int STATE_PLAYBACK_COMPLETED = 5;
     private int mCurrentState = STATE_IDLE;//当前状态
     private int mTargetState = STATE_IDLE;//目标状态，记录Video改变的状态
+
+    /**
+     * 视频画面状态
+     */
+    private static final int SCREEN_TINY = 0;
+    private static final int SCREEN_FULL_SCREEN = 1;
+    private int mScreenState = SCREEN_TINY;
 
     private IRenderView.ISurfaceHolder mSurfaceHolder = null;
     private IMediaPlayer mMediaPlayer = null;
@@ -105,6 +117,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private long mSeekStartTime = 0;
     private long mSeekEndTime = 0;
     private int mScreenWidth;
+    private int mScreenHeight;
+    private AudioManager mAudioManager;
 
     /**
      * 视频宽高比
@@ -124,6 +138,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public static final int RENDER_TEXTURE_VIEW = 2;
     private int mCurrentRender = RENDER_NONE;
     private View mRenderUIView;
+    private static final int MIN_SCROLL = 80;
+
 
     /**
      * 设置宽高比
@@ -168,10 +184,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         setFocusable(true);
         setFocusableInTouchMode(true);
         requestFocus();
+        setOnTouchListener(this);
         //初始化状态
         mCurrentState = STATE_IDLE;
         mTargetState = STATE_IDLE;
         mScreenWidth = ScreenUtils.INSTANCE.getScreenWidth(getContext());
+        mScreenHeight = ScreenUtils.INSTANCE.getScreenHeight(getContext());
+        mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
     /**
@@ -717,86 +736,190 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     private float mDownX;
     private float mDownY;
-    private boolean isChangeVolume;
-    private boolean isChangeLight;
+    private Dialog mLightDialog;
+    private ProgressBar mLightProgress;
+    private Dialog mVolumeDialog;
+    private ProgressBar mVolumeProgress;
+    private boolean isShowVolume;
+    private boolean isShowLight;
+    private boolean isShowPosition;
+    private int mVideoCurrentVolume;
+    private float mScreenBrightness;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
+    public boolean onTouch(View v, MotionEvent event) {
+        float x = event.getRawX();
+        float y = event.getRawY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mDownX = x;
                 mDownY = y;
-                isChangeVolume = false;
-                isChangeLight = false;
+                isShowVolume = false;
+                isShowLight = false;
+                isShowPosition = false;
                 break;
             case MotionEvent.ACTION_MOVE:
-                // TODO: 2018/2/26 xwt  修改音乐和亮度用dialog来做
-//                float deltaX = x - mDownX;
-//                float deltaY = y - mDownY;
-//                float absDeltaX = Math.abs(deltaX);
-//                float absDeltaY = Math.abs(deltaY);
-//                if (isFullScreen) {
-//                    if (isHorizontalMove(absDeltaX, absDeltaY)) {
-//                        moveToPosition();
-//                    } else {
-//                        judgeLeftOrRight();
-//                        if (isChangeVolume) {//改变声音
-////                            showVolumeController(deltaY);
-//                        }
-//                        if (isChangeLight) {//改变亮度
-//                            showLightController(deltaY);
-//                        }
-//                    }
-//                }
+                float deltaX = x - mDownX;
+                float deltaY = y - mDownY;
+                float absDeltaX = Math.abs(deltaX);
+                float absDeltaY = Math.abs(deltaY);
+                if (mScreenState == SCREEN_FULL_SCREEN) {//判断是否是全屏
+                    if (!isShowVolume && !isShowLight && !isShowPosition) {
+                        if (absDeltaX > MIN_SCROLL || absDeltaY > MIN_SCROLL) {
+                            if (absDeltaX >= MIN_SCROLL) {
+                                isShowPosition = true;
+                            } else {
+                                if (mDownX <= (mScreenHeight * 0.5f)) {//改变声音
+                                    isShowVolume = true;
+                                    //记录滑动时候当前的声音
+                                    mVideoCurrentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                                } else {//改变亮度
+                                    isShowLight = true;
+                                    //记录滑动前的亮度
+                                    WindowManager.LayoutParams lp = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
+                                    if (lp.screenBrightness < 0) {
+                                        try {
+                                            mScreenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+                                        } catch (Settings.SettingNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        mScreenBrightness = lp.screenBrightness * 255;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (isShowPosition) {
+                    showMoveToPositionDialog();
+                }
+                if (isShowVolume) {
+                    showVolumeDialog(-deltaY);
+                }
+                if (isShowLight) {
+                    showLightDialog(-deltaY);
+                }
                 break;
             case MotionEvent.ACTION_UP:
-//                mVolumeContainer.setVisibility(GONE);
-//                mLightContainer.setVisibility(GONE);
+                if (isInPlaybackState() && mMediaController != null && (!isShowVolume || !isShowLight || isShowPosition)) {
+                    toggleMediaControlsVisible();
+                }
+                dismissLightDialog();
+                dismissVolumeDialog();
                 break;
         }
-        if (isInPlaybackState() && mMediaController != null) {
-            toggleMediaControlsVisible();
-        }
-        return false;
+        return true;
     }
+
 
     /**
      * 移动到相应位置
      */
-    private void moveToPosition() {
+    private void showMoveToPositionDialog() {
         // TODO: 2018/2/26 xwt 移动到相应的位置
 
     }
 
 
     /**
-     * 判断是否是水平滑动
+     * 显示声音控制对话框
      */
-    private boolean isHorizontalMove(float x, float y) {
-        int minScroll = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-        if (x > y && x > minScroll) {
-            return true;
-        } else if (y > x && y > minScroll) {
-            return false;
+    private void showVolumeDialog(float deltaY) {
+
+        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int deltaV = (int) (maxVolume * deltaY / mScreenWidth);
+
+        //设置声音
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mVideoCurrentVolume + deltaV, 0);
+
+        if (mVolumeDialog == null) {
+            View view = LayoutInflater.from(mAppContext).inflate(R.layout.dialog_volume_controller, null);
+            mVolumeProgress = view.findViewById(R.id.pb_volume_progress);
+            mVolumeDialog = createDialogWithView(view, Gravity.LEFT | Gravity.CENTER_VERTICAL);
         }
-        return false;
+        if (!mVolumeDialog.isShowing()) {
+            mVolumeDialog.show();
+        }
+
+        //设置进度条
+        int nextVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int volumePercent = (int) ((nextVolume * 1f / maxVolume) * 100f);
+        if (volumePercent > 100) {
+            volumePercent = 100;
+        } else if (volumePercent < 0) {
+            volumePercent = 0;
+        }
+        mVolumeProgress.setProgress(volumePercent);
     }
 
     /**
-     * 根据按下X坐标判断是改变亮度还是声音
+     * 隐藏声音对话框
      */
-    private void judgeLeftOrRight() {
-        if (mDownX <= (mScreenWidth / 2)) {
-            isChangeVolume = true;
-            // TODO: 2018/2/26 xwt 修改一下
-//            mVolumeContainer.setVisibility(View.VISIBLE);
-        } else if (mDownX > (mScreenWidth / 2)) {
-            isChangeLight = true;
-//            mLightContainer.setVisibility(View.VISIBLE);
+    private void dismissVolumeDialog() {
+        if (mVolumeDialog != null) {
+            mVolumeDialog.dismiss();
         }
     }
+
+
+    /**
+     * 显示控制亮度对话框
+     */
+    private void showLightDialog(float deltaY) {
+        WindowManager.LayoutParams params = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
+        int deltaV = (int) (255 * deltaY / mScreenWidth);
+        if (((mScreenBrightness + deltaV) / 255) >= 1) {
+            params.screenBrightness = 1f;
+        } else if (((mScreenBrightness + deltaV) / 255) <= 0) {
+            params.screenBrightness = 0.01f;
+        } else {
+            params.screenBrightness = (mScreenBrightness + deltaV) / 255;
+        }
+        VideoPlayerUtils.INSTANCE.getWindow(getContext()).setAttributes(params);
+
+        //设置亮度百分比
+        if (mLightProgress == null) {
+            View view = LayoutInflater.from(mAppContext).inflate(R.layout.dialog_light_controller, null);
+            mLightProgress = view.findViewById(R.id.pb_light_progress);
+            mLightDialog = createDialogWithView(view, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+        }
+        if (!mLightDialog.isShowing()) {
+            mLightDialog.show();
+        }
+
+        int lightPercent = (int) (params.screenBrightness * 100f);
+        mLightProgress.setProgress(lightPercent);
+    }
+
+    private void dismissLightDialog() {
+        if (mLightDialog != null) {
+            mLightDialog.dismiss();
+        }
+    }
+
+
+    /**
+     * 根据View与位置创建dialog
+     *
+     * @param localView 内容布局
+     * @param gravity   位置
+     */
+    public Dialog createDialogWithView(View localView, int gravity) {
+        Dialog dialog = new Dialog(getContext(), R.style.VideoProgress);
+        dialog.setContentView(localView);
+        Window window = dialog.getWindow();
+        window.addFlags(Window.FEATURE_ACTION_BAR);
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        window.setLayout(-2, -2);
+        window.setBackgroundDrawable(new ColorDrawable());
+        WindowManager.LayoutParams localLayoutParams = window.getAttributes();
+        localLayoutParams.gravity = gravity;
+        window.setAttributes(localLayoutParams);
+        return dialog;
+    }
+
 
     /**
      * 处理轨迹球事件
@@ -983,7 +1106,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         //重新添加到当前视图
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         contentView.addView(mRenderUIView, params);
-        // TODO: 2018/2/26 xwt 记录一下当前的模式
+        mScreenState = SCREEN_FULL_SCREEN;
     }
 
     /**
@@ -1000,6 +1123,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         mRenderUIView.setLayoutParams(lp);
         contentView.removeView(mRenderUIView);
         addView(mRenderUIView);
+        mScreenState = SCREEN_TINY;
     }
 
 

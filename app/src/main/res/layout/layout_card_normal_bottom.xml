@@ -26,6 +26,8 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="当树枝折断时-官方预告片"
             android:textColor="@color/black"
             app:font_name="bold"/>
