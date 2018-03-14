@@ -12,9 +12,11 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ItemList
 import com.jennifer.andy.simpleeyes.net.Extras
-import com.jennifer.andy.simpleeyes.player.IRenderView
 import com.jennifer.andy.simpleeyes.player.IjkMediaController
 import com.jennifer.andy.simpleeyes.player.IjkVideoView
+import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent
+import com.jennifer.andy.simpleeyes.player.render.IRenderView
+import com.jennifer.andy.simpleeyes.rx.RxBus
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.video.adapter.VideoDetailAdapter
 import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoDetailPresenter
@@ -22,6 +24,7 @@ import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailHeadView
+import io.reactivex.functions.Consumer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 
@@ -148,10 +151,13 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             ijkMediaController.hide()
         }
 
-        ijkMediaController.setOnProgressChangeListener { progress, secondaryProgress ->
-            mHorizontalProgress.progress = progress
-            mHorizontalProgress.secondaryProgress = secondaryProgress
-        }
+        RxBus.register(this, VideoProgressEvent::class.java, Consumer {
+            mHorizontalProgress.progress = it.progress
+            mHorizontalProgress.secondaryProgress = it.secondaryProgress
+
+            println("当前的进度${it.progress}+第二进度${it.secondaryProgress}")
+        })
+
 
         ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
             override fun onBackClick() {
@@ -203,7 +209,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         if (mVideoView.isPlaying) {
             mVideoView.pause()
         }
-
+        RxBus.unRegister(this)
     }
 
     override fun onStop() {

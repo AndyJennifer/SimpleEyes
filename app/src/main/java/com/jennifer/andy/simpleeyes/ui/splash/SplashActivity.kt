@@ -56,7 +56,6 @@ class SplashActivity : BaseAppCompatActivity() {
         val moveY = DensityUtils.dip2px(this, 100f)
         val upAnimator = ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat())
         upAnimator.addUpdateListener {
-            println(it.currentPlayTime)
             if (it.currentPlayTime in 600..1500) {
                 mHeadOuter.setImageResource(R.drawable.ic_eye_white_outer)
                 mHeadInner.setImageResource(R.drawable.ic_eye_white_inner)

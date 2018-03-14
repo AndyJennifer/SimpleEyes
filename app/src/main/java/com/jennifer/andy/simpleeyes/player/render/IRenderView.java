@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.jennifer.andy.simpleeyes.player;
+package com.jennifer.andy.simpleeyes.player.render;
 
 import android.graphics.SurfaceTexture;
 import android.support.annotation.NonNull;

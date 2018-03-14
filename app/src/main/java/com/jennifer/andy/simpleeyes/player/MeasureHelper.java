@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jennifer.andy.simpleeyes.R;
+import com.jennifer.andy.simpleeyes.player.render.IRenderView;
 
 import java.lang.ref.WeakReference;
 

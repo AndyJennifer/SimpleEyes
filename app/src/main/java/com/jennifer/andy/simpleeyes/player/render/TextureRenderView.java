@@ -1,5 +1,5 @@
 
-package com.jennifer.andy.simpleeyes.player;
+package com.jennifer.andy.simpleeyes.player.render;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,6 +15,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
+import com.jennifer.andy.simpleeyes.player.MeasureHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;

@@ -8,23 +8,17 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.jennifer.andy.simpleeyes.R;
-
-import java.util.Formatter;
-import java.util.Locale;
+import com.jennifer.andy.simpleeyes.player.controllerview.ControllerView;
+import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
+import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
 
 /**
  * Author:  andy.xwt
@@ -45,31 +39,13 @@ public class IjkMediaController extends FrameLayout {
     private ViewGroup mRoot;
 
     private boolean mShowing;
-    private boolean mDragging;
-    private boolean isFullScreen;
-
     private View mAnchor;
-    private ProgressBar mProgress;
-    private TextView mEndTime, mCurrentTime;
-
     private final Context mContext;
-    StringBuilder mFormatBuilder;
-    Formatter mFormatter;
-
-    private ImageView mPauseButton;
-    private ImageView mNextButton;
-    private ImageView mBackButton;
-    private ImageView mFullScreen;
-
-
-    private ProgressBar mVolumeProgress;
-    private ProgressBar mLightProgress;
-
-
+    private ControllerView mControllerView;
 
     private static final int sDefaultTimeout = 4000;
-    private View mTinyView;
-    private View mFullScreenView;
+    private LayoutParams mTinyParams;
+
 
     public IjkMediaController(@NonNull Context context) {
         super(context);
@@ -79,6 +55,10 @@ public class IjkMediaController extends FrameLayout {
         initFloatingWindow();
     }
 
+
+    // TODO: 2018/3/13 xwt 全屏后退出全屏，没显示时间
+    // TODO: 2018/3/13 xwt 拖动的时候还是会更新进度条
+    // TODO: 2018/3/13 xwt 切换视频的时候,视频进度条还是会闪烁
 
     /**
      * 初始化悬浮window布局
@@ -137,7 +117,7 @@ public class IjkMediaController extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         if (mRoot != null) {
-            initTinyControllerView(mRoot);
+            mControllerView.initControllerListener();
         }
     }
 
@@ -171,75 +151,85 @@ public class IjkMediaController extends FrameLayout {
     };
 
 
-    public void setOnProgressChangeListener(OnProgressChangeListener onProgressChangeListener) {
-        mOnProgressChangeListener = onProgressChangeListener;
+    public void setMediaPlayer(MediaController.MediaPlayerControl player) {
+        mPlayer = player;
+        if (mControllerView != null) {
+            mControllerView.togglePause();
+        }
     }
 
-    private OnProgressChangeListener mOnProgressChangeListener;
-
-    public interface OnProgressChangeListener {
-        void onProgressChanged(int progress, int secondaryProgress);
-    }
 
     /**
-     * 设置进度条
+     * 将控制层view与视屏播放view进行关联，并且将视屏播放view添加进控制层view
      */
-    private int setProgress() {
-        if (mPlayer == null || mDragging) {
-            return 0;
+    public void setAnchorView(View view) {
+        if (mAnchor != null) {
+            mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
         }
-        int position = mPlayer.getCurrentPosition();
-        int duration = mPlayer.getDuration();
-        if (mProgress != null) {
-            if (duration > 0) {
-                // use long to avoid overflow
-                long pos = 1000L * position / duration;
-                mProgress.setProgress((int) pos);
-            }
-            int percent = mPlayer.getBufferPercentage();
-            mProgress.setSecondaryProgress(percent * 10);
+        mAnchor = (View) view.getParent();
+        if (mAnchor != null) {
+            mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
         }
 
-        if (mEndTime != null)
-            mEndTime.setText("/" + stringForTime(duration));
-        if (mCurrentTime != null)
-            mCurrentTime.setText(stringForTime(position));
-
-        if (mOnProgressChangeListener != null && !mDragging) {
-            mOnProgressChangeListener.onProgressChanged((int) (1000L * position / duration), mPlayer.getBufferPercentage() * 10);
-        }
-        return position;
+        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
+        mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
+        removeAllViews();
+        mControllerView = new TinyControllerView(mPlayer, this, mContext);
+        addView(mControllerView.getRootView(), mTinyParams);
     }
 
+
     /**
-     * 显示进度条线程
+     * 隐藏控制层view
      */
-    private final Runnable mShowProgress = new Runnable() {
+    private final Runnable mFadeOut = new Runnable() {
         @Override
         public void run() {
-            int pos = setProgress();
-            if (!mDragging && mPlayer.isPlaying()) {
-                postDelayed(mShowProgress, 1000 - (pos % 1000));
+            if (mShowing) {
+                hide();
             }
         }
     };
 
     /**
-     * 格式化时间
+     * 第一次显示，不显示控制层
      */
-    private String stringForTime(int timeMs) {
-        int totalSeconds = timeMs / 1000;
-
-        int seconds = totalSeconds % 60;
-        int minutes = (totalSeconds / 60) % 60;
-        int hours = totalSeconds / 3600;
-
-        mFormatBuilder.setLength(0);
-        if (hours > 0) {
-            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
-        } else {
-            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
+    public void firstShow() {
+        if (!mShowing && mAnchor != null) {
+            mControllerView.show();
         }
+    }
+
+    /**
+     * 显示当前控制层view，默认时间内会自动消失
+     */
+    public void show() {
+        show(sDefaultTimeout);
+    }
+
+    /**
+     * 将控制器显示在屏幕上，当到达过期时间时会自动消失。
+     *
+     * @param timeout 过期时间(毫秒) 如果设置为0直到调用hide方法才会消失
+     */
+    public void show(int timeout) {
+        if (!mShowing && mAnchor != null) {
+            updateFloatingWindowLayout();
+            mWindowManager.addView(mDecor, mDecorLayoutParams);
+            mShowing = true;
+        }
+        if (timeout != 0) {
+            removeCallbacks(mFadeOut);
+            postDelayed(mFadeOut, timeout);
+        }
+        mControllerView.show();
+    }
+
+    /**
+     * 当前Window是否显示
+     */
+    public boolean isShowing() {
+        return mShowing;
     }
 
     /**
@@ -258,285 +248,34 @@ public class IjkMediaController extends FrameLayout {
         }
     }
 
-
-    public void setMediaPlayer(MediaController.MediaPlayerControl player) {
-        mPlayer = player;
-        updatePausePlay();
+    /**
+     * 取消延时隐藏
+     */
+    public void cancelFadeOut() {
+        removeCallbacks(mFadeOut);
     }
 
     /**
-     * 更新暂停按钮显示内容，播放->暂停  暂停->播放
+     * 进入全屏
      */
-    private void updatePausePlay() {
-        if (mRoot == null || mPauseButton == null)
-            return;
-        if (mPlayer.isPlaying()) {
-            mPauseButton.setImageResource(R.drawable.ic_player_pause);
+    public void changeControllerView(ControllerView controllerView) {
+        mRoot.removeAllViews();
+        if (controllerView instanceof TinyControllerView) {
+            mRoot.addView(controllerView.getRootView(), mTinyParams);
         } else {
-            mPauseButton.setImageResource(R.drawable.ic_player_play);
+            mRoot.addView(controllerView.getRootView());
         }
-    }
-
-    /**
-     * 将控制层view与视屏播放view进行关联，并且将视屏播放view添加进控制层view
-     */
-    public void setAnchorView(View view) {
-        if (mAnchor != null) {
-            mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
-        }
-        mAnchor = (View) view.getParent();
-        if (mAnchor != null) {
-            mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
-        }
-
-        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
-        FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
-                mAnchorLayoutParams.width, mAnchorLayoutParams.height);
-        removeAllViews();
-        addView(makeTinyControllerView(), frameParams);
-    }
-
-    /**
-     * 创建控制层View
-     */
-    private View makeTinyControllerView() {
-        mTinyView = LayoutInflater.from(mContext).inflate(R.layout.layout_media_controller_vertical, null);
-        initTinyControllerView(mTinyView);
-        return mTinyView;
-    }
-
-    /**
-     * 初始小视图化控制层
-     */
-    private void initTinyControllerView(View root) {
-        //暂停按钮
-        mPauseButton = root.findViewById(R.id.iv_pause);
-        if (mPauseButton != null) {
-            mPauseButton.setOnClickListener(mPauseListener);
-        }
-        //下一个按钮
-        mNextButton = root.findViewById(R.id.iv_next);
-        if (mNextButton != null) {
-            mNextButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onNextClick();
-                    }
-                }
-            });
-        }
-        //回退键
-        mBackButton = root.findViewById(R.id.iv_back);
-        if (mBackButton != null) {
-            mBackButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onBackClick();
-                    }
-                }
-            });
-        }
-        //全屏按钮
-        mFullScreen = root.findViewById(R.id.iv_full_screen);
-        if (mFullScreen != null) {
-            mFullScreen.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onFullScreenClick();
-                    }
-                    mRoot.removeAllViews();
-                    mRoot.addView(makeFullScreenView());
-                    isFullScreen = true;
-                }
-            });
-        }
-        //拖拽进度
-        mProgress = root.findViewById(R.id.sb_progress);
-        if (mProgress != null) {
-            if (mProgress instanceof SeekBar) {
-                SeekBar seeker = (SeekBar) mProgress;
-                seeker.setOnSeekBarChangeListener(mSeekListener);
-            }
-            mProgress.setPadding(0, 0, 0, 0);
-            mProgress.setMax(1000);
-        }
-
-        //总时间与当前时间
-        mCurrentTime = root.findViewById(R.id.tv_currentTime);
-        mEndTime = root.findViewById(R.id.tv_end_time);
-        mFormatBuilder = new StringBuilder();
-        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
-
-    }
-
-
-    /**
-     * 初始化全屏View
-     */
-    private View makeFullScreenView() {
-        mFullScreenView = LayoutInflater.from(mContext).inflate(R.layout.layout_media_controller_full_screen, null);
-        initFullScreenControllerView(mFullScreenView);
-        return mFullScreenView;
-    }
-
-    /**
-     * 初始化全屏视图控制层
-     */
-    private void initFullScreenControllerView(View root) {
-
-        ImageView minScreen = root.findViewById(R.id.iv_min_screen);
-        if (minScreen != null) {
-            minScreen.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mControllerListener != null) {
-                        mControllerListener.onTinyScreenClick();
-                        mRoot.removeAllViews();
-                        mRoot.addView(mTinyView);
-                    }
-                }
-            });
-        }
-
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    // 控制层监听
-    ///////////////////////////////////////////////////////////////////////////
-
-
-
-    private final View.OnClickListener mPauseListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            doPauseResume();
-            show(sDefaultTimeout);
-        }
-    };
-
-    private int mChangeProgress;
-    private final SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onStartTrackingTouch(SeekBar bar) {
-            show(3600000);
-
-            mDragging = true;
-            //控制的时候停止更新进度条，同时禁止隐藏
-            removeCallbacks(mShowProgress);
-            removeCallbacks(mFadeOut);
-        }
-
-        @Override
-        public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
-            if (!fromuser) {
-                // We're not interested in programmatically generated changes to
-                // the progress bar's position.
-                return;
-            }
-
-            long duration = mPlayer.getDuration();
-            long newPosition = (duration * progress) / 1000L;
-            mChangeProgress = progress;
-            if (mCurrentTime != null)
-                mCurrentTime.setText(stringForTime((int) newPosition));
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar bar) {
-            mDragging = false;
-            setProgress();
-            updatePausePlay();
-            show(sDefaultTimeout);
-
-            //定位都拖动位置
-            long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
-            mPlayer.seekTo((int) newPosition);
-            //拖动结束的时候，更新进度条，开始隐藏
-            post(mShowProgress);
-            post(mFadeOut);
-        }
-    };
-
-
-    /**
-     * 如果正在播放就停止
-     */
-    private void doPauseResume() {
-        if (mPlayer.isPlaying()) {
-            mPlayer.pause();
-        } else {
-            mPlayer.start();
-        }
-        updatePausePlay();//更新暂停按钮
-    }
-
-
-    /**
-     * 显示当前控制层view，3秒之后会自动消失
-     */
-    public void show() {
-        show(sDefaultTimeout);
-    }
-
-    /**
-     * 第一次显示，不显示控制层
-     */
-    public void firstShow() {
-        if (!mShowing && mAnchor != null) {
-            setProgress();
-            post(mShowProgress);
-        }
-    }
-
-    /**
-     * 隐藏控制层view
-     */
-    private final Runnable mFadeOut = new Runnable() {
-        @Override
-        public void run() {
-            if (!mDragging) {//如果正在拖动就不隐藏
-                hide();
+        if (mControllerListener != null) {
+            if (controllerView instanceof FullScreenControllerView) {
+                mControllerListener.onFullScreenClick();
+            } else {
+                mControllerListener.onTinyScreenClick();
             }
         }
-    };
-
-    /**
-     * 隐藏下一页按钮
-     */
-    public void hideNextButton() {
-        if (mNextButton != null && mNextButton.getVisibility() == VISIBLE) {
-            mNextButton.setVisibility(View.GONE);
-        }
+        controllerView.show();
+        mControllerView = controllerView;
     }
 
-    /**
-     * 将控制器显示在屏幕上，当到达过期时间时会自动消失。
-     *
-     * @param timeout 过期时间(毫秒) 如果设置为0直到调用hide方法才会消失
-     */
-    public void show(int timeout) {
-        if (!mShowing && mAnchor != null) {
-            setProgress();
-            if (mPauseButton != null) {
-                mPauseButton.requestFocus();
-            }
-            updateFloatingWindowLayout();
-            mWindowManager.addView(mDecor, mDecorLayoutParams);
-            mShowing = true;
-        }
-        updatePausePlay();
-
-        post(mShowProgress);
-
-        if (timeout != 0) {
-            removeCallbacks(mFadeOut);
-            postDelayed(mFadeOut, timeout);
-        }
-    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -546,7 +285,7 @@ public class IjkMediaController extends FrameLayout {
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
             if (uniqueDown) {
                 hide();
-                removeCallbacks(mShowProgress);
+                mControllerView.cancelProgressRunnable();
                 //如果传入的是activity直接退出
                 if (mContext instanceof Activity) {
                     ((Activity) mContext).finish();
@@ -557,10 +296,14 @@ public class IjkMediaController extends FrameLayout {
         return super.dispatchKeyEvent(event);
     }
 
-    public boolean isShowing() {
-        return mShowing;
+
+    public void hideNextButton() {
+        mControllerView.hideNextButton();
     }
 
+    /**
+     * 控制层监听
+     */
     private ControllerListener mControllerListener;
 
     public ControllerListener getControllerListener() {
@@ -571,9 +314,7 @@ public class IjkMediaController extends FrameLayout {
         mControllerListener = controllerListener;
     }
 
-    /**
-     * 控制层监听
-     */
+
     public interface ControllerListener {
 
         //退出点击

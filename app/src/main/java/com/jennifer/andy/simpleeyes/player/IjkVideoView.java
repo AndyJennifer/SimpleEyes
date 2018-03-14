@@ -47,6 +47,9 @@ import android.widget.MediaController;
 import android.widget.ProgressBar;
 
 import com.jennifer.andy.simpleeyes.R;
+import com.jennifer.andy.simpleeyes.player.render.IRenderView;
+import com.jennifer.andy.simpleeyes.player.render.SurfaceRenderView;
+import com.jennifer.andy.simpleeyes.player.render.TextureRenderView;
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
 import com.jennifer.andy.simpleeyes.utils.VideoPlayerUtils;
 

@@ -79,7 +79,6 @@
     </LinearLayout>
 
 
-
     <ImageView
         android:id="@+id/iv_pause"
         android:layout_width="wrap_content"
@@ -97,12 +96,47 @@
         android:src="@drawable/ic_player_next"/>
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rl_bottom"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black_alpha_4D"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:id="@+id/iv_share_wechat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_action_share_wechat"/>
+        <ImageView
+            android:id="@+id/iv_share_moment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_action_share_moment"/>
+        <ImageView
+            android:id="@+id/iv_share_weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_action_share_weibo"/>
+        <ImageView
+            android:id="@+id/iv_share_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_share_qq"/>
+    </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="50dp">
 
         <TextView
             android:id="@+id/tv_currentTime"
