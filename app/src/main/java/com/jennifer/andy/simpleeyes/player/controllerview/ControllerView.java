@@ -72,14 +72,15 @@ public abstract class ControllerView extends FrameLayout {
      * 开始播放
      */
     public void show() {
-        mDisposable = startProgressRunnable();
+        cancelProgressRunnable();//先取消之前的
+        startProgressRunnable();
         updateTogglePauseUI(mPlayer.isPlaying());
     }
 
     /**
      * 进度与时间更新线程
      */
-    protected Disposable startProgressRunnable() {
+    protected void startProgressRunnable() {
         if (mDisposable == null || mDisposable.isDisposed()) {
             mDisposable = Observable.interval(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -100,14 +101,15 @@ public abstract class ControllerView extends FrameLayout {
                     });
 
         }
-        return mDisposable;
     }
 
     /**
      * 取消进度与时间更新线程
      */
     public void cancelProgressRunnable() {
-        mDisposable.dispose();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
     }
 
 

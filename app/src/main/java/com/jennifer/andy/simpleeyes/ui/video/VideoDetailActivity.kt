@@ -209,7 +209,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         if (mVideoView.isPlaying) {
             mVideoView.pause()
         }
-        RxBus.unRegister(this)
     }
 
     override fun onStop() {
@@ -219,6 +218,11 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             mVideoView.release(true)
         }
         IjkMediaPlayer.native_profileEnd()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.unRegister(this)
     }
 
     override fun toggleOverridePendingTransition() = true

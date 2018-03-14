@@ -56,10 +56,6 @@ public class IjkMediaController extends FrameLayout {
     }
 
 
-    // TODO: 2018/3/13 xwt 全屏后退出全屏，没显示时间
-    // TODO: 2018/3/13 xwt 拖动的时候还是会更新进度条
-    // TODO: 2018/3/13 xwt 切换视频的时候,视频进度条还是会闪烁
-
     /**
      * 初始化悬浮window布局
      */
@@ -256,9 +252,13 @@ public class IjkMediaController extends FrameLayout {
     }
 
     /**
-     * 进入全屏
+     * 切换控制层
      */
     public void changeControllerView(ControllerView controllerView) {
+
+        mControllerView.cancelProgressRunnable();//取消更新
+        mControllerView = controllerView;
+
         mRoot.removeAllViews();
         if (controllerView instanceof TinyControllerView) {
             mRoot.addView(controllerView.getRootView(), mTinyParams);
@@ -273,7 +273,7 @@ public class IjkMediaController extends FrameLayout {
             }
         }
         controllerView.show();
-        mControllerView = controllerView;
+
     }
 
 
@@ -284,8 +284,8 @@ public class IjkMediaController extends FrameLayout {
                 && event.getAction() == KeyEvent.ACTION_DOWN;
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
             if (uniqueDown) {
-                hide();
                 mControllerView.cancelProgressRunnable();
+                hide();
                 //如果传入的是activity直接退出
                 if (mContext instanceof Activity) {
                     ((Activity) mContext).finish();

@@ -26,6 +26,7 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
     @Override
     public void initView(View rootView) {
         mMinScreen = rootView.findViewById(R.id.iv_min_screen);
+        //添加标题等操作
         int position = mPlayer.getCurrentPosition();
         int duration = mPlayer.getDuration();
     }
