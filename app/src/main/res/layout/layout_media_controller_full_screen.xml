@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    android:background="@color/black_translucent_60"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/black_translucent_60">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,11 +19,14 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/iv_min_screen"
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            app:font_name="normal"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -99,9 +100,9 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/rl_bottom"
+        android:layout_above="@id/rl_bottom"
         android:layout_centerHorizontal="true"
-        android:background="@color/black_alpha_4D"
+        android:background="@color/black_translucent_45"
         android:padding="10dp">
 
 
@@ -133,33 +134,45 @@
     <RelativeLayout
         android:id="@+id/rl_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="50dp">
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+    >
 
-        <TextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_currentTime"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"/>
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:font_name="normal"/>
 
         <SeekBar
             android:id="@+id/sb_progress"
             style="@style/ProgressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_currentTime"
+            android:layout_toStartOf="@id/tv_end_time"
             android:background="@color/transparent"
             android:thumb="@drawable/ic_player_progress_handle"
             android:thumbOffset="0dp"
         />
 
-        <TextView
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_end_time"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"/>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:font_name="normal"/>
 
     </RelativeLayout>
 

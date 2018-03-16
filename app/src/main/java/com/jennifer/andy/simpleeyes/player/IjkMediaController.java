@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
+import com.jennifer.andy.simpleeyes.entity.Content;
 import com.jennifer.andy.simpleeyes.player.controllerview.ControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
@@ -40,17 +41,19 @@ public class IjkMediaController extends FrameLayout {
 
     private boolean mShowing;
     private View mAnchor;
+
+    private static final int sDefaultTimeout = 4000;//默认消失时间
+    private LayoutParams mTinyParams;
     private final Context mContext;
     private ControllerView mControllerView;
 
-    private static final int sDefaultTimeout = 4000;
-    private LayoutParams mTinyParams;
+    private Content mCurrentVideoInfo;
 
-
-    public IjkMediaController(@NonNull Context context) {
+    public IjkMediaController(@NonNull Context context, Content currentVideoInfo) {
         super(context);
         mContext = context;
         mRoot = this;
+        mCurrentVideoInfo = currentVideoInfo;
         initFloatingWindowLayout();
         initFloatingWindow();
     }
@@ -170,7 +173,7 @@ public class IjkMediaController extends FrameLayout {
         ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
         mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
         removeAllViews();
-        mControllerView = new TinyControllerView(mPlayer, this, mContext);
+        mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
         addView(mControllerView.getRootView(), mTinyParams);
     }
 
@@ -319,6 +322,9 @@ public class IjkMediaController extends FrameLayout {
 
         //退出点击
         void onBackClick();
+
+        //上一页点击
+        void onPreClick();
 
         //下一页点击
         void onNextClick();

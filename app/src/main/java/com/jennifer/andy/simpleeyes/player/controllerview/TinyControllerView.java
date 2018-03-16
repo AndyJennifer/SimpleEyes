@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.jennifer.andy.simpleeyes.R;
+import com.jennifer.andy.simpleeyes.entity.Content;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 
 /**
@@ -31,8 +32,8 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
 
     private int mChangeProgress;
 
-    public TinyControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Context context) {
-        super(player, controller, context);
+    public TinyControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Content currentVideoInfo, Context context) {
+        super(player, controller, currentVideoInfo, context);
     }
 
     @Override
@@ -60,6 +61,8 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
         }
     }
 
+    // TODO: 2018/3/16 xwt 上一页操作
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -76,7 +79,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
                 mController.getControllerListener().onBackClick();
                 break;
             case R.id.iv_full_screen://全屏按钮
-                mController.changeControllerView(new FullScreenControllerView(mPlayer, mController, mContext));
+                mController.changeControllerView(new FullScreenControllerView(mPlayer, mController, mCurrentVideoInfo, mContext));
                 break;
 
         }

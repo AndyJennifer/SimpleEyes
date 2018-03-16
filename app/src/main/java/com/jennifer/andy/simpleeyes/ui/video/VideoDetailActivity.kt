@@ -59,7 +59,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun initView(savedInstanceState: Bundle?) {
         initPlaceHolder()
-        initMediaController()
+        initMediaController(mCurrentVideoInfo)
+        setProgressListener()
         playVideo(mCurrentVideoInfo)
     }
 
@@ -67,7 +68,56 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private fun initPlaceHolder() {
         mShareImage.setImageURI(mCurrentVideoInfo.data.cover.detail)
         mBlurredImage.setImageURI(mCurrentVideoInfo.data.cover.blurred)
+        mHorizontalProgress.max = 1000
     }
+
+
+    private fun initMediaController(mCurrentVideoInfo: Content) {
+        ijkMediaController = IjkMediaController(mContext, mCurrentVideoInfo)
+
+        if (mCurrentIndex == mVideoListInfo.size) {
+            ijkMediaController.hide()
+        }
+
+        ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
+            override fun onBackClick() {
+                finish()
+            }
+
+            override fun onNextClick() {
+                //先判断当前角标的位置，然后判断是否有下一页
+                if (mCurrentIndex < mVideoListInfo.size) {
+                    refreshVideo(mVideoListInfo[++mCurrentIndex].data.content)
+
+                } else {
+                    //否则则隐藏下一页
+                    ijkMediaController.hideNextButton()
+                }
+            }
+
+            override fun onFullScreenClick() {
+                mVideoView.enterFullScreen()
+            }
+
+            override fun onTinyScreenClick() {
+                mVideoView.exitFullScreen()
+            }
+
+            override fun onPreClick() {
+
+            }
+        }
+    }
+
+    private fun setProgressListener() {
+        //注册进度条监听
+        RxBus.register(this, VideoProgressEvent::class.java, Consumer {
+            mHorizontalProgress.progress = it.progress
+            mHorizontalProgress.secondaryProgress = it.secondaryProgress
+        })
+
+    }
+
 
     /**
      * 播放视频
@@ -143,47 +193,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     }
 
-    private fun initMediaController() {
-        mHorizontalProgress.max = 1000
-        ijkMediaController = IjkMediaController(mContext)
-
-        if (mCurrentIndex == mVideoListInfo.size) {
-            ijkMediaController.hide()
-        }
-
-        RxBus.register(this, VideoProgressEvent::class.java, Consumer {
-            mHorizontalProgress.progress = it.progress
-            mHorizontalProgress.secondaryProgress = it.secondaryProgress
-
-            println("当前的进度${it.progress}+第二进度${it.secondaryProgress}")
-        })
-
-
-        ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
-            override fun onBackClick() {
-                finish()
-            }
-
-            override fun onNextClick() {
-                //先判断当前角标的位置，然后判断是否有下一页
-                if (mCurrentIndex < mVideoListInfo.size) {
-                    refreshVideo(mVideoListInfo[++mCurrentIndex].data.content)
-
-                } else {
-                    //否则则隐藏下一页
-                    ijkMediaController.hideNextButton()
-                }
-            }
-
-            override fun onFullScreenClick() {
-                mVideoView.enterFullScreen()
-            }
-
-            override fun onTinyScreenClick() {
-                mVideoView.exitFullScreen()
-            }
-        }
-    }
 
     /**
      * 重置视频信息
