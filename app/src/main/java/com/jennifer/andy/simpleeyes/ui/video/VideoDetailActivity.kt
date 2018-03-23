@@ -36,7 +36,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(), VideoDetailView {
 
-    private val mShareImage by bindView<SimpleDraweeView>(R.id.iv_place_image)
+    private val mPlaceImage by bindView<SimpleDraweeView>(R.id.iv_place_image)
     private val mBlurredImage by bindView<SimpleDraweeView>(R.id.iv_blurred)
     private val mVideoView by bindView<IjkVideoView>(R.id.video_view)
     private val mProgress by bindView<ProgressBar>(R.id.progress)
@@ -59,40 +59,31 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun initView(savedInstanceState: Bundle?) {
         initPlaceHolder()
-        initMediaController(mCurrentVideoInfo)
+        initMediaController()
         setProgressListener()
-        playVideo(mCurrentVideoInfo)
+        playVideo()
     }
 
 
     private fun initPlaceHolder() {
-        mShareImage.setImageURI(mCurrentVideoInfo.data.cover.detail)
+        mPlaceImage.setImageURI(mCurrentVideoInfo.data.cover.detail)
         mBlurredImage.setImageURI(mCurrentVideoInfo.data.cover.blurred)
         mHorizontalProgress.max = 1000
     }
 
 
-    private fun initMediaController(mCurrentVideoInfo: Content) {
-        ijkMediaController = IjkMediaController(mContext, mCurrentVideoInfo)
-
-        if (mCurrentIndex == mVideoListInfo.size) {
-            ijkMediaController.hide()
-        }
-
+    private fun initMediaController() {
+        ijkMediaController = IjkMediaController(mCurrentIndex, mVideoListInfo.size, mCurrentVideoInfo, mContext)
         ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
             override fun onBackClick() {
                 finish()
             }
 
             override fun onNextClick() {
-                //先判断当前角标的位置，然后判断是否有下一页
-                if (mCurrentIndex < mVideoListInfo.size) {
-                    refreshVideo(mVideoListInfo[++mCurrentIndex].data.content)
-
-                } else {
-                    //否则则隐藏下一页
-                    ijkMediaController.hideNextButton()
-                }
+                mCurrentIndex = ++mCurrentIndex
+                ijkMediaController.currentIndex = mCurrentIndex
+                ijkMediaController.hide()
+                refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
             }
 
             override fun onFullScreenClick() {
@@ -104,9 +95,32 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             }
 
             override fun onPreClick() {
-
+                mCurrentIndex = --mCurrentIndex
+                ijkMediaController.currentIndex = mCurrentIndex
+                ijkMediaController.hide()
+                refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
             }
         }
+    }
+
+    /**
+     * 重置视频信息
+     */
+    private fun refreshVideo(videoInfo: Content) {
+        mCurrentVideoInfo = videoInfo
+
+        mRecycler.visibility = View.INVISIBLE
+        mPlaceImage.visibility = View.VISIBLE
+        mProgress.visibility = View.VISIBLE
+
+        mHorizontalProgress.secondaryProgress = 0
+        mHorizontalProgress.progress = 0
+
+        initPlaceHolder()
+        mVideoView.stopPlayback()
+        mVideoView.release(true)
+        mVideoView.setVideoPath(mCurrentVideoInfo.data.playUrl)
+        mVideoView.start()
     }
 
     private fun setProgressListener() {
@@ -122,25 +136,26 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     /**
      * 播放视频
      */
-    private fun playVideo(currentVideoInfo: Content) {
-        mShareImage.visibility = View.VISIBLE
-        mProgress.visibility = View.VISIBLE
-        mVideoView.setVideoPath(currentVideoInfo.data.playUrl)
+    private fun playVideo() {
+        mVideoView.setVideoPath(mCurrentVideoInfo.data.playUrl)
         mVideoView.setMediaController(ijkMediaController)
         mVideoView.start()
         //设置准备完成监听
         mVideoView.setOnPreparedListener {
             //隐藏进度条
-            mShareImage.visibility = View.GONE
-            mProgress.visibility = View.GONE
+            mPlaceImage.handler.postDelayed({
+                mPlaceImage.visibility = View.GONE
+                mProgress.visibility = View.GONE
+            }, 500)
             //获取相关视屏信息
-            mPresenter.getRelatedVideoInfo(currentVideoInfo.data.id)
+            mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.data.id)
         }
         mVideoView.toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
 
         //设置完成监听
         mVideoView.setOnCompletionListener {
             // todo 完成后更改布局
+
 
         }
 
@@ -190,22 +205,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     }
 
     override fun getRelatedVideoFail() {
-
     }
 
-
-    /**
-     * 重置视频信息
-     */
-    private fun refreshVideo(videoInfo: Content) {
-        mCurrentVideoInfo = videoInfo
-        if (mVideoView.isPlaying) {
-            mVideoView.stopPlayback()
-            mVideoView.release(true)
-        }
-        mRecycler.visibility = View.INVISIBLE
-        initView(null)
-    }
 
     override fun onBackPressedSupport() {
         super.onBackPressedSupport()

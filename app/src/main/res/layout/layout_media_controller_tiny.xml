@@ -41,6 +41,14 @@
         </LinearLayout>
 
 
+        <ImageView
+            android:id="@+id/iv_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/iv_pause"
+            android:src="@drawable/ic_player_previous"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/iv_pause"
@@ -68,13 +76,15 @@
                 android:id="@+id/tv_currentTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tv_end_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
 
         </LinearLayout>
 

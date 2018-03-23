@@ -35,4 +35,5 @@
     <string name="ad_chinese_message">每日精选视频推介，让你大开眼界。</string>
     <string name="cache">缓存</string>
     <string name="add_follow">+ 关注</string>
+    <string name="video_error_notice">网络错误或无连接，点击屏幕重试</string>
 </resources>

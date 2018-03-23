@@ -170,10 +170,6 @@ public abstract class ControllerView extends FrameLayout {
      */
     public abstract void updateTogglePauseUI(boolean isPlaying);
 
-    /**
-     * 隐藏按钮
-     */
-    public abstract void hideNextButton();
 
 
     /**

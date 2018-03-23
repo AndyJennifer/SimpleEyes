@@ -42,18 +42,30 @@ public class IjkMediaController extends FrameLayout {
     private boolean mShowing;
     private View mAnchor;
 
-    private static final int sDefaultTimeout = 4000;//默认消失时间
-    private LayoutParams mTinyParams;
     private final Context mContext;
     private ControllerView mControllerView;
 
     private Content mCurrentVideoInfo;
+    private int mTotalCount;
+    private int mCurrentIndex;
 
-    public IjkMediaController(@NonNull Context context, Content currentVideoInfo) {
+    private boolean isTinyView = true;
+    private LayoutParams mTinyParams;
+    private LayoutParams mFullParams;
+    private static final int sDefaultTimeout = 5000;//默认消失时间 5秒
+
+    /**
+     * @param currentIndex     当前视频角标
+     * @param totalCount       视频集合总数
+     * @param currentVideoInfo
+     */
+    public IjkMediaController(int currentIndex, int totalCount, Content currentVideoInfo, @NonNull Context context) {
         super(context);
+        mCurrentIndex = currentIndex;
+        mTotalCount = totalCount;
+        mCurrentVideoInfo = currentVideoInfo;
         mContext = context;
         mRoot = this;
-        mCurrentVideoInfo = currentVideoInfo;
         initFloatingWindowLayout();
         initFloatingWindow();
     }
@@ -170,11 +182,18 @@ public class IjkMediaController extends FrameLayout {
             mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
         }
 
-        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
-        mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
         removeAllViews();
-        mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-        addView(mControllerView.getRootView(), mTinyParams);
+        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
+        if (isTinyView) {
+            mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
+            mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+            addView(mControllerView.getRootView(), mTinyParams);
+        } else {
+            mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+            addView(mControllerView.getRootView(), mFullParams);
+        }
+
     }
 
 
@@ -265,8 +284,11 @@ public class IjkMediaController extends FrameLayout {
         mRoot.removeAllViews();
         if (controllerView instanceof TinyControllerView) {
             mRoot.addView(controllerView.getRootView(), mTinyParams);
+            isTinyView = true;
         } else {
-            mRoot.addView(controllerView.getRootView());
+            isTinyView = false;
+            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mRoot.addView(controllerView.getRootView(), layoutParams);
         }
         if (mControllerListener != null) {
             if (controllerView instanceof FullScreenControllerView) {
@@ -300,9 +322,18 @@ public class IjkMediaController extends FrameLayout {
     }
 
 
-    public void hideNextButton() {
-        mControllerView.hideNextButton();
+    public int getCurrentIndex() {
+        return mCurrentIndex;
     }
+
+    public void setCurrentIndex(int currentIndex) {
+        mCurrentIndex = currentIndex;
+    }
+
+    public int getTotalCount() {
+        return mTotalCount;
+    }
+
 
     /**
      * 控制层监听

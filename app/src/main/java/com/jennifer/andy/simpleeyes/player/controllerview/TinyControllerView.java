@@ -21,8 +21,9 @@ import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 public class TinyControllerView extends ControllerView implements View.OnClickListener {
 
     private ImageView mPauseButton;
-    private ImageView mNextButton;
+    private ImageView mPreButton;
     private ImageView mBackButton;
+    private ImageView mNextButton;
     private ImageView mFullScreen;
     private SeekBar mProgress;
 
@@ -40,8 +41,9 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
     public void initView(View rootView) {
 
         mPauseButton = rootView.findViewById(R.id.iv_pause);
-        mNextButton = rootView.findViewById(R.id.iv_next);
+        mPreButton = rootView.findViewById(R.id.iv_previous);
         mBackButton = rootView.findViewById(R.id.iv_back);
+        mNextButton = rootView.findViewById(R.id.iv_next);
         mFullScreen = rootView.findViewById(R.id.iv_full_screen);
         mProgress = rootView.findViewById(R.id.sb_progress);
         mCurrentTime = rootView.findViewById(R.id.tv_currentTime);
@@ -59,9 +61,11 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             mProgress.setProgress((int) progress);
             mProgress.setSecondaryProgress(secondProgress);
         }
+        //判断是否显示上一个按钮与下一个按钮
+        mPreButton.setVisibility(mController.getCurrentIndex() > 0 ? View.VISIBLE : View.GONE);
+        mNextButton.setVisibility(mController.getCurrentIndex() >= mController.getTotalCount() - 1 ? View.GONE : View.VISIBLE);
     }
 
-    // TODO: 2018/3/16 xwt 上一页操作
 
     @Override
     public void onClick(View v) {
@@ -70,12 +74,16 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
                 togglePause();
                 mController.show();
                 break;
+            case R.id.iv_previous://上一个
+                cancelProgressRunnable();
+                mController.getControllerListener().onPreClick();
+                break;
             case R.id.iv_next://下一个按钮
+                cancelProgressRunnable();
                 mController.getControllerListener().onNextClick();
                 break;
             case R.id.iv_back://回退键
                 cancelProgressRunnable();
-                mController.hide();
                 mController.getControllerListener().onBackClick();
                 break;
             case R.id.iv_full_screen://全屏按钮
@@ -88,7 +96,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
 
     @Override
     public void initControllerListener() {
-
+        mPreButton.setOnClickListener(this);
         mPauseButton.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
         mBackButton.setOnClickListener(this);
@@ -154,18 +162,9 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
     }
 
 
-    /**
-     * 隐藏下一页按钮
-     */
-    public void hideNextButton() {
-        if (mNextButton != null && mNextButton.getVisibility() == View.VISIBLE) {
-            mNextButton.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     public int setControllerLayoutId() {
-        return R.layout.layout_media_controller_vertical;
+        return R.layout.layout_media_controller_tiny;
     }
 
 }

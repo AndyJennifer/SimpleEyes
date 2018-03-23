@@ -21,6 +21,7 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView;
 public class FullScreenControllerView extends ControllerView implements View.OnClickListener {
 
     private ImageView mMinScreen;
+    private ImageView mPreButton;
     private ImageView mPauseButton;
     private ImageView mNextButton;
     private SeekBar mProgress;
@@ -28,6 +29,8 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
     private CustomFontTextView mTitle;
     private CustomFontTextView mEndTime;
     private CustomFontTextView mCurrentTime;
+
+    private int mChangeProgress;
 
 
     public FullScreenControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Content currentVideoInfo, Context context) {
@@ -39,11 +42,13 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
         mMinScreen = rootView.findViewById(R.id.iv_min_screen);
         mProgress = rootView.findViewById(R.id.sb_progress);
         mTitle = rootView.findViewById(R.id.tv_title);
+        mPreButton = rootView.findViewById(R.id.iv_previous);
         mPauseButton = rootView.findViewById(R.id.iv_pause);
         mNextButton = rootView.findViewById(R.id.iv_next);
         mProgress = rootView.findViewById(R.id.sb_progress);
         mCurrentTime = rootView.findViewById(R.id.tv_currentTime);
         mEndTime = rootView.findViewById(R.id.tv_end_time);
+
 
         //初始化标题
         mTitle.setText(mCurrentVideoInfo.getData().getTitle());
@@ -62,13 +67,53 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
             mProgress.setProgress((int) progress);
             mProgress.setSecondaryProgress(secondProgress);
         }
+
+        //判断是否显示上一个按钮与下一个按钮
+        mPreButton.setVisibility(mController.getCurrentIndex() > 0 ? View.VISIBLE : View.GONE);
+        mNextButton.setVisibility(mController.getCurrentIndex() >= mController.getTotalCount() - 1 ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void initControllerListener() {
+        mPreButton.setOnClickListener(this);
         mMinScreen.setOnClickListener(this);
         mPauseButton.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
+
+        mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onStartTrackingTouch(SeekBar bar) {
+                //控制的时候停止更新进度条，同时禁止隐藏
+                cancelProgressRunnable();
+                setDragging(true);
+                mController.show(3600000);
+                mController.cancelFadeOut();
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar bar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    //更新当前播放时间
+                    long duration = mPlayer.getDuration();
+                    long newPosition = (duration * progress) / 1000L;
+                    mChangeProgress = progress;
+                    mCurrentTime.setText(stringForTime((int) newPosition));
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar bar) {
+                //定位都拖动位置
+                long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
+                mPlayer.seekTo((int) newPosition);
+                mController.show();//开启延时隐藏
+                startProgressRunnable();//自动更新进度条与时间
+                setDragging(false);
+            }
+        });
+        mProgress.setPadding(0, 0, 0, 0);
+        mProgress.setMax(1000);
 
     }
 
@@ -79,7 +124,12 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
                 togglePause();
                 mController.show();
                 break;
+            case R.id.iv_previous://上一个
+                cancelProgressRunnable();
+                mController.getControllerListener().onPreClick();
+                break;
             case R.id.iv_next://下一个
+                cancelProgressRunnable();
                 mController.getControllerListener().onNextClick();
                 break;
             case R.id.iv_min_screen://返回小界面
@@ -111,12 +161,6 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
         }
     }
 
-    @Override
-    public void hideNextButton() {
-        if (mNextButton != null && mNextButton.getVisibility() == View.VISIBLE) {
-            mNextButton.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public int setControllerLayoutId() {
