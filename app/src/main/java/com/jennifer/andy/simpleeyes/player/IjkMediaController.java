@@ -18,6 +18,7 @@ import android.widget.MediaController;
 
 import com.jennifer.andy.simpleeyes.entity.Content;
 import com.jennifer.andy.simpleeyes.player.controllerview.ControllerView;
+import com.jennifer.andy.simpleeyes.player.controllerview.ErrorControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
 
@@ -37,7 +38,6 @@ public class IjkMediaController extends FrameLayout {
     private Window mWindow;
 
     private View mDecor;
-    private ViewGroup mRoot;
 
     private boolean mShowing;
     private View mAnchor;
@@ -52,7 +52,7 @@ public class IjkMediaController extends FrameLayout {
     private boolean isTinyView = true;
     private LayoutParams mTinyParams;
     private LayoutParams mFullParams;
-    private static final int sDefaultTimeout = 5000;//默认消失时间 5秒
+    private static final int sDefaultTimeout = 3500;//默认消失时间 3.5秒
 
     /**
      * @param currentIndex     当前视频角标
@@ -65,7 +65,6 @@ public class IjkMediaController extends FrameLayout {
         mTotalCount = totalCount;
         mCurrentVideoInfo = currentVideoInfo;
         mContext = context;
-        mRoot = this;
         initFloatingWindowLayout();
         initFloatingWindow();
     }
@@ -99,7 +98,9 @@ public class IjkMediaController extends FrameLayout {
         mWindow.requestFeature(Window.FEATURE_NO_TITLE);
         mDecor = mWindow.getDecorView();
         mDecor.setOnTouchListener(mTouchListener);
+
         mWindow.setContentView(this);
+
         mWindow.setBackgroundDrawableResource(android.R.color.transparent);
         mWindow.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -127,9 +128,7 @@ public class IjkMediaController extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        if (mRoot != null) {
-            mControllerView.initControllerListener();
-        }
+        mControllerView.initControllerListener();
     }
 
     // 当锚点view布局发生改变的时候会调用
@@ -154,7 +153,8 @@ public class IjkMediaController extends FrameLayout {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 if (mShowing) {
-                    hide();
+                    removeCallbacks(mFadeOut);
+                    postDelayed(mFadeOut, sDefaultTimeout);
                 }
             }
             return false;
@@ -274,30 +274,51 @@ public class IjkMediaController extends FrameLayout {
     }
 
     /**
-     * 切换控制层
+     * 切换控制层视图、TinyControllerView 与 TinyControllerView
      */
-    public void changeControllerView(ControllerView controllerView) {
+    public void toggleControllerView(ControllerView controllerView) {
 
         mControllerView.cancelProgressRunnable();//取消更新
-        mControllerView = controllerView;
 
-        mRoot.removeAllViews();
+        removeAllViews();
         if (controllerView instanceof TinyControllerView) {
-            mRoot.addView(controllerView.getRootView(), mTinyParams);
+            addView(controllerView.getRootView(), mTinyParams);
             isTinyView = true;
         } else {
             isTinyView = false;
             ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            mRoot.addView(controllerView.getRootView(), layoutParams);
+            addView(controllerView.getRootView(), layoutParams);
         }
         if (mControllerListener != null) {
             if (controllerView instanceof FullScreenControllerView) {
                 mControllerListener.onFullScreenClick();
-            } else {
+            } else if (controllerView instanceof TinyControllerView) {
                 mControllerListener.onTinyScreenClick();
             }
         }
-        controllerView.show();
+        mControllerView = controllerView;
+        mControllerView.show();
+
+    }
+
+    /**
+     * 显示网络错误布局
+     */
+    public void showErrorView() {
+        mControllerView.cancelProgressRunnable();//取消更新
+        removeAllViews();
+        ErrorControllerView errorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        if (mControllerView instanceof TinyControllerView) {
+            addView(errorView, mTinyParams);
+        } else {
+            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addView(errorView, layoutParams);
+        }
+        if (!mShowing && mAnchor != null) {
+            updateFloatingWindowLayout();
+            mWindowManager.addView(mDecor, mDecorLayoutParams);
+            mShowing = true;
+        }
 
     }
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.entity.Content;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
+import com.jennifer.andy.simpleeyes.utils.NetWorkUtils;
 
 /**
  * Author:  andy.xwt
@@ -87,7 +88,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
                 mController.getControllerListener().onBackClick();
                 break;
             case R.id.iv_full_screen://全屏按钮
-                mController.changeControllerView(new FullScreenControllerView(mPlayer, mController, mCurrentVideoInfo, mContext));
+                mController.toggleControllerView(new FullScreenControllerView(mPlayer, mController, mCurrentVideoInfo, mContext));
                 break;
 
         }
@@ -127,11 +128,18 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             @Override
             public void onStopTrackingTouch(SeekBar bar) {
                 //定位都拖动位置
-                long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
-                mPlayer.seekTo((int) newPosition);
-                mController.show();//开启延时隐藏
-                startProgressRunnable();//自动更新进度条与时间
-                setDragging(false);
+                if (NetWorkUtils.INSTANCE.isNetWorkConnected(mContext)) {
+                    long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
+                    mPlayer.seekTo((int) newPosition);
+                    mController.show();//开启延时隐藏
+                    startProgressRunnable();//自动更新进度条与时间
+                    setDragging(false);
+                } else {
+                    mPlayer.pause();
+                    mController.showErrorView();
+                }
+
+
             }
         });
         mProgress.setPadding(0, 0, 0, 0);

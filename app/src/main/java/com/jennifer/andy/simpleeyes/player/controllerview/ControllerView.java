@@ -36,10 +36,9 @@ public abstract class ControllerView extends FrameLayout {
     protected Content mCurrentVideoInfo;
 
     private StringBuilder mFormatBuilder = new StringBuilder();
-    private boolean isDragging;//是否正在拖动
 
     private View mRootView;
-
+    private boolean isDragging;//是否正在拖动
     private Disposable mDisposable;
 
 
@@ -84,7 +83,7 @@ public abstract class ControllerView extends FrameLayout {
      * 进度与时间更新线程
      */
     protected void startProgressRunnable() {
-        if (mDisposable == null || mDisposable.isDisposed()) {
+        if (mDisposable == null || mDisposable.isDisposed() && isSendProgressEvent()) {
             mDisposable = Observable.interval(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<Long>() {
@@ -141,7 +140,8 @@ public abstract class ControllerView extends FrameLayout {
      * @param progress          第一进度
      * @param secondaryProgress 第二进度
      */
-    public abstract void updateProgress(int progress, int secondaryProgress);
+    public void updateProgress(int progress, int secondaryProgress) {
+    }
 
     /**
      * 更新当前视频播放时间
@@ -149,7 +149,8 @@ public abstract class ControllerView extends FrameLayout {
      * @param currentTime 当前时间
      * @param endTime     结束时间
      */
-    public abstract void updateTime(String currentTime, String endTime);
+    public void updateTime(String currentTime, String endTime) {
+    }
 
     /**
      * 暂停切换
@@ -168,9 +169,15 @@ public abstract class ControllerView extends FrameLayout {
      *
      * @param isPlaying 是否播放
      */
-    public abstract void updateTogglePauseUI(boolean isPlaying);
+    public void updateTogglePauseUI(boolean isPlaying) {
+    }
 
-
+    /**
+     * 是否发送进度通知信息
+     */
+    public boolean isSendProgressEvent() {
+        return true;
+    }
 
     /**
      * 获取根布局

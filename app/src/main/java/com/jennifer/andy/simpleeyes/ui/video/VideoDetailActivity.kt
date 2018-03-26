@@ -152,10 +152,13 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         }
         mVideoView.toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
 
+        mVideoView.setOnErrorListener { p0, p1, p2 ->
+            mProgress.visibility = View.GONE
+            ijkMediaController.showErrorView()
+            true
+        }
         //设置完成监听
         mVideoView.setOnCompletionListener {
-            // todo 完成后更改布局
-
 
         }
 

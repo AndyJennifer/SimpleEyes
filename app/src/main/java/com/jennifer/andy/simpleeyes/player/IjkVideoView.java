@@ -543,14 +543,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     private IMediaPlayer.OnErrorListener mErrorListener =
             new IMediaPlayer.OnErrorListener() {
-                // TODO: 2018/1/5 xwt 这里如果失败了需要我自己进行处理，不走它本身的
                 public boolean onError(IMediaPlayer mp, int framework_err, int impl_err) {
                     Log.d(TAG, "Error: " + framework_err + "," + impl_err);
                     mCurrentState = STATE_ERROR;
                     mTargetState = STATE_ERROR;
-                    if (mMediaController != null) {
-                        mMediaController.hide();
-                    }
+//                    if (mMediaController != null) {
+//                        mMediaController.hide();
+//                    }
 
                     /* If an error handler has been supplied, use it and finish. */
                     if (mOnErrorListener != null) {
