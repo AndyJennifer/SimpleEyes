@@ -100,6 +100,11 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                 ijkMediaController.hide()
                 refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
             }
+
+            override fun onErrorViewClick() {
+                ijkMediaController.hide()
+                refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
+            }
         }
     }
 
@@ -149,12 +154,17 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             }, 500)
             //获取相关视屏信息
             mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.data.id)
+            ijkMediaController.resetType()
+
         }
         mVideoView.toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
 
         mVideoView.setOnErrorListener { p0, p1, p2 ->
-            mProgress.visibility = View.GONE
-            ijkMediaController.showErrorView()
+            mProgress.handler.postDelayed({
+                mProgress.visibility = View.GONE
+                ijkMediaController.showErrorView()
+            }, 1000)
+
             true
         }
         //设置完成监听

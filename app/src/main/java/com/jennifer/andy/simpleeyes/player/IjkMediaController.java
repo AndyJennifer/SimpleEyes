@@ -49,9 +49,14 @@ public class IjkMediaController extends FrameLayout {
     private int mTotalCount;
     private int mCurrentIndex;
 
-    private boolean isTinyView = true;
+    private int mCurrentViewState = TINY_VIEW;
+    private static final int TINY_VIEW = 0;
+    private static final int FULL_SCREEN_VIEW = 1;
+    private static final int ERROR_VIEW = 2;
+
     private LayoutParams mTinyParams;
     private LayoutParams mFullParams;
+
     private static final int sDefaultTimeout = 3500;//默认消失时间 3.5秒
 
     /**
@@ -122,6 +127,26 @@ public class IjkMediaController extends FrameLayout {
         p.width = mAnchor.getWidth();
         p.x = anchorPos[0] + (mAnchor.getWidth() - p.width) / 2;
         p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
+
+        removeAllViews();
+        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
+        if (mCurrentViewState == TINY_VIEW) {
+            mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
+            mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+            addView(mControllerView.getRootView(), mTinyParams);
+        } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
+            mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+            addView(mControllerView.getRootView(), mFullParams);
+        } else {
+            ErrorControllerView errorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+            if (mControllerView instanceof TinyControllerView) {
+                addView(errorView, mTinyParams);
+            } else {
+                ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                addView(errorView, layoutParams);
+            }
+        }
     }
 
 
@@ -184,14 +209,22 @@ public class IjkMediaController extends FrameLayout {
 
         removeAllViews();
         ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
-        if (isTinyView) {
+        if (mCurrentViewState == TINY_VIEW) {
             mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
             mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
             addView(mControllerView.getRootView(), mTinyParams);
-        } else {
+        } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
             mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
             addView(mControllerView.getRootView(), mFullParams);
+        } else {
+            ErrorControllerView errorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+            if (mControllerView instanceof TinyControllerView) {
+                addView(errorView, mTinyParams);
+            } else {
+                ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                addView(errorView, layoutParams);
+            }
         }
 
     }
@@ -283,9 +316,9 @@ public class IjkMediaController extends FrameLayout {
         removeAllViews();
         if (controllerView instanceof TinyControllerView) {
             addView(controllerView.getRootView(), mTinyParams);
-            isTinyView = true;
+            mCurrentViewState = TINY_VIEW;
         } else {
-            isTinyView = false;
+            mCurrentViewState = FULL_SCREEN_VIEW;
             ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(controllerView.getRootView(), layoutParams);
         }
@@ -319,7 +352,7 @@ public class IjkMediaController extends FrameLayout {
             mWindowManager.addView(mDecor, mDecorLayoutParams);
             mShowing = true;
         }
-
+        mCurrentViewState = ERROR_VIEW;
     }
 
 
@@ -355,6 +388,13 @@ public class IjkMediaController extends FrameLayout {
         return mTotalCount;
     }
 
+    public void resetType() {
+        if (mControllerView instanceof TinyControllerView) {
+            mCurrentViewState = TINY_VIEW;
+        } else {
+            mCurrentViewState = FULL_SCREEN_VIEW;
+        }
+    }
 
     /**
      * 控制层监听
@@ -386,6 +426,9 @@ public class IjkMediaController extends FrameLayout {
 
         //退出全屏
         void onTinyScreenClick();
+
+        //错误界面点击
+        void onErrorViewClick();
 
     }
 }

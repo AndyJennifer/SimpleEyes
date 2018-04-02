@@ -44,6 +44,8 @@ public class ErrorControllerView extends ControllerView implements View.OnClickL
             @Override
             public void onAnimationEnd(Animator animation) {
                 //执行选中动画，然后开始刷新操作
+                mController.hide();
+                mController.getControllerListener().onErrorViewClick();
             }
         });
         rotation.setDuration(500);
