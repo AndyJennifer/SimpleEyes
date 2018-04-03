@@ -55,7 +55,9 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
         int duration = mPlayer.getDuration();
         mCurrentTime.setText(stringForTime(position));
         mEndTime.setText("/" + stringForTime(duration));
+
         //初始化进度条
+        mProgress.setMax(1000);
         if (duration >= 0 && mPlayer.getBufferPercentage() > 0) {
             long progress = 1000L * position / duration;
             int secondProgress = mPlayer.getBufferPercentage() * 10;
@@ -84,7 +86,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
                 mController.getControllerListener().onNextClick();
                 break;
             case R.id.iv_back://回退键
-                cancelProgressRunnable();
+                mController.hide();
                 mController.getControllerListener().onBackClick();
                 break;
             case R.id.iv_full_screen://全屏按钮

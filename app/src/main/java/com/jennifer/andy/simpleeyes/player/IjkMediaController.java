@@ -58,6 +58,7 @@ public class IjkMediaController extends FrameLayout {
     private LayoutParams mFullParams;
 
     private static final int sDefaultTimeout = 3500;//默认消失时间 3.5秒
+    private ErrorControllerView mErrorView;
 
     /**
      * @param currentIndex     当前视频角标
@@ -128,25 +129,18 @@ public class IjkMediaController extends FrameLayout {
         p.x = anchorPos[0] + (mAnchor.getWidth() - p.width) / 2;
         p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
 
+
         removeAllViews();
         ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
         if (mCurrentViewState == TINY_VIEW) {
-            mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
-            mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-            addView(mControllerView.getRootView(), mTinyParams);
+            addTinyView(mAnchorLayoutParams);
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
-            mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-            addView(mControllerView.getRootView(), mFullParams);
+            addFullScreenView();
         } else {
-            ErrorControllerView errorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-            if (mControllerView instanceof TinyControllerView) {
-                addView(errorView, mTinyParams);
-            } else {
-                ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                addView(errorView, layoutParams);
-            }
+            addErrorView();
         }
+
+
     }
 
 
@@ -210,23 +204,49 @@ public class IjkMediaController extends FrameLayout {
         removeAllViews();
         ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
         if (mCurrentViewState == TINY_VIEW) {
-            mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
-            mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-            addView(mControllerView.getRootView(), mTinyParams);
+            addTinyView(mAnchorLayoutParams);
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
-            mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-            addView(mControllerView.getRootView(), mFullParams);
+            addFullScreenView();
         } else {
-            ErrorControllerView errorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
-            if (mControllerView instanceof TinyControllerView) {
-                addView(errorView, mTinyParams);
-            } else {
-                ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                addView(errorView, layoutParams);
-            }
+            addErrorView();
         }
 
+    }
+
+    /**
+     * 添加错误界面
+     */
+    private void addErrorView() {
+        mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        if (mControllerView instanceof TinyControllerView) {
+            addView(mErrorView, mTinyParams);
+        } else {
+            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addView(mErrorView, layoutParams);
+        }
+    }
+
+
+    /**
+     * 添加竖直控制层
+     */
+    private void addTinyView(ViewGroup.LayoutParams mAnchorLayoutParams) {
+        mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
+        if (mControllerView == null) {
+            mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        }
+        addView(mControllerView.getRootView(), mTinyParams);
+    }
+
+    /**
+     * 添加全屏界面
+     */
+    private void addFullScreenView() {
+        mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        if (mControllerView == null) {
+            mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        }
+        addView(mControllerView.getRootView(), mFullParams);
     }
 
 
@@ -297,6 +317,9 @@ public class IjkMediaController extends FrameLayout {
             }
             mShowing = false;
         }
+        if (mControllerView != null) {
+            mControllerView.cancelProgressRunnable();
+        }
     }
 
     /**
@@ -340,12 +363,14 @@ public class IjkMediaController extends FrameLayout {
     public void showErrorView() {
         mControllerView.cancelProgressRunnable();//取消更新
         removeAllViews();
-        ErrorControllerView errorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        if (mErrorView == null) {
+            mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        }
         if (mControllerView instanceof TinyControllerView) {
-            addView(errorView, mTinyParams);
+            addView(mErrorView, mTinyParams);
         } else {
             ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            addView(errorView, layoutParams);
+            addView(mErrorView, layoutParams);
         }
         if (!mShowing && mAnchor != null) {
             updateFloatingWindowLayout();
@@ -363,7 +388,6 @@ public class IjkMediaController extends FrameLayout {
                 && event.getAction() == KeyEvent.ACTION_DOWN;
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
             if (uniqueDown) {
-                mControllerView.cancelProgressRunnable();
                 hide();
                 //如果传入的是activity直接退出
                 if (mContext instanceof Activity) {
@@ -395,6 +419,7 @@ public class IjkMediaController extends FrameLayout {
             mCurrentViewState = FULL_SCREEN_VIEW;
         }
     }
+
 
     /**
      * 控制层监听

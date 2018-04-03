@@ -84,6 +84,7 @@ public abstract class ControllerView extends FrameLayout {
      */
     protected void startProgressRunnable() {
         if (mDisposable == null || mDisposable.isDisposed() && isSendProgressEvent()) {
+            System.out.println("创建了---->");
             mDisposable = Observable.interval(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<Long>() {
@@ -109,11 +110,22 @@ public abstract class ControllerView extends FrameLayout {
      * 取消进度与时间更新线程
      */
     public void cancelProgressRunnable() {
-        if (mDisposable != null) {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
+            mDisposable = null;
+            System.out.println(" cancelProgressRunnable 销毁了---->");
         }
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+            mDisposable = null;
+            System.out.println("onDetachedFromWindow 销毁了---->");
+        }
+        super.onDetachedFromWindow();
+    }
 
     /**
      * 格式化时间
