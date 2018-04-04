@@ -138,7 +138,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      *  获取bundle 中的数据
      */
-    abstract fun getBundleExtras(extras: Bundle)
+    open fun getBundleExtras(extras: Bundle) {}
 
 
     /**

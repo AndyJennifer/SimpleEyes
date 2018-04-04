@@ -31,4 +31,9 @@ class CategoryModel : BaseModel {
      */
     fun loadMoreCategoryInfo(nextPageUrl: String?) = Api.getDefault().getMoreCategoryInfo(nextPageUrl).compose(RxHelper.handleResult())
 
+
+    /**
+     * 首页关键词搜索
+     */
+    fun searchHot(): Observable<List<String>> = Api.getDefault().getCategoryHot().compose(RxHelper.handleResult())
 }

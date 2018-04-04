@@ -34,7 +34,7 @@ interface ApiService {
      * 首页关键词搜索
      */
     @GET("api/v3/queries/hot")
-    fun getCategoryHot(): Observable<AndyInfo>
+    fun getCategoryHot(): Observable<List<String>>
 
 
     /**

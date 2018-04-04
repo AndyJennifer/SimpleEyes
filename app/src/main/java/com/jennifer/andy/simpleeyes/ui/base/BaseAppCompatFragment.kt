@@ -48,7 +48,7 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     /**
      * 跳转到相应的activity 并携带bundle数据
      */
-    protected fun readyGo(clazz: Class<*>, bundle: Bundle? = null) {
+    open fun readyGo(clazz: Class<*>, bundle: Bundle? = null) {
         val intent = Intent(activity, clazz)
         bundle?.let {
             intent.putExtras(bundle)
@@ -59,7 +59,7 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     /**
      * 跳转到相应的activity,并携带bundle数据，接收返回码
      */
-    protected fun readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
+    open fun readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
         val intent = Intent(activity, clazz)
         bundle?.let {
             intent.putExtras(bundle)
@@ -70,7 +70,7 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     /**
      * 获取bundle中相应data
      */
-    abstract fun getBundleExtras(extras: Bundle)
+    open fun getBundleExtras(extras: Bundle) {}
 
     /**
      * 获取资源id

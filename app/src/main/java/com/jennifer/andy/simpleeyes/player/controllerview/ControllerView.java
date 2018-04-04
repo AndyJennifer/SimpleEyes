@@ -84,7 +84,6 @@ public abstract class ControllerView extends FrameLayout {
      */
     protected void startProgressRunnable() {
         if (mDisposable == null || mDisposable.isDisposed() && isSendProgressEvent()) {
-            System.out.println("创建了---->");
             mDisposable = Observable.interval(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<Long>() {
@@ -99,7 +98,9 @@ public abstract class ControllerView extends FrameLayout {
                                 //发送进度
                                 RxBus.INSTANCE.post(new VideoProgressEvent((int) progress, secondProgress));
                             }
-                            updateTime(stringForTime(position), stringForTime(duration));
+                            if (!isDragging()) {//拖动的时候不更新进度条
+                                updateTime(stringForTime(position), stringForTime(duration));
+                            }
                         }
                     });
 
@@ -113,7 +114,6 @@ public abstract class ControllerView extends FrameLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
             mDisposable = null;
-            System.out.println(" cancelProgressRunnable 销毁了---->");
         }
     }
 
@@ -122,7 +122,6 @@ public abstract class ControllerView extends FrameLayout {
         if (mDisposable != null && !mDisposable.isDisposed()) {
             mDisposable.dispose();
             mDisposable = null;
-            System.out.println("onDetachedFromWindow 销毁了---->");
         }
         super.onDetachedFromWindow();
     }

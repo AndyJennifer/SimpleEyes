@@ -7,13 +7,17 @@ import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ItemList
 import com.jennifer.andy.simpleeyes.entity.TopIssue
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.net.Extras
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
+import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
@@ -22,17 +26,19 @@ import com.youth.banner.BannerConfig
 /**
  * Author:  andy.xwt
  * Date:    2017/11/27 13:55
- * Description:
+ * Description:主界面头部布局
  */
 
 class HomePageHeaderView : FrameLayout {
 
+    private val mBanner: Banner by bindView(R.id.head_banner)
+    private val mTitle: CustomFontTypeWriterTextView by bindView(R.id.tv_title)
+    private val mText: CustomFontTypeWriterTextView by bindView(R.id.tv_text)
+    private val mHeadRefreshView: HeaderRefreshView by bindView(R.id.head_refresh)
+    private val mIvSearch: ImageView by bindView(R.id.iv_search)
 
-    private lateinit var mBanner: Banner
-    private lateinit var mTitle: CustomFontTypeWriterTextView
-    private lateinit var mText: CustomFontTypeWriterTextView
-    private lateinit var mHeadRefreshView: HeaderRefreshView
     private lateinit var mTopIssue: TopIssue
+    private lateinit var mBaseFragment: BaseFragment<*, *>
 
     private var mScrollValue = 0
     private var currentPosition = -1
@@ -42,19 +48,14 @@ class HomePageHeaderView : FrameLayout {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init(context)
+        LayoutInflater.from(context).inflate(R.layout.layout_category_head_view, this, true)
+        init()
     }
 
     /**
      * 初始化
      */
-    private fun init(context: Context) {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_category_head_view, this, true)
-        mBanner = view.findViewById(R.id.banner)
-        mTitle = view.findViewById(R.id.tv_title)
-        mText = view.findViewById(R.id.tv_text)
-        mHeadRefreshView = view.findViewById(R.id.head_refresh)
-
+    private fun init() {
         //设置banner滑动监听
         mBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -72,14 +73,18 @@ class HomePageHeaderView : FrameLayout {
                 }
             }
         })
+        mIvSearch.setOnClickListener {
+            mBaseFragment.readyGo(SearchHotActivity::class.java, null)
+        }
 
     }
 
     /**
      * 设置头部信息
      */
-    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<ItemList>) {
+    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<ItemList>, baseFragment: BaseFragment<*, *>) {
         mTopIssue = topIssue
+        mBaseFragment = baseFragment
         mBanner.setImageLoader(FrescoImageLoader())
         mBanner.setImages(getTopIssueCardUrl(topIssue.data.itemList))
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)

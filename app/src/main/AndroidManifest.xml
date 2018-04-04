@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--闪屏页-->
         <activity android:name=".ui.splash.SplashActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/SplashTheme">
@@ -25,12 +26,17 @@
             </intent-filter>
         </activity>
 
+        <!--主界面-->
         <activity android:name=".ui.MainActivity"
                   android:screenOrientation="portrait"/>
 
+        <!--视频播放界面-->
         <activity android:name=".ui.video.VideoDetailActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"
                   android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
+        <!--搜索界面-->
+        <activity android:name=".ui.search.SearchHotActivity"
                   android:screenOrientation="portrait"/>
 
 

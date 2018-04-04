@@ -9,7 +9,7 @@
 
     <!--这里加前景是为了处理，有些图片背景是白色的情况-->
     <com.youth.banner.Banner
-        android:id="@+id/banner"
+        android:id="@+id/head_banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rl_more_container"

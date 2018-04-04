@@ -90,7 +90,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mHomePageHeaderView = HomePageHeaderView(context)
         val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
         mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
-        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.itemList)
+        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.itemList, this)
         mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
     }
 

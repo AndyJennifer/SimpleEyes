@@ -44,6 +44,7 @@ class SplashActivity : BaseAppCompatActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
         window.setBackgroundDrawable(null)
+
         doUpAnimator()
         doBackgroundAnimator()
     }

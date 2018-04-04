@@ -3,7 +3,6 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.os.Bundle
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.utils.SystemUtils
 
 
 /**
@@ -19,7 +18,7 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mPresenter = SystemUtils.getGenericInstance(this, 1)
+        mPresenter = initPresenter()
         mPresenter.attachView(this as V)
         super.onCreate(savedInstanceState)
 
@@ -48,4 +47,8 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
 
     }
 
+    /**
+     * 初始化Presenter
+     */
+    abstract fun initPresenter(): T
 }
