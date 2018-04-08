@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.search.view
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 
@@ -12,8 +13,18 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
 interface SearchHotView : BaseView {
 
     /**
-     * 获取热门搜索成功
+     * 获取热门关键词成功
      */
-    fun showSearchSuccess(it: List<String>)
+    fun getHotWordSuccess(hotList: MutableList<String>)
+
+    /**
+     * 搜索成功
+     */
+    fun showSearchSuccess(andyInfo: AndyInfo)
+
+    /**
+     * 搜索失败
+     */
+    fun showSearchFail(word: String)
 
 }

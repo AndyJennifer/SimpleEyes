@@ -31,11 +31,16 @@ interface ApiService {
     fun getMoreCategoryInfo(@Url url: String?): Observable<AndyInfo>
 
     /**
-     * 首页关键词搜索
+     * 获取热门关键词
      */
     @GET("api/v3/queries/hot")
-    fun getCategoryHot(): Observable<List<String>>
+    fun getHotWord(): Observable<MutableList<String>>
 
+    /**
+     * 关键词搜索
+     */
+    @GET("api/v1/search")
+    fun searchVideoByWord(@Query("query") word: String): Observable<AndyInfo>
 
     /**
      * 关注

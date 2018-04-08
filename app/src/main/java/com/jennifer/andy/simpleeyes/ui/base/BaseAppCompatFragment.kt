@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jennifer.andy.simpleeyes.rx.RxManager
-import com.jennifer.andy.simpleeyes.widget.MultipleStateView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import me.yokeyword.fragmentation.SupportFragment
 
 

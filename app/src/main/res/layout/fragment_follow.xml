@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.jennifer.andy.simpleeyes.widget.MultipleStateView
+    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
         android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,6 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </com.jennifer.andy.simpleeyes.widget.MultipleStateView>
+    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
 
 </LinearLayout>

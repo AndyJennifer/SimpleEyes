@@ -33,7 +33,12 @@ class CategoryModel : BaseModel {
 
 
     /**
-     * 首页关键词搜索
+     * 热门关键词获取
      */
-    fun searchHot(): Observable<List<String>> = Api.getDefault().getCategoryHot().compose(RxHelper.handleResult())
+    fun getHotWord(): Observable<MutableList<String>> = Api.getDefault().getHotWord().compose(RxHelper.handleResult())
+
+    /**
+     * 根据关键字搜索视频
+     */
+    fun searchVideoByWrod(word: String): Observable<AndyInfo> = Api.getDefault().searchVideoByWord(word).compose(RxHelper.handleResult())
 }

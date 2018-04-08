@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/rl_search_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,7 +22,8 @@
             app:closeIcon="@drawable/ic_action_cancel_grey"
             app:queryBackground="@color/transparent"
             app:queryHint="@string/find_interesting_video"
-            app:searchHintIcon="@drawable/ic_action_search_no_padding"
+            app:searchHintIcon="@null"
+            app:searchIcon="@null"
             app:submitBackground="@color/transparent"/>
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -34,6 +36,50 @@
             app:font_name="normal"/>
 
     </LinearLayout>
+
+    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+        android:id="@+id/multiple_state_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_search_remind"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="@string/search_hot_remind"
+                android:textColor="@color/gray_B7B9B8"
+                android:textSize="13sp"
+                app:font_name="normal"/>
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/hot_search_word"
+                android:textColor="@color/black"
+                app:font_name="normal"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_search_remind"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"/>
+
+    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
 
 
 </LinearLayout>

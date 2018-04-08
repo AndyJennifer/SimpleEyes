@@ -20,8 +20,16 @@ class SearchPresenter : BasePresenter<SearchHotView>() {
      * 获取热门搜索
      */
     fun searchHot() {
-        mRxManager.add(mCategoryModel.searchHot().subscribe({
+        mRxManager.add(mCategoryModel.getHotWord().subscribe({
+            mView?.getHotWordSuccess(it)
+        }))
+    }
+
+    fun searchVideoByWord(word: String) {
+        mRxManager.add(mCategoryModel.searchVideoByWrod(word).subscribe({
             mView?.showSearchSuccess(it)
+        }, {
+            mView?.showSearchFail(word)
         }))
     }
 

@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.BaseAppManager
-import com.jennifer.andy.simpleeyes.widget.MultipleStateView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import me.yokeyword.fragmentation.SupportActivity
 
 

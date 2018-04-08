@@ -38,4 +38,6 @@
     <string name="video_error_notice">网络错误或无连接，点击屏幕重试</string>
     <string name="find_interesting_video">帮你找到感兴趣的视频</string>
     <string name="cancel">取消</string>
+    <string name="search_hot_remind">输入标题或描述中的关键字找到更多视频</string>
+    <string name="hot_search_word">- 热门搜索词 -</string>
 </resources>

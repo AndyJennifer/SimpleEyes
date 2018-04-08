@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.widget
+package com.jennifer.andy.simpleeyes.widget.state
 
 import android.content.Context
 import android.util.AttributeSet
@@ -139,7 +139,7 @@ class MultipleStateView : RelativeLayout {
      */
     private fun setLoadingView(onClickListener: OnClickListener) {
         if (mLoadingView == null) {
-            mLoadingView = LayoutInflater.from(context).inflate(R.layout.layout_loading_view, null)
+            mLoadingView = NetLoadingView(context)
             mLoadingView?.tag = State.LOADING
             mLoadingView?.setOnClickListener(onClickListener)
             addStateView(mLoadingView)
