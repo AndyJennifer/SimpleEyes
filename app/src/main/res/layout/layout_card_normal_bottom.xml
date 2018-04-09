@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="当树枝折断时-官方预告片"
             android:textColor="@color/black"
             app:font_name="bold"/>
 
@@ -40,7 +39,6 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="二十世纪福克斯电影公司  /  #预告  /  02' 48"
             android:textColor="@color/SecondaryText"
             android:textSize="12sp"
             app:font_name="normal"/>

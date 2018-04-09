@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -40,34 +41,12 @@
     <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
         android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <com.jennifer.andy.simpleeyes.widget.SearchHotRemindView
             android:id="@+id/rl_search_remind"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="vertical"
-            android:visibility="invisible">
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="@string/search_hot_remind"
-                android:textColor="@color/gray_B7B9B8"
-                android:textSize="13sp"
-                app:font_name="normal"/>
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/hot_search_word"
-                android:textColor="@color/black"
-                app:font_name="normal"/>
-        </RelativeLayout>
+            android:layout_height="wrap_content"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_recycler"
@@ -75,9 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_search_remind"
             android:layout_centerHorizontal="true"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+        />
 
     </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
 

@@ -20,11 +20,16 @@ interface SearchHotView : BaseView {
     /**
      * 搜索成功
      */
-    fun showSearchSuccess(andyInfo: AndyInfo)
+    fun showSearchSuccess(queryWord: String, andyInfo: AndyInfo)
 
     /**
-     * 搜索失败
+     * 加载更多信息成功
      */
-    fun showSearchFail(word: String)
+    fun loadMoreSuccess(andyInfo: AndyInfo)
+
+    /**
+     * 没有更多
+     */
+    fun showNoMore()
 
 }

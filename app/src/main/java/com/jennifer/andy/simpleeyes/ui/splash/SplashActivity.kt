@@ -1,15 +1,13 @@
 package com.jennifer.andy.simpleeyes.ui.splash
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
@@ -27,6 +25,7 @@ import java.util.*
 
 class SplashActivity : BaseAppCompatActivity() {
 
+    private val mIvBackground by bindView<ImageView>(R.id.iv_background)
     private val mLoadingContainer by bindView<RelativeLayout>(R.id.rl_loading_container)
     private val mMoveContainer by bindView<RelativeLayout>(R.id.ll_move_container)
     private val mHeadOuter by bindView<ImageView>(R.id.iv_head_outer)
@@ -44,9 +43,14 @@ class SplashActivity : BaseAppCompatActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
         window.setBackgroundDrawable(null)
+        //如果用户没登录，执行上升动画，否则执行缩放动画
+        if (!UserPreferences.getUserIsLogin()) {
+            doUpAnimator()
+            doBackgroundAnimator()
+        } else {
+            doScaleAnimator()
+        }
 
-        doUpAnimator()
-        doBackgroundAnimator()
     }
 
 
@@ -124,12 +128,30 @@ class SplashActivity : BaseAppCompatActivity() {
         rotationAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 readyGoThenKillSelf(MainActivity::class.java, null)
+                UserPreferences.saveUserIsLogin(true)
             }
         })
         rotationAnimator.duration = 1000
         rotationAnimator.start()
     }
 
+    /**
+     * 执行背景缩放动画
+     */
+    private fun doScaleAnimator() {
+        val scaleX = ObjectAnimator.ofFloat(mIvBackground, "scaleX", 1f, 1.08f)
+        val scaleY = ObjectAnimator.ofFloat(mIvBackground, "scaleY", 1f, 1.08f)
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(scaleX, scaleY)
+        animatorSet.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator?) {
+                readyGoThenKillSelf(MainActivity::class.java, null)
+                UserPreferences.saveUserIsLogin(true)
+            }
+        })
+        animatorSet.duration = 2000
+        animatorSet.start()
+    }
 
     override fun getContentViewLayoutId() = R.layout.activity_splash
 }

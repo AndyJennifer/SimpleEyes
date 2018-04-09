@@ -24,11 +24,11 @@ interface ApiService {
     fun getCategory(): Observable<AndyInfo>
 
     /**
-     * 获取首页更多信息
+     * 获取更多信息
      * @param url 下一页请求地址
      */
     @GET
-    fun getMoreCategoryInfo(@Url url: String?): Observable<AndyInfo>
+    fun getMoreInfo(@Url url: String?): Observable<AndyInfo>
 
     /**
      * 获取热门关键词

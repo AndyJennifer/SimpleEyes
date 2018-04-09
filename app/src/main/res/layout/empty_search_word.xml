@@ -3,25 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_no_find"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/search_hot_remind"
-        android:textColor="@color/gray_B7B9B8"
-        android:textSize="13sp"
+        android:layout_centerInParent="true"
+        android:text="@string/not_find_match_content"
+        android:textSize="12sp"
         app:font_name="normal"/>
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/hot_search_word"
-        android:textColor="@color/black"
+        android:layout_below="@id/tv_no_find"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/remind_find_in_group"
+        android:textColor="@color/SecondaryText"
+        android:textSize="12sp"
         app:font_name="normal"/>
+
+
 </RelativeLayout>

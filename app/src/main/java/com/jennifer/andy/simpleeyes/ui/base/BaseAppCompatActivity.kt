@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.BaseAppManager
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
@@ -131,6 +132,24 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         }
         startActivity(intent)
         finish()
+    }
+
+    /**
+     * 是否显示键盘
+     */
+    protected fun showKeyboard(isShow: Boolean) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (isShow) {
+            if (currentFocus == null) {
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            } else {
+                imm.showSoftInput(currentFocus, 0)
+            }
+        } else {
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+            }
+        }
     }
 
     abstract fun initView(savedInstanceState: Bundle?)

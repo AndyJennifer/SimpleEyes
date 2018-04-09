@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.search
 import android.animation.ValueAnimator
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.text.Spannable
@@ -19,9 +20,13 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchHotAdapter
+import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchVideoAdapter
 import com.jennifer.andy.simpleeyes.ui.search.presenter.SearchPresenter
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
+import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
+import com.jennifer.andy.simpleeyes.widget.SearchHotRemindView
 import com.jennifer.andy.simpleeyes.widget.image.CenterAlignImageSpan
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 
@@ -34,13 +39,14 @@ import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 
 class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), SearchHotView {
 
-    private val mSearchRemind: RelativeLayout by bindView(R.id.rl_search_remind)
+    private val mSearchRemind: SearchHotRemindView by bindView(R.id.rl_search_remind)
     private val mSearchView: SearchView by bindView(R.id.searchView)
     private val mTvCancel: TextView by bindView(R.id.tv_cancel)
     private val multipleStateView: MultipleStateView by bindView(R.id.multiple_state_view)
     private val mRecycler: RecyclerView by bindView(R.id.rv_recycler)
 
     private lateinit var mHotSearchAdapter: SearchHotAdapter
+    private lateinit var mSearchVideoAdapter: SearchVideoAdapter
 
     override fun initView(savedInstanceState: Bundle?) {
         initSearchView()
@@ -51,16 +57,17 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     private fun initSearchView() {
         mSearchView.isIconified = false
         mSearchView.setIconifiedByDefault(false)
+
         //设置输入框提示文字样式
         val searchComplete = mSearchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
         searchComplete.gravity = Gravity.CENTER
         searchComplete.setHintTextColor(resources.getColor(R.color.gray_66A2A2A2))
         searchComplete.textSize = 13f
         searchComplete.hint = getDecoratedHint(searchComplete.hint, getDrawable(R.drawable.ic_action_search_no_padding), 50)
+        //添加搜索监听
         mSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                multipleStateView.showLoading()
-                // todo 隐藏键盘
+                showKeyboard(false)
                 mPresenter.searchVideoByWord(query)
                 return true
             }
@@ -85,19 +92,23 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
 
 
     override fun getHotWordSuccess(hotList: MutableList<String>) {
+        setRecyclerMargin()
+        startContentAnimation()
         mHotSearchAdapter = SearchHotAdapter(hotList)
+        mHotSearchAdapter.setOnItemClickListener { _, _, position ->
+            mPresenter.searchVideoByWord(mHotSearchAdapter.getItem(position)!!)
+        }
         val flexBoxLayoutManager = FlexboxLayoutManager(mContext, FlexDirection.ROW)
         flexBoxLayoutManager.justifyContent = JustifyContent.CENTER
         mRecycler.layoutManager = flexBoxLayoutManager
         mRecycler.adapter = mHotSearchAdapter
-        startContentAnimation()
+
     }
 
     /**
      * 进入内容动画
      */
     private fun startContentAnimation() {
-        mSearchRemind.visibility = View.VISIBLE
         val valueAnimator = ValueAnimator.ofInt(multipleStateView.measuredHeight, 0)
         valueAnimator.duration = 500
         valueAnimator.interpolator = AccelerateInterpolator()
@@ -109,16 +120,68 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     }
 
 
-    override fun showSearchSuccess(andyInfo: AndyInfo) {
-        //todo 重新设置adapter
+    override fun showSearchSuccess(queryWord: String, andyInfo: AndyInfo) {
+
+        //设置搜索结果
+        mSearchRemind.setSearchResult(queryWord, andyInfo.count)
+
+        mSearchVideoAdapter = SearchVideoAdapter(andyInfo.itemList)
+        //todo 点击跳转到视频播放
+        if (andyInfo.itemList.size > 0) {
+            resetRecyclerMargin()
+        } else {
+            mSearchVideoAdapter.bindToRecyclerView(mRecycler)
+            mSearchVideoAdapter.setEmptyView(R.layout.empty_search_word)
+        }
+
+        mSearchVideoAdapter.setOnLoadMoreListener({ mPresenter.loadMoreSearchResult() }, mRecycler)
+        mSearchVideoAdapter.setLoadMoreView(CustomLoadMoreView())
+        mRecycler.layoutManager = LinearLayoutManager(mContext)
+        mRecycler.adapter = mSearchVideoAdapter
+    }
+
+    override fun loadMoreSuccess(andyInfo: AndyInfo) {
+        mSearchVideoAdapter.addData(andyInfo.itemList)
+        mSearchVideoAdapter.loadMoreComplete()
+    }
+
+    override fun showNoMore() {
+        mSearchVideoAdapter.loadMoreEnd()
+    }
+
+    override fun showLoading() {
+        multipleStateView.showLoading()
+    }
+
+    override fun showContent() {
         multipleStateView.showContent()
     }
 
-    override fun showSearchFail(word: String) {
-        multipleStateView.showNetError(View.OnClickListener {
-            mPresenter.searchVideoByWord(word)
-        })
+    override fun showNetError(onClickListener: View.OnClickListener) {
+        multipleStateView.showNetError(onClickListener)
     }
+
+
+    /**
+     * 重置RecyclerMargin
+     */
+    private fun resetRecyclerMargin() {
+        val lp = mRecycler.layoutParams as RelativeLayout.LayoutParams
+        lp.marginEnd = 0
+        lp.marginStart = 0
+        mRecycler.layoutParams = lp
+    }
+
+    /**
+     * 设置RecyclerMargin
+     */
+    private fun setRecyclerMargin() {
+        val lp = mRecycler.layoutParams as RelativeLayout.LayoutParams
+        lp.marginEnd = DensityUtils.dip2px(mContext, 30f)
+        lp.marginStart = DensityUtils.dip2px(mContext, 30f)
+        mRecycler.layoutParams = lp
+    }
+
 
     override fun initPresenter() = SearchPresenter()
 

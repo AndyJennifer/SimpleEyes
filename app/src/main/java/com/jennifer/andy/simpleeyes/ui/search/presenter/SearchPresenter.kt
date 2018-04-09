@@ -1,8 +1,9 @@
 package com.jennifer.andy.simpleeyes.ui.search.presenter
 
 
+import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
+import com.jennifer.andy.simpleeyes.ui.category.model.AndyModel
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 
 
@@ -14,23 +15,51 @@ import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 
 class SearchPresenter : BasePresenter<SearchHotView>() {
 
-    private var mCategoryModel: CategoryModel = CategoryModel()
+    private var mAndyModel: AndyModel = AndyModel()
+    private var mNextPageUrl: String? = null
 
     /**
      * 获取热门搜索
      */
     fun searchHot() {
-        mRxManager.add(mCategoryModel.getHotWord().subscribe({
+        mRxManager.add(mAndyModel.getHotWord().subscribe({
             mView?.getHotWordSuccess(it)
         }))
     }
 
+    /**
+     * 根据关键字搜索
+     */
     fun searchVideoByWord(word: String) {
-        mRxManager.add(mCategoryModel.searchVideoByWrod(word).subscribe({
-            mView?.showSearchSuccess(it)
+        mView?.showLoading()
+        mRxManager.add(mAndyModel.searchVideoByWrod(word).subscribe({
+            mView?.showContent()
+            mView?.showSearchSuccess(word, it)
+            mNextPageUrl = it.nextPageUrl
         }, {
-            mView?.showSearchFail(word)
+            mView?.showNetError(View.OnClickListener { searchVideoByWord(word) })
         }))
+    }
+
+    /**
+     * 获取更多搜索结果
+     */
+    fun loadMoreSearchResult() {
+        if (mNextPageUrl != null) {
+            mRxManager.add(mAndyModel.loadMoreInfo(mNextPageUrl).subscribe({
+                mView?.showContent()
+                if (it.nextPageUrl == null) {
+                    mView?.showNoMore()
+                } else {
+                    mNextPageUrl = it.nextPageUrl
+                    mView?.loadMoreSuccess(it)
+                }
+            }, {
+                mView?.showNetError(View.OnClickListener {
+                    loadMoreSearchResult()
+                })
+            }))
+        }
     }
 
 }

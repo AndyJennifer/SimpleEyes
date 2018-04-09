@@ -103,8 +103,8 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
 
     override fun loadMoreSuccess(andyInfo: AndyInfo) {
-        mCateGoryAdapter?.loadMoreComplete()
         mCateGoryAdapter?.addData(andyInfo.itemList)
+        mCateGoryAdapter?.loadMoreComplete()
     }
 
     override fun showNoMore() {

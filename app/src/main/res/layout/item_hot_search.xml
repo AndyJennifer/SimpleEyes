@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@color/gray_C3C3C3"
+    android:background="@color/gray_B7B9B8"
     android:letterSpacing="0.3"
     android:padding="5dp"
     android:textColor="@color/white"

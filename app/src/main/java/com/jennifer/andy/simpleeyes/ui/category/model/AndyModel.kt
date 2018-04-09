@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit
 /**
  * Author:  andy.xwt
  * Date:    2017/9/19 18:00
- * Description:首页model
+ * Description:
  */
 
-class CategoryModel : BaseModel {
+class AndyModel : BaseModel {
 
     /**
      * 加载首页信息
@@ -27,9 +27,9 @@ class CategoryModel : BaseModel {
     fun refreshCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().delay(1000, TimeUnit.MILLISECONDS).compose(RxHelper.handleResult())
 
     /**
-     * 加载更多主页信息
+     * 加载更多信息
      */
-    fun loadMoreCategoryInfo(nextPageUrl: String?) = Api.getDefault().getMoreCategoryInfo(nextPageUrl).compose(RxHelper.handleResult())
+    fun loadMoreInfo(nextPageUrl: String?) = Api.getDefault().getMoreInfo(nextPageUrl).compose(RxHelper.handleResult())
 
 
     /**
