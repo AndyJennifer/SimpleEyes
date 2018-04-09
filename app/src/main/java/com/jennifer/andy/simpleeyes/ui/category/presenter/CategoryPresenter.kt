@@ -52,18 +52,20 @@ class CategoryPresenter : BasePresenter<CategoryView>() {
      * 加载更多首页信息
      */
     fun loadMoreCategoryData() {
-        mRxManager.add(mAndyModel.loadMoreInfo(mNextPageUrl).subscribe({
-            mView?.showContent()
-            if (it.nextPageUrl == null) {
-                mView?.showNoMore()
-            } else {
-                mNextPageUrl = it.nextPageUrl
-                mView?.loadMoreSuccess(it)
-            }
-        }, {
-            mView?.showNetError(View.OnClickListener {
-                loadMoreCategoryData()
-            })
-        }))
+        if (mNextPageUrl != null) {
+            mRxManager.add(mAndyModel.loadMoreInfo(mNextPageUrl).subscribe({
+                mView?.showContent()
+                if (it.nextPageUrl == null) {
+                    mView?.showNoMore()
+                } else {
+                    mNextPageUrl = it.nextPageUrl
+                    mView?.loadMoreSuccess(it)
+                }
+            }, {
+                mView?.showNetError(View.OnClickListener {
+                    loadMoreCategoryData()
+                })
+            }))
+        }
     }
 }

@@ -46,6 +46,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
+            android:maxWidth="100dp"
             android:textColor="@color/SecondaryText"
             android:textSize="13sp"
             app:font_name="normal"/>

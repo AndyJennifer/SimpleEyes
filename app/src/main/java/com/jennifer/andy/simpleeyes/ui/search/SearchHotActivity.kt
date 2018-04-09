@@ -138,6 +138,12 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
         mSearchVideoAdapter.setLoadMoreView(CustomLoadMoreView())
         mRecycler.layoutManager = LinearLayoutManager(mContext)
         mRecycler.adapter = mSearchVideoAdapter
+
+        //处理没有更多的情况
+        if (andyInfo.nextPageUrl == null) {
+            mSearchVideoAdapter.loadMoreEnd()
+        }
+
     }
 
     override fun loadMoreSuccess(andyInfo: AndyInfo) {
