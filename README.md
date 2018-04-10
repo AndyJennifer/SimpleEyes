@@ -41,14 +41,14 @@
 
 #### 感谢
 站在巨人的肩膀上。可以看得更远。该项目中运用了以下开源库，如果漏掉，请原谅我，我记性不是很好。
-[Fresco](https://github.com/facebook/fresco)
-[Fragmentation](https://github.com/YoKeyword/Fragmentation)
-[RxJava](https://github.com/ReactiveX/RxJava)
-[Retrofit](https://github.com/square/retrofit)
-[BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-[IjkPlayer](https://github.com/Bilibili/ijkplayer)
-[FlexBox-Layout](https://github.com/google/flexbox-layout)
-[Banner](https://github.com/youth5201314/banner)
+- [Fresco](https://github.com/facebook/fresco)
+- [Fragmentation](https://github.com/YoKeyword/Fragmentation)
+- [RxJava](https://github.com/ReactiveX/RxJava)
+- [Retrofit](https://github.com/square/retrofit)
+- [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+- [IjkPlayer](https://github.com/Bilibili/ijkplayer)
+- [FlexBox-Layout](https://github.com/google/flexbox-layout)
+- [Banner](https://github.com/youth5201314/banner)
 
 #### 声明
 感谢[开眼App](http://www.kaiyanapp.com)提供参考,本人是豆瓣粉丝。使用了其中的Api,并非攻击，如构成侵权，请及时通知我删除或者修改。数据来源来自开眼App,一切解释权归开眼所有。
