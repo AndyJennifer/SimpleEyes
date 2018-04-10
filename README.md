@@ -2,15 +2,19 @@
 #### 介绍
 [SimpleEyes](https://github.com/AndyJennifer/SimpleEyes)是一款基于仿开眼视频APP，力求与原始开眼App相似（附上相关app参考版本，如有需要可下载[开眼Version 3.8.1.2.216](https://pan.baidu.com/s/1xWR4fz9bXL4gH-KkQVX-RA) ）,该项目中采用**多Activity+多Fragment**开发。使用**MVP+RxJava+Retrofit**架构。主要采用语言**Kotlin**，**目前该项目持续开发中**。如果你愿意和我一起开发，或者有任何问题，请联系我。我总是在这等着你呢。O(∩_∩)O。
 
-#### 切图
+#### 相关截图
 
 ![闪屏页.png](https://upload-images.jianshu.io/upload_images/2824145-b38796e75822e9d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+
 ![首页.png](https://upload-images.jianshu.io/upload_images/2824145-35e2de15d95ca3e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 ![搜索界面.png](https://upload-images.jianshu.io/upload_images/2824145-fa9758b494ffe6ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+
 ![搜索结果界面.png](https://upload-images.jianshu.io/upload_images/2824145-213decd1702aaf20.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 
 ![视频详情.png](https://upload-images.jianshu.io/upload_images/2824145-97902b63822b7639.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
