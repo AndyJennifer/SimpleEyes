@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 
 import com.jennifer.andy.simpleeyes.R;
-import com.jennifer.andy.simpleeyes.entity.Content;
+import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 
 /**
@@ -23,7 +23,7 @@ public class ErrorControllerView extends ControllerView implements View.OnClickL
 
     private ImageView mIvReload;
 
-    public ErrorControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Content currentVideoInfo, Context context) {
+    public ErrorControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
         super(player, controller, currentVideoInfo, context);
     }
 

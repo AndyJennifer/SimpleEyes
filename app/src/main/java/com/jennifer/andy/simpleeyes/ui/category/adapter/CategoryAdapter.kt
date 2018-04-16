@@ -9,8 +9,8 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.ItemBean
-import com.jennifer.andy.simpleeyes.entity.ItemList
+import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
@@ -24,7 +24,7 @@ import com.youth.banner.BannerConfig
  * Description: 主页信息适配器
  */
 
-class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, BaseViewHolder>(data) {
+class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
 
     /**
      * 卡片类型
@@ -45,8 +45,8 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
 
 
     init {
-        multiTypeDelegate = object : MultiTypeDelegate<ItemList>() {
-            override fun getItemType(andyInfoItem: ItemList?): Int {
+        multiTypeDelegate = object : MultiTypeDelegate<Content>() {
+            override fun getItemType(andyInfoItem: Content?): Int {
                 when (andyInfoItem?.type) {
                     VIDEO_BANNER -> return VIDEO_BANNER_TYPE
                     VIDEO_FOLLOW_CARD -> return VIDEO_FOLLOW_CARD_TYPE
@@ -69,7 +69,7 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
 
     }
 
-    override fun convert(helper: BaseViewHolder?, item: ItemList) {
+    override fun convert(helper: BaseViewHolder?, item: Content) {
         when (helper?.itemViewType) {
             VIDEO_BANNER_TYPE -> setBannerInfo(helper, item)
             VIDEO_FOLLOW_CARD_TYPE -> setFollowCardInfo(helper, item)
@@ -84,7 +84,7 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
     /**
      * 设置视频banner信息
      */
-    private fun setBannerInfo(helper: BaseViewHolder, item: ItemList) {
+    private fun setBannerInfo(helper: BaseViewHolder, item: Content) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.image)
     }
@@ -93,7 +93,7 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
     /**
      * 设置单视频卡片信息
      */
-    private fun setFollowCardInfo(helper: BaseViewHolder, item: ItemList) {
+    private fun setFollowCardInfo(helper: BaseViewHolder, item: Content) {
         val info = item.data
         val cardNormalBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
         with(cardNormalBottom) {
@@ -114,7 +114,7 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
     /**
      * 设置banner3（广告信息）信息
      */
-    private fun setBanner3Info(helper: BaseViewHolder, item: ItemBean) {
+    private fun setBanner3Info(helper: BaseViewHolder, item: ContentBean) {
         val cardNormalBottom = helper.getView<CardNormalBottom>(R.id.card_bottom)
         with(cardNormalBottom) {
             setTitle(item.title)
@@ -136,7 +136,7 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
     /**
      * 设置水平滚动卡片信息
      */
-    private fun setHorizontalScrollCardInfo(helper: BaseViewHolder, itemList: MutableList<ItemList>) {
+    private fun setHorizontalScrollCardInfo(helper: BaseViewHolder, itemList: MutableList<Content>) {
         val banner = helper.getView<Banner>(R.id.banner)
         with(banner) {
             setImageLoader(FrescoImageLoader())
@@ -153,13 +153,13 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
     /**
      * 获取水平卡片图片地址
      */
-    private fun getHorizonTalCardUrl(itemList: MutableList<ItemList>) = itemList.map { it.data.image }
+    private fun getHorizonTalCardUrl(itemList: MutableList<Content>) = itemList.map { it.data.image }
 
 
     /**
      * 设置集合卡片信息
      */
-    private fun setCollectionCardWithCoverInfo(helper: BaseViewHolder, item: ItemBean) {
+    private fun setCollectionCardWithCoverInfo(helper: BaseViewHolder, item: ContentBean) {
         val eliteImageView = helper.getView<EliteImageView>(R.id.iv_image)
         val collectionRecycler = helper.getView<RecyclerView>(R.id.rv_collection_cover_recycler)
         val collectionCardCoverAdapter = CollectionCardCoverAdapter(item.itemList)
@@ -174,7 +174,7 @@ class CategoryAdapter(data: MutableList<ItemList>) : BaseQuickAdapter<ItemList, 
     /**
      * 设置矩形卡片信息
      */
-    private fun setSquareCollectionInfo(helper: BaseViewHolder, itemList: MutableList<ItemList>) {
+    private fun setSquareCollectionInfo(helper: BaseViewHolder, itemList: MutableList<Content>) {
         val squareRecycler = helper.getView<RecyclerView>(R.id.rv_square_recycler)
         val showAllContainer = helper.getView<RelativeLayout>(R.id.ll_more_container)
         squareRecycler.isNestedScrollingEnabled = false

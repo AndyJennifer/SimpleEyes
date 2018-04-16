@@ -32,7 +32,7 @@ class SearchPresenter : BasePresenter<SearchHotView>() {
      */
     fun searchVideoByWord(word: String) {
         mView?.showLoading()
-        mRxManager.add(mAndyModel.searchVideoByWrod(word).subscribe({
+        mRxManager.add(mAndyModel.searchVideoByWord(word).subscribe({
             mView?.showContent()
             mView?.showSearchSuccess(word, it)
             mNextPageUrl = it.nextPageUrl

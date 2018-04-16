@@ -37,8 +37,11 @@ class AndyModel : BaseModel {
      */
     fun getHotWord(): Observable<MutableList<String>> = Api.getDefault().getHotWord().compose(RxHelper.handleResult())
 
+
     /**
      * 根据关键字搜索视频
      */
-    fun searchVideoByWrod(word: String): Observable<AndyInfo> = Api.getDefault().searchVideoByWord(word).compose(RxHelper.handleResult())
+    fun searchVideoByWord(word: String): Observable<AndyInfo> = Api.getDefault().searchVideoByWord(word).compose(RxHelper.handleResult())
+
+
 }

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
-import com.jennifer.andy.simpleeyes.entity.Content;
+import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 import com.jennifer.andy.simpleeyes.rx.RxBus;
@@ -33,7 +33,7 @@ public abstract class ControllerView extends FrameLayout {
     protected Context mContext;
     protected MediaController.MediaPlayerControl mPlayer;
     protected IjkMediaController mController;
-    protected Content mCurrentVideoInfo;
+    protected ContentBean mCurrentVideoInfo;
 
     private StringBuilder mFormatBuilder = new StringBuilder();
 
@@ -42,7 +42,7 @@ public abstract class ControllerView extends FrameLayout {
     private Disposable mDisposable;
 
 
-    public ControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Content currentVideoInfo, Context context) {
+    public ControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
         super(context);
         mPlayer = player;
         mController = controller;

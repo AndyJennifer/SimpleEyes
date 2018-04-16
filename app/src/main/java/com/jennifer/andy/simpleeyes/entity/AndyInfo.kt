@@ -13,40 +13,7 @@ data class AndyInfo(var count: Int, var total: Int,
                     var nextPageUrl: String?, var date: Long,
                     var nextPublishTime: Long, var dialog: String,
                     var topIssue: TopIssue, var refreshCount: Int,
-                    var lastStartId: Int, var itemList: MutableList<ItemList>) : Serializable
-
-
-data class ItemList(var type: String,
-                    var data: ItemBean,
-                    var id: String,
-                    var tag: String) : Serializable
-
-
-data class ItemBean(var dataType: String,
-                    var header: Header,
-                    var image: String,
-                    var title: String,
-                    var description: String,
-                    var library: String,
-                    var category: String,
-                    var duration: Int,
-                    var cover: CoverBean,
-                    var text: String,
-                    var itemList: MutableList<ItemList>,
-                    var content: Content) : Serializable
-
-
-data class Header(var id: Int,
-                  var title: String,
-                  var font: String,
-                  var cover: String,
-                  var label: Any,
-                  var actionUrl: String,
-                  var labelList: MutableList<*>,
-                  var icon: String,
-                  var iconType: String,
-                  var description: String,
-                  var time: Long) : Serializable
+                    var lastStartId: Int, var itemList: MutableList<Content>) : Serializable
 
 
 data class Content(var type: String,
@@ -56,12 +23,16 @@ data class Content(var type: String,
 
 
 data class ContentBean(var dataType: String,
+                       var header: Header,
+                       var content: Content,
+                       var itemList: MutableList<Content>,
                        var id: String,
                        var title: String,
                        var description: String,
                        var library: String,
                        var tags: MutableList<TagsBean>,
                        var consumption: ConsumptionBean,
+                       var image: String,
                        var resourceType: String,
                        var slogan: String,
                        var provider: ProviderBean,
@@ -97,6 +68,19 @@ data class ContentBean(var dataType: String,
 ) : Serializable
 
 
+data class Header(var id: Int,
+                  var title: String,
+                  var font: String,
+                  var cover: String,
+                  var label: Any,
+                  var actionUrl: String,
+                  var labelList: MutableList<*>,
+                  var icon: String,
+                  var iconType: String,
+                  var description: String,
+                  var time: Long) : Serializable
+
+
 data class TagsBean(var id: Int,
                     var name: String,
                     var actionUrl: String,
@@ -115,9 +99,6 @@ data class TopIssue(var type: String,
 data class TopIssueBean(var dataType: String,
                         var count: Int,
                         var itemList: MutableList<Content>) : Serializable
-
-
-data class ContentListBean(var itemList: MutableList<Content>) : Serializable
 
 
 data class ProviderBean(var name: String,
@@ -170,8 +151,6 @@ data class PlayInfoBean(var height: Int,
 data class UrlListBean(var name: String,
                        var url: String,
                        var size: Int) : Serializable
-
-
 
 
 

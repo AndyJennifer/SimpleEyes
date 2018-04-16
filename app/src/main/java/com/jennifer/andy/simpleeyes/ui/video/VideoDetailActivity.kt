@@ -1,5 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.video
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.entity.ItemList
+import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.player.IjkMediaController
 import com.jennifer.andy.simpleeyes.player.IjkVideoView
@@ -26,6 +28,7 @@ import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailHeadView
 import io.reactivex.functions.Consumer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
+import java.util.*
 
 
 /**
@@ -43,17 +46,33 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private val mHorizontalProgress by bindView<ProgressBar>(R.id.sb_progress)
     private val mRecycler by bindView<RecyclerView>(R.id.rv_video_recycler)
 
-    private lateinit var mCurrentVideoInfo: Content
+    private lateinit var mCurrentVideoInfo: ContentBean
     private var mCurrentIndex = 0
-    private lateinit var mVideoListInfo: MutableList<ItemList>
+    private lateinit var mVideoListInfo: MutableList<Content>
     private var mBackPressed = false
 
     private lateinit var mVideoDetailAdapter: VideoDetailAdapter
     private lateinit var ijkMediaController: IjkMediaController
 
+
+    companion object {
+        /**
+         * 跳转到视频详细界面
+         */
+        fun start(context: Context, content: ContentBean, videoListInfo: ArrayList<Content>, defaultIndex: Int) {
+            val bundle = Bundle()
+            bundle.putSerializable(Extras.VIDEO_LIST_INFO, videoListInfo)
+            bundle.putSerializable(Extras.VIDEO_INFO, content)
+            bundle.putInt(Extras.VIDEO_INFO_INDEX, defaultIndex)
+            val starter = Intent(context, VideoDetailActivity::class.java)
+            starter.putExtras(bundle)
+            context.startActivity(starter)
+        }
+    }
+
     override fun getBundleExtras(extras: Bundle) {
-        mCurrentVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as Content
-        mVideoListInfo = extras.getSerializable(Extras.VIDEO_LIST_INFO) as MutableList<ItemList>
+        mCurrentVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as ContentBean
+        mVideoListInfo = extras.getSerializable(Extras.VIDEO_LIST_INFO) as MutableList<Content>
         mCurrentIndex = extras.getInt(Extras.VIDEO_INFO_INDEX, 0)
     }
 
@@ -66,8 +85,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
 
     private fun initPlaceHolder() {
-        mPlaceImage.setImageURI(mCurrentVideoInfo.data.cover.detail)
-        mBlurredImage.setImageURI(mCurrentVideoInfo.data.cover.blurred)
+        mPlaceImage.setImageURI(mCurrentVideoInfo.cover.detail)
+        mBlurredImage.setImageURI(mCurrentVideoInfo.cover.blurred)
         mHorizontalProgress.max = 1000
     }
 
@@ -112,7 +131,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      * 重置视频信息
      */
     private fun refreshVideo(videoInfo: Content) {
-        mCurrentVideoInfo = videoInfo
+        mCurrentVideoInfo = videoInfo.data
 
         mRecycler.visibility = View.INVISIBLE
         mPlaceImage.visibility = View.VISIBLE
@@ -122,9 +141,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         mHorizontalProgress.progress = 0
 
         initPlaceHolder()
-        mVideoView.stopPlayback()
-        mVideoView.release(true)
-        mVideoView.setVideoPath(mCurrentVideoInfo.data.playUrl)
+        mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
         mVideoView.start()
     }
 
@@ -142,7 +159,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      * 播放视频
      */
     private fun playVideo() {
-        mVideoView.setVideoPath(mCurrentVideoInfo.data.playUrl)
+        mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
         mVideoView.setMediaController(ijkMediaController)
         mVideoView.start()
         //设置准备完成监听
@@ -153,7 +170,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                 mProgress.visibility = View.GONE
             }, 500)
             //获取相关视屏信息
-            mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.data.id)
+            mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
             ijkMediaController.resetType()
 
         }
@@ -180,12 +197,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private fun getVideoDetailView(): View {
         val view = VideoDetailHeadView(mContext)
         with(view) {
-            setTitle(mCurrentVideoInfo.data.title)
-            setCategoryAndTime(mCurrentVideoInfo.data.category, mCurrentVideoInfo.data.duration)
-            setFavoriteCount(mCurrentVideoInfo.data.consumption.collectionCount)
-            setShareCount(mCurrentVideoInfo.data.consumption.replyCount)
-            setReplayCount(mCurrentVideoInfo.data.consumption.replyCount)
-            setDescription(mCurrentVideoInfo.data.description)
+            setTitle(mCurrentVideoInfo.title)
+            setCategoryAndTime(mCurrentVideoInfo.category, mCurrentVideoInfo.duration)
+            setFavoriteCount(mCurrentVideoInfo.consumption.collectionCount)
+            setShareCount(mCurrentVideoInfo.consumption.replyCount)
+            setReplayCount(mCurrentVideoInfo.consumption.replyCount)
+            setDescription(mCurrentVideoInfo.description)
         }
         view.startScrollAnimation()
         return view
@@ -196,7 +213,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      */
     private fun getRelationVideoInfo(): View {
         val view = VideoDetailAuthorView(mContext)
-        view.setVideoAuthorInfo(mCurrentVideoInfo.data.author)
+        view.setVideoAuthorInfo(mCurrentVideoInfo.author)
         return view
     }
 

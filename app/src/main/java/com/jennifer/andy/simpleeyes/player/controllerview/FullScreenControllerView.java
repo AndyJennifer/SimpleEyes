@@ -7,7 +7,7 @@ import android.widget.MediaController;
 import android.widget.SeekBar;
 
 import com.jennifer.andy.simpleeyes.R;
-import com.jennifer.andy.simpleeyes.entity.Content;
+import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView;
 
@@ -33,7 +33,7 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
     private int mChangeProgress;
 
 
-    public FullScreenControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Content currentVideoInfo, Context context) {
+    public FullScreenControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
         super(player, controller, currentVideoInfo, context);
     }
 
@@ -51,7 +51,7 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
 
 
         //初始化标题
-        mTitle.setText(mCurrentVideoInfo.getData().getTitle());
+        mTitle.setText(mCurrentVideoInfo.getTitle());
 
         //初始化播放时间
         int position = mPlayer.getCurrentPosition();
@@ -69,8 +69,8 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
         }
 
         //判断是否显示上一个按钮与下一个按钮
-        mPreButton.setVisibility(mController.getCurrentIndex() > 0 ? View.VISIBLE : View.GONE);
-        mNextButton.setVisibility(mController.getCurrentIndex() >= mController.getTotalCount() - 1 ? View.GONE : View.VISIBLE);
+        mPreButton.setVisibility(mController.isHavePreVideo() ? View.VISIBLE : View.GONE);
+        mNextButton.setVisibility(mController.isHaveNextVideo() ? View.VISIBLE : View.GONE);
     }
 
     @Override

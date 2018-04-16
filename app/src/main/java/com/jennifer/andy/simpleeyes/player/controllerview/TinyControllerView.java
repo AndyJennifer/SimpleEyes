@@ -8,7 +8,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.jennifer.andy.simpleeyes.R;
-import com.jennifer.andy.simpleeyes.entity.Content;
+import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 import com.jennifer.andy.simpleeyes.utils.NetWorkUtils;
 
@@ -34,7 +34,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
 
     private int mChangeProgress;
 
-    public TinyControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, Content currentVideoInfo, Context context) {
+    public TinyControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
         super(player, controller, currentVideoInfo, context);
     }
 
@@ -65,8 +65,8 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             mProgress.setSecondaryProgress(secondProgress);
         }
         //判断是否显示上一个按钮与下一个按钮
-        mPreButton.setVisibility(mController.getCurrentIndex() > 0 ? View.VISIBLE : View.GONE);
-        mNextButton.setVisibility(mController.getCurrentIndex() >= mController.getTotalCount() - 1 ? View.GONE : View.VISIBLE);
+        mPreButton.setVisibility(mController.isHavePreVideo() ? View.VISIBLE : View.GONE);
+        mNextButton.setVisibility(mController.isHaveNextVideo() ? View.VISIBLE : View.GONE);
     }
 
 

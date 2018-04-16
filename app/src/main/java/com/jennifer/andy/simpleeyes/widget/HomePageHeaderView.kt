@@ -1,8 +1,6 @@
 package com.jennifer.andy.simpleeyes.widget
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -10,10 +8,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.entity.ItemList
 import com.jennifer.andy.simpleeyes.entity.TopIssue
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
-import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
@@ -21,6 +17,7 @@ import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
+import java.util.*
 
 
 /**
@@ -82,7 +79,7 @@ class HomePageHeaderView : FrameLayout {
     /**
      * 设置头部信息
      */
-    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<ItemList>, baseFragment: BaseFragment<*, *>) {
+    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<Content>, baseFragment: BaseFragment<*, *>) {
         mTopIssue = topIssue
         mBaseFragment = baseFragment
         mBanner.setImageLoader(FrescoImageLoader())
@@ -94,12 +91,7 @@ class HomePageHeaderView : FrameLayout {
         mBanner.setDelayTime(6000)
         mBanner.setOnBannerListener {
             val item = mTopIssue.data.itemList[it]
-            val bundle = Bundle()
-            bundle.putSerializable(Extras.VIDEO_LIST_INFO, videoListInfo as ArrayList)
-            bundle.putSerializable(Extras.VIDEO_INFO, item)
-            val intent = Intent(context, VideoDetailActivity::class.java)
-            intent.putExtras(bundle)
-            context.startActivity(intent)
+            VideoDetailActivity.start(context, item.data, videoListInfo as ArrayList, 0)
         }
     }
 

@@ -13,6 +13,7 @@ import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -23,6 +24,7 @@ import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchHotAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchVideoAdapter
 import com.jennifer.andy.simpleeyes.ui.search.presenter.SearchPresenter
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
+import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
@@ -96,6 +98,7 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
         startContentAnimation()
         mHotSearchAdapter = SearchHotAdapter(hotList)
         mHotSearchAdapter.setOnItemClickListener { _, _, position ->
+            showKeyboard(false)
             mPresenter.searchVideoByWord(mHotSearchAdapter.getItem(position)!!)
         }
         val flexBoxLayoutManager = FlexboxLayoutManager(mContext, FlexDirection.ROW)
@@ -126,7 +129,17 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
         mSearchRemind.setSearchResult(queryWord, andyInfo.count)
 
         mSearchVideoAdapter = SearchVideoAdapter(andyInfo.itemList)
-        //todo 点击跳转到视频播放
+
+
+        //跳转到播放界面
+        mSearchVideoAdapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
+            val item = mSearchVideoAdapter.getItem(position)
+            if (item?.type == SearchVideoAdapter.VIDEO) {
+                VideoDetailActivity.start(mContext, item.data, arrayListOf(), position)
+            }
+        }
+
+
         if (andyInfo.itemList.size > 0) {
             resetRecyclerMargin()
         } else {

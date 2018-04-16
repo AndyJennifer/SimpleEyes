@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.category.adapter.CategoryAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
@@ -74,12 +73,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
         mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
             val item = mCateGoryAdapter?.getItem(position)
-            val bundle = Bundle()
-            bundle.putSerializable(Extras.VIDEO_LIST_INFO, mCateGoryAdapter?.data as ArrayList)
-            bundle.putSerializable(Extras.VIDEO_INFO, item?.data?.content)
-            bundle.putInt(Extras.VIDEO_INFO_INDEX, position)
-            readyGo(VideoDetailActivity::class.java, bundle)
-
+            VideoDetailActivity.start(context, item!!.data.content.data, mCateGoryAdapter?.data as ArrayList, position)
         }
         mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())

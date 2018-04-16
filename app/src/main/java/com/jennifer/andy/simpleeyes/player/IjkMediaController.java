@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
-import com.jennifer.andy.simpleeyes.entity.Content;
+import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.controllerview.ControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.ErrorControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
@@ -45,7 +45,7 @@ public class IjkMediaController extends FrameLayout {
     private final Context mContext;
     private ControllerView mControllerView;
 
-    private Content mCurrentVideoInfo;
+    private ContentBean mCurrentVideoInfo;
     private int mTotalCount;
     private int mCurrentIndex;
 
@@ -63,9 +63,9 @@ public class IjkMediaController extends FrameLayout {
     /**
      * @param currentIndex     当前视频角标
      * @param totalCount       视频集合总数
-     * @param currentVideoInfo
+     * @param currentVideoInfo 当前视频信息
      */
-    public IjkMediaController(int currentIndex, int totalCount, Content currentVideoInfo, @NonNull Context context) {
+    public IjkMediaController(int currentIndex, int totalCount, ContentBean currentVideoInfo, @NonNull Context context) {
         super(context);
         mCurrentIndex = currentIndex;
         mTotalCount = totalCount;
@@ -412,6 +412,23 @@ public class IjkMediaController extends FrameLayout {
         return mTotalCount;
     }
 
+    /**
+     * 判断是否拥有上一个视频
+     */
+    public boolean isHavePreVideo() {
+        return mTotalCount > 0 && mCurrentIndex > 0;
+    }
+
+    /**
+     * 是否拥有下一个视频
+     */
+    public boolean isHaveNextVideo() {
+        return mTotalCount > 0 && (mCurrentIndex < mTotalCount - 1);
+    }
+
+    /**
+     * 重置状态，最小化，与全屏
+     */
     public void resetType() {
         if (mControllerView instanceof TinyControllerView) {
             mCurrentViewState = TINY_VIEW;
