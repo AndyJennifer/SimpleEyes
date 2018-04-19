@@ -24,7 +24,7 @@ data class Content(var type: String,
 
 data class ContentBean(var dataType: String,
                        var header: Header,
-                       var content: Content,
+                       var content: Content?,
                        var itemList: MutableList<Content>,
                        var id: String,
                        var title: String,

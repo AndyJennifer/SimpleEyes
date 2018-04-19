@@ -64,7 +64,11 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             mProgress.setProgress((int) progress);
             mProgress.setSecondaryProgress(secondProgress);
         }
-        //判断是否显示上一个按钮与下一个按钮
+        updatePreNextButton();
+    }
+
+    //判断是否显示上一个按钮与下一个按钮
+    private void updatePreNextButton() {
         mPreButton.setVisibility(mController.isHavePreVideo() ? View.VISIBLE : View.GONE);
         mNextButton.setVisibility(mController.isHaveNextVideo() ? View.VISIBLE : View.GONE);
     }
@@ -80,10 +84,12 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             case R.id.iv_previous://上一个
                 cancelProgressRunnable();
                 mController.getControllerListener().onPreClick();
+                updatePreNextButton();
                 break;
             case R.id.iv_next://下一个按钮
                 cancelProgressRunnable();
                 mController.getControllerListener().onNextClick();
+                updatePreNextButton();
                 break;
             case R.id.iv_back://回退键
                 mController.hide();

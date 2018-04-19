@@ -105,8 +105,8 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
 
         val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
         with(eliteView) {
-            setImageUrl(info.content.data.cover.feed)
-            setDailyVisible(info.content.data.library == "DAILY")
+            setImageUrl(info.content!!.data.cover.feed)
+            setDailyVisible(info.content!!.data.library == "DAILY")
         }
 
     }

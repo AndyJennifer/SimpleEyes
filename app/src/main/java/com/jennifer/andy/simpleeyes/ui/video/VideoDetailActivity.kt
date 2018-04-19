@@ -56,6 +56,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
 
     companion object {
+
         /**
          * 跳转到视频详细界面
          */
@@ -72,7 +73,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun getBundleExtras(extras: Bundle) {
         mCurrentVideoInfo = extras.getSerializable(Extras.VIDEO_INFO) as ContentBean
-        mVideoListInfo = extras.getSerializable(Extras.VIDEO_LIST_INFO) as MutableList<Content>
+        mVideoListInfo = extras.getSerializable(Extras.VIDEO_LIST_INFO) as ArrayList<Content>
         mCurrentIndex = extras.getInt(Extras.VIDEO_INFO_INDEX, 0)
     }
 
@@ -102,7 +103,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                 mCurrentIndex = ++mCurrentIndex
                 ijkMediaController.currentIndex = mCurrentIndex
                 ijkMediaController.hide()
-                refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
+                refreshVideo(getFutureVideo())
             }
 
             override fun onFullScreenClick() {
@@ -117,12 +118,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                 mCurrentIndex = --mCurrentIndex
                 ijkMediaController.currentIndex = mCurrentIndex
                 ijkMediaController.hide()
-                refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
+                refreshVideo(getFutureVideo())
             }
 
             override fun onErrorViewClick() {
                 ijkMediaController.hide()
-                refreshVideo(mVideoListInfo[mCurrentIndex].data.content)
+                refreshVideo(getFutureVideo())
             }
         }
     }
@@ -143,6 +144,18 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         initPlaceHolder()
         mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
         mVideoView.start()
+    }
+
+    /**
+     * 获取即将展示的视频
+     */
+    private fun getFutureVideo(): Content {
+        return if (mVideoListInfo[mCurrentIndex].data.content != null) {
+            mVideoListInfo[mCurrentIndex].data.content!!
+        } else {
+            mVideoListInfo[mCurrentIndex]
+        }
+
     }
 
     private fun setProgressListener() {

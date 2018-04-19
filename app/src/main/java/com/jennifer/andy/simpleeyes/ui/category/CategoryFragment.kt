@@ -73,7 +73,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
         mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
             val item = mCateGoryAdapter?.getItem(position)
-            VideoDetailActivity.start(context, item!!.data.content.data, mCateGoryAdapter?.data as ArrayList, position)
+            VideoDetailActivity.start(context, item?.data?.content?.data!!, mCateGoryAdapter?.data as ArrayList, position)
         }
         mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())
@@ -84,7 +84,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mHomePageHeaderView = HomePageHeaderView(context)
         val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context), ScreenUtils.getScreenHeight(context) / 2)
         mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
-        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.itemList, this)
+        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.topIssue.data.itemList, this)
         mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
     }
 

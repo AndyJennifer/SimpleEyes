@@ -73,7 +73,7 @@ class SearchVideoAdapter(data: MutableList<Content>?) : BaseQuickAdapter<Content
         collectionBriefAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
             //跳转到播放视频详情
             val item = collectionBriefAdapter.getItem(position)
-            VideoDetailActivity.start(mContext, item?.data!!, collectionBriefAdapter.data as ArrayList<Content>, position)
+            VideoDetailActivity.start(mContext, item!!.data, collectionBriefAdapter.data as ArrayList<Content>, position)
 
         }
         //设置作者信息

@@ -45,7 +45,7 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     private val mSearchView: SearchView by bindView(R.id.searchView)
     private val mTvCancel: TextView by bindView(R.id.tv_cancel)
     private val multipleStateView: MultipleStateView by bindView(R.id.multiple_state_view)
-    private val mRecycler: RecyclerView by bindView(R.id.rv_recycler)
+    private val mRecycler: RecyclerView by bindView(R.id.rv_search_recycler)
 
     private lateinit var mHotSearchAdapter: SearchHotAdapter
     private lateinit var mSearchVideoAdapter: SearchVideoAdapter
