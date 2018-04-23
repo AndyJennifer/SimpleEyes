@@ -6,11 +6,13 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.TopIssue
 import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.category.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -33,6 +35,7 @@ class HomePageHeaderView : FrameLayout {
     private val mText: CustomFontTypeWriterTextView by bindView(R.id.tv_text)
     private val mHeadRefreshView: HeaderRefreshView by bindView(R.id.head_refresh)
     private val mIvSearch: ImageView by bindView(R.id.iv_search)
+    private val mMoreContainer: RelativeLayout by bindView(R.id.rl_more_container)
 
     private lateinit var mTopIssue: TopIssue
     private lateinit var mBaseFragment: BaseFragment<*, *>
@@ -70,8 +73,13 @@ class HomePageHeaderView : FrameLayout {
                 }
             }
         })
+        //跳转到搜索界面
         mIvSearch.setOnClickListener {
             mBaseFragment.readyGo(SearchHotActivity::class.java, null)
+        }
+        //跳转到每日精选
+        mMoreContainer.setOnClickListener {
+            mBaseFragment.readyGo(DailyEliteActivity::class.java)
         }
 
     }

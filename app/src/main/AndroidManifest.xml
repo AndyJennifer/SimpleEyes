@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
 
+
         <!--主界面-->
         <activity android:name=".ui.MainActivity"
                   android:screenOrientation="portrait"/>
@@ -38,7 +39,9 @@
         <!--搜索界面-->
         <activity android:name=".ui.search.SearchHotActivity"
                   android:screenOrientation="portrait"/>
-
+        <!--每日精选-->
+        <activity android:name=".ui.category.DailyEliteActivity"
+                  android:screenOrientation="portrait"/>
 
     </application>
 

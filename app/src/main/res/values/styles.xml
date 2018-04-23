@@ -8,11 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
     <!--闪屏页-->
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/landing_background</item>
+        <item name="android:windowBackground">@color/black</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
 
     <style name="ProgressBarStyle">
         <item name="android:indeterminateOnly">false</item>

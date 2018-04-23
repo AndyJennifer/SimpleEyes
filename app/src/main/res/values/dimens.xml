@@ -15,4 +15,5 @@
     <dimen name="default_card_height">200dp</dimen>
     <dimen name="default_card_source_icon_width">40dp</dimen>
     <dimen name="default_card_source_icon_height">40dp</dimen>
+    <dimen name="normal_title_height">48dp</dimen>
 </resources>

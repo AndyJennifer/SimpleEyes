@@ -20,7 +20,7 @@ import java.util.*
 /**
  * Author:  andy.xwt
  * Date:    2018/2/3 10:26
- * Description:闪屏页
+ * Description:闪屏页(上升动画）
  */
 
 class SplashActivity : BaseAppCompatActivity() {

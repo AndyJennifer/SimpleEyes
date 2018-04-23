@@ -15,6 +15,10 @@ data class AndyInfo(var count: Int, var total: Int,
                     var topIssue: TopIssue, var refreshCount: Int,
                     var lastStartId: Int, var itemList: MutableList<Content>) : Serializable
 
+data class JenniferInfo(var nextPageUrl: String?, var date: Long,
+                        var nextPublishTime: Long, var dialog: String,
+                        var topIssue: TopIssue, var refreshCount: Int,
+                        var lastStartId: Int, var issueList: MutableList<ContentBean>) : Serializable
 
 data class Content(var type: String,
                    var data: ContentBean,

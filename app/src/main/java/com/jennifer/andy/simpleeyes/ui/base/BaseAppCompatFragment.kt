@@ -45,6 +45,10 @@ abstract class BaseAppCompatFragment : SupportFragment() {
         initView(savedInstanceState)
     }
 
+    open fun readyGo(clazz: Class<*>) {
+        readyGo(clazz, null)
+    }
+
     /**
      * 跳转到相应的activity 并携带bundle数据
      */

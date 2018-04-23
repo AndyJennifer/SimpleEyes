@@ -43,5 +43,8 @@ class AndyModel : BaseModel {
      */
     fun searchVideoByWord(word: String): Observable<AndyInfo> = Api.getDefault().searchVideoByWord(word).compose(RxHelper.handleResult())
 
-
+    /**
+     * 获取每日编辑精选
+     */
+    fun getDailyElite() = Api.getDefault().getDailyElite().compose(RxHelper.handleResult())
 }
