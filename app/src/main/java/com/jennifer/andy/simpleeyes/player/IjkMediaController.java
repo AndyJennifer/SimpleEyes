@@ -317,9 +317,9 @@ public class IjkMediaController extends FrameLayout {
             }
             mShowing = false;
         }
-        if (mControllerView != null) {
-            mControllerView.cancelProgressRunnable();
-        }
+//        if (mControllerView != null) {
+//            mControllerView.cancelProgressRunnable();
+//        }
     }
 
     /**
@@ -333,9 +333,7 @@ public class IjkMediaController extends FrameLayout {
      * 切换控制层视图、TinyControllerView 与 TinyControllerView
      */
     public void toggleControllerView(ControllerView controllerView) {
-
         mControllerView.cancelProgressRunnable();//取消更新
-
         removeAllViews();
         if (controllerView instanceof TinyControllerView) {
             addView(controllerView.getRootView(), mTinyParams);

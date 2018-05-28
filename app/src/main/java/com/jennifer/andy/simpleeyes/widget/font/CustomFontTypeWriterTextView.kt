@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.widget.font
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 
 
@@ -24,9 +25,11 @@ class CustomFontTypeWriterTextView : CustomFontTextView {
     /**
      * 打印文字
      */
-    fun printText(text: String) {
-        mSloganSpanGroup = PrintSpanGroup(text)
-        mSloganSpanGroup.startPrint(this)
+    fun printText(text: String?, printTime: Long = 0) {
+        if (!TextUtils.isEmpty(text)) {
+            mSloganSpanGroup = PrintSpanGroup(text!!, printTime)
+            mSloganSpanGroup.startPrint(this)
+        }
     }
 
 

@@ -117,14 +117,6 @@ public abstract class ControllerView extends FrameLayout {
         }
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-            mDisposable = null;
-        }
-        super.onDetachedFromWindow();
-    }
 
     /**
      * 格式化时间

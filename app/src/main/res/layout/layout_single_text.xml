@@ -8,7 +8,7 @@
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
         android:id="@+id/tv_text"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/normal_title_height"
         android:gravity="center"
         android:letterSpacing="0.1"
         android:padding="5dp"

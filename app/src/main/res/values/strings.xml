@@ -45,4 +45,19 @@
     <string name="remind_find_in_group">可以通过所属分类\n以及标题或描述中的关键词来查找</string>
     <string name="not_find_match_content">很抱歉没有找到相匹配的内容</string>
     <string name="daily_editor_elite">每日编辑精选</string>
+    <string name="load_failed">加载更多失败</string>
+
+    <string-array name="slogan_array_zh">
+        <item>每日编辑精选，一如既往</item>
+        <item>关注越多，发现越多</item>
+        <item>离线自动缓存，精彩永不下线</item>
+        <item>登录即可订阅、评论和同步已收藏视频</item>
+    </string-array>
+
+    <string-array name="slogan_array_en">
+        <item>Daily appetizers for your eyes,as always</item>
+        <item>Subscribe more,discover a whole lot more</item>
+        <item>Enjoy your daily eyepetit,even without connectivity</item>
+        <item>Sign in to comment &amp;collect videos,to subscript also</item>
+    </string-array>
 </resources>

@@ -6,7 +6,10 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.youth.banner.Banner
+import com.youth.banner.BannerConfig
 
 
 /**
@@ -21,10 +24,12 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
     val BANNER_TYPE = 0
     val VIDEO_TYPE = 1
     val TEXT_CARD_TYPE = 2
+    val HORIZONTAL_SCROLL_CARD_TYPE = 3
 
     val VIDEO_BANNER = "banner"
     val VIDEO = "video"
     val TEXT_CARD = "textCard"
+    val HORIZONTAL_CARD = "horizontalScrollCard"
 
     init {
         multiTypeDelegate = object : MultiTypeDelegate<Content>() {
@@ -33,6 +38,7 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
                     VIDEO_BANNER -> return BANNER_TYPE
                     VIDEO -> return VIDEO_TYPE
                     TEXT_CARD -> return TEXT_CARD_TYPE
+                    HORIZONTAL_CARD -> return HORIZONTAL_SCROLL_CARD_TYPE
                 }
                 return VIDEO_TYPE
             }
@@ -41,6 +47,7 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
             registerItemType(BANNER_TYPE, R.layout.layout_card_banner)
             registerItemType(VIDEO_TYPE, R.layout.layout_single_video)
             registerItemType(TEXT_CARD_TYPE, R.layout.layout_single_text)
+            registerItemType(HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
         }
 
     }
@@ -50,6 +57,7 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
             BANNER_TYPE -> setBannerInfo(helper, item)
             VIDEO_TYPE -> setSingleVideoInfo(helper, item)
             TEXT_CARD_TYPE -> setSingleText(helper, item)
+            HORIZONTAL_SCROLL_CARD_TYPE -> setHorizontalScrollCardInfo(helper, item)
         }
     }
 
@@ -75,5 +83,29 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
     private fun setSingleText(helper: BaseViewHolder, item: Content) {
         helper.setText(R.id.tv_text, item.data.text)
     }
+
+
+    /**
+     * 设置水平滚动卡片信息
+     */
+    private fun setHorizontalScrollCardInfo(helper: BaseViewHolder, item: Content) {
+        val itemList = item.data.itemList
+        val banner = helper.getView<Banner>(R.id.banner)
+        with(banner) {
+            setImageLoader(FrescoImageLoader())
+            setImages(getHorizonTalCardUrl(itemList))
+            setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+            setIndicatorGravity(BannerConfig.CENTER)
+            isAutoPlay(true)
+            start()
+            setDelayTime(5000)
+
+        }
+    }
+
+    /**
+     * 获取水平卡片图片地址
+     */
+    private fun getHorizonTalCardUrl(itemList: MutableList<Content>) = itemList.map { it.data.image }
 
 }

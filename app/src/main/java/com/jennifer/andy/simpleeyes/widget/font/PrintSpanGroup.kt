@@ -14,11 +14,16 @@ import android.widget.TextView
  * Description:
  */
 
-class PrintSpanGroup constructor(printText: CharSequence) {
+class PrintSpanGroup constructor(printText: CharSequence, var printTime: Long = 0) {
 
     private var mSpans: MutableList<PrintSpan> = mutableListOf()
     private var spannableString: SpannableString = SpannableString(printText)
     private var mAlpha: Float = 255f
+
+    companion object {
+         const val DEFAULT_PRINT_TIME = 500L
+    }
+
 
     private val TYPE_WRITER_GROUP_ALPHA_PROPERTY = object : Property<PrintSpanGroup, Float>(Float::class.java, "type_writer_group_alpha_property") {
 
@@ -33,6 +38,7 @@ class PrintSpanGroup constructor(printText: CharSequence) {
 
     init {
         buildPrintSpanGroup(0, printText.length - 1)
+        printTime = if (printTime > 0) printTime else DEFAULT_PRINT_TIME
     }
 
     /**
@@ -68,7 +74,7 @@ class PrintSpanGroup constructor(printText: CharSequence) {
      */
     fun startPrint(textView: TextView) {
         val objectAnimator = ObjectAnimator.ofFloat(this, TYPE_WRITER_GROUP_ALPHA_PROPERTY, 0f, 1f)
-        objectAnimator.duration = 500
+        objectAnimator.duration = printTime
         objectAnimator.start()
         objectAnimator.addUpdateListener {
             textView.text = spannableString

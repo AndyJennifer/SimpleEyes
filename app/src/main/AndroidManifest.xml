@@ -19,6 +19,12 @@
         <activity android:name=".ui.splash.SplashActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/SplashTheme">
+        </activity>
+
+        <!--视频闪屏页-->
+        <activity android:name=".ui.splash.SplashVideoActivity"
+                  android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

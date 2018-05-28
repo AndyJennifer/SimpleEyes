@@ -14,6 +14,7 @@ object UserPreferences {
 
     private const val NAME = "andy."
     private const val KEY_IS_USER_LOGIN = "is_user_login"
+    private const val KEY_IS_FIRST_LOGIN = "is_first_login"
 
     /**
      * 保存用户是否登录配置
@@ -25,9 +26,23 @@ object UserPreferences {
     }
 
     /**
+     * 保存用户是否是第一次登录
+     */
+    fun saveUserIsFirstLogin(isFirstLogin: Boolean) {
+        val editor = getSharedPreferences().edit()
+        editor.putBoolean(KEY_IS_FIRST_LOGIN, isFirstLogin)
+        editor.apply()
+    }
+
+    /**
      * 获取用户是否登录
      */
     fun getUserIsLogin() = getSharedPreferences().getBoolean(KEY_IS_USER_LOGIN, false)
+
+    /**
+     * 获取用户是否是第一次登录
+     */
+    fun getUserIsFristLogin() = getSharedPreferences().getBoolean(KEY_IS_FIRST_LOGIN, true)
 
 
     private fun getSharedPreferences(): SharedPreferences {
