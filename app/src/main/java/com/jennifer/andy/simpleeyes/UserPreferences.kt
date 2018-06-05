@@ -42,7 +42,7 @@ object UserPreferences {
     /**
      * 获取用户是否是第一次登录
      */
-    fun getUserIsFristLogin() = getSharedPreferences().getBoolean(KEY_IS_FIRST_LOGIN, true)
+    fun getUserIsFirstLogin() = getSharedPreferences().getBoolean(KEY_IS_FIRST_LOGIN, true)
 
 
     private fun getSharedPreferences(): SharedPreferences {

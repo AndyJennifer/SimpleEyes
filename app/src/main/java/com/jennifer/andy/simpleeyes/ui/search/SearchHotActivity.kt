@@ -128,7 +128,8 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
         //设置搜索结果
         mSearchRemind.setSearchResult(queryWord, andyInfo.count)
 
-        mSearchVideoAdapter = SearchVideoAdapter(andyInfo.itemList)
+        //添加了过滤规则,防止搜索的时候崩溃
+        mSearchVideoAdapter = SearchVideoAdapter(andyInfo.itemList.filter { it.type == SearchVideoAdapter.VIDEO_COLLECTION_WITH_BRIEF || it.type == SearchVideoAdapter.VIDEO })
 
 
         //跳转到播放界面
@@ -143,8 +144,7 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
         if (andyInfo.itemList.size > 0) {
             resetRecyclerMargin()
         } else {
-            mSearchVideoAdapter.bindToRecyclerView(mRecycler)
-            mSearchVideoAdapter.setEmptyView(R.layout.empty_search_word)
+            mSearchVideoAdapter.setEmptyView(R.layout.empty_search_word, mRecycler)
         }
 
         mSearchVideoAdapter.setOnLoadMoreListener({ mPresenter.loadMoreSearchResult() }, mRecycler)
@@ -162,6 +162,8 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     override fun loadMoreSuccess(andyInfo: AndyInfo) {
         mSearchVideoAdapter.addData(andyInfo.itemList)
         mSearchVideoAdapter.loadMoreComplete()
+        //设置搜索结果
+        mSearchRemind.setSearchResult(mSearchView.query, mSearchVideoAdapter.data.size)
     }
 
     override fun showNoMore() {

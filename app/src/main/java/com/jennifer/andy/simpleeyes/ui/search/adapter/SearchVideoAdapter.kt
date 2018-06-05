@@ -21,18 +21,18 @@ import java.util.*
  * Description:
  */
 
-class SearchVideoAdapter(data: MutableList<Content>?) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
+class SearchVideoAdapter(data: List<Content>?) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
 
     /**
      * 卡片类型
      */
     companion object {
 
-        val VIDEO_COLLECTION_WITH_BRIEF_TYPE = 0
-        val VIDEO_TYPE = 1
+        const val VIDEO_COLLECTION_WITH_BRIEF_TYPE = 0
+        const val VIDEO_TYPE = 1
 
-        val VIDEO_COLLECTION_WITH_BRIEF = "videoCollectionWithBrief"
-        val VIDEO = "video"
+        const val VIDEO_COLLECTION_WITH_BRIEF = "videoCollectionWithBrief"
+        const val VIDEO = "video"
     }
 
 

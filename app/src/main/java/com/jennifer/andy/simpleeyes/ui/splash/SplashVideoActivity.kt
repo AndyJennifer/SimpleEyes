@@ -31,7 +31,7 @@ class SplashVideoActivity : BaseAppCompatActivity() {
     private lateinit var mSplashVideoFragmentAdapter: SplashVideoFragmentAdapter
     private lateinit var mFragmentList: MutableList<SloganFragment>
     override fun initView(savedInstanceState: Bundle?) {
-        if (UserPreferences.getUserIsFristLogin()) {
+        if (UserPreferences.getUserIsFirstLogin()) {
             initSloganText()
             play()
         } else {

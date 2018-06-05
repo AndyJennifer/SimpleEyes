@@ -34,7 +34,7 @@ class SearchHotRemindView : FrameLayout {
      * @param queryWord 搜索内容
      * @param count 搜索个数
      */
-    fun setSearchResult(queryWord: String, count: Int) {
+    fun setSearchResult(queryWord: CharSequence, count: Int) {
         mTitle.visibility = View.GONE
         if (count > 0) {
             mResult.text = "- [ $queryWord ] 搜索结果共${count}个 -"
