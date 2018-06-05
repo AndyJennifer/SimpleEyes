@@ -126,7 +126,7 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     override fun showSearchSuccess(queryWord: String, andyInfo: AndyInfo) {
 
         //设置搜索结果
-        mSearchRemind.setSearchResult(queryWord, andyInfo.count)
+        mSearchRemind.setSearchResult(queryWord, andyInfo.total)
 
         //添加了过滤规则,防止搜索的时候崩溃
         mSearchVideoAdapter = SearchVideoAdapter(andyInfo.itemList.filter { it.type == SearchVideoAdapter.VIDEO_COLLECTION_WITH_BRIEF || it.type == SearchVideoAdapter.VIDEO })
@@ -162,8 +162,6 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     override fun loadMoreSuccess(andyInfo: AndyInfo) {
         mSearchVideoAdapter.addData(andyInfo.itemList)
         mSearchVideoAdapter.loadMoreComplete()
-        //设置搜索结果
-        mSearchRemind.setSearchResult(mSearchView.query, mSearchVideoAdapter.data.size)
     }
 
     override fun showNoMore() {
