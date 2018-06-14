@@ -26,13 +26,15 @@
             app:font_name="bold"/>
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:drawableEnd="@drawable/ic_action_pull_down_indicator"
-            android:textSize="12sp"
+            android:textSize="14sp"
+            android:text="Today"
             app:font_name="lobster"/>
     </RelativeLayout>
 

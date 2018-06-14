@@ -11,6 +11,7 @@ import com.jennifer.andy.simpleeyes.ui.category.adapter.DailyEliteAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.DailyElitePresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 
 /**
@@ -23,22 +24,34 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
 
     private val mBackImageView: ImageView by bindView(R.id.iv_back)
     private val mRecycler: RecyclerView by bindView(R.id.rv_recycler)
+    private val mTvDate: CustomFontTextView by bindView(R.id.tv_date)
 
     private var mDailyEliteAdapter: DailyEliteAdapter? = null
-
+    private lateinit var mLinearLayoutManager: LinearLayoutManager
 
     override fun initView(savedInstanceState: Bundle?) {
-        //todo 加一个粘性的头，推上效果，处理下，滑动冲突，显示头布局
+
         mPresenter.getDailyElite()
-        mBackImageView.setOnClickListener {
-            finish()
-        }
+        mRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                val position = mLinearLayoutManager.findFirstVisibleItemPosition()
+                if (mDailyEliteAdapter?.getItemViewType(position) == DailyEliteAdapter.TEXT_CARD_TYPE) {
+                    mTvDate.text = mDailyEliteAdapter?.getItem(position)?.data?.text
+                }
+            }
+        })
+        mBackImageView.setOnClickListener { finish() }
+
+        //todo xwt 添加头部刷新
     }
+
 
     override fun showGetDailySuccess(it: MutableList<Content>) {
         if (mDailyEliteAdapter == null) {
             mDailyEliteAdapter = DailyEliteAdapter(it)
-            mRecycler.layoutManager = LinearLayoutManager(mContext)
+            mLinearLayoutManager = LinearLayoutManager(mContext)
+            mRecycler.layoutManager = mLinearLayoutManager
             mRecycler.adapter = mDailyEliteAdapter
         } else {
             mDailyEliteAdapter?.setNewData(it)

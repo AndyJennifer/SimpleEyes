@@ -20,16 +20,16 @@ import com.youth.banner.BannerConfig
 
 class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
 
-
-    val BANNER_TYPE = 0
-    val VIDEO_TYPE = 1
-    val TEXT_CARD_TYPE = 2
-    val HORIZONTAL_SCROLL_CARD_TYPE = 3
-
-    val VIDEO_BANNER = "banner"
-    val VIDEO = "video"
-    val TEXT_CARD = "textCard"
-    val HORIZONTAL_CARD = "horizontalScrollCard"
+    companion object {
+        const val BANNER_TYPE = 0
+        const val VIDEO_TYPE = 1
+        const val TEXT_CARD_TYPE = 2
+        const val HORIZONTAL_SCROLL_CARD_TYPE = 3
+        const val VIDEO_BANNER = "banner"
+        const val VIDEO = "video"
+        const val TEXT_CARD = "textCard"
+        const val HORIZONTAL_CARD = "horizontalScrollCard"
+    }
 
     init {
         multiTypeDelegate = object : MultiTypeDelegate<Content>() {
@@ -80,6 +80,9 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
         helper.setText(R.id.tv_single_desc, description)
     }
 
+    /**
+     * 设置文字信息
+     */
     private fun setSingleText(helper: BaseViewHolder, item: Content) {
         helper.setText(R.id.tv_text, item.data.text)
     }
