@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <VideoView
         android:id="@+id/video_view"
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="40dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -50,7 +51,22 @@
             android:textSize="16sp"
             app:font_name="lobster"/>
 
+        <com.rd.PageIndicatorView
+            android:id="@+id/pageIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="30dp"
+            app:piv_animationType="color"
+            app:piv_interactiveAnimation="true"
+            app:piv_padding="10dp"
+            app:piv_radius="3dp"
+            app:piv_selectedColor="@color/white"
+            app:piv_unselectedColor="@color/white_translucent_65"
+        />
+
     </LinearLayout>
+
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
+import com.rd.PageIndicatorView
 
 
 /**
@@ -25,11 +26,13 @@ class SplashVideoActivity : BaseAppCompatActivity() {
     private val mViewPager: ViewPager by bindView(R.id.view_pager)
     private val mTvSloganChinese: CustomFontTypeWriterTextView by bindView(R.id.tv_slogan_zh)
     private val mTvSloganEnglish: CustomFontTypeWriterTextView by bindView(R.id.tv_slogan_en)
+    private val mIndicator: PageIndicatorView by bindView(R.id.pageIndicatorView)
 
     private var mVideoPosition = 0
     private var isHasPaused = false
     private lateinit var mSplashVideoFragmentAdapter: SplashVideoFragmentAdapter
     private lateinit var mFragmentList: MutableList<SloganFragment>
+
     override fun initView(savedInstanceState: Bundle?) {
         if (UserPreferences.getUserIsFirstLogin()) {
             initSloganText()
@@ -37,15 +40,17 @@ class SplashVideoActivity : BaseAppCompatActivity() {
         } else {
             readyGoThenKillSelf(SplashActivity::class.java)
         }
-        //todo 这里还要加指示器，还有闪闪的上拉退出。
     }
 
     /**
      * 这里我采用的比较暴力的方法，主要是不想写事件拦截了，想写的小伙伴，可以自己去写
      */
     private fun initSloganText() {
+        //设置初始标语
         mTvSloganEnglish.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[0])
         mTvSloganChinese.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[0])
+
+        mIndicator.count = 4
 
         mFragmentList = mutableListOf()
         for (position in 0..4) {//这里创建5个是因为要滑动退出
@@ -62,6 +67,7 @@ class SplashVideoActivity : BaseAppCompatActivity() {
                     UserPreferences.saveUserIsFirstLogin(false)
                     readyGoThenKillSelf(MainActivity::class.java)
                 }
+                mIndicator.setSelected(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
