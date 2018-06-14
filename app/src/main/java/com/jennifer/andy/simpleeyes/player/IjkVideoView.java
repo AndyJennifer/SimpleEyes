@@ -47,9 +47,11 @@ import android.widget.MediaController;
 import android.widget.ProgressBar;
 
 import com.jennifer.andy.simpleeyes.R;
+import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 import com.jennifer.andy.simpleeyes.player.render.IRenderView;
 import com.jennifer.andy.simpleeyes.player.render.SurfaceRenderView;
 import com.jennifer.andy.simpleeyes.player.render.TextureRenderView;
+import com.jennifer.andy.simpleeyes.rx.RxBus;
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
 import com.jennifer.andy.simpleeyes.utils.VideoPlayerUtils;
 
@@ -57,7 +59,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
@@ -321,6 +328,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             mTargetState = STATE_IDLE;
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
             am.abandonAudioFocus(null);
+            cancelProgressRunnable();
         }
     }
 
@@ -578,9 +586,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                                 .setPositiveButton(R.string.VideoView_error_button,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
-                                            /* If we get here, there is no onError listener, so
-                                             * at least inform them that the video is over.
-                                             */
+                                                /* If we get here, there is no onError listener, so
+                                                 * at least inform them that the video is over.
+                                                 */
                                                 if (mOnCompletionListener != null) {
                                                     mOnCompletionListener.onCompletion(mMediaPlayer);
                                                 }
@@ -983,11 +991,48 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         }
     }
 
+    private Disposable mDisposable;
+
+    /**
+     * 进度与时间更新线程
+     */
+    protected void startProgressRunnable() {
+        if (mDisposable == null || mDisposable.isDisposed()) {
+            mDisposable = Observable.interval(1, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long aLong) throws Exception {
+                            int position = getCurrentPosition();
+                            int duration = getDuration();
+                            if (duration >= 0 && getBufferPercentage() > 0) {
+                                long progress = 1000L * position / duration;
+                                int secondProgress = getBufferPercentage() * 10;
+                                //发送进度
+                                RxBus.INSTANCE.post(new VideoProgressEvent(duration, position, (int) progress, secondProgress));
+                            }
+                        }
+                    });
+
+        }
+    }
+
+    /**
+     * 取消进度与时间更新线程
+     */
+    public void cancelProgressRunnable() {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+            mDisposable = null;
+        }
+    }
+
     @Override
     public void start() {
         if (isInPlaybackState()) {
             mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
+            startProgressRunnable();
         }
         mTargetState = STATE_PLAYING;
     }
@@ -998,6 +1043,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
                 mCurrentState = STATE_PAUSED;
+                cancelProgressRunnable();
             }
         }
         mTargetState = STATE_PAUSED;
@@ -1005,6 +1051,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     public void suspend() {
         release(false);
+        cancelProgressRunnable();
     }
 
     public void resume() {

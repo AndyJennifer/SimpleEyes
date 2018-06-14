@@ -9,12 +9,32 @@ package com.jennifer.andy.simpleeyes.player.event;
 
 public class VideoProgressEvent {
 
+    private int duration;
+    private int currentPosition;
     private int progress;
     private int secondaryProgress;
 
-    public VideoProgressEvent(int progress, int secondaryProgress) {
+    public VideoProgressEvent(int duration, int currentPosition, int progress, int secondaryProgress) {
+        this.duration = duration;
+        this.currentPosition = currentPosition;
         this.progress = progress;
         this.secondaryProgress = secondaryProgress;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
     }
 
     public int getProgress() {

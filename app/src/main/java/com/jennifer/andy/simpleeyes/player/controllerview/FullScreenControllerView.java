@@ -88,7 +88,6 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
             @Override
             public void onStartTrackingTouch(SeekBar bar) {
                 //控制的时候停止更新进度条，同时禁止隐藏
-                cancelProgressRunnable();
                 setDragging(true);
                 mController.show(3600000);
                 mController.cancelFadeOut();
@@ -112,7 +111,6 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
                 long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
                 mPlayer.seekTo((int) newPosition);
                 mController.show();//开启延时隐藏
-                startProgressRunnable();//自动更新进度条与时间
                 setDragging(false);
             }
         });
@@ -129,12 +127,10 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
                 mController.show();
                 break;
             case R.id.iv_previous://上一个
-                cancelProgressRunnable();
                 mController.getControllerListener().onPreClick();
                 updatePreNextButton();
                 break;
             case R.id.iv_next://下一个
-                cancelProgressRunnable();
                 mController.getControllerListener().onNextClick();
                 updatePreNextButton();
                 break;

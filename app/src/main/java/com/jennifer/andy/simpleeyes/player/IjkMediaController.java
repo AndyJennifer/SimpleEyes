@@ -333,7 +333,6 @@ public class IjkMediaController extends FrameLayout {
      * 切换控制层视图、TinyControllerView 与 TinyControllerView
      */
     public void toggleControllerView(ControllerView controllerView) {
-        mControllerView.cancelProgressRunnable();//取消更新
         removeAllViews();
         if (controllerView instanceof TinyControllerView) {
             addView(controllerView.getRootView(), mTinyParams);
@@ -359,7 +358,6 @@ public class IjkMediaController extends FrameLayout {
      * 显示网络错误布局
      */
     public void showErrorView() {
-        mControllerView.cancelProgressRunnable();//取消更新
         removeAllViews();
         if (mErrorView == null) {
             mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);

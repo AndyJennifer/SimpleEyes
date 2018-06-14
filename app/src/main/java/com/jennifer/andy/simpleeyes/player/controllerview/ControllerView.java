@@ -13,11 +13,7 @@ import com.jennifer.andy.simpleeyes.rx.RxBus;
 
 import java.util.Formatter;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -39,7 +35,6 @@ public abstract class ControllerView extends FrameLayout {
 
     private View mRootView;
     private boolean isDragging;//是否正在拖动
-    private Disposable mDisposable;
 
 
     public ControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
@@ -52,6 +47,16 @@ public abstract class ControllerView extends FrameLayout {
         LayoutInflater.from(mContext).inflate(setControllerLayoutId(), this, true);
         initView(mRootView);
         initControllerListener();
+        RxBus.INSTANCE.register(this, VideoProgressEvent.class, new Consumer<VideoProgressEvent>() {
+            @Override
+            public void accept(VideoProgressEvent videoProgressEvent) throws Exception {
+                if (!isDragging) {//没在拖动的时候跟新进度条
+                    updateProgress(videoProgressEvent.getProgress(), videoProgressEvent.getSecondaryProgress());
+                    updateTime(stringForTime(videoProgressEvent.getCurrentPosition()), stringForTime(videoProgressEvent.getDuration()));
+                }
+            }
+        });
+
     }
 
     /**
@@ -74,47 +79,7 @@ public abstract class ControllerView extends FrameLayout {
      * 开始播放
      */
     public void show() {
-        cancelProgressRunnable();//先取消之前的
-        startProgressRunnable();
         updateTogglePauseUI(mPlayer.isPlaying());
-    }
-
-    /**
-     * 进度与时间更新线程
-     */
-    protected void startProgressRunnable() {
-        if (mDisposable == null || mDisposable.isDisposed() && isSendProgressEvent()) {
-            mDisposable = Observable.interval(1, TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong) throws Exception {
-                            int position = mPlayer.getCurrentPosition();
-                            int duration = mPlayer.getDuration();
-                            if (duration >= 0 && mPlayer.getBufferPercentage() > 0 && !isDragging) {
-                                long progress = 1000L * position / duration;
-                                int secondProgress = mPlayer.getBufferPercentage() * 10;
-                                updateProgress((int) progress, secondProgress);
-                                //发送进度
-                                RxBus.INSTANCE.post(new VideoProgressEvent((int) progress, secondProgress));
-                            }
-                            if (!isDragging()) {//拖动的时候不更新进度条
-                                updateTime(stringForTime(position), stringForTime(duration));
-                            }
-                        }
-                    });
-
-        }
-    }
-
-    /**
-     * 取消进度与时间更新线程
-     */
-    public void cancelProgressRunnable() {
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-            mDisposable = null;
-        }
     }
 
 
@@ -173,13 +138,6 @@ public abstract class ControllerView extends FrameLayout {
      * @param isPlaying 是否播放
      */
     public void updateTogglePauseUI(boolean isPlaying) {
-    }
-
-    /**
-     * 是否发送进度通知信息
-     */
-    public boolean isSendProgressEvent() {
-        return true;
     }
 
     /**
