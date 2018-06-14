@@ -18,7 +18,7 @@
         android:src="@drawable/ic_account_login_header"/>
 
 
-    <android.support.v4.view.ViewPager
+    <com.jennifer.andy.simpleeyes.widget.viewpager.InterceptVerticalViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -55,18 +55,20 @@
             android:id="@+id/pageIndicatorView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="30dp"
             app:piv_animationType="color"
             app:piv_interactiveAnimation="true"
             app:piv_padding="10dp"
             app:piv_radius="3dp"
             app:piv_selectedColor="@color/white"
-            app:piv_unselectedColor="@color/white_translucent_65"
-        />
+            app:piv_unselectedColor="@color/white_translucent_65"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_top_arrow_double"/>
     </LinearLayout>
-
 
 
 </RelativeLayout>

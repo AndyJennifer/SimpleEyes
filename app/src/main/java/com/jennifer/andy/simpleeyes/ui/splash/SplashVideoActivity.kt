@@ -11,6 +11,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
+import com.jennifer.andy.simpleeyes.widget.viewpager.InterceptVerticalViewPager
 import com.rd.PageIndicatorView
 
 
@@ -23,7 +24,7 @@ import com.rd.PageIndicatorView
 class SplashVideoActivity : BaseAppCompatActivity() {
 
     private val mVideoView: VideoView by bindView(R.id.video_view)
-    private val mViewPager: ViewPager by bindView(R.id.view_pager)
+    private val mViewPager: InterceptVerticalViewPager by bindView(R.id.view_pager)
     private val mTvSloganChinese: CustomFontTypeWriterTextView by bindView(R.id.tv_slogan_zh)
     private val mTvSloganEnglish: CustomFontTypeWriterTextView by bindView(R.id.tv_slogan_en)
     private val mIndicator: PageIndicatorView by bindView(R.id.pageIndicatorView)
@@ -58,14 +59,14 @@ class SplashVideoActivity : BaseAppCompatActivity() {
         }
 
         mSplashVideoFragmentAdapter = SplashVideoFragmentAdapter(mFragmentList, supportFragmentManager)
+        mViewPager.verticalListener = { goMainActivity() }
+
         mViewPager.offscreenPageLimit = mFragmentList.size
         mViewPager.adapter = mSplashVideoFragmentAdapter
         mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 if (position == mFragmentList.size - 2 && positionOffset >= 0.5) {
-                    //设置用户不是第一次登录
-                    UserPreferences.saveUserIsFirstLogin(false)
-                    readyGoThenKillSelf(MainActivity::class.java)
+                    goMainActivity()
                 }
                 mIndicator.setSelected(position)
             }
@@ -80,6 +81,14 @@ class SplashVideoActivity : BaseAppCompatActivity() {
                 }
             }
         })
+    }
+
+    /**
+     * 设置用户不是第一次登录,并跳转到主界面
+     */
+    private fun goMainActivity() {
+        UserPreferences.saveUserIsFirstLogin(false)
+        readyGoThenKillSelf(MainActivity::class.java)
     }
 
     private fun play() {
