@@ -37,4 +37,8 @@
         <attr name="headView" format="reference"/>
         <attr name="isHeaderParallax" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="PullToRefreshView">
+        <attr name="refreshView" format="reference"/>
+    </declare-styleable>
 </resources>

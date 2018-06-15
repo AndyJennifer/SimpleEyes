@@ -16,8 +16,8 @@ import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.HomePageHeaderView
-import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomBase
-import com.jennifer.andy.simpleeyes.widget.pull.PullToZoomRecyclerView
+import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomBase
+import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomRecyclerView
 import java.util.*
 
 

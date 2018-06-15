@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.widget.pull
+package com.jennifer.andy.simpleeyes.widget.pull.zoom
 
 import android.content.Context
 import android.util.AttributeSet
@@ -89,6 +89,17 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
                 return true
             }
             when (action) {
+
+                MotionEvent.ACTION_DOWN -> {
+                    if (isReadyForPullStart()) {
+                        mInterceptPressedX = event.x
+                        mInterceptPressedY = event.y
+                        mIsBeingDragged = false
+                        mTouchPressedY = event.y
+                        mTouchPressedX = event.x
+                    }
+                }
+
                 MotionEvent.ACTION_MOVE -> {
                     val dy: Float
                     val dx: Float
@@ -102,15 +113,6 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
                         mIsBeingDragged = true
                     }
 
-                }
-                MotionEvent.ACTION_DOWN -> {
-                    if (isReadyForPullStart()) {
-                        mInterceptPressedX = event.x
-                        mInterceptPressedY = event.y
-                        mIsBeingDragged = false
-                        mTouchPressedY = event.y
-                        mTouchPressedX = event.x
-                    }
                 }
             }
         }
@@ -210,13 +212,13 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
 
     override fun getPullRootView(): T = mRootView
 
-    override fun isPullToZoomEnabled(): Boolean = isZoomEnable
+    override fun isPullToZoomEnabled() = isZoomEnable
 
-    override fun isZooming(): Boolean = isZooming
+    override fun isZooming() = isZooming
 
-    override fun isParallax(): Boolean = isParallax
+    override fun isParallax() = isParallax
 
-    override fun isHideHeader(): Boolean = isHideHeader
+    override fun isHideHeader() = isHideHeader
 
     fun setHideHeader(isHideHeader: Boolean) {
         this.isHideHeader = isHideHeader

@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.widget.pull
+package com.jennifer.andy.simpleeyes.widget.pull.zoom
 
 import android.content.res.TypedArray
 import android.view.View

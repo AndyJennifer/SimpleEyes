@@ -36,7 +36,7 @@ class InterceptVerticalViewPager : ViewPager {
             MotionEvent.ACTION_MOVE -> {
                 val xDiff = Math.abs(x - mLastMotionX)
                 val yDiff = Math.abs(y - mLastMotionY)
-                if (yDiff > xDiff * 0.5f && yDiff > ViewConfiguration.getTouchSlop()) {
+                if (yDiff > xDiff * 0.5f && yDiff > ViewConfiguration.get(context).scaledTouchSlop) {
                     verticalListener()
                     return false
                 }
