@@ -25,10 +25,12 @@ class MainActivity : BaseAppCompatActivity() {
     private var mFragments = arrayOfNulls<SupportFragment>(4)
     private val mBottomNavigation: BottomBar by bindView(R.id.bottom_navigation_bar)
 
-    private val FIRST = 0
-    private val SECOND = 1
-    private val THIRD = 2
-    private val FOURTH = 3
+    companion object {
+        private const val FIRST = 0
+        private const val SECOND = 1
+        private const val THIRD = 2
+        private const val FOURTH = 3
+    }
 
 
     override fun initView(savedInstanceState: Bundle?) {
