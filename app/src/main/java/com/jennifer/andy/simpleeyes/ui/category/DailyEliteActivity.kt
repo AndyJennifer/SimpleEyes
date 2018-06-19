@@ -1,7 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.category
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
@@ -12,6 +11,7 @@ import com.jennifer.andy.simpleeyes.ui.category.presenter.DailyElitePresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+import com.jennifer.andy.simpleeyes.widget.pull.refresh.LinearLayoutManagerWithSmoothScroller
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
 
 
@@ -28,7 +28,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
     private val mTvDate: CustomFontTextView by bindView(R.id.tv_date)
 
     private var mDailyEliteAdapter: DailyEliteAdapter? = null
-    private lateinit var mLinearLayoutManager: LinearLayoutManager
+    private lateinit var mLinearLayoutManager: LinearLayoutManagerWithSmoothScroller
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -42,11 +42,6 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
                 }
             }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                if (mRecycler.isShouldScroll && newState == RecyclerView.SCROLL_STATE_IDLE) {//如果还需要滚动，继续滚动
-                    mRecycler.scrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition())
-                }
-            }
         })
         mBackImageView.setOnClickListener { finish() }
 
@@ -56,9 +51,9 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
     override fun showGetDailySuccess(it: MutableList<Content>) {
         if (mDailyEliteAdapter == null) {
             mDailyEliteAdapter = DailyEliteAdapter(it)
-            mLinearLayoutManager = LinearLayoutManager(mContext)
+            mLinearLayoutManager = LinearLayoutManagerWithSmoothScroller(mContext)
             mRecycler.setAdapterAndLayoutManager(mDailyEliteAdapter!!, mLinearLayoutManager)
-            mRecycler.handler.postDelayed({ mRecycler.scrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 300)
+            mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
         } else {
             mDailyEliteAdapter?.setNewData(it)
         }
