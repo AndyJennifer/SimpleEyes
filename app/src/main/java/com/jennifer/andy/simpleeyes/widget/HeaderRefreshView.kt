@@ -41,7 +41,7 @@ class HeaderRefreshView : FrameLayout {
     }
 
     private fun init(context: Context) {
-        LayoutInflater.from(context).inflate(R.layout.layout_header_refresh, this, true)
+        LayoutInflater.from(context).inflate(R.layout.refresh_category_header, this, true)
         mRefreshContainer.background.alpha = 0
         mIvRefresh.imageAlpha = 0
     }

@@ -33,14 +33,15 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:drawableEnd="@drawable/ic_action_pull_down_indicator"
-            android:textSize="14sp"
             android:text="Today"
+            android:textSize="14sp"
             app:font_name="lobster"/>
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
         android:id="@+id/rv_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:refreshView="@layout/refresh_daily_elite_header"/>
 
 </LinearLayout>

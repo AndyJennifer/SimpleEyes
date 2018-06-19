@@ -15,5 +15,4 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_homepage_header_progress"/>
 
-
 </RelativeLayout>

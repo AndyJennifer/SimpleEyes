@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.Scroller
 import com.jennifer.andy.simpleeyes.R
+import java.lang.RuntimeException
 
 
 /**
@@ -18,16 +19,29 @@ import com.jennifer.andy.simpleeyes.R
 abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
 
-    private lateinit var mRootView: T
+    protected lateinit var mRootView: T
     private var mRefreshView: View? = null
-    private var mScroller: Scroller? = null
+    private lateinit var mScroller: Scroller
     private var mTouchSlop: Int = 0
+
+    /**
+     * 用来记录y轴上的速度
+     */
+    private lateinit var mVelocityTracker: VelocityTracker
+
+    /**
+     * 刷新View实际高度
+     */
+    private var mRefreshHeight = 0
 
     /**
      * 拖动的时候有效的手指id
      */
     private var mActivePointerId = INVALID_POINTER
 
+    /**
+     * 当前刷新状态
+     */
     var mScrollState = SCROLL_STATE_IDLE
 
     companion object {
@@ -45,6 +59,11 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
          * 正在隐藏刷新
          */
         const val SCROLL_STATE_SETTLING = 2
+
+        /**
+         * 滑动最小接近距离，单位dp
+         */
+        const val SCROLL_CLOSE_ENOUGH = 2
     }
 
 
@@ -69,18 +88,33 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
+        orientation = LinearLayout.VERTICAL
         mRootView = createRootView(context, attrs)
         mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
+        mScroller = Scroller(getContext())
         val typeArray = context.obtainStyledAttributes(attrs, R.styleable.PullToRefreshView)
         attrs?.let {
             val layoutInflater = LayoutInflater.from(context)
             val refreshViewResId = typeArray.getResourceId(R.styleable.PullToRefreshView_refreshView, 0)
             if (refreshViewResId > 0)
                 mRefreshView = layoutInflater.inflate(refreshViewResId, null, false)
+            addView(mRefreshView)
 
         }
         typeArray.recycle()
         addView(mRootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        if (mRefreshView != null) {
+            //获取刷新view的高度
+            measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec)
+            mRefreshHeight = mRefreshView!!.measuredHeight
+        } else {
+            throw RuntimeException("you not set refreshView!!")
+        }
+
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
@@ -102,18 +136,26 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             }
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
+                    if (isReadyForPullStart()) {
+                        mLastMotionX = event.x
+                        mInitialMotionX = event.x
+                        mLastMotionY = event.y
+                        mInitialMotionY = event.y
 
-                    mLastMotionX = event.x
-                    mInitialMotionX = event.x
-                    mLastMotionY = event.y
-                    mInitialMotionY = event.y
+                        //获取有效手指 第一个有效手指的角标总是0
+                        mActivePointerId = event.getPointerId(0)
 
-                    //获取有效手指 第一个有效手指的角标总是0
-                    mActivePointerId = event.getPointerId(0)
-                    mIsUnableToDrag = false
-                    mIsBeingDragged = true
+                        mIsUnableToDrag = false
 
-                    //todo 判断当前刷新界面是否下拉显示，或者在回退的路上
+                        mScroller.computeScrollOffset()
+                        //在点击的时候，判断当前刷新界面是否下拉显示，或者在回退的路上是
+                        if (mScrollState == SCROLL_STATE_SETTLING && getScrollDiff() > SCROLL_CLOSE_ENOUGH) {
+                            mIsBeingDragged = true
+                            mScrollState = SCROLL_STATE_DRAGGING
+                        } else {
+                            mIsBeingDragged = false
+                        }
+                    }
 
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -139,10 +181,6 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                         } else if (xAbs > mTouchSlop) {
                             mIsUnableToDrag = true
                         }
-
-                        if (mIsBeingDragged) {
-                            // todo 开始准备滑动了
-                        }
                     }
                 }
                 MotionEvent.ACTION_POINTER_UP -> {
@@ -151,7 +189,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             }
 
         }
-        return super.onInterceptTouchEvent(event)
+        return mIsBeingDragged
     }
 
     /**
@@ -168,15 +206,124 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        //todo 这里开始处理事件。可以将事件分发出去。那边的根据自己情况判断，是否需要刷新就行了，自己要处理个头部刷新的基类出来。
-        return super.onTouchEvent(event)
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN && event.edgeFlags != 0)
+            return false
+        if (mRefreshView == null) {
+            return false
+        }
+        val action = event.action
+        when (action) {
+            MotionEvent.ACTION_CANCEL -> {
+                if (mIsBeingDragged) {
+                    //todo 如果取消了，你就回去
+                }
+            }
+            MotionEvent.ACTION_DOWN -> {
+                //这个时候要停止刷新的滚动
+                mLastMotionX = event.x
+                mInitialMotionX = event.x
+                mLastMotionY = event.y
+                mInitialMotionY = event.y
+
+                //获取有效手指 第一个有效手指的角标总是0
+                mActivePointerId = event.getPointerId(0)
+                mScroller.abortAnimation()
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (mIsBeingDragged) {
+                    //获取有效的手指的距离
+                    val actionPointerId = mActivePointerId
+                    if (mActivePointerId != INVALID_POINTER) {
+
+                        val pointerIndex = event.findPointerIndex(actionPointerId)
+                        val x = event.getX(pointerIndex)
+                        val xAbs = Math.abs(x - mInitialMotionX)
+
+                        val y = event.getY(pointerIndex)
+                        val dy = y - mLastMotionY
+                        val yAbs = Math.abs(dy)
+
+                        //如果竖直移动距离大于水平移动距离，设置当前为拖动状态
+                        if (yAbs > mTouchSlop && yAbs * 0.5 > xAbs) {
+                            mIsBeingDragged = true
+                            mScrollState = SCROLL_STATE_DRAGGING
+                            mLastMotionX = x
+                            mLastMotionY = if (dy > 0) mInitialMotionY + mTouchSlop else mLastMotionY - mTouchSlop
+                            dispatchPullEvent()//发送刷新事件
+                            //todo 开始进行滚动
+                        }
+
+                    }
+
+                }
+            }
+            MotionEvent.ACTION_UP -> {
+                if (mIsBeingDragged) {
+                    //todo 判断当前高度如果小于，刷新你就回去，否则执行刷新操作，监听刷新失败成功的方法。不管结果都滚动回去
+                }
+            }
+
+            MotionEvent.ACTION_POINTER_UP -> {
+                onSecondaryPointerUp(event)
+            }
+        }
+
+        return true
     }
 
+    /** 弹性滑动
+     * @param x 水平滑动距离
+     * @param y 竖直方向就
+     * @param velocity y轴上的速度
+     */
+    private fun smoothScrollTo(x: Int, y: Int, velocity: Int) {
+
+    }
+
+    /**
+     * 获取当前滑动的差值
+     */
+    private fun getScrollDiff(): Int {
+        return Math.abs(mScroller.finalY - mScroller.currY)
+    }
+
+    /**
+     * 处理下拉事件
+     */
+    private fun dispatchPullEvent() {
+        val scrollValue = Math.round(Math.min(mInitialMotionY - mLastMotionY, 0f))
+        setRefreshHeight(scrollValue)
+    }
+
+    /**
+     * 是否允许下拉刷新
+     */
     override fun isPullToRefreshEnabled() = isRefreshEnable
 
     /**
      * 创建根布局
      */
     abstract fun createRootView(context: Context, attrs: AttributeSet?): T
+
+
+    /**
+     * 是否准备好下拉
+     */
+    abstract fun isReadyForPullStart(): Boolean
+
+
+    /**
+     * 设置刷新View的高度
+     */
+    abstract fun setRefreshHeight(scrollValue: Int)
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        if (!mScroller.isFinished) {
+            mScroller.abortAnimation()
+        }
+    }
+
+
 }
