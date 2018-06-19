@@ -23,6 +23,7 @@ data class JenniferInfo(var nextPageUrl: String?, var date: Long,
 data class Content(var type: String,
                    var data: ContentBean,
                    var id: String,
+                   var date: Long,
                    var tag: String) : Serializable
 
 

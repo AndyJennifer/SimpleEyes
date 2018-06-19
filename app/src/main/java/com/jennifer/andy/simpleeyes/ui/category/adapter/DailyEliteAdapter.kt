@@ -111,4 +111,16 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
      */
     private fun getHorizonTalCardUrl(itemList: MutableList<Content>) = itemList.map { it.data.image }
 
+    /**
+     * 获取第一个日期位置
+     */
+    fun getCurrentDayPosition(): Int {
+        for (i in 0 until mData.size) {
+            if (getItemViewType(i) == TEXT_CARD_TYPE) {
+                return i
+            }
+        }
+        return 0
+    }
+
 }

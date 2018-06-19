@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/daily_editor_elite"
+            android:textSize="16sp"
             app:font_name="bold"/>
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView

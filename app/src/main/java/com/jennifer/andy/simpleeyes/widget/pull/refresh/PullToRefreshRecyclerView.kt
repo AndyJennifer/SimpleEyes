@@ -17,6 +17,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 
 class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
 
+    var isShouldScroll = false
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -63,6 +65,34 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
      * 获取当前RecyclerView
      */
     fun getRootRecyclerView() = mRootView
+
+    /**
+     * 滚动到相应位置，判断
+     */
+    fun scrollToPosition(position: Int) {
+        val firstItem = mRootView.getChildLayoutPosition(mRootView.getChildAt(0))
+        val lastItem = mRootView.getChildLayoutPosition(mRootView.getChildAt(mRootView.childCount - 1))
+
+        when {
+            position <= firstItem -> {//小于第一个可见范围
+                isShouldScroll = false
+                mRootView.smoothScrollToPosition(position)
+            }
+            position <= lastItem -> {//在第一个与最后一个之间
+                val movePosition = position - firstItem
+                if (movePosition >= 0 && movePosition < mRootView.childCount - 1) {
+                    val top = mRootView.getChildAt(movePosition).top
+                    mRootView.smoothScrollBy(0, top)
+                }
+                isShouldScroll = false
+            }
+            else -> {//大于最后一个可见范围
+                mRootView.smoothScrollToPosition(position)
+                isShouldScroll = true
+            }
+        }
+    }
+
 
     override fun setRefreshHeight(scrollValue: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

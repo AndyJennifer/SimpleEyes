@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.category.presenter
 
+import android.view.View
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.JenniferInfo
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
@@ -18,9 +19,12 @@ class DailyElitePresenter : BasePresenter<DailyEliteView>() {
 
     fun getDailyElite() {
         mRxManager.add(mAndyModel.getDailyElite().subscribe({
+            mView?.showContent()
             mView?.showGetDailySuccess(combineContentInfo(it))
         }, {
-
+            mView?.showNetError(View.OnClickListener {
+                getDailyElite()
+            })
         }))
     }
 

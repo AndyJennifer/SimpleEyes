@@ -41,10 +41,15 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
                     mTvDate.text = mDailyEliteAdapter?.getItem(position)?.data?.text
                 }
             }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                if (mRecycler.isShouldScroll && newState == RecyclerView.SCROLL_STATE_IDLE) {//如果还需要滚动，继续滚动
+                    mRecycler.scrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition())
+                }
+            }
         })
         mBackImageView.setOnClickListener { finish() }
 
-        //todo xwt 添加头部刷新
     }
 
 
@@ -53,6 +58,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
             mDailyEliteAdapter = DailyEliteAdapter(it)
             mLinearLayoutManager = LinearLayoutManager(mContext)
             mRecycler.setAdapterAndLayoutManager(mDailyEliteAdapter!!, mLinearLayoutManager)
+            mRecycler.handler.postDelayed({ mRecycler.scrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 300)
         } else {
             mDailyEliteAdapter?.setNewData(it)
         }
