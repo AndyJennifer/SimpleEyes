@@ -36,6 +36,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         mRecycler.getRootRecyclerView().addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                //设置当前选择日期
                 val position = mLinearLayoutManager.findFirstVisibleItemPosition()
                 if (mDailyEliteAdapter?.getItemViewType(position) == DailyEliteAdapter.TEXT_CARD_TYPE) {
                     mTvDate.text = mDailyEliteAdapter?.getItem(position)?.data?.text
@@ -53,6 +54,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
             mDailyEliteAdapter = DailyEliteAdapter(it)
             mLinearLayoutManager = LinearLayoutManagerWithSmoothScroller(mContext)
             mRecycler.setAdapterAndLayoutManager(mDailyEliteAdapter!!, mLinearLayoutManager)
+            //这里发送延时消息，是因为数据还有可能没有装载完毕
             mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
         } else {
             mDailyEliteAdapter?.setNewData(it)

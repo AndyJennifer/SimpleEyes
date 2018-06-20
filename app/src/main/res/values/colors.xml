@@ -3,72 +3,30 @@
     <color name="colorPrimary">#FEFFFE</color>
     <color name="colorPrimaryDark">#000100</color>
     <color name="colorAccent">#61EECB</color>
-    <color name="PrimaryText">#212121</color>
     <color name="SecondaryText">#757575</color>
 
     <color name="white">#FFFFFF</color>
     <color name="white_FEFFFE">#FEFFFE</color>
-    <color name="white_F7F9F7">#F7F9F7</color>
-    <color name="white_translucent_05">#f2ffffff</color>
-    <color name="white_translucent_10">#e6ffffff</color>
-    <color name="white_translucent_15">#d9ffffff</color>
-    <color name="white_translucent_20">#ccffffff</color>
-    <color name="white_translucent_25">#bfffffff</color>
-    <color name="white_translucent_30">#b3ffffff</color>
-    <color name="white_translucent_35">#a6ffffff</color>
-    <color name="white_translucent_40">#99ffffff</color>
-    <color name="white_translucent_45">#8cffffff</color>
-    <color name="white_translucent_50">#80ffffff</color>
-    <color name="white_translucent_55">#73ffffff</color>
-    <color name="white_translucent_60">#66ffffff</color>
     <color name="white_translucent_65">#59ffffff</color>
-    <color name="white_translucent_70">#4dffffff</color>
-    <color name="white_translucent_75">#40ffffff</color>
-    <color name="white_translucent_80">#33ffffff</color>
-    <color name="white_translucent_90">#26ffffff</color>
-    <color name="white_translucent_95">#0dffffff</color>
 
 
     <color name="black">#000000</color>
     <color name="black_alpha_4D">#4D000000</color>
-    <color name="black_alpha_66">#66000000</color>
     <color name="black_alpha_33">#33000000</color>
-    <color name="black_translucent_05">#f2000000</color>
-    <color name="black_translucent_10">#e6000000</color>
-    <color name="black_translucent_15">#d9000000</color>
-    <color name="black_translucent_20">#cc000000</color>
-    <color name="black_translucent_25">#bf000000</color>
-    <color name="black_translucent_30">#b3000000</color>
-    <color name="black_translucent_35">#a6000000</color>
-    <color name="black_translucent_40">#99000000</color>
-    <color name="black_translucent_45">#8c000000</color>
-    <color name="black_translucent_50">#80000000</color>
-    <color name="black_translucent_55">#73000000</color>
     <color name="black_translucent_60">#66000000</color>
     <color name="black_translucent_65">#59000000</color>
     <color name="black_translucent_70">#4d000000</color>
-    <color name="black_translucent_75">#40000000</color>
-    <color name="black_translucent_80">#33000000</color>
-    <color name="black_translucent_90">#26000000</color>
-    <color name="black_translucent_95">#0d000000</color>
     <color name="black_444444">#444444</color>
-    <color name="black_181818">#181818</color>
     <color name="black_1E1F1D">#1E1F1D</color>
 
     <color name="divider">#66A2A2A2</color>
     <color name="transparent">#00000000</color>
 
-    <color name="gray">#BDBDBD</color>
-    <color name="gray_666666">#666666</color>
     <color name="gray_BBBBBB">#BBBBBB</color>
     <color name="gray_828885">#828885</color>
     <color name="gray_66A2A2A2">#66A2A2A2</color>
     <color name="gray_EDEEEC">#EDEEEC</color>
     <color name="gray_B7B9B8">#B7B9B8</color>
     <color name="gray_EFF0EF">#EFF0EF</color>
-    <color name="gray_C3C3C3">#C3C3C3</color>
-
-    <color name="red">#FF0000</color>
-    <color name="blue_4696E5">#4696E5</color>
 
 </resources>

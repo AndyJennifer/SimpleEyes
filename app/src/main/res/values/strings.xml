@@ -4,7 +4,6 @@
     <string name="discover">发现</string>
     <string name="focus">关注</string>
     <string name="mine">我的</string>
-    <string name="no_data">没有数据</string>
     <string name="net_error_message">网络错误\n点击屏幕重试</string>
     <string name="empty_message">没有数据\n点击屏幕重试</string>
     <string name="show_all">查看全部</string>
@@ -41,7 +40,6 @@
     <string name="search_hot_remind">输入标题或描述中的关键字找到更多视频</string>
     <string name="hot_search_word">- 热门搜索词 -</string>
     <string name="add_focus">+关注</string>
-    <string name="search_result">- %s -</string>
     <string name="remind_find_in_group">可以通过所属分类\n以及标题或描述中的关键词来查找</string>
     <string name="not_find_match_content">很抱歉没有找到相匹配的内容</string>
     <string name="daily_editor_elite">每日编辑精选</string>

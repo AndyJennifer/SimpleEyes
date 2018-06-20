@@ -7,10 +7,7 @@
     <dimen name="default_margin_bottom">15dp</dimen>
 
     <dimen name="default_padding">15dp</dimen>
-    <dimen name="default_padding_left">15dp</dimen>
-    <dimen name="default_padding_right">15dp</dimen>
     <dimen name="default_padding_top">15dp</dimen>
-    <dimen name="default_padding_bottom">15dp</dimen>
 
     <dimen name="default_card_height">200dp</dimen>
     <dimen name="default_card_source_icon_width">40dp</dimen>
