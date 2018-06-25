@@ -76,10 +76,13 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
     override fun initRefreshView() = EliteHeaderView(context)
 
 
-    override fun dispatchPullEvent(dy: Float) {
-        mRefreshView?.handlePullEvent(dy)
+    override fun dispatchExtraPullEvent(dy: Float) {
+        mRefreshView?.handleExtraPullEvent(dy)
     }
 
+    override fun dispatchValidPullEvent(dy: Float) {
+        mRefreshView?.handleValidPullEvent(dy)
+    }
 
 
     override fun isRefreshing(): Boolean {

@@ -251,9 +251,8 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                             mLastMotionX = x
                             mLastMotionY = y
                             performDrag(dy)
+                            dispatchExtraPullEvent(dy)//将竖直移动距离分发出去
                         }
-
-
                     }
 
                 }
@@ -285,8 +284,8 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     private fun performDrag(dy: Float) {
         if (Math.abs(scrollY - dy) <= mRefreshHeight) {//控制headView的显示高度
             scrollBy(0, -dy.toInt())
+            dispatchValidPullEvent(dy)
         }
-        dispatchPullEvent(dy)//将竖直事件分发出去
     }
 
     override fun computeScroll() {
@@ -347,9 +346,16 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     }
 
     /**
-     * 处理下拉事件
+     * 分发额外的移动距离
      */
-    open fun dispatchPullEvent(dy: Float) {
+    open fun dispatchExtraPullEvent(dy: Float) {
+    }
+
+    /**
+     * 处理有效的移动距离
+     */
+    open fun dispatchValidPullEvent(dy: Float) {
+
     }
 
 

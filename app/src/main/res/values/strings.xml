@@ -44,6 +44,7 @@
     <string name="not_find_match_content">很抱歉没有找到相匹配的内容</string>
     <string name="daily_editor_elite">每日编辑精选</string>
     <string name="load_failed">加载更多失败</string>
+    <string name="daily_elite_update">今日日报已更新</string>
 
     <string-array name="slogan_array_zh">
         <item>每日编辑精选，一如既往</item>

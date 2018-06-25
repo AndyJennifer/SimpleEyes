@@ -21,7 +21,12 @@ abstract class PullRefreshView : FrameLayout {
 
 
     /**
-     * 处理下拉事件
+     * 处理额外下拉事件
      */
-    abstract fun handlePullEvent(dy: Float)
+    abstract fun handleExtraPullEvent(dy: Float)
+
+    /**
+     * 处理有效下拉事件
+     */
+    abstract fun handleValidPullEvent(dy: Float)
 }
