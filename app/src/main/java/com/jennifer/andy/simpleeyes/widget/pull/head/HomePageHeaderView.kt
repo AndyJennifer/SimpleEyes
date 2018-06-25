@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.widget
+package com.jennifer.andy.simpleeyes.widget.pull.head
 
 import android.content.Context
 import android.support.v4.view.ViewPager

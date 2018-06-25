@@ -5,8 +5,8 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.jennifer.andy.simpleeyes.widget.pull.head.EliteHeaderView
 
 
 /**
@@ -63,7 +63,7 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
     /**
      * 获取当前RecyclerView
      */
-    fun getRootRecyclerView() = mRootView
+    override fun getRootRecyclerView() = mRootView
 
     /**
      * 滚动到相应位置
@@ -73,14 +73,14 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
 
     }
 
+    override fun initRefreshView() = EliteHeaderView(context)
 
-    override fun setRefreshHeight(scrollValue: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    override fun dispatchPullEvent(dy: Float) {
+        mRefreshView?.handlePullEvent(dy)
     }
 
-    override fun getRefreshView(): View? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
     override fun isRefreshing(): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

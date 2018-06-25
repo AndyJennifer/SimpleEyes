@@ -25,7 +25,7 @@ import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
-import com.jennifer.andy.simpleeyes.widget.VideoDetailHeadView
+import com.jennifer.andy.simpleeyes.widget.pull.head.VideoDetailHeadView
 import io.reactivex.functions.Consumer
 import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.util.*

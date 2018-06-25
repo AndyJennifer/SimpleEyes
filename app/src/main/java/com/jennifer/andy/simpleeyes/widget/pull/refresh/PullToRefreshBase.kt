@@ -1,12 +1,12 @@
 package com.jennifer.andy.simpleeyes.widget.pull.refresh
 
 import android.content.Context
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper.INVALID_POINTER
 import android.util.AttributeSet
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Scroller
-import com.jennifer.andy.simpleeyes.R
 import java.lang.RuntimeException
 
 
@@ -20,7 +20,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
 
     protected lateinit var mRootView: T
-    private var mRefreshView: View? = null
+    protected var mRefreshView: PullRefreshView? = null
     private lateinit var mScroller: Scroller
     private var mTouchSlop: Int = 0
 
@@ -78,6 +78,12 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     private var isRefreshEnable = true //是否能下拉刷新
     private var mIsBeingDragged = false//是否将要进行拖拽
     private var mIsUnableToDrag = false//当前不能拖拽 用于判断x y轴移动距离的
+    private var mIsScrollStarted = false//内容是否开始滚动
+
+
+    private val mEndScrollRunnable = Runnable {
+        mScrollState = SCROLL_STATE_IDLE
+    }
 
     constructor(context: Context) : this(context, null)
 
@@ -92,16 +98,8 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
         mRootView = createRootView(context, attrs)
         mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
         mScroller = Scroller(getContext())
-        val typeArray = context.obtainStyledAttributes(attrs, R.styleable.PullToRefreshView)
-        attrs?.let {
-            val layoutInflater = LayoutInflater.from(context)
-            val refreshViewResId = typeArray.getResourceId(R.styleable.PullToRefreshView_refreshView, 0)
-            if (refreshViewResId > 0)
-                mRefreshView = layoutInflater.inflate(refreshViewResId, null, false)
-            addView(mRefreshView)
-
-        }
-        typeArray.recycle()
+        mRefreshView = initRefreshView()
+        addView(mRefreshView, 0)
         addView(mRootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
@@ -111,6 +109,10 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             //获取刷新view的高度
             measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec)
             mRefreshHeight = mRefreshView!!.measuredHeight
+
+            val layoutParams = mRefreshView?.layoutParams as LinearLayout.LayoutParams
+            layoutParams.topMargin = -mRefreshHeight
+            mRefreshView?.layoutParams = layoutParams
         } else {
             throw RuntimeException("you not set refreshView!!")
         }
@@ -134,7 +136,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                     return false
                 }
             }
-            when (action) {
+            when (action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> {
                     if (isReadyForPullStart()) {
                         mLastMotionX = event.x
@@ -146,9 +148,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                         mActivePointerId = event.getPointerId(0)
 
                         mIsUnableToDrag = false
-
-                        mScroller.computeScrollOffset()
-                        //在点击的时候，判断当前刷新界面是否下拉显示，或者在回退的路上是
+                        //在点击的时候，判断当前刷新界面是否下拉显示，或者在回退的路上
                         if (mScrollState == SCROLL_STATE_SETTLING && getScrollDiff() > SCROLL_CLOSE_ENOUGH) {
                             mIsBeingDragged = true
                             mScrollState = SCROLL_STATE_DRAGGING
@@ -172,12 +172,12 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                         val dy = y - mLastMotionY
                         val yAbs = Math.abs(dy)
 
-                        //如果竖直移动距离大于水平移动距离，设置当前为拖动状态
-                        if (yAbs > mTouchSlop && yAbs * 0.5 > xAbs) {
+                        //如果竖直移动距离大于水平移动距离且为下拉事件，设置当前为拖动状态
+                        if (yAbs > mTouchSlop && yAbs * 0.5 > xAbs && dy > 0) {
                             mIsBeingDragged = true
                             mScrollState = SCROLL_STATE_DRAGGING
                             mLastMotionX = x
-                            mLastMotionY = if (dy > 0) mInitialMotionY + mTouchSlop else mLastMotionY - mTouchSlop
+                            mLastMotionY = if (dy > 0) mInitialMotionY + mTouchSlop else mInitialMotionY - mTouchSlop
                         } else if (xAbs > mTouchSlop) {
                             mIsUnableToDrag = true
                         }
@@ -213,7 +213,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             return false
         }
         val action = event.action
-        when (action) {
+        when (action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_CANCEL -> {
                 if (mIsBeingDragged) {
                     //todo 如果取消了，你就回去
@@ -238,21 +238,21 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
                         val pointerIndex = event.findPointerIndex(actionPointerId)
                         val x = event.getX(pointerIndex)
-                        val xAbs = Math.abs(x - mInitialMotionX)
+                        val xAbs = Math.abs(x - mLastMotionX)
 
                         val y = event.getY(pointerIndex)
                         val dy = y - mLastMotionY
                         val yAbs = Math.abs(dy)
 
                         //如果竖直移动距离大于水平移动距离，设置当前为拖动状态
-                        if (yAbs > mTouchSlop && yAbs * 0.5 > xAbs) {
+                        if (yAbs > xAbs) {
                             mIsBeingDragged = true
                             mScrollState = SCROLL_STATE_DRAGGING
                             mLastMotionX = x
-                            mLastMotionY = if (dy > 0) mInitialMotionY + mTouchSlop else mLastMotionY - mTouchSlop
-                            dispatchPullEvent()//发送刷新事件
-                            //todo 开始进行滚动
+                            mLastMotionY = y
+                            performDrag(dy)
                         }
+
 
                     }
 
@@ -263,13 +263,71 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                     //todo 判断当前高度如果小于，刷新你就回去，否则执行刷新操作，监听刷新失败成功的方法。不管结果都滚动回去
                 }
             }
-
+            MotionEvent.ACTION_POINTER_DOWN -> {
+                val index = event.actionIndex
+                val y = event.getY(index)
+                val x = event.getX(index)
+                mLastMotionY = y
+                mLastMotionX = x
+                mActivePointerId = event.getPointerId(index)
+            }
             MotionEvent.ACTION_POINTER_UP -> {
                 onSecondaryPointerUp(event)
             }
         }
 
         return true
+    }
+
+    /**
+     * 开始滚动
+     */
+    private fun performDrag(dy: Float) {
+        if (Math.abs(scrollY - dy) <= mRefreshHeight) {//控制headView的显示高度
+            scrollBy(0, -dy.toInt())
+        }
+        dispatchPullEvent(dy)//将竖直事件分发出去
+    }
+
+    override fun computeScroll() {
+        mIsScrollStarted = true
+        //如果当前正在回弹，取消回弹
+        if (!mScroller.isFinished && mScroller.computeScrollOffset()) {
+            val oldX = scrollX
+            val oldY = scrollY
+            val x = mScroller.currX
+            val y = mScroller.currY
+            if (oldX != x || oldY != y) {
+                mScroller.abortAnimation()
+                scrollTo(x, y)
+            }
+            ViewCompat.postInvalidateOnAnimation(this)
+            return
+        }
+        //处理自身滑动
+        completeScroll(true)
+    }
+
+    private fun completeScroll(postEvents: Boolean) {
+        val needPopulate = mScrollState == SCROLL_STATE_SETTLING
+        if (needPopulate) {
+            val wasScrolling = !mScroller.isFinished
+            if (wasScrolling) {
+                mScroller.abortAnimation()
+                val oldX = scrollX
+                val oldY = scrollY
+                val x = mScroller.currX
+                val y = mScroller.currY
+                if (oldX != x || oldY != y) {
+                    scrollTo(x, y)
+                }
+            }
+        }
+        if (needPopulate) {
+            if (postEvents) {
+                ViewCompat.postInvalidateOnAnimation(this)
+            }
+        }
     }
 
     /** 弹性滑动
@@ -291,10 +349,9 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     /**
      * 处理下拉事件
      */
-    private fun dispatchPullEvent() {
-        val scrollValue = Math.round(Math.min(mInitialMotionY - mLastMotionY, 0f))
-        setRefreshHeight(scrollValue)
+    open fun dispatchPullEvent(dy: Float) {
     }
+
 
     /**
      * 是否允许下拉刷新
@@ -312,11 +369,6 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
      */
     abstract fun isReadyForPullStart(): Boolean
 
-
-    /**
-     * 设置刷新View的高度
-     */
-    abstract fun setRefreshHeight(scrollValue: Int)
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()

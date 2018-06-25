@@ -1,7 +1,5 @@
 package com.jennifer.andy.simpleeyes.widget.pull.refresh
 
-import android.view.View
-
 
 /**
  * Author:  andy.xwt
@@ -12,9 +10,9 @@ import android.view.View
 interface PullToRefresh<T> {
 
     /**
-     * 获取刷新view
+     * 设置刷新View
      */
-    fun getRefreshView(): View?
+    fun initRefreshView(): PullRefreshView?
 
 
     /**
@@ -27,4 +25,6 @@ interface PullToRefresh<T> {
      * 下拉刷新是否可用
      */
     fun isPullToRefreshEnabled(): Boolean
+
+    fun getRootRecyclerView(): T
 }

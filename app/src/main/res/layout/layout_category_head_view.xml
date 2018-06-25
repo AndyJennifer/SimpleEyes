@@ -59,7 +59,7 @@
             app:font_name="normal"/>
     </LinearLayout>
 
-    <com.jennifer.andy.simpleeyes.widget.HeaderRefreshView
+    <com.jennifer.andy.simpleeyes.widget.pull.head.HeaderRefreshView
         android:id="@+id/head_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

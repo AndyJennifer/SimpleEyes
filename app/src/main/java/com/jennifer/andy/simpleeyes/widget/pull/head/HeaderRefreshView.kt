@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.widget
+package com.jennifer.andy.simpleeyes.widget.pull.head
 
 import android.animation.ValueAnimator
 import android.content.Context

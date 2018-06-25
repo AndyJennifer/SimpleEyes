@@ -42,7 +42,6 @@
     <com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
         android:id="@+id/rv_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:refreshView="@layout/refresh_daily_elite_header"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
