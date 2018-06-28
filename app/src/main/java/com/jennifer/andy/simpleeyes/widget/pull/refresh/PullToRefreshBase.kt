@@ -1,7 +1,6 @@
 package com.jennifer.andy.simpleeyes.widget.pull.refresh
 
 import android.content.Context
-import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper.INVALID_POINTER
 import android.util.AttributeSet
 import android.view.*
@@ -21,7 +20,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
     protected lateinit var mRootView: T
     protected var mRefreshView: PullRefreshView? = null
-    private lateinit var mScroller: Scroller
+    private lateinit var mSmoothScroller: Scroller
     private var mTouchSlop: Int = 0
 
     /**
@@ -97,7 +96,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
         orientation = LinearLayout.VERTICAL
         mRootView = createRootView(context, attrs)
         mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
-        mScroller = Scroller(getContext())
+        mSmoothScroller = Scroller(getContext())
         mRefreshView = initRefreshView()
         addView(mRefreshView, 0)
         addView(mRootView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -134,6 +133,9 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                 }
                 if (mIsUnableToDrag) {//如果不能被拖拽，就不拦截
                     return false
+                }
+                if (!mSmoothScroller.computeScrollOffset()) {
+                    mSmoothScroller.abortAnimation()
                 }
             }
             when (action and MotionEvent.ACTION_MASK) {
@@ -228,7 +230,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
                 //获取有效手指 第一个有效手指的角标总是0
                 mActivePointerId = event.getPointerId(0)
-                mScroller.abortAnimation()
+                mSmoothScroller.abortAnimation()
             }
             MotionEvent.ACTION_MOVE -> {
                 if (mIsBeingDragged) {
@@ -245,7 +247,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                         val yAbs = Math.abs(dy)
 
                         //如果竖直移动距离大于水平移动距离，设置当前为拖动状态
-                        if (yAbs > xAbs) {
+                        if (yAbs > xAbs && scrollY <= 0) {
                             mIsBeingDragged = true
                             mScrollState = SCROLL_STATE_DRAGGING
                             mLastMotionX = x
@@ -259,7 +261,13 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             }
             MotionEvent.ACTION_UP -> {
                 if (mIsBeingDragged) {
-                    //todo 判断当前高度如果小于，刷新你就回去，否则执行刷新操作，监听刷新失败成功的方法。不管结果都滚动回去
+                    if (Math.abs(scrollY) > mRefreshHeight / 2) {//如果超过一半就执行请求
+                        //执行刷新请求
+                        smoothScrollTo(0, -(mRefreshHeight + scrollY))
+                    } else {
+                        //滚动回去
+                        smoothScrollTo(-scrollX, -scrollY)
+                    }
                 }
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -282,25 +290,23 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
      * 开始滚动
      */
     private fun performDrag(dy: Float) {
-        if (Math.abs(scrollY - dy) <= mRefreshHeight) {//控制headView的显示高度
-            scrollBy(0, -dy.toInt())
-            dispatchValidPullEvent(dy)
+        if (scrollY - dy <= 0) {//控制滚动范围为0到headView的显示高度
+            if (Math.abs(scrollY - dy) in 0..mRefreshHeight) {
+                scrollBy(0, -dy.toInt())
+                dispatchValidPullEvent(dy)
+            }
         }
     }
 
+
     override fun computeScroll() {
         mIsScrollStarted = true
-        //如果当前正在回弹，取消回弹
-        if (!mScroller.isFinished && mScroller.computeScrollOffset()) {
-            val oldX = scrollX
-            val oldY = scrollY
-            val x = mScroller.currX
-            val y = mScroller.currY
-            if (oldX != x || oldY != y) {
-                mScroller.abortAnimation()
-                scrollTo(x, y)
-            }
-            ViewCompat.postInvalidateOnAnimation(this)
+        //处理回弹效果
+        if (!mSmoothScroller.isFinished && mSmoothScroller.computeScrollOffset()) {
+            val x = mSmoothScroller.currX
+            val y = mSmoothScroller.currY
+            scrollTo(x, y)
+            postInvalidate()
             return
         }
         //处理自身滑动
@@ -310,13 +316,13 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     private fun completeScroll(postEvents: Boolean) {
         val needPopulate = mScrollState == SCROLL_STATE_SETTLING
         if (needPopulate) {
-            val wasScrolling = !mScroller.isFinished
+            val wasScrolling = !mSmoothScroller.isFinished
             if (wasScrolling) {
-                mScroller.abortAnimation()
+                mSmoothScroller.abortAnimation()
                 val oldX = scrollX
                 val oldY = scrollY
-                val x = mScroller.currX
-                val y = mScroller.currY
+                val x = mSmoothScroller.currX
+                val y = mSmoothScroller.currY
                 if (oldX != x || oldY != y) {
                     scrollTo(x, y)
                 }
@@ -324,25 +330,25 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
         }
         if (needPopulate) {
             if (postEvents) {
-                ViewCompat.postInvalidateOnAnimation(this)
+                postInvalidate()
             }
         }
     }
 
     /** 弹性滑动
      * @param x 水平滑动距离
-     * @param y 竖直方向就
-     * @param velocity y轴上的速度
+     * @param y 竖直方向距离
      */
-    private fun smoothScrollTo(x: Int, y: Int, velocity: Int) {
-
+    private fun smoothScrollTo(x: Int, y: Int) {
+        mSmoothScroller.startScroll(scrollX, scrollY, x, y)
+        postInvalidate()
     }
 
     /**
      * 获取当前滑动的差值
      */
     private fun getScrollDiff(): Int {
-        return Math.abs(mScroller.finalY - mScroller.currY)
+        return Math.abs(mSmoothScroller.finalY - mSmoothScroller.currY)
     }
 
     /**
@@ -378,8 +384,8 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (!mScroller.isFinished) {
-            mScroller.abortAnimation()
+        if (!mSmoothScroller.isFinished) {
+            mSmoothScroller.abortAnimation()
         }
     }
 

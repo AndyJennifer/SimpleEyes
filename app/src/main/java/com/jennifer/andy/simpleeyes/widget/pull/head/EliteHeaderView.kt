@@ -37,21 +37,39 @@ class EliteHeaderView : PullRefreshView {
         LayoutInflater.from(context).inflate(R.layout.refresh_daily_elite_header, this, true)
     }
 
+    /**
+     * 处理额外的下拉 dy
+     */
     override fun handleExtraPullEvent(dy: Float) {
         //处理眼睛旋转
         mHeadInner.rotation = mHeadInner.rotation + (dy.toInt() / ROTATION_DAMP)
 
     }
 
+    /**
+     * 处理有效的下拉 dy
+     */
     override fun handleValidPullEvent(dy: Float) {
         //处理文字透明度
         mYDistance += dy
         if (mYDistance >= height - mLoadingMessage.bottom && mYDistance <= height - mLoadingMessage.top) {
             val argbEvaluator = ArgbEvaluator()
             val fraction = Math.abs(mLoadingMessage.bottom - height + mYDistance) / (mLoadingMessage.height)
-            println("fraction---->$fraction---->距离${height - mYDistance - mLoadingMessage.bottom}+移动距离$mYDistance")
             val textColor = argbEvaluator.evaluate(fraction, 0, 0xff444444.toInt()) as Int
             mLoadingMessage.setTextColor(textColor)
         }
+    }
+
+
+    override fun doRefresh() {
+
+    }
+
+    override fun refreshComplete() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun reset() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

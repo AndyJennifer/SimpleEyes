@@ -29,4 +29,19 @@ abstract class PullRefreshView : FrameLayout {
      * 处理有效下拉事件
      */
     abstract fun handleValidPullEvent(dy: Float)
+
+    /**
+     * 执行刷新操作
+     */
+    abstract fun doRefresh()
+
+    /**
+     * 刷新成功
+     */
+    abstract fun refreshComplete()
+
+    /**
+     * 重置操作
+     */
+    abstract fun reset()
 }
