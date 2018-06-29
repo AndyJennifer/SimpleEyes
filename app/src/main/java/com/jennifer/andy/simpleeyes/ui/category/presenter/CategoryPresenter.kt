@@ -53,7 +53,7 @@ class CategoryPresenter : BasePresenter<CategoryView>() {
      */
     fun loadMoreCategoryData() {
         if (mNextPageUrl != null) {
-            mRxManager.add(mAndyModel.loadMoreInfo(mNextPageUrl).subscribe({
+            mRxManager.add(mAndyModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
                 mView?.showContent()
                 if (it.nextPageUrl == null) {
                     mView?.showNoMore()

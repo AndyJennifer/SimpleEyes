@@ -17,11 +17,12 @@ import com.jennifer.andy.simpleeyes.utils.TimeUtils
 
 class VideoDetailAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
 
-    val TEXT_CARD = "textCard"
-    val VIDEO_SMALL_CARD = "videoSmallCard"
-
-    val TEXT_CARD_TYPE = 0
-    val VIDEO_SMALL_CARD_TYPE = 1
+    companion object {
+        const val TEXT_CARD = "textCard"
+        const val VIDEO_SMALL_CARD = "videoSmallCard"
+        const val TEXT_CARD_TYPE = 0
+        const val VIDEO_SMALL_CARD_TYPE = 1
+    }
 
 
     init {

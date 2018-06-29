@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.search.view
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseView
+import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
 
 
 /**
@@ -10,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  * Description:
  */
 
-interface SearchHotView : BaseView {
+interface SearchHotView : LoadMoreView<AndyInfo> {
 
     /**
      * 获取热门关键词成功
@@ -22,14 +22,5 @@ interface SearchHotView : BaseView {
      */
     fun showSearchSuccess(queryWord: String, andyInfo: AndyInfo)
 
-    /**
-     * 加载更多信息成功
-     */
-    fun loadMoreSuccess(andyInfo: AndyInfo)
-
-    /**
-     * 没有更多
-     */
-    fun showNoMore()
 
 }

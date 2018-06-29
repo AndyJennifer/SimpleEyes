@@ -15,12 +15,43 @@ import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
  */
 
 class DailyElitePresenter : BasePresenter<DailyEliteView>() {
+
     private var mAndyModel: AndyModel = AndyModel()
+    private var mNextPageUrl: String? = null
 
     fun getDailyElite() {
         mRxManager.add(mAndyModel.getDailyElite().subscribe({
             mView?.showContent()
+            mNextPageUrl = it.nextPageUrl
             mView?.showGetDailySuccess(combineContentInfo(it))
+        }, {
+            mView?.showNetError(View.OnClickListener {
+                getDailyElite()
+            })
+        }))
+    }
+
+    /**
+     * 刷新
+     */
+    fun refresh() {
+        mRxManager.add(mAndyModel.getDailyElite().subscribe({
+            mView?.showContent()
+            mNextPageUrl = it.nextPageUrl
+            mView?.showGetDailySuccess(combineContentInfo(it))
+        }, {
+            mView?.showNetError(View.OnClickListener {
+                getDailyElite()
+            })
+        }))
+    }
+
+    /**
+     * 加載更多
+     */
+    fun loadMoreResult() {
+        mRxManager.add(mAndyModel.loadMoreJenniferInfo(mNextPageUrl)!!.subscribe({
+            mView?.loadMoreSuccess(combineContentInfo(it))
         }, {
             mView?.showNetError(View.OnClickListener {
                 getDailyElite()

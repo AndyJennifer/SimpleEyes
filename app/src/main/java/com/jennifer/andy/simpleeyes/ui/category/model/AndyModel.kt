@@ -29,8 +29,9 @@ class AndyModel : BaseModel {
     /**
      * 加载更多信息
      */
-    fun loadMoreInfo(nextPageUrl: String?) = Api.getDefault().getMoreInfo(nextPageUrl).compose(RxHelper.handleResult())
+    fun loadMoreAndyInfo(nextPageUrl: String?) = Api.getDefault().getMoreAndyInfo(nextPageUrl)?.compose(RxHelper.handleResult())
 
+    fun loadMoreJenniferInfo(nextPageUrl: String?) = Api.getDefault().getMoreJenniferInfo(nextPageUrl)?.compose(RxHelper.handleResult())
 
     /**
      * 热门关键词获取

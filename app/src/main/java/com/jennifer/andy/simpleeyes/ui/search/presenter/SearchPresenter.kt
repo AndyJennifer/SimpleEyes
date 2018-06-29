@@ -22,9 +22,9 @@ class SearchPresenter : BasePresenter<SearchHotView>() {
      * 获取热门搜索
      */
     fun searchHot() {
-        mRxManager.add(mAndyModel.getHotWord().subscribe({
+        mRxManager.add(mAndyModel.getHotWord().subscribe {
             mView?.getHotWordSuccess(it)
-        }))
+        })
     }
 
     /**
@@ -46,7 +46,7 @@ class SearchPresenter : BasePresenter<SearchHotView>() {
      */
     fun loadMoreSearchResult() {
         if (mNextPageUrl != null) {
-            mRxManager.add(mAndyModel.loadMoreInfo(mNextPageUrl).subscribe({
+            mRxManager.add(mAndyModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
                 mView?.showContent()
                 if (it.nextPageUrl == null) {
                     mView?.showNoMore()

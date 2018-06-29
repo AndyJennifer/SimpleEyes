@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.widget.pull.head
 
 import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -21,9 +22,13 @@ class EliteHeaderView : PullRefreshView {
 
     private val mHeadInner: ImageView by bindView(R.id.iv_head_inner)
     private val mLoadingMessage: CustomFontTextView by bindView(R.id.tv_loading_msg)
+    private lateinit var mRotationAnimator: ObjectAnimator
 
-    private val ROTATION_DAMP = 2f
     private var mYDistance = 0f
+
+    companion object {
+        private const val ROTATION_DAMP = 2f//阻尼系数
+    }
 
     constructor(context: Context) : this(context, null)
 
@@ -62,7 +67,18 @@ class EliteHeaderView : PullRefreshView {
 
 
     override fun doRefresh() {
+        doInnerEyeAnimator()
+    }
 
+
+    /**
+     * 执行内部眼睛动画
+     */
+    private fun doInnerEyeAnimator() {
+        mRotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
+        mRotationAnimator.duration = 1000
+        mRotationAnimator.repeatCount = -1
+        mRotationAnimator.start()
     }
 
     override fun refreshComplete() {
@@ -70,6 +86,13 @@ class EliteHeaderView : PullRefreshView {
     }
 
     override fun reset() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (mRotationAnimator.isRunning) {
+            mRotationAnimator.cancel()
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        reset()
     }
 }

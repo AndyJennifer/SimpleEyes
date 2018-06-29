@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.category.view
 
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.ui.base.BaseView
+import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
 
 
 /**
@@ -10,6 +10,6 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  * Description:
  */
 
-interface DailyEliteView : BaseView {
+interface DailyEliteView : LoadMoreView<MutableList<Content>> {
     fun showGetDailySuccess(it: MutableList<Content>)
 }

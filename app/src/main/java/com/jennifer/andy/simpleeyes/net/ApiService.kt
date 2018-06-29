@@ -28,7 +28,15 @@ interface ApiService {
      * @param url 下一页请求地址
      */
     @GET
-    fun getMoreInfo(@Url url: String?): Observable<AndyInfo>
+    fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>?
+
+
+    /**
+     * 获取更多信息
+     * @param url 下一页请求地址
+     */
+    @GET
+    fun getMoreJenniferInfo(@Url url: String?): Observable<JenniferInfo>?
 
     /**
      * 获取热门关键词

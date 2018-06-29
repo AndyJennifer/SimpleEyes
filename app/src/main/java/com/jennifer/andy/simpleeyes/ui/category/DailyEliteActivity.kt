@@ -33,7 +33,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
     override fun initView(savedInstanceState: Bundle?) {
 
         mPresenter.getDailyElite()
-        mRecycler.getRootRecyclerView().addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        mRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 //设置当前选择日期
@@ -44,6 +44,8 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
             }
 
         })
+
+        mRecycler.refreshListener = { mPresenter.getDailyElite() }
         mBackImageView.setOnClickListener { finish() }
 
     }
@@ -61,6 +63,13 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         }
     }
 
+    override fun loadMoreSuccess(data: MutableList<Content>) {
+
+    }
+
+    override fun showNoMore() {
+
+    }
 
     override fun initPresenter() = DailyElitePresenter()
 

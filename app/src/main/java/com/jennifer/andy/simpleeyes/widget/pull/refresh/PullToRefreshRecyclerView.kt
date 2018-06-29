@@ -73,6 +73,13 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
 
     }
 
+    /**
+     * 添加滑动监听
+     */
+    fun addOnScrollListener(onScrollListener: RecyclerView.OnScrollListener) {
+        mRootView.addOnScrollListener(onScrollListener)
+    }
+
     override fun initRefreshView() = EliteHeaderView(context)
 
 
