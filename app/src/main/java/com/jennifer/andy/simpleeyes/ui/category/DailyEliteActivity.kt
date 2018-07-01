@@ -45,22 +45,33 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
 
         })
 
-        mRecycler.refreshListener = { mPresenter.getDailyElite() }
+        mRecycler.refreshListener = { mPresenter.refresh() }
         mBackImageView.setOnClickListener { finish() }
 
     }
 
 
-    override fun showGetDailySuccess(it: MutableList<Content>) {
+    override fun showGetDailySuccess(content: MutableList<Content>) {
         if (mDailyEliteAdapter == null) {
-            mDailyEliteAdapter = DailyEliteAdapter(it)
+            mDailyEliteAdapter = DailyEliteAdapter(content)
             mLinearLayoutManager = LinearLayoutManagerWithSmoothScroller(mContext)
             mRecycler.setAdapterAndLayoutManager(mDailyEliteAdapter!!, mLinearLayoutManager)
-            //这里发送延时消息，是因为数据还有可能没有装载完毕
-            mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
         } else {
-            mDailyEliteAdapter?.setNewData(it)
+            mDailyEliteAdapter?.setNewData(content)
         }
+        //这里发送延时消息，是因为数据还有可能没有装载完毕
+        mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
+    }
+
+    override fun showRefreshSuccess(content: MutableList<Content>) {
+        showGetDailySuccess(content)
+        mRecycler.rootView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    mRecycler.refreshComplete()
+                }
+            }
+        })
     }
 
     override fun loadMoreSuccess(data: MutableList<Content>) {

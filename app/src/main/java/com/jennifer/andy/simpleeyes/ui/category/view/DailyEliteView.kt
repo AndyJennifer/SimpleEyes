@@ -11,5 +11,9 @@ import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
  */
 
 interface DailyEliteView : LoadMoreView<MutableList<Content>> {
-    fun showGetDailySuccess(it: MutableList<Content>)
+
+    fun showGetDailySuccess(content: MutableList<Content>)
+
+    fun showRefreshSuccess(content: MutableList<Content>)
+
 }

@@ -275,7 +275,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                         //滚动回去
                         smoothScrollTo(-scrollX, -scrollY)
                     }
-                    mScrollState = SCROLL_STATE_DRAGGING
+                    mScrollState = SCROLL_STATE_SETTLING
                 }
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -308,6 +308,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
 
     override fun computeScroll() {
+        //todo 这里要排除自己本身的滚动，不然会导致重复刷新的
         isScrollStarted = true
         //处理自己滚动效果，滚动到顶部或者到滚动到RefreshView的高度位置
         if (!mSmoothScroller.isFinished && mSmoothScroller.computeScrollOffset()) {
@@ -322,32 +323,13 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                 refreshListener()
             } else
                 mRefreshView?.reset()
-
+            mScrollState = SCROLL_STATE_IDLE
         }
-        //处理自身滑动
-        completeScroll(true)
     }
 
-    private fun completeScroll(postEvents: Boolean) {
-        val needPopulate = mScrollState == SCROLL_STATE_SETTLING
-        if (needPopulate) {
-            val wasScrolling = !mSmoothScroller.isFinished
-            if (wasScrolling) {
-                mSmoothScroller.abortAnimation()
-                val oldX = scrollX
-                val oldY = scrollY
-                val x = mSmoothScroller.currX
-                val y = mSmoothScroller.currY
-                if (oldX != x || oldY != y) {
-                    scrollTo(x, y)
-                }
-            }
-        }
-        if (needPopulate) {
-            if (postEvents) {
-                postInvalidate()
-            }
-        }
+    override fun refreshComplete() {
+        isRefreshIng = false
+        smoothScrollTo(-scrollX, -scrollY)
     }
 
     /** 弹性滑动
@@ -396,6 +378,11 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
      */
     abstract fun isReadyForPullStart(): Boolean
 
+
+    /**
+     * 获取当前RecyclerView
+     */
+    override fun getRootView() = mRootView
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()

@@ -35,10 +35,6 @@ abstract class PullRefreshView : FrameLayout {
      */
     abstract fun doRefresh()
 
-    /**
-     * 刷新成功
-     */
-    abstract fun refreshComplete()
 
     /**
      * 重置操作

@@ -38,10 +38,10 @@ class DailyElitePresenter : BasePresenter<DailyEliteView>() {
         mRxManager.add(mAndyModel.getDailyElite().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
-            mView?.showGetDailySuccess(combineContentInfo(it))
+            mView?.showRefreshSuccess(combineContentInfo(it))
         }, {
             mView?.showNetError(View.OnClickListener {
-                getDailyElite()
+                refresh()
             })
         }))
     }

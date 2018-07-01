@@ -20,11 +20,18 @@ interface PullToRefresh<T> {
      */
     fun isRefreshing(): Boolean
 
+    /**
+     * 刷新完毕
+     */
+    fun refreshComplete()
 
     /**
      * 下拉刷新是否可用
      */
     fun isPullToRefreshEnabled(): Boolean
 
-    fun getRootRecyclerView(): T
+    /**
+     * 获取根布局
+     */
+    fun getRootView(): T
 }

@@ -60,10 +60,6 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
         mRootView.itemAnimator = DefaultItemAnimator()
     }
 
-    /**
-     * 获取当前RecyclerView
-     */
-    override fun getRootRecyclerView() = mRootView
 
     /**
      * 滚动到相应位置

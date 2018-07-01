@@ -22,7 +22,7 @@ class EliteHeaderView : PullRefreshView {
 
     private val mHeadInner: ImageView by bindView(R.id.iv_head_inner)
     private val mLoadingMessage: CustomFontTextView by bindView(R.id.tv_loading_msg)
-    private lateinit var mRotationAnimator: ObjectAnimator
+    private var mRotationAnimator: ObjectAnimator? = null
 
     private var mYDistance = 0f
 
@@ -76,18 +76,14 @@ class EliteHeaderView : PullRefreshView {
      */
     private fun doInnerEyeAnimator() {
         mRotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
-        mRotationAnimator.duration = 1000
-        mRotationAnimator.repeatCount = -1
-        mRotationAnimator.start()
-    }
-
-    override fun refreshComplete() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRotationAnimator?.duration = 1000
+        mRotationAnimator?.repeatCount = -1
+        mRotationAnimator?.start()
     }
 
     override fun reset() {
-        if (mRotationAnimator.isRunning) {
-            mRotationAnimator.cancel()
+        if (mRotationAnimator != null) {
+            mRotationAnimator?.cancel()
         }
     }
 
