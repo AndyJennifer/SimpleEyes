@@ -35,6 +35,11 @@ abstract class PullRefreshView : FrameLayout {
      */
     abstract fun doRefresh()
 
+    /**
+     * 执行刷新的高度
+     */
+    open fun getDoRefreshHeight() = height
+
 
     /**
      * 重置操作

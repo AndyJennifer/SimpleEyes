@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.category.adapter.DailyEliteAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.DailyElitePresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
+import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.LinearLayoutManagerWithSmoothScroller
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
+import java.util.*
 
 
 /**
@@ -34,8 +37,8 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
     override fun initView(savedInstanceState: Bundle?) {
 
         mPresenter.getDailyElite()
-        mRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
+        mRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 //设置当前选择日期
                 val position = mLinearLayoutManager.findFirstVisibleItemPosition()
@@ -43,51 +46,51 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
                     mTvDate.text = mDailyEliteAdapter?.getItem(position)?.data?.text
                 }
             }
-
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                val layoutManager = mRecycler.rootView.layoutManager as LinearLayoutManager
+                //滚动到日期及完毕
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && layoutManager.findFirstVisibleItemPosition() == mDailyEliteAdapter!!.getCurrentDayPosition()) {
+                    mRecycler.refreshComplete()
+                }
+            }
         })
-
         mRecycler.refreshListener = { mPresenter.refresh() }
         mBackImageView.setOnClickListener { finish() }
-
     }
 
 
     override fun showGetDailySuccess(content: MutableList<Content>) {
         if (mDailyEliteAdapter == null) {
             mDailyEliteAdapter = DailyEliteAdapter(content)
+            mDailyEliteAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreResult() }, mRecycler.rootView)
+            mDailyEliteAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
+                if (mDailyEliteAdapter?.getItemViewType(position) != DailyEliteAdapter.BANNER_TYPE) {
+                    val item = mDailyEliteAdapter?.getItem(position)
+                    VideoDetailActivity.start(mContext, item!!.data, mDailyEliteAdapter?.data as ArrayList, position)
+                }
+            }
             mLinearLayoutManager = LinearLayoutManagerWithSmoothScroller(mContext)
             mRecycler.setAdapterAndLayoutManager(mDailyEliteAdapter!!, mLinearLayoutManager)
         } else {
             mDailyEliteAdapter?.setNewData(content)
         }
+
         //这里发送延时消息，是因为数据还有可能没有装载完毕
         mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
 
-        //添加滚动完毕监听
-        mRecycler.rootView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                val layoutManager = mRecycler.rootView.layoutManager as LinearLayoutManager
-                //滚动到日期及完毕
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && layoutManager.findFirstVisibleItemPosition() == mDailyEliteAdapter!!.getCurrentDayPosition()) {
-                    if (mRecycler.isRefreshing()) {
-                        mRecycler.refreshComplete()
-                    }
-                }
-            }
-        })
     }
 
     override fun showRefreshSuccess(content: MutableList<Content>) {
         showGetDailySuccess(content)
-
     }
 
     override fun loadMoreSuccess(data: MutableList<Content>) {
-
+        mDailyEliteAdapter?.addData(data)
+        mDailyEliteAdapter?.loadMoreComplete()
     }
 
     override fun showNoMore() {
-
+        mDailyEliteAdapter?.loadMoreEnd()
     }
 
     override fun initPresenter() = DailyElitePresenter()

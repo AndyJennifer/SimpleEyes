@@ -21,6 +21,8 @@ import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullRefreshView
 class EliteHeaderView : PullRefreshView {
 
     private val mHeadInner: ImageView by bindView(R.id.iv_head_inner)
+    private val mHeadOuter: ImageView by bindView(R.id.iv_head_outer)
+
     private val mLoadingMessage: CustomFontTextView by bindView(R.id.tv_loading_msg)
     private var mRotationAnimator: ObjectAnimator? = null
 
@@ -70,12 +72,12 @@ class EliteHeaderView : PullRefreshView {
         doInnerEyeAnimator()
     }
 
+    override fun getDoRefreshHeight() = mHeadOuter.height
 
     /**
      * 执行内部眼睛动画
      */
     private fun doInnerEyeAnimator() {
-
         mRotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
         mRotationAnimator?.duration = 1000
         mRotationAnimator?.repeatCount = -1

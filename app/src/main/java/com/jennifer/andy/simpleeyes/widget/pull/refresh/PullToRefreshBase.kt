@@ -65,6 +65,8 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
          * 滑动最小接近距离，单位dp
          */
         const val SCROLL_CLOSE_ENOUGH = 2
+
+        private const val ROTATION_DAMP = 1.5f//阻尼系数
     }
 
 
@@ -257,7 +259,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                             mScrollState = SCROLL_STATE_DRAGGING
                             mLastMotionX = x
                             mLastMotionY = y
-                            performDrag(dy)
+                            performDrag(dy / ROTATION_DAMP)
                             dispatchExtraPullEvent(dy)//将竖直移动距离分发出去
                         }
                     }
@@ -270,11 +272,11 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                     if (Math.abs(scrollY) > mRefreshHeight / 2) {//如果超过一半就执行请求
                         //执行刷新请求
                         isRefreshIng = true
-                        smoothScrollTo(0, -(mRefreshHeight + scrollY))
+                        smoothScrollTo(0, -(mRefreshView!!.getDoRefreshHeight() + scrollY), 500)
                     } else {
                         isRefreshIng = false
                         //滚动回去
-                        smoothScrollTo(-scrollX, -scrollY)
+                        smoothScrollTo(-scrollX, -scrollY, 500)
                     }
                 }
             }
@@ -331,7 +333,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     override fun refreshComplete() {
         if (isRefreshIng) {
             isRefreshIng = false
-            smoothScrollTo(-scrollX, -scrollY)
+            smoothScrollTo(-scrollX, -scrollY, 1500)//这里增加了点时间,让视图不那么快的滚回去
         }
     }
 
@@ -341,9 +343,13 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
      * @param x 水平滑动距离
      * @param y 竖直方向距离
      */
-    private fun smoothScrollTo(x: Int, y: Int) {
+    private fun smoothScrollTo(x: Int, y: Int, duration: Int = 0) {
         mScrollState = SCROLL_STATE_SETTLING
-        mSmoothScroller.startScroll(scrollX, scrollY, x, y)
+        if (duration > 0) {
+            mSmoothScroller.startScroll(scrollX, scrollY, x, y, duration)
+        } else {
+            mSmoothScroller.startScroll(scrollX, scrollY, x, y)
+        }
         postInvalidate()
     }
 
