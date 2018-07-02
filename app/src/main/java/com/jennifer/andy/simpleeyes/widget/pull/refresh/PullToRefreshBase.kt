@@ -57,7 +57,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
         const val SCROLL_STATE_DRAGGING = 1
 
         /**
-         * 自己滑动到顶部，或者自己滑动到刷新View的高度的状态
+         * 本身的滑动
          */
         const val SCROLL_STATE_SETTLING = 2
 
@@ -77,11 +77,10 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     private var mInitialMotionY = 0f
 
     private var isRefreshEnable = true //是否能下拉刷新
-    private var isBeingDragged = false//是否将要进行拖拽
+    private var isBeingDragged = false//是否正在进行拖拽
     private var isUnableToDrag = false//当前不能拖拽 用于判断x y轴移动距离的
     private var isScrollStarted = false//内容是否开始滚动
     private var isRefreshIng = false//是否正在刷新
-
 
     private val mEndScrollRunnable = Runnable {
         mScrollState = SCROLL_STATE_IDLE
@@ -131,7 +130,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             }
 
             if (action != MotionEvent.ACTION_DOWN) {
-                if (isBeingDragged) {//如果将要进行拖拽，就拦截
+                if (isBeingDragged) {//如果正在进行拖拽，就拦截
                     return true
                 }
                 if (isUnableToDrag) {//如果不能被拖拽，就不拦截
@@ -224,6 +223,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                     //滚动回去
                     isRefreshIng = false
                     smoothScrollTo(-scrollX, -scrollY)
+                    isBeingDragged = false
                 }
             }
             MotionEvent.ACTION_DOWN -> {
@@ -266,6 +266,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             }
             MotionEvent.ACTION_UP -> {
                 if (isBeingDragged) {
+                    isBeingDragged = false
                     if (Math.abs(scrollY) > mRefreshHeight / 2) {//如果超过一半就执行请求
                         //执行刷新请求
                         isRefreshIng = true
@@ -275,7 +276,6 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
                         //滚动回去
                         smoothScrollTo(-scrollX, -scrollY)
                     }
-                    mScrollState = SCROLL_STATE_SETTLING
                 }
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -308,35 +308,41 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
 
     override fun computeScroll() {
-        //todo 这里要排除自己本身的滚动，不然会导致重复刷新的
         isScrollStarted = true
         //处理自己滚动效果，滚动到顶部或者到滚动到RefreshView的高度位置
-        if (!mSmoothScroller.isFinished && mSmoothScroller.computeScrollOffset()) {
-            val x = mSmoothScroller.currX
-            val y = mSmoothScroller.currY
-            scrollTo(x, y)
-            postInvalidate()
-            return
-        } else {
-            if (isRefreshIng) {
-                mRefreshView?.doRefresh()
-                refreshListener()
-            } else
-                mRefreshView?.reset()
-            mScrollState = SCROLL_STATE_IDLE
+        if (mScrollState == SCROLL_STATE_SETTLING) {
+            if (mSmoothScroller.computeScrollOffset()) {
+                val x = mSmoothScroller.currX
+                val y = mSmoothScroller.currY
+                scrollTo(x, y)
+                postInvalidate()
+                return
+            } else {
+                if (isRefreshIng) {
+                    mRefreshView?.doRefresh()
+                    refreshListener()
+                } else
+                    mRefreshView?.reset()
+                mScrollState = SCROLL_STATE_IDLE
+            }
         }
     }
 
     override fun refreshComplete() {
-        isRefreshIng = false
-        smoothScrollTo(-scrollX, -scrollY)
+        if (isRefreshIng) {
+            isRefreshIng = false
+            smoothScrollTo(-scrollX, -scrollY)
+        }
     }
+
+    override fun isRefreshing() = isRefreshIng
 
     /** 弹性滑动
      * @param x 水平滑动距离
      * @param y 竖直方向距离
      */
     private fun smoothScrollTo(x: Int, y: Int) {
+        mScrollState = SCROLL_STATE_SETTLING
         mSmoothScroller.startScroll(scrollX, scrollY, x, y)
         postInvalidate()
     }

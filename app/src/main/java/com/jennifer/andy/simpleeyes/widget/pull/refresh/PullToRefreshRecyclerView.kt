@@ -66,7 +66,6 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
      */
     fun smoothScrollToPosition(position: Int) {
         mRootView.smoothScrollToPosition(position)
-
     }
 
     /**
@@ -88,9 +87,7 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
     }
 
 
-    override fun isRefreshing(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
 
 }

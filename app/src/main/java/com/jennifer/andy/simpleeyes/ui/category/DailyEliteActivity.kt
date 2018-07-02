@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.category
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
@@ -61,17 +62,24 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         }
         //这里发送延时消息，是因为数据还有可能没有装载完毕
         mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
+
+        //添加滚动完毕监听
+        mRecycler.rootView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                val layoutManager = mRecycler.rootView.layoutManager as LinearLayoutManager
+                //滚动到日期及完毕
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && layoutManager.findFirstVisibleItemPosition() == mDailyEliteAdapter!!.getCurrentDayPosition()) {
+                    if (mRecycler.isRefreshing()) {
+                        mRecycler.refreshComplete()
+                    }
+                }
+            }
+        })
     }
 
     override fun showRefreshSuccess(content: MutableList<Content>) {
         showGetDailySuccess(content)
-        mRecycler.rootView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    mRecycler.refreshComplete()
-                }
-            }
-        })
+
     }
 
     override fun loadMoreSuccess(data: MutableList<Content>) {
