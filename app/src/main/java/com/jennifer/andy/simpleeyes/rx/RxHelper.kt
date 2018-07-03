@@ -34,14 +34,14 @@ object RxHelper {
      * 创建成功返回的数据
      */
     private fun <T> createSuccessData(t: T): Observable<T> {
-        return Observable.create({
+        return Observable.create {
             try {
                 it.onNext(t)
                 it.onComplete()
             } catch (e: Exception) {
                 it.onError(e)
             }
-        })
+        }
     }
 
 }

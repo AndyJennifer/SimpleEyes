@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
  * Description:
  */
 
-class AndyModel : BaseModel {
+class CategoryModel : BaseModel {
 
     /**
      * 加载首页信息
@@ -37,7 +37,6 @@ class AndyModel : BaseModel {
      * 热门关键词获取
      */
     fun getHotWord(): Observable<MutableList<String>> = Api.getDefault().getHotWord().compose(RxHelper.handleResult())
-
 
     /**
      * 根据关键字搜索视频

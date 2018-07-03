@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.widget.pull.head
 
 import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -24,7 +24,7 @@ class EliteHeaderView : PullRefreshView {
     private val mHeadOuter: ImageView by bindView(R.id.iv_head_outer)
 
     private val mLoadingMessage: CustomFontTextView by bindView(R.id.tv_loading_msg)
-    private var mRotationAnimator: ObjectAnimator? = null
+    private var mRotationAnimator: ValueAnimator? = null
 
     private var mYDistance = 0f
 
@@ -78,8 +78,9 @@ class EliteHeaderView : PullRefreshView {
      * 执行内部眼睛动画
      */
     private fun doInnerEyeAnimator() {
-        mRotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
-        mRotationAnimator?.duration = 1000
+        mRotationAnimator = ValueAnimator.ofFloat(0f, 360f)
+        mRotationAnimator?.addUpdateListener { mHeadInner.rotation += 10 }
+        mRotationAnimator?.duration = 200
         mRotationAnimator?.repeatCount = -1
         mRotationAnimator?.start()
     }

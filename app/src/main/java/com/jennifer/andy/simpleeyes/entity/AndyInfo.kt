@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * Author:  andy.xwt
  * Date:    2017/10/19 19:00
- * Description: 页面数据信息
+ * Description: 页面数据信息,主要是视频信息
  */
 
 

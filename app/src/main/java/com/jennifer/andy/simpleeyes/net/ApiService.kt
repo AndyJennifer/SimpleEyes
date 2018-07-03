@@ -2,6 +2,7 @@ package com.jennifer.andy.simpleeyes.net
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.entity.JenniferInfo
+import com.jennifer.andy.simpleeyes.entity.TabInfo
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -60,7 +61,7 @@ interface ApiService {
      * 发现
      */
     @GET("api/v4/tabs/discovery")
-    fun getDiscoveryTab(): Observable<AndyInfo>
+    fun getDiscoveryTab(): Observable<TabInfo>
 
     /**
      * 获取相关视频信息

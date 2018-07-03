@@ -2,7 +2,7 @@ package com.jennifer.andy.simpleeyes.ui.category.presenter
 
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.ui.category.model.AndyModel
+import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 
 
@@ -14,7 +14,7 @@ import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 
 class CategoryPresenter : BasePresenter<CategoryView>() {
 
-    private var mAndyModel: AndyModel = AndyModel()
+    private var mCategoryModel: CategoryModel = CategoryModel()
     private var mNextPageUrl: String? = null
 
     /**
@@ -22,7 +22,7 @@ class CategoryPresenter : BasePresenter<CategoryView>() {
      */
     fun loadCategoryData() {
         mView?.showLoading()
-        mRxManager.add(mAndyModel.loadCategoryInfo().subscribe({
+        mRxManager.add(mCategoryModel.loadCategoryInfo().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.loadDataSuccess(it)
@@ -37,7 +37,7 @@ class CategoryPresenter : BasePresenter<CategoryView>() {
      * 刷新首页信息延迟1秒执行
      */
     fun refreshCategoryData() {
-        mRxManager.add(mAndyModel.refreshCategoryInfo().subscribe({
+        mRxManager.add(mCategoryModel.refreshCategoryInfo().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.refreshDataSuccess(it)
@@ -53,7 +53,7 @@ class CategoryPresenter : BasePresenter<CategoryView>() {
      */
     fun loadMoreCategoryData() {
         if (mNextPageUrl != null) {
-            mRxManager.add(mAndyModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
+            mRxManager.add(mCategoryModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
                 mView?.showContent()
                 if (it.nextPageUrl == null) {
                     mView?.showNoMore()

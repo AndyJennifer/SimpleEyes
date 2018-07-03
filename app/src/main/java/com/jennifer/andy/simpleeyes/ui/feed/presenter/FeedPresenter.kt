@@ -1,6 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.feed.presenter
 
+import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 
 
@@ -11,5 +13,20 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
  */
 
 class FeedPresenter : BasePresenter<FeedView>() {
+
+    private var mFeedModel: FeedModel = FeedModel()
+
+    /**
+     * 获取导航栏信息
+     */
+    fun getDiscoveryTab() {
+        mRxManager.add(mFeedModel.getDiscoveryTab().subscribe({
+            mView?.showContent()
+            mView?.loadTabSuccess(it)
+        }, {
+            mView?.showNetError(View.OnClickListener { getDiscoveryTab() })
+        }))
+
+    }
 
 }
