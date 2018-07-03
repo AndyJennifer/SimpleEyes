@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
@@ -22,6 +23,8 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     private val mViewPager: ViewPager by bindView(R.id.view_pager)
     private val mIvSearch: ImageView by bindView(R.id.iv_search)
+    private val mTabLayout: TabLayout by bindView(R.id.tab_layout)
+
 
     companion object {
         fun newInstance(): FeedFragment = FeedFragment()
@@ -39,8 +42,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     override fun loadTabSuccess(it: TabInfo?) {
 
-        //todo 初始化tablayout,创建fragment。然后需要设置的是
-        mViewPager.adapter
+        //todo 初始化tabLayout,创建fragment。
     }
 
     override fun initPresenter() = FeedPresenter()
