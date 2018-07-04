@@ -6,51 +6,61 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/normal_title_height"
-        android:background="@drawable/shape_border_bottom_top">
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_action_back"
-            android:text="@string/all_category"
-            app:font_name="normal"/>
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/discover_en"
-            android:textSize="20sp"
-            app:font_name="lobster"/>
-
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_action_search_black"/>
-
-    </RelativeLayout>
-
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorPrimary"
-        app:tabIndicatorColor="@color/white"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/gray_66A2A2A2">
+        android:background="@drawable/shape_border_bottom_top"
+        android:orientation="vertical"
+        android:padding="1dp">
 
-    </android.support.design.widget.TabLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/normal_title_height">
+
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_action_back"
+                android:text="@string/all_category"
+                app:font_name="normal"/>
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/discover_en"
+                android:textSize="20sp"
+                app:font_name="lobster"/>
+
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_search_black"/>
+
+        </RelativeLayout>
+
+        <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimary"
+            app:tabIndicatorColor="@color/black"
+            app:tabIndicatorHeight="3dp"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextAppearance="@style/TabAppearance"
+            app:tabTextColor="@color/black_alpha_4D">
+        </com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout>
+
+    </LinearLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

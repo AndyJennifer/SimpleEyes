@@ -54,4 +54,5 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
      * 初始化Presenter
      */
     abstract fun initPresenter(): T
+
 }

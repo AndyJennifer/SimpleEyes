@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed.model
 
-import com.jennifer.andy.simpleeyes.entity.TabInfo
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.rx.RxHelper
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
@@ -18,6 +19,10 @@ class FeedModel : BaseModel {
     /**
      * 获取发现tab栏
      */
-    fun getDiscoveryTab(): Observable<TabInfo> = Api.getDefault().getDiscoveryTab().compose(RxHelper.handleResult())
+    fun getDiscoveryTab(): Observable<Tab> = Api.getDefault().getDiscoveryTab().compose(RxHelper.handleResult())
 
+    /**
+     * 获取tab信息
+     */
+    fun getTabInfo(url: String): Observable<AndyInfo> = Api.getDefault().getTabInfo(url).compose(RxHelper.handleResult())
 }

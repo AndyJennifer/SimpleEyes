@@ -12,6 +12,6 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 interface FeedView : BaseView {
 
-    fun loadTabSuccess(it: TabInfo?)
+    fun loadTabSuccess(tabInfo: TabInfo)
 
 }

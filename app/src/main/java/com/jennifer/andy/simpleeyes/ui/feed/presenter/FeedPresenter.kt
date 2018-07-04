@@ -22,7 +22,7 @@ class FeedPresenter : BasePresenter<FeedView>() {
     fun getDiscoveryTab() {
         mRxManager.add(mFeedModel.getDiscoveryTab().subscribe({
             mView?.showContent()
-            mView?.loadTabSuccess(it)
+            mView?.loadTabSuccess(it.tabInfo)
         }, {
             mView?.showNetError(View.OnClickListener { getDiscoveryTab() })
         }))

@@ -1,16 +1,18 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.feed.adapter.FeedFragmentAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 
 
 /**
@@ -23,8 +25,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     private val mViewPager: ViewPager by bindView(R.id.view_pager)
     private val mIvSearch: ImageView by bindView(R.id.iv_search)
-    private val mTabLayout: TabLayout by bindView(R.id.tab_layout)
-
+    private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
 
     companion object {
         fun newInstance(): FeedFragment = FeedFragment()
@@ -40,9 +41,25 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
         }
     }
 
-    override fun loadTabSuccess(it: TabInfo?) {
+    override fun loadTabSuccess(tabInfo: TabInfo) {
+        mViewPager.adapter = FeedFragmentAdapter(fragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+        mTabLayout.setupWithViewPager(mViewPager)
+    }
 
-        //todo 初始化tabLayout,创建fragment。
+    private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
+        val fragments = mutableListOf<Fragment>()
+        for (i in tabInfo.tabList.indices) {
+            fragments.add(FeedDetailFragment.newInstance(tabInfo.tabList[i].apiUrl))
+        }
+        return fragments
+    }
+
+    private fun initTitles(tabInfo: TabInfo): MutableList<String> {
+        val titles = mutableListOf<String>()
+        for (i in tabInfo.tabList.indices) {
+            titles.add(tabInfo.tabList[i].name)
+        }
+        return titles
     }
 
     override fun initPresenter() = FeedPresenter()

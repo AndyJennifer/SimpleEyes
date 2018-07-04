@@ -10,8 +10,10 @@ import java.io.Serializable
  */
 
 
+data class Tab(var tabInfo: TabInfo)
+
 data class TabInfo(var tabList: MutableList<TabDetailInfo>,
-                   var defaultIdx: Int) : Serializable
+        var defaultIdx: Int) : Serializable
 
 
 data class TabDetailInfo(var id: Int,
