@@ -26,21 +26,22 @@ abstract class BaseAppCompatFragment : SupportFragment() {
         super.onCreate(savedInstanceState)
         LOG_TAG = this.javaClass.simpleName
         if (arguments != null) {
-            getBundleExtras(arguments)
+            getBundleExtras(arguments!!)
         }
         mRxManager = RxManager()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (getContentViewLayoutId() != 0) {
-            mMultipleStateView = MultipleStateView(context)
+            mMultipleStateView = MultipleStateView(context!!)
             return View.inflate(context, getContentViewLayoutId(), mMultipleStateView)
         } else {
             super.onCreateView(inflater, container, savedInstanceState)
         }
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(savedInstanceState)
     }

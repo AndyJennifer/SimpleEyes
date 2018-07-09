@@ -11,16 +11,16 @@
         android:id="@+id/iv_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/tv_message_info"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"/>
+        android:layout_marginBottom="15dp"
+    />
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
         android:id="@+id/tv_message_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:textSize="12sp"
         app:font_name="normal"
