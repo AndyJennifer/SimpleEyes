@@ -2,20 +2,26 @@ package com.jennifer.andy.simpleeyes.ui.category.adapter
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.RelativeLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
+import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
-import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
+import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
+import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
+import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
+import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
+import java.util.*
 
 
 /**
@@ -29,19 +35,31 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
     /**
      * 卡片类型
      */
-    val VIDEO_BANNER_TYPE = 0
-    val VIDEO_FOLLOW_CARD_TYPE = 1
-    val VIDEO_HORIZONTAL_SCROLL_CARD_TYPE = 2
-    val VIDEO_COLLECTION_WITH_COVER_TYPE = 3
-    val VIDEO_SQUARE_CARD_COLLECTION_TYPE = 4
-    val VIDEO_BANNER_THREE_TYPE = 8
+    companion object {
+        const val VIDEO_BANNER_TYPE = 0
+        const val VIDEO_FOLLOW_CARD_TYPE = 1
+        const val VIDEO_HORIZONTAL_SCROLL_CARD_TYPE = 2
+        const val VIDEO_COLLECTION_WITH_COVER_TYPE = 3
+        const val VIDEO_SQUARE_CARD_COLLECTION_TYPE = 4
+        const val VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE = 5
+        const val VIDEO_COLLECTION_WITH_BRIEF_TYPE = 6
+        const val TEXT_CARD_TYPE = 7
+        const val BRIEF_CARD_TYPE = 8
+        const val BLANK_CARD_TYPE = 9
+        const val VIDEO_BANNER_THREE_TYPE = 10
 
-    val VIDEO_BANNER = "banner"
-    val VIDEO_FOLLOW_CARD = "followCard"
-    val VIDEO_HORIZONTAL_CARD = "horizontalScrollCard"
-    val VIDEO_COLLECTION_WITH_COVER = "videoCollectionWithCover"
-    val VIDEO_SQUARE_CARD_COLLECTION = "squareCardCollection"
-    val VIDEO_BANNER_THREE = "banner3"
+        const val VIDEO_BANNER = "banner"
+        const val VIDEO_FOLLOW_CARD = "followCard"
+        const val VIDEO_HORIZONTAL_CARD = "horizontalScrollCard"
+        const val VIDEO_COLLECTION_WITH_COVER = "videoCollectionWithCover"
+        const val VIDEO_SQUARE_CARD_COLLECTION = "squareCardCollection"
+        const val VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD = "videoCollectionOfHorizontalScrollCard"
+        const val VIDEO_COLLECTION_WITH_BRIEF = "videoCollectionWithBrief"
+        const val TEXT_CARD = "textCard"
+        const val BRIEF_CARD = "briefCard"
+        const val BLANK_CARD = "blankCard"
+        const val VIDEO_BANNER_THREE = "banner3"
+    }
 
 
     init {
@@ -54,6 +72,11 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
                     VIDEO_COLLECTION_WITH_COVER -> return VIDEO_COLLECTION_WITH_COVER_TYPE
                     VIDEO_SQUARE_CARD_COLLECTION -> return VIDEO_SQUARE_CARD_COLLECTION_TYPE
                     VIDEO_BANNER_THREE -> return VIDEO_BANNER_THREE_TYPE
+                    VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD -> return VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE
+                    VIDEO_COLLECTION_WITH_BRIEF -> return VIDEO_COLLECTION_WITH_BRIEF_TYPE
+                    TEXT_CARD -> return TEXT_CARD_TYPE
+                    BRIEF_CARD -> return BRIEF_CARD_TYPE
+                    BLANK_CARD -> return BLANK_CARD_TYPE
                 }
                 return VIDEO_FOLLOW_CARD_TYPE
             }
@@ -64,6 +87,11 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             registerItemType(VIDEO_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
             registerItemType(VIDEO_COLLECTION_WITH_COVER_TYPE, R.layout.layout_collection_with_cover)
             registerItemType(VIDEO_SQUARE_CARD_COLLECTION_TYPE, R.layout.layout_square_collection)
+            registerItemType(VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.item_collection_of_horizontal_scroll_card)
+            registerItemType(VIDEO_COLLECTION_WITH_BRIEF_TYPE, R.layout.layout_collection_with_brief)
+            registerItemType(TEXT_CARD_TYPE, R.layout.layout_single_text)
+            registerItemType(BRIEF_CARD_TYPE, R.layout.layout_brife_card)
+            registerItemType(BLANK_CARD_TYPE, R.layout.layout_blank_card)
             registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
         }
 
@@ -76,6 +104,11 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             VIDEO_HORIZONTAL_SCROLL_CARD_TYPE -> setHorizontalScrollCardInfo(helper, item.data.itemList)
             VIDEO_COLLECTION_WITH_COVER_TYPE -> setCollectionCardWithCoverInfo(helper, item.data)
             VIDEO_SQUARE_CARD_COLLECTION_TYPE -> setSquareCollectionInfo(helper, item.data.itemList)
+            VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE -> setCollectionOfHorizontalScrollCardInfo(helper, item.data)
+            VIDEO_COLLECTION_WITH_BRIEF_TYPE -> setCollectionBriefInfo(helper, item)
+            TEXT_CARD_TYPE -> setSingleText(helper, item)
+            BRIEF_CARD_TYPE -> setBriefCardInfo(helper, item)
+            BLANK_CARD_TYPE -> setBlankCardInfo(helper, item)
             VIDEO_BANNER_THREE_TYPE -> setBanner3Info(helper, item.data)
         }
     }
@@ -110,6 +143,87 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         }
 
     }
+
+    /**
+     * 设置水平滚动卡片集合信息
+     */
+    private fun setCollectionOfHorizontalScrollCardInfo(helper: BaseViewHolder, data: ContentBean) {
+
+        helper.setText(R.id.tv_title, data.header.title)
+        helper.setText(R.id.tv_sub_title, data.header.subTitle)
+        //todo 加上分割viewPager
+    }
+
+
+    /**
+     * 获取水平滚动卡片图片地址集合
+     */
+    private fun getCollectionOfHorizontalScrollCard(itemList: MutableList<Content>) = itemList.map { it.data.cover.feed }
+
+
+    /**
+     * 设置带关注人的视频集合信息
+     */
+    private fun setCollectionBriefInfo(helper: BaseViewHolder, content: Content) {
+        //设置视频集合信息
+        val recyclerView = helper.getView<RecyclerView>(R.id.rv_recycler)
+        recyclerView.isNestedScrollingEnabled = false
+        val collectionBriefAdapter = CollectionBriefAdapter(content.data.itemList)
+        recyclerView.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = collectionBriefAdapter
+        collectionBriefAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
+            //跳转到播放视频详情
+            val item = collectionBriefAdapter.getItem(position)
+            VideoDetailActivity.start(mContext, item!!.data, collectionBriefAdapter.data as ArrayList<Content>, position)
+
+        }
+        //设置作者信息
+        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_head)
+        if (content.data.header.iconType == "round") {//判断头像类型
+            imageView.hierarchy.roundingParams = RoundingParams.asCircle()
+        } else {
+            imageView.hierarchy.roundingParams?.roundAsCircle = false
+        }
+        imageView.setImageURI(content.data.header.icon)
+        helper.setText(R.id.tv_title, content.data.header.title)
+        helper.setText(R.id.tv_desc, content.data.header.description)
+
+    }
+
+
+    /**
+     * 设置文字信息
+     */
+    private fun setSingleText(helper: BaseViewHolder, item: Content) {
+        helper.setText(R.id.tv_text, item.data.text)
+    }
+
+    /**
+     * 设置合作作者信息
+     */
+    private fun setBriefCardInfo(helper: BaseViewHolder, item: Content) {
+        val mIcon = helper.getView<SimpleDraweeView>(R.id.iv_source)
+        val isCircle = item.data.iconType == "round"
+        if (isCircle) mIcon.hierarchy.roundingParams = RoundingParams.asCircle()
+        else mIcon.hierarchy.roundingParams?.roundAsCircle = false
+        //设置头像
+        mIcon.setImageURI(item.data.icon)
+        //设置标题
+        helper.setText(R.id.tv_title, item.data.title)
+        //设置描述
+        helper.setText(R.id.tv_desc, item.data.description)
+    }
+
+    /**
+     * 设置空白信息高度
+     */
+    private fun setBlankCardInfo(helper: BaseViewHolder, item: Content) {
+        val view = helper.getView<View>(R.id.view)
+        val layoutParams = view.layoutParams
+        layoutParams.height = DensityUtils.dip2px(mContext, item.data.height.toFloat())
+        view.layoutParams = layoutParams
+    }
+
 
     /**
      * 设置banner3（广告信息）信息

@@ -69,12 +69,17 @@ data class ContentBean(var dataType: String,
                        var lastViewTime: String,
                        var playlists: String,
                        var text: String,
+                       var icon: String,
+                       var iconType: String,
+                       var height: Int,
                        var src: Int
+
 ) : Serializable
 
 
 data class Header(var id: Int,
                   var title: String,
+                  var subTitle: String,
                   var font: String,
                   var cover: String,
                   var label: Any,

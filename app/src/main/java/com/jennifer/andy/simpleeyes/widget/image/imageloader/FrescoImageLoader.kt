@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.image
+package com.jennifer.andy.simpleeyes.widget.image.imageloader
 
 import android.content.Context
 import android.net.Uri

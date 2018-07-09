@@ -10,13 +10,13 @@ import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.TopIssue
-import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.category.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
+import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 import java.util.*

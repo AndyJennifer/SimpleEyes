@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
@@ -47,13 +48,13 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
 
     override fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
         // todo 这里还要完善类型
-//        if (mCateGoryAdapter == null) {
-//            mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
-//            mRecyclerView.adapter = mCateGoryAdapter
-//            mRecyclerView.layoutManager = LinearLayoutManager(context)
-//        } else {
-//            mCateGoryAdapter?.setNewData(andyInfo.itemList)
-//        }
+        if (mCateGoryAdapter == null) {
+            mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
+            mRecyclerView.adapter = mCateGoryAdapter
+            mRecyclerView.layoutManager = LinearLayoutManager(context)
+        } else {
+            mCateGoryAdapter?.setNewData(andyInfo.itemList)
+        }
     }
 
     override fun initPresenter() = FeedDetailPresenter()

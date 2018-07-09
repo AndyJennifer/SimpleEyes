@@ -42,6 +42,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
     }
 
     override fun loadTabSuccess(tabInfo: TabInfo) {
+        mViewPager.offscreenPageLimit = tabInfo.tabList.size
         mViewPager.adapter = FeedFragmentAdapter(fragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mTabLayout.setupWithViewPager(mViewPager)
     }

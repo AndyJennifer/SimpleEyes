@@ -6,8 +6,8 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.image.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 
@@ -25,6 +25,7 @@ class DailyEliteAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, 
         const val VIDEO_TYPE = 1
         const val TEXT_CARD_TYPE = 2
         const val HORIZONTAL_SCROLL_CARD_TYPE = 3
+
         const val VIDEO_BANNER = "banner"
         const val VIDEO = "video"
         const val TEXT_CARD = "textCard"
