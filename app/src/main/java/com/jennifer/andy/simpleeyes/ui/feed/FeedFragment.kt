@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.feed
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.view.View
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
@@ -12,6 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 
 
@@ -26,6 +28,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
     private val mViewPager: ViewPager by bindView(R.id.view_pager)
     private val mIvSearch: ImageView by bindView(R.id.iv_search)
     private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
+    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
     companion object {
         fun newInstance(): FeedFragment = FeedFragment()
@@ -34,7 +37,6 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     override fun initView(savedInstanceState: Bundle?) {
         mPresenter.getDiscoveryTab()
-
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
             readyGo(SearchHotActivity::class.java, null)
@@ -61,6 +63,10 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
             titles.add(tabInfo.tabList[i].name)
         }
         return titles
+    }
+
+    override fun showNetError(onClickListener: View.OnClickListener) {
+        mStateView.showNetError(onClickListener)
     }
 
     override fun initPresenter() = FeedPresenter()

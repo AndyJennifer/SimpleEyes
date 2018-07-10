@@ -6,46 +6,48 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/normal_title_height">
+
+
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_action_back"
+            android:text="@string/all_category"
+            app:font_name="normal"/>
+
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/discover_en"
+            android:textSize="20sp"
+            app:font_name="lobster"/>
+
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_action_search_black"/>
+
+    </RelativeLayout>
+
+
+    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+        android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_border_bottom_top"
         android:orientation="vertical"
         android:padding="1dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/normal_title_height">
-
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_action_back"
-                android:text="@string/all_category"
-                app:font_name="normal"/>
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/discover_en"
-                android:textSize="20sp"
-                app:font_name="lobster"/>
-
-
-            <ImageView
-                android:id="@+id/iv_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_action_search_black"/>
-
-        </RelativeLayout>
 
         <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
             android:id="@+id/tab_layout"
@@ -59,13 +61,13 @@
             app:tabTextColor="@color/black_alpha_4D">
         </com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout>
 
-    </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tab_layout"/>
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
+    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
 </LinearLayout>

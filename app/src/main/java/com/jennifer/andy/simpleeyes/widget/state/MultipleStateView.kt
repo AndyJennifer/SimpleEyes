@@ -70,7 +70,7 @@ class MultipleStateView : RelativeLayout {
             mEmptyView = LayoutInflater.from(context).inflate(R.layout.layout_loading_message, null)
             mEmptyView?.tag = State.EMPTY
             val imageView = mEmptyView?.findViewById<ImageView>(R.id.iv_image)
-            var errorText = mEmptyView?.findViewById<TextView>(R.id.tv_message_info)
+            val errorText = mEmptyView?.findViewById<TextView>(R.id.tv_message_info)
             imageView?.setImageResource(R.drawable.ic_eye_black_error)
             errorText?.setText(R.string.empty_message)
             mEmptyView?.setOnClickListener(onClickListener)
