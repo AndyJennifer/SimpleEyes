@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_border_bottom_top"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="1px">
 
     <com.jennifer.andy.simpleeyes.widget.EliteImageView
         android:id="@+id/elite_view"
@@ -17,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:text="fusdf"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:font_name="bold"/>
@@ -27,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
+        android:text="fusdf"
         android:textColor="@color/black_alpha_4D"
         android:textSize="13sp"
         app:font_name="normal"/>

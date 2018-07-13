@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
@@ -33,18 +34,25 @@ class CollectionOfHorizontalScrollCardView : FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.layout_collection_of_horizontal_scroll_card, this, true)
     }
 
+
+    fun setData(content: Content) {
+        setImageUrl(content.data.cover.feed)
+        setTitleAndDesc(content.data.title, content.data.description)
+        setDailyVisible(content.data.library == "DAILY")
+    }
+
     /**
      * 设置图片显示
      * @param url 图片地址
      */
-    fun setImageUrl(url: String) {
+    private fun setImageUrl(url: String) {
         mEliteImageView.setImageUrl(url)
     }
 
     /**
      * 是指标题与描述
      */
-    fun setTitleAndDesc(title: String, desc: String) {
+    private fun setTitleAndDesc(title: String, desc: String) {
         mTvTitle.text = title
         mTvDesc.text = desc
     }
@@ -52,7 +60,7 @@ class CollectionOfHorizontalScrollCardView : FrameLayout {
     /**
      * 设置精选是否可见
      */
-    fun setDailyVisible(visible: Boolean) {
+    private fun setDailyVisible(visible: Boolean) {
         mEliteImageView.setDailyVisible(visible)
     }
 }

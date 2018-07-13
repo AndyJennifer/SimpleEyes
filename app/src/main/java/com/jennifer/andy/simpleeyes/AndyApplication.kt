@@ -54,7 +54,7 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
     }
 
     override fun initUpdateParams(): LocalUpdateService.UpdateParams {
-        var localCheckUpdateProtocol = CheckUpdateProtocol()
+        val localCheckUpdateProtocol = CheckUpdateProtocol()
         localCheckUpdateProtocol.packageName = applicationContext.packageName
         localCheckUpdateProtocol.versionName = AppUtils.getAppVersionName(applicationContext)
         localCheckUpdateProtocol.versionCode = AppUtils.getAppVersionCode(applicationContext)

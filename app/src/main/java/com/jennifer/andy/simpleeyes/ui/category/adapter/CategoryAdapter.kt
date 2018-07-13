@@ -19,6 +19,7 @@ import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
+import com.jennifer.andy.simpleeyes.widget.viewpager.MarginWithIndicatorViewPager
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 import java.util.*
@@ -148,17 +149,11 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
      * 设置水平滚动卡片集合信息
      */
     private fun setCollectionOfHorizontalScrollCardInfo(helper: BaseViewHolder, data: ContentBean) {
-
         helper.setText(R.id.tv_title, data.header.title)
         helper.setText(R.id.tv_sub_title, data.header.subTitle)
-        //todo 加上分割viewPager
+        val marginWithIndicatorViewPager = helper.getView<MarginWithIndicatorViewPager>(R.id.view_pager)
+        marginWithIndicatorViewPager.setData(data.itemList)
     }
-
-
-    /**
-     * 获取水平滚动卡片图片地址集合
-     */
-    private fun getCollectionOfHorizontalScrollCard(itemList: MutableList<Content>) = itemList.map { it.data.cover.feed }
 
 
     /**
