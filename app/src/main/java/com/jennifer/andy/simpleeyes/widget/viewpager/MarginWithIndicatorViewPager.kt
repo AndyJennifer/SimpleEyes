@@ -47,6 +47,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
         mViewPager.adapter = MarginWithViewPagerAdapter()
         mViewPager.pageMargin = DensityUtils.dip2px(context, 10f)
         mViewPager.currentItem = 10000 * mItemList.size
+
     }
 
     /**

@@ -4,15 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/shape_border_bottom_top"
     android:clipChildren="false"
     android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_indicator_pager"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_card_height"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_height="280dp"/>
 
     <com.rd.PageIndicatorView
         android:id="@+id/pageIndicatorView"
@@ -24,6 +23,5 @@
         app:piv_padding="10dp"
         app:piv_radius="3dp"
         app:piv_selectedColor="@color/black"
-        app:piv_unselectedColor="@color/white_translucent_65"
-    />
+        app:piv_unselectedColor="@color/white_translucent_65"/>
 </LinearLayout>

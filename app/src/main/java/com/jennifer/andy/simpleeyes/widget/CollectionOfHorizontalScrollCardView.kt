@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.utils.TimeUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
@@ -18,7 +19,7 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 class CollectionOfHorizontalScrollCardView : FrameLayout {
 
-    private val mEliteImageView by bindView<EliteImageView>(R.id.elite_view)
+    private val mEliteImageView by bindView<EliteImageView>(R.id.scroll_elite_view)
     private val mTvTitle by bindView<CustomFontTextView>(R.id.scroll_tv_title)
     private val mTvDesc by bindView<CustomFontTextView>(R.id.scroll_tv_desc)
 
@@ -37,7 +38,8 @@ class CollectionOfHorizontalScrollCardView : FrameLayout {
 
     fun setData(content: Content) {
         setImageUrl(content.data.cover.feed)
-        setTitleAndDesc(content.data.title, content.data.description)
+        val description = "#${content.data.category}   /   ${TimeUtils.getElapseTimeForShow(content.data.duration)}"
+        setTitleAndDesc(content.data.title, description)
         setDailyVisible(content.data.library == "DAILY")
     }
 
