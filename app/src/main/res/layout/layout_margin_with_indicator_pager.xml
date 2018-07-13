@@ -11,17 +11,21 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_indicator_pager"
         android:layout_width="match_parent"
-        android:layout_height="280dp"/>
+        android:layout_height="280dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:clipChildren="false"/>
 
     <com.rd.PageIndicatorView
         android:id="@+id/pageIndicatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5dp"
         app:piv_animationType="color"
         app:piv_interactiveAnimation="true"
         app:piv_padding="10dp"
         app:piv_radius="3dp"
         app:piv_selectedColor="@color/black"
-        app:piv_unselectedColor="@color/white_translucent_65"/>
+        app:piv_unselectedColor="@color/black_alpha_33"/>
 </LinearLayout>

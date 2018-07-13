@@ -13,6 +13,7 @@ import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CollectionOfHorizontalScrollCardView
+import com.rd.PageIndicatorView
 
 
 /**
@@ -24,6 +25,7 @@ import com.jennifer.andy.simpleeyes.widget.CollectionOfHorizontalScrollCardView
 class MarginWithIndicatorViewPager : FrameLayout {
 
     private val mViewPager: ViewPager by bindView(R.id.vp_indicator_pager)
+    private val mIndicator: PageIndicatorView by bindView(R.id.pageIndicatorView)
 
     private lateinit var mItemList: MutableList<Content>
 
@@ -45,8 +47,22 @@ class MarginWithIndicatorViewPager : FrameLayout {
 
     private fun setAdapter() {
         mViewPager.adapter = MarginWithViewPagerAdapter()
+        mViewPager.offscreenPageLimit = 3
         mViewPager.pageMargin = DensityUtils.dip2px(context, 10f)
         mViewPager.currentItem = 10000 * mItemList.size
+        mIndicator.count = mItemList.size
+        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                mIndicator.setSelected(position % mItemList.size)
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+        })
 
     }
 
