@@ -46,10 +46,10 @@ class MainActivity : BaseAppCompatActivity() {
 
         val home = BottomItem(R.drawable.ic_tab_strip_icon_feed_selected, getString(R.string.home))
         home.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_feed)
-        val discover = BottomItem(R.drawable.ic_tab_strip_icon_follow_selected, getString(R.string.discover))
-        discover.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_follow)
-        val focus = BottomItem(R.drawable.ic_tab_strip_icon_category_selected, getString(R.string.focus))
-        focus.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_category)
+        val discover = BottomItem(R.drawable.ic_tab_strip_icon_category_selected, getString(R.string.discover))
+        discover.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_category)
+        val focus = BottomItem(R.drawable.ic_tab_strip_icon_follow_selected, getString(R.string.focus))
+        focus.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_follow)
         val mine = BottomItem(R.drawable.ic_tab_strip_icon_profile_selected, getString(R.string.mine))
         mine.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_profile)
 
