@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category.adapter
+package com.jennifer.andy.simpleeyes.ui.base.adapter
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,6 +13,8 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.ui.category.adapter.CollectionCardCoverAdapter
+import com.jennifer.andy.simpleeyes.ui.category.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
@@ -28,10 +30,10 @@ import java.util.*
 /**
  * Author:  andy.xwt
  * Date:    2017/10/27 16:35
- * Description: 主页信息适配器
+ * Description: 基础信息适配器
  */
 
-class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
+class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
 
     /**
      * 卡片类型

@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.category.adapter.CategoryAdapter
+import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
@@ -28,7 +28,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
     private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_category_recycler)
     private lateinit var mHomePageHeaderView: HomePageHeaderView
-    private var mCateGoryAdapter: CategoryAdapter? = null
+    private var mCateGoryAdapter: BaseDataAdapter? = null
 
     companion object {
         fun newInstance(): CategoryFragment = CategoryFragment()
@@ -67,7 +67,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
     private fun setAdapterAndListener(andyInfo: AndyInfo) {
         val recyclerView = mPullToZoomRecycler.getPullRootView()
         recyclerView.setItemViewCacheSize(10)
-        mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
+        mCateGoryAdapter = BaseDataAdapter(andyInfo.itemList)
         mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())
         mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(_mActivity))

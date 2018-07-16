@@ -7,7 +7,7 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.category.adapter.CategoryAdapter
+import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedDetailView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -23,7 +23,7 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
 
 
     private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
-    private var mCateGoryAdapter: CategoryAdapter? = null
+    private var mCateGoryAdapter: BaseDataAdapter? = null
 
     private lateinit var mApiUrl: String
 
@@ -48,7 +48,7 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
 
     override fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
         if (mCateGoryAdapter == null) {
-            mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
+            mCateGoryAdapter = BaseDataAdapter(andyInfo.itemList)
             mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreDetailInfo() }, mRecyclerView)
 
             mRecyclerView.adapter = mCateGoryAdapter

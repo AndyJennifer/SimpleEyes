@@ -10,5 +10,6 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  */
 
 interface AllCategoryView : BaseView {
+    fun loadAllCategoriesSuccess()
 
 }

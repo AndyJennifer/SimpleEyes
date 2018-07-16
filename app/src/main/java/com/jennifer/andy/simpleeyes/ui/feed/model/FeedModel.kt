@@ -30,4 +30,9 @@ class FeedModel : BaseModel {
      * 加载更多信息
      */
     fun loadMoreAndyInfo(nextPageUrl: String?) = Api.getDefault().getMoreAndyInfo(nextPageUrl)?.compose(RxHelper.handleResult())
+
+    /**
+     * 获取全部分类信息
+     */
+    fun loadAllCategoriesInfo() = Api.getDefault().getAllCategoriesInfo().compose(RxHelper.handleResult())
 }
