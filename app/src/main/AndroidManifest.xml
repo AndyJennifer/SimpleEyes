@@ -35,6 +35,7 @@
 
         <!--主界面-->
         <activity android:name=".ui.MainActivity"
+                  android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
 
         <!--视频播放界面-->
@@ -44,11 +45,16 @@
                   android:screenOrientation="portrait"/>
         <!--搜索界面-->
         <activity android:name=".ui.search.SearchHotActivity"
+                  android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
         <!--每日精选-->
         <activity android:name=".ui.category.DailyEliteActivity"
+                  android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
-
+        <!--全部分类-->
+        <activity android:name=".ui.feed.AllCategoryActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

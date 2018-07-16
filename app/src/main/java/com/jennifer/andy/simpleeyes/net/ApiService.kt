@@ -31,7 +31,6 @@ interface ApiService {
     @GET
     fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>?
 
-
     /**
      * 获取更多信息
      * @param url 下一页请求地址
@@ -63,11 +62,16 @@ interface ApiService {
     @GET("api/v4/discovery")
     fun getDiscoveryTab(): Observable<Tab>
 
+    /**
+     * 获取发现Tab详细数据
+     * @url tab请求地址
+     */
     @GET
     fun getTabInfo(@Url url: String?): Observable<AndyInfo>
 
     /**
      * 获取相关视频信息
+     * @id 视频id
      */
     @GET("api/v4/video/related")
     fun getRelatedVideo(@Query("id") id: String): Observable<AndyInfo>
@@ -84,5 +88,10 @@ interface ApiService {
     @GET("api/v3/issueNavigationList")
     fun getIssueNaviGationList(): Observable<JenniferInfo>
 
+    /**
+     * 获取全部分类信息
+     */
+    @GET("api/v4/categories/all")
+    fun getAllCategoriesInfo(): Observable<AndyInfo>
 
 }

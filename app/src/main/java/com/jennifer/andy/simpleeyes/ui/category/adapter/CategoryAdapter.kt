@@ -217,6 +217,7 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         helper.setText(R.id.tv_title, item.data.title)
         //设置描述
         helper.setText(R.id.tv_desc, item.data.description)
+        //todo 点击跳转到作者详情
     }
 
     /**

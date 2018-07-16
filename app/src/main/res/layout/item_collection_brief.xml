@@ -22,6 +22,7 @@
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:maxWidth="250dp"
         android:textColor="@color/black"
         app:font_name="bold"/>
 

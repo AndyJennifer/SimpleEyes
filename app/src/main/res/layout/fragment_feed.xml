@@ -13,7 +13,7 @@
 
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/iv_back"
+            android:id="@+id/tv_all_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

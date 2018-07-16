@@ -13,6 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 
@@ -26,6 +27,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     private val mViewPager: ViewPager by bindView(R.id.view_pager)
+    private val mTvAllCategory: CustomFontTextView by bindView(R.id.tv_all_category)
     private val mIvSearch: ImageView by bindView(R.id.iv_search)
     private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
@@ -37,9 +39,14 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     override fun initView(savedInstanceState: Bundle?) {
         mPresenter.getDiscoveryTab()
+
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
             readyGo(SearchHotActivity::class.java, null)
+        }
+        //跳转到全部分类界面
+        mTvAllCategory.setOnClickListener {
+            readyGo(AllCategoryActivity::class.java)
         }
     }
 
@@ -67,6 +74,10 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
     override fun showNetError(onClickListener: View.OnClickListener) {
         mStateView.showNetError(onClickListener)
+    }
+
+    override fun showContent() {
+        mStateView.showContent()
     }
 
     override fun initPresenter() = FeedPresenter()

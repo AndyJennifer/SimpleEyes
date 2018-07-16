@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toolbar
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.BaseAppManager
+import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import me.yokeyword.fragmentation.SupportActivity
 
@@ -150,6 +152,19 @@ abstract class BaseAppCompatActivity : SupportActivity() {
                 imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
             }
         }
+    }
+
+    /**
+     * 初始化工具栏
+     */
+    protected fun initToolBar(toolbar: Toolbar, title: String? = null) {
+        toolbar.setNavigationOnClickListener {
+            showKeyboard(false)
+            finish()
+        }
+        val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
+        tvTitle.text = title
+
     }
 
     abstract fun initView(savedInstanceState: Bundle?)
