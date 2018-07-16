@@ -25,4 +25,9 @@ class FeedModel : BaseModel {
      * 获取tab信息
      */
     fun getTabInfo(url: String): Observable<AndyInfo> = Api.getDefault().getTabInfo(url).compose(RxHelper.handleResult())
+
+    /**
+     * 加载更多信息
+     */
+    fun loadMoreAndyInfo(nextPageUrl: String?) = Api.getDefault().getMoreAndyInfo(nextPageUrl)?.compose(RxHelper.handleResult())
 }

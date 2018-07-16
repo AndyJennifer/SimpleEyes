@@ -15,6 +15,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.FeedDetailView
 class FeedDetailPresenter : BasePresenter<FeedDetailView>() {
 
     private var mCategoryModel: FeedModel = FeedModel()
+    private var mNextPageUrl: String? = null
 
     /**
      * 获取tab栏下信息
@@ -23,8 +24,30 @@ class FeedDetailPresenter : BasePresenter<FeedDetailView>() {
         mRxManager.add(mCategoryModel.getTabInfo(url).subscribe({
             mView?.showContent()
             mView?.showGetTabInfoSuccess(it)
+            mNextPageUrl = it.nextPageUrl
         }, {
             mView?.showNetError(View.OnClickListener { getDetailInfo(url) })
         }))
+    }
+
+    /**
+     * 加载更多tab栏下信息
+     */
+    fun loadMoreDetailInfo() {
+        mRxManager.add(mCategoryModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe(
+                {
+                    mView?.showContent()
+                    if (it.nextPageUrl == null) {
+                        mView?.showNoMore()
+                    } else {
+                        mNextPageUrl = it.nextPageUrl
+                        mView?.loadMoreSuccess(it)
+                    }
+                },
+                {
+                    mView?.showNetError(View.OnClickListener {
+                        loadMoreDetailInfo()
+                    })
+                }))
     }
 }

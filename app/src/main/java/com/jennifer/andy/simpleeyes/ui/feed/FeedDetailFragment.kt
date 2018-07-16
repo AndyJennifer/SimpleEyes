@@ -16,7 +16,7 @@ import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 /**
  * Author:  andy.xwt
  * Date:    2018/7/3 11:29
- * Description:
+ * Description:发现中详细的Tab界面
  */
 
 class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), FeedDetailView {
@@ -47,14 +47,24 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
 
 
     override fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
-        // todo 这里还要完善类型
         if (mCateGoryAdapter == null) {
             mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
+            mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreDetailInfo() }, mRecyclerView)
+
             mRecyclerView.adapter = mCateGoryAdapter
             mRecyclerView.layoutManager = LinearLayoutManager(context)
         } else {
             mCateGoryAdapter?.setNewData(andyInfo.itemList)
         }
+    }
+
+    override fun loadMoreSuccess(data: AndyInfo) {
+        mCateGoryAdapter?.addData(data.itemList)
+        mCateGoryAdapter?.loadMoreComplete()
+    }
+
+    override fun showNoMore() {
+        mCateGoryAdapter?.loadMoreEnd()
     }
 
     override fun initPresenter() = FeedDetailPresenter()

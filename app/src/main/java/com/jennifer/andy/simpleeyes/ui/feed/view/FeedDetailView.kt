@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed.view
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseView
+import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
 
 
 /**
@@ -10,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  * Description:
  */
 
-interface FeedDetailView : BaseView {
+interface FeedDetailView : LoadMoreView<AndyInfo> {
 
     fun showGetTabInfoSuccess(andyInfo: AndyInfo)
 

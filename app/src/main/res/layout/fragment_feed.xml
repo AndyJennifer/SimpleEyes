@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -45,15 +46,13 @@
         android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_border_bottom_top"
-        android:orientation="vertical"
-        android:padding="1dp">
+        android:orientation="vertical">
 
         <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@color/colorPrimary"
+            android:background="@drawable/shape_border_bottom"
             app:tabIndicatorColor="@color/black"
             app:tabIndicatorHeight="3dp"
             app:tabSelectedTextColor="@color/black"

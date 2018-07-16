@@ -143,6 +143,10 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             setDailyVisible(info.content!!.data.library == "DAILY")
         }
 
+        //跳转到视频详细界面
+        helper.itemView.setOnClickListener {
+            VideoDetailActivity.start(mContext!!, item.data.content?.data!!, mData as ArrayList, mData.indexOf(item))
+        }
     }
 
     /**
@@ -152,6 +156,12 @@ class CategoryAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         helper.setText(R.id.tv_title, data.header.title)
         helper.setText(R.id.tv_sub_title, data.header.subTitle)
         val marginWithIndicatorViewPager = helper.getView<MarginWithIndicatorViewPager>(R.id.view_pager)
+
+        //跳转到视频详细界面
+        marginWithIndicatorViewPager.pageViewClickListener = {
+            val content = data.itemList[it].data
+            VideoDetailActivity.start(mContext!!, content, data.itemList as ArrayList, it)
+        }
         marginWithIndicatorViewPager.setData(data.itemList)
     }
 

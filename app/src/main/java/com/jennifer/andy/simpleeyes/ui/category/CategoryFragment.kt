@@ -4,21 +4,18 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.category.adapter.CategoryAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
-import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.pull.head.HomePageHeaderView
 import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomBase
 import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomRecyclerView
-import java.util.*
 
 
 /**
@@ -71,10 +68,6 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         val recyclerView = mPullToZoomRecycler.getPullRootView()
         recyclerView.setItemViewCacheSize(10)
         mCateGoryAdapter = CategoryAdapter(andyInfo.itemList)
-        mCateGoryAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
-            val item = mCateGoryAdapter?.getItem(position)
-            VideoDetailActivity.start(context!!, item?.data?.content?.data!!, mCateGoryAdapter?.data as ArrayList, position)
-        }
         mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())
         mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(_mActivity))

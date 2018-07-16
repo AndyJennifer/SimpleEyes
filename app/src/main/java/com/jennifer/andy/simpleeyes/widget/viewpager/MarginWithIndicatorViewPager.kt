@@ -28,6 +28,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
     private val mIndicator: PageIndicatorView by bindView(R.id.pageIndicatorView)
 
     private lateinit var mItemList: MutableList<Content>
+    lateinit var pageViewClickListener: (position: Int) -> Unit
 
     constructor(context: Context) : this(context, null)
 
@@ -76,6 +77,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             val cardView = CollectionOfHorizontalScrollCardView(this@MarginWithIndicatorViewPager.context)
             val newPosition = position % mItemList.size
+            cardView.setOnClickListener { pageViewClickListener(newPosition) }//点击响应事件
             cardView.setData(mItemList[newPosition])
             container.addView(cardView)
             return cardView
