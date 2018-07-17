@@ -68,7 +68,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
     }
 
     /**
-     * 设置无效滚动适配器
+     * 设置无限滚动适配器
      */
     inner class MarginWithViewPagerAdapter : PagerAdapter() {
 

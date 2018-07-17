@@ -18,7 +18,6 @@ import com.jennifer.andy.simpleeyes.ui.category.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
-import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
@@ -102,8 +101,8 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             registerItemType(TEXT_CARD_TYPE, R.layout.layout_single_text)
             registerItemType(BRIEF_CARD_TYPE, R.layout.layout_brife_card)
             registerItemType(BLANK_CARD_TYPE, R.layout.layout_blank_card)
-            registerItemType(SQUARE_CARD_TYPE, R.layout.item_square_collection)
-            registerItemType(RECTANGLE_CARD_TYPE, R.layout.item_square_collection)
+            registerItemType(SQUARE_CARD_TYPE, R.layout.item_square_card)
+            registerItemType(RECTANGLE_CARD_TYPE, R.layout.item_square_card)
             registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
         }
 
@@ -329,16 +328,7 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
      */
     private fun setSquareCardInfo(helper: BaseViewHolder, item: ContentBean) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_simple_image)
-
-        //设置宽高为屏幕宽度的一半
-        val halfScreenWidth = ScreenUtils.getScreenWidth(mContext) / 2
-
-        val lp = imageView.layoutParams
-        lp.width = halfScreenWidth
-        lp.height = halfScreenWidth
-        imageView.layoutParams = lp
         imageView.setImageURI(item.image)
-
         helper.setText(R.id.tv_title, item.title)
     }
 
@@ -347,15 +337,6 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
      */
     private fun setRectangleCardInfo(helper: BaseViewHolder, item: ContentBean) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_simple_image)
-
-        //设置宽为屏幕宽度 高为宽度的一半
-        val screenWidth = ScreenUtils.getScreenWidth(mContext)
-
-        val lp = imageView.layoutParams
-        lp.width = screenWidth
-        lp.height = screenWidth / 2
-        imageView.layoutParams = lp
-
         imageView.setImageURI(item.image)
         helper.setText(R.id.tv_title, item.title)
 
