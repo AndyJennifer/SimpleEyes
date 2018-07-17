@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.feed.view
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 
@@ -10,6 +11,6 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  */
 
 interface AllCategoryView : BaseView {
-    fun loadAllCategoriesSuccess()
+    fun loadAllCategoriesSuccess(andyInfo: AndyInfo)
 
 }

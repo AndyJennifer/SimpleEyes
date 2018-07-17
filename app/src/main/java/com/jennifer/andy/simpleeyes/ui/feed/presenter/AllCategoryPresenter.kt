@@ -19,7 +19,7 @@ class AllCategoryPresenter : BasePresenter<AllCategoryView>() {
     fun loadAllCategoriesInfo() {
         mRxManager.add(mFeedModel.loadAllCategoriesInfo().subscribe({
             mView?.showContent()
-            mView?.loadAllCategoriesSuccess()
+            mView?.loadAllCategoriesSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener { loadAllCategoriesInfo() })
         }))

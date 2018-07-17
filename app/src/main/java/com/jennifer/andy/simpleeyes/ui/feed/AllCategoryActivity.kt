@@ -5,7 +5,9 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.widget.Toolbar
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.AllCategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.AllCategoryView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -27,9 +29,9 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
         mPresenter.loadAllCategoriesInfo()
     }
 
-    override fun loadAllCategoriesSuccess() {
-        mRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
-
+    override fun loadAllCategoriesSuccess(andyInfo: AndyInfo) {
+        mRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        mRecyclerView.adapter = BaseDataAdapter(andyInfo.itemList)
     }
 
     override fun initPresenter() = AllCategoryPresenter()

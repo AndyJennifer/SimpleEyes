@@ -18,6 +18,7 @@ import com.jennifer.andy.simpleeyes.ui.category.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
@@ -49,7 +50,9 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         const val TEXT_CARD_TYPE = 7
         const val BRIEF_CARD_TYPE = 8
         const val BLANK_CARD_TYPE = 9
-        const val VIDEO_BANNER_THREE_TYPE = 10
+        const val SQUARE_CARD_TYPE = 10
+        const val RECTANGLE_CARD_TYPE = 11
+        const val VIDEO_BANNER_THREE_TYPE = 12
 
         const val VIDEO_BANNER = "banner"
         const val VIDEO_FOLLOW_CARD = "followCard"
@@ -61,6 +64,8 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         const val TEXT_CARD = "textCard"
         const val BRIEF_CARD = "briefCard"
         const val BLANK_CARD = "blankCard"
+        const val SQUARE_CARD = "squareCard"
+        const val RECTANGLE_CARD = "rectangleCard"
         const val VIDEO_BANNER_THREE = "banner3"
     }
 
@@ -74,12 +79,14 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
                     VIDEO_HORIZONTAL_CARD -> return VIDEO_HORIZONTAL_SCROLL_CARD_TYPE
                     VIDEO_COLLECTION_WITH_COVER -> return VIDEO_COLLECTION_WITH_COVER_TYPE
                     VIDEO_SQUARE_CARD_COLLECTION -> return VIDEO_SQUARE_CARD_COLLECTION_TYPE
-                    VIDEO_BANNER_THREE -> return VIDEO_BANNER_THREE_TYPE
                     VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD -> return VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE
                     VIDEO_COLLECTION_WITH_BRIEF -> return VIDEO_COLLECTION_WITH_BRIEF_TYPE
                     TEXT_CARD -> return TEXT_CARD_TYPE
                     BRIEF_CARD -> return BRIEF_CARD_TYPE
                     BLANK_CARD -> return BLANK_CARD_TYPE
+                    SQUARE_CARD -> return SQUARE_CARD_TYPE
+                    RECTANGLE_CARD -> return RECTANGLE_CARD_TYPE
+                    VIDEO_BANNER_THREE -> return VIDEO_BANNER_THREE_TYPE
                 }
                 return VIDEO_FOLLOW_CARD_TYPE
             }
@@ -95,6 +102,8 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             registerItemType(TEXT_CARD_TYPE, R.layout.layout_single_text)
             registerItemType(BRIEF_CARD_TYPE, R.layout.layout_brife_card)
             registerItemType(BLANK_CARD_TYPE, R.layout.layout_blank_card)
+            registerItemType(SQUARE_CARD_TYPE, R.layout.item_square_collection)
+            registerItemType(RECTANGLE_CARD_TYPE, R.layout.item_square_collection)
             registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
         }
 
@@ -112,6 +121,8 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             TEXT_CARD_TYPE -> setSingleText(helper, item)
             BRIEF_CARD_TYPE -> setBriefCardInfo(helper, item)
             BLANK_CARD_TYPE -> setBlankCardInfo(helper, item)
+            SQUARE_CARD_TYPE -> setSquareCardInfo(helper, item.data)
+            RECTANGLE_CARD_TYPE -> setRectangleCardInfo(helper, item.data)
             VIDEO_BANNER_THREE_TYPE -> setBanner3Info(helper, item.data)
         }
     }
@@ -311,5 +322,42 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         showAllContainer.setOnClickListener {
             //todo 查看更多
         }
+    }
+
+    /**
+     * 设置长方形卡片信息
+     */
+    private fun setSquareCardInfo(helper: BaseViewHolder, item: ContentBean) {
+        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_simple_image)
+
+        //设置宽高为屏幕宽度的一半
+        val halfScreenWidth = ScreenUtils.getScreenWidth(mContext) / 2
+
+        val lp = imageView.layoutParams
+        lp.width = halfScreenWidth
+        lp.height = halfScreenWidth
+        imageView.layoutParams = lp
+        imageView.setImageURI(item.image)
+
+        helper.setText(R.id.tv_title, item.title)
+    }
+
+    /**
+     * 设置正方形卡片信息
+     */
+    private fun setRectangleCardInfo(helper: BaseViewHolder, item: ContentBean) {
+        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_simple_image)
+
+        //设置宽为屏幕宽度 高为宽度的一半
+        val screenWidth = ScreenUtils.getScreenWidth(mContext)
+
+        val lp = imageView.layoutParams
+        lp.width = screenWidth
+        lp.height = screenWidth / 2
+        imageView.layoutParams = lp
+
+        imageView.setImageURI(item.image)
+        helper.setText(R.id.tv_title, item.title)
+
     }
 }
