@@ -23,5 +23,6 @@ class AllCategoryPresenter : BasePresenter<AllCategoryView>() {
         }, {
             mView?.showNetError(View.OnClickListener { loadAllCategoriesInfo() })
         }))
+
     }
 }

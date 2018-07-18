@@ -75,9 +75,10 @@ class EliteHeaderView : PullRefreshView {
     override fun getDoRefreshHeight() = mHeadOuter.height
 
     /**
-     * 执行内部眼睛动画
+     * 执行内部眼睛动画,执行之前，先停止之前的
      */
     private fun doInnerEyeAnimator() {
+        reset()
         mRotationAnimator = ValueAnimator.ofFloat(0f, 360f)
         mRotationAnimator?.addUpdateListener { mHeadInner.rotation += 10 }
         mRotationAnimator?.duration = 200
