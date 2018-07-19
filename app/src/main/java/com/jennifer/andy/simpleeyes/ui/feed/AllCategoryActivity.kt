@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.feed
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.Toolbar
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
@@ -12,6 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter.Companion.RE
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.AllCategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.AllCategoryView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 
 
 /**
@@ -24,6 +26,7 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
 
     private val mToolBar: Toolbar by bindView(R.id.tool_bar)
     private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
+    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
     override fun initView(savedInstanceState: Bundle?) {
         initToolBar(mToolBar, getString(R.string.all_category))
@@ -37,6 +40,15 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
         }
         mRecyclerView.layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView.adapter = adapter
+    }
+
+
+    override fun showNetError(onClickListener: View.OnClickListener) {
+        mStateView.showNetError(onClickListener)
+    }
+
+    override fun showContent() {
+        mStateView.showContent()
     }
 
     override fun initPresenter() = AllCategoryPresenter()
