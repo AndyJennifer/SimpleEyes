@@ -16,6 +16,7 @@ class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>() {
 
 
     companion object {
+        @JvmStatic
         fun newInstance(): ProfileFragment = ProfileFragment()
     }
 

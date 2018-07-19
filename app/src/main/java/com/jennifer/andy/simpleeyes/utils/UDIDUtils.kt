@@ -14,5 +14,6 @@ object UDIDUtils {
     /**
      * 获取随机uuid
      */
+    @JvmStatic
     fun getRandomUUID() = UUID.randomUUID().toString().replace("-", "")
 }

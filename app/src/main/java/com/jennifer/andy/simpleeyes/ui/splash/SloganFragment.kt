@@ -15,9 +15,8 @@ class SloganFragment : BaseAppCompatFragment() {
 
 
     companion object {
+        @JvmStatic
         fun newInstance() = SloganFragment()
-
-
     }
 
 

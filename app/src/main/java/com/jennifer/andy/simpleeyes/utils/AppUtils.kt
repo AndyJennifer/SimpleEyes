@@ -16,6 +16,7 @@ object AppUtils {
      *
      * @return App版本号
      */
+    @JvmStatic
     fun getAppVersionName(context: Context): String {
         val pm = context.packageManager
         val packageInfo = pm.getPackageInfo(context.packageName, 0)
@@ -27,6 +28,7 @@ object AppUtils {
      *
      * @return App版本码
      */
+    @JvmStatic
     fun getAppVersionCode(context: Context): Int {
         val pm = context.packageManager
         val packageInfo = pm.getPackageInfo(context.packageName, 0)

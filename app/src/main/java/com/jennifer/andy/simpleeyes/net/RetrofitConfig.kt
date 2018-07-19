@@ -29,15 +29,26 @@ class RetrofitConfig private constructor() {
     private lateinit var mResponseInterceptor: Interceptor
 
     private lateinit var mOkHttpClient: OkHttpClient
-    private val READ_TIME_OUT = 5000L// 读取超过时间 单位:毫秒
-    private val WRITE_TIME_OUT = 5000L//写超过时间 单位:毫秒
-
-    /**
-     * 缓存相关
-     */
     private lateinit var mCache: Cache
-    private val FILE_CACHE_SIZE = 1024 * 1024 * 100L//缓存大小100Mb
-    private val FILE_CACHE_STALE = (60 * 60 * 24 * 2).toLong()//缓存有效期为2天
+
+    companion object {
+
+        private const val READ_TIME_OUT = 5000L// 读取超过时间 单位:毫秒
+        private const val WRITE_TIME_OUT = 5000L//写超过时间 单位:毫秒
+        private const val FILE_CACHE_SIZE = 1024 * 1024 * 100L//缓存大小100Mb
+        private const val FILE_CACHE_STALE = (60 * 60 * 24 * 2).toLong()//缓存有效期为2天
+        private val Instance: RetrofitConfig by lazy { RetrofitConfig() }
+
+        /**
+         * 获取默认请求接口
+         */
+        @JvmStatic
+        fun getDefaultService(): ApiService {
+            return Instance.apiService
+        }
+
+    }
+
 
     private lateinit var apiService: ApiService
 
@@ -88,7 +99,7 @@ class RetrofitConfig private constructor() {
      * 配置缓存大小与缓存地址
      */
     private fun initCachePathAndSize() {
-        val cacheFile = File(AndyApplication.getAppContext().cacheDir, "cache")
+        val cacheFile = File(AndyApplication.INSTANCE.cacheDir, "cache")
         mCache = Cache(cacheFile, FILE_CACHE_SIZE)
     }
 
@@ -111,7 +122,7 @@ class RetrofitConfig private constructor() {
      * @return
      */
     private fun setResponseCacheTime(response: Response, originalCacheString: String): Response {
-        return if (NetWorkUtils.isNetWorkConnected(AndyApplication.getAppContext())) {
+        return if (NetWorkUtils.isNetWorkConnected(AndyApplication.INSTANCE)) {
             response.newBuilder()
                     .header("Cache-Control", originalCacheString)
                     .removeHeader("Pragma")
@@ -152,17 +163,6 @@ class RetrofitConfig private constructor() {
                 .build()
         apiService = mRetrofit.create(ApiService::class.java)
 
-    }
-
-    companion object {
-
-        private val Instance: RetrofitConfig by lazy { RetrofitConfig() }
-        /**
-         * 获取默认请求接口
-         */
-        fun getDefaultService(): ApiService {
-            return Instance.apiService
-        }
     }
 
 

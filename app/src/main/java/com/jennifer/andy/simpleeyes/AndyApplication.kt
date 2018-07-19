@@ -1,9 +1,9 @@
 package com.jennifer.andy.simpleeyes
 
 import android.app.Application
-import android.content.Context
 import android.content.res.Resources
 import android.os.Build
+import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.jennifer.andy.simpleeyes.config.GlobalConfig
 import com.jennifer.andy.simpleeyes.update.CheckUpdateProtocol
@@ -24,33 +24,40 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
 
     companion object {
 
-        private lateinit var mApplication: Application
-        /**
-         * 获取当前应用上下文对象
-         */
-        fun getAppContext(): Context {
-            return mApplication
-        }
+        lateinit var INSTANCE: Application
 
         /**
          * 获取资源文件访问对象
          */
+        @JvmStatic
         fun getResource(): Resources {
-            return mApplication.resources
+            return INSTANCE.resources
         }
 
     }
 
     override fun onCreate() {
         super.onCreate()
+        INSTANCE = this
         GlobalConfig.setApplicationContext(this)
         GlobalConfig.setAppDebug(false)
         GlobalConfig.setApplicationRootDir("simpleeyes")
-        mApplication = this
         Fresco.initialize(this)
+        initARoute()
         //todo 这里还要做崩溃检查 腾讯的bugly 热更新等操作
 
 
+    }
+
+    /**
+     * 初始化路由操作
+     */
+    private fun initARoute() {
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }
+        ARouter.init(this)
     }
 
     override fun initUpdateParams(): LocalUpdateService.UpdateParams {

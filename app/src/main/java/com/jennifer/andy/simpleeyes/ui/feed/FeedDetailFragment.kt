@@ -28,6 +28,8 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
     private lateinit var mApiUrl: String
 
     companion object {
+
+        @JvmStatic
         fun newInstance(apiUrl: String): FeedDetailFragment {
             val categoryFragment = FeedDetailFragment()
             val bundle = Bundle()

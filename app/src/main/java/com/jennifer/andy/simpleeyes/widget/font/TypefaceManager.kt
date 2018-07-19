@@ -45,7 +45,7 @@ object TypefaceManager {
     fun setTextTypeFace(textView: TextView, fontType: FontType?) {
         val localTypeFace = getTypeFace(fontType)
         localTypeFace?.let {
-            setTextTypeFace(AndyApplication.getAppContext(), null, textView)
+            setTextTypeFace(AndyApplication.INSTANCE, null, textView)
         }
     }
 
@@ -66,7 +66,7 @@ object TypefaceManager {
         return fontType?.let {
             var typeFace = mTypeFaceMap[fontType]
             if (typeFace == null) {
-                typeFace = Typeface.createFromAsset(AndyApplication.getAppContext().assets, fontType.path)
+                typeFace = Typeface.createFromAsset(AndyApplication.INSTANCE.assets, fontType.path)
                 mTypeFaceMap[fontType] = typeFace
             }
             return typeFace

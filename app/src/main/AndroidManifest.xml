@@ -15,6 +15,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--中间跳转页-->
+        <activity android:name=".ui.SchemeFilterActivity">
+            <!--Scheme-->
+            <intent-filter>
+                <data android:scheme="eyepetizer"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
+
+            <!-- 网页跳转到App-->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="www.kaiyanapp.com"
+                    android:scheme="http"/>
+                <data
+                    android:host="www.kaiyanapp.com/"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+
         <!--闪屏页-->
         <activity android:name=".ui.splash.SplashActivity"
                   android:screenOrientation="portrait"

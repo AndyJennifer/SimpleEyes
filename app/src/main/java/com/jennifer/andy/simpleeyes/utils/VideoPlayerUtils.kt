@@ -20,6 +20,7 @@ object VideoPlayerUtils {
     /**
      * 隐藏ActionBar并使当前界面全屏
      */
+    @JvmStatic
     fun hideActionBar(context: Context?) {
         val supportActionBar = getAppCompatActivity(context)?.supportActionBar
         supportActionBar?.let {
@@ -32,6 +33,7 @@ object VideoPlayerUtils {
     /**
      * 显示ActionBar并退出全屏
      */
+    @JvmStatic
     fun showActionBar(context: Context?) {
         val supportActionBar = getAppCompatActivity(context)?.supportActionBar
         supportActionBar?.let {
@@ -59,6 +61,7 @@ object VideoPlayerUtils {
     /**
      * 获取Activity
      */
+    @JvmStatic
     fun getActivity(context: Context?): Activity? {
         if (context == null) {
             return null
@@ -74,6 +77,7 @@ object VideoPlayerUtils {
     /**
      * 获取Window
      */
+    @JvmStatic
     fun getWindow(context: Context?): Window? {
         return if (getAppCompatActivity(context) != null) {
             getAppCompatActivity(context)?.window

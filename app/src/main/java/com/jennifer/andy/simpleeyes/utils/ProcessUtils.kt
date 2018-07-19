@@ -15,6 +15,7 @@ object ProcessUtils {
     /**
      * 获取当前进程名称
      */
+    @JvmStatic
     fun getProcessName(context: Context): String? {
         var pid = android.os.Process.myPid()
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

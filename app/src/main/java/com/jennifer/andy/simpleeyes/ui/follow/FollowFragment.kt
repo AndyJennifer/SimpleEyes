@@ -16,6 +16,7 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>() {
 
 
     companion object {
+        @JvmStatic
         fun newInstance(): FollowFragment = FollowFragment()
     }
 

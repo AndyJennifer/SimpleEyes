@@ -46,7 +46,7 @@ object UserPreferences {
 
 
     private fun getSharedPreferences(): SharedPreferences {
-        return AndyApplication.getAppContext().getSharedPreferences(NAME, Context.MODE_PRIVATE)
+        return AndyApplication.INSTANCE.getSharedPreferences(NAME, Context.MODE_PRIVATE)
     }
 
 }

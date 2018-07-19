@@ -15,6 +15,7 @@ object TimeUtils {
     /**
      * 将秒数转换为 00 00' 00''格式
      */
+    @JvmStatic
     fun getElapseTimeForShow(seconds: Int): String {
         val sb = StringBuilder()
         val hour = seconds / (60 * 60)
@@ -43,6 +44,7 @@ object TimeUtils {
      * @param date   日期
      * @param format 格式化字符串
      */
+    @JvmStatic
     fun getDateString(date: Date, format: String): String {
         val formatter = SimpleDateFormat(format, Locale.getDefault())
         return formatter.format(date)
@@ -51,6 +53,7 @@ object TimeUtils {
     /**
      * 判断是否是今天
      */
+    @JvmStatic
     fun isCurrentDay(time: Long): Boolean {
         return isSameDay(Date(), Date(time))
     }
@@ -59,6 +62,7 @@ object TimeUtils {
     /**
      * 是否是同一天
      */
+    @JvmStatic
     fun isSameDay(date1: Date, date2: Date): Boolean {
         val cal1 = Calendar.getInstance()
         val cal2 = Calendar.getInstance()

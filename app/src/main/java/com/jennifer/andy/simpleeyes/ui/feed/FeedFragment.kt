@@ -33,6 +33,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
     companion object {
+        @JvmStatic
         fun newInstance(): FeedFragment = FeedFragment()
     }
 

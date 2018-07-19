@@ -31,6 +31,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
     private var mCateGoryAdapter: BaseDataAdapter? = null
 
     companion object {
+        @JvmStatic
         fun newInstance(): CategoryFragment = CategoryFragment()
     }
 

@@ -15,6 +15,7 @@ object NetWorkUtils {
     /**
      * 判断当前网络时候连接
      */
+    @JvmStatic
     fun isNetWorkConnected(context: Context?): Boolean {
         if (context != null) {
             val mgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

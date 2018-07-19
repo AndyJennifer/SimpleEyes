@@ -20,6 +20,7 @@ object SystemUtils {
      * @param <T>    泛型实例化对象
      * @return 泛型实例化对象
      */
+    @JvmStatic
     fun <T> getGenericInstance(any: Any, index: Int): T {
         try {
             val type = any.javaClass.genericSuperclass as ParameterizedType//获取当前类的父类泛型参数
