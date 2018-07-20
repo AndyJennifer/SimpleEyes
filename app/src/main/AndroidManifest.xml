@@ -80,6 +80,11 @@
         <activity android:name=".ui.feed.AllCategoryActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
+
+        <!--网页展示Activity-->
+        <activity android:name=".ui.feed.WebViewActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
