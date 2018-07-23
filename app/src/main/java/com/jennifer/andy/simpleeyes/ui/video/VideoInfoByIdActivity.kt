@@ -1,11 +1,14 @@
 package com.jennifer.andy.simpleeyes.ui.video
 
 import android.os.Bundle
+import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoInfoByIdPresenter
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoInfoByIdView
@@ -30,8 +33,17 @@ class VideoInfoByIdActivity : BaseActivity<VideoInfoByIdView, VideoInfoByIdPrese
     }
 
     override fun getVideoInfoSuccess(contentBean: ContentBean) {
-        VideoDetailActivity.start(this, contentBean, arrayListOf())
-        finish()
+        val bundle = Bundle()
+        bundle.putSerializable(Extras.VIDEO_INFO, contentBean)
+        bundle.putSerializable(Extras.VIDEO_LIST_INFO, arrayListOf<Any>())
+        ARouter.getInstance()
+                .build("/pgc/detail")
+                .with(bundle)
+                .navigation(this, object : NavCallback() {
+                    override fun onArrival(postcard: Postcard?) {
+                        finish()
+                    }
+                })
     }
 
     override fun initPresenter() = VideoInfoByIdPresenter()
