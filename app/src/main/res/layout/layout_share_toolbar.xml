@@ -18,4 +18,12 @@
         android:textSize="16sp"
         app:font_name="bold"/>
 
+
+    <ImageView
+        android:id="@+id/iv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@drawable/ic_action_share_grey"/>
+
 </Toolbar>

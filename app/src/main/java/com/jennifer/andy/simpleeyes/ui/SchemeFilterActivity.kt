@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.launcher.ARouter
  * Date:    2018/7/19 19:57
  * Description: 中间跳转页
  */
-
 class SchemeFilterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

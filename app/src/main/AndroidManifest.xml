@@ -85,6 +85,11 @@
         <activity android:name=".ui.feed.WebViewActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
+
+        <!--根据视频id获取视频信息-->
+        <activity android:name=".ui.video.VideoInfoByIdActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

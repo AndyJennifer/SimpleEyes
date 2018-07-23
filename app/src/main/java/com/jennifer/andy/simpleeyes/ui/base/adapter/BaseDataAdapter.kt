@@ -1,5 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.base.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -278,7 +280,14 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             isAutoPlay(true)
             start()
             setDelayTime(5000)
-
+            setOnBannerListener {
+                //跳转到过滤界面
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(itemList[it].data.actionUrl)
+                intent.addCategory(Intent.CATEGORY_DEFAULT)
+                intent.addCategory(Intent.CATEGORY_BROWSABLE)
+                mContext.startActivity(intent)
+            }
         }
     }
 

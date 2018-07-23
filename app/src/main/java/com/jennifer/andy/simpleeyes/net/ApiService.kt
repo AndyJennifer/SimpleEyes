@@ -1,10 +1,12 @@
 package com.jennifer.andy.simpleeyes.net
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.entity.JenniferInfo
 import com.jennifer.andy.simpleeyes.entity.Tab
 import io.reactivex.Observable
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
@@ -68,6 +70,12 @@ interface ApiService {
      */
     @GET
     fun getTabInfo(@Url url: String?): Observable<AndyInfo>
+
+    /**
+     * 根据视频id,获取相关信息
+     */
+    @GET("api/v2/video/{id}")
+    fun getVideoInfoById(@Path("id") id: String): Observable<ContentBean>
 
     /**
      * 获取相关视频信息

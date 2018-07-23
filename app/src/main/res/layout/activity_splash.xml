@@ -6,11 +6,13 @@
     android:layout_height="match_parent">
 
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/landing_background"/>
+        app:placeholderImage="@drawable/landing_background"
+        app:viewAspectRatio="1.33"
+    />
 
     <RelativeLayout
         android:layout_width="match_parent"

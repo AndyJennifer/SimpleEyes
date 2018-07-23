@@ -61,7 +61,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
         /**
          * 跳转到视频详细界面
          */
-        fun start(context: Context, content: ContentBean, videoListInfo: ArrayList<Content>, defaultIndex: Int) {
+        @JvmStatic
+        fun start(context: Context, content: ContentBean, videoListInfo: ArrayList<Content>, defaultIndex: Int = 0) {
             val bundle = Bundle()
             bundle.putSerializable(Extras.VIDEO_INFO, content)
             bundle.putSerializable(Extras.VIDEO_LIST_INFO, videoListInfo)

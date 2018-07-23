@@ -43,6 +43,7 @@ class SplashActivity : BaseAppCompatActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
         window.setBackgroundDrawable(null)
+//        mIvBackground.setImageURI(Uri.parse("com.jennifer.andy.simpleeyes/${R.drawable.landing_background}"))
         //如果用户没登录，执行上升动画，否则执行缩放动画
         if (!UserPreferences.getUserIsLogin()) {
             doUpAnimator()

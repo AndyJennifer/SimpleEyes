@@ -72,9 +72,8 @@ data class ContentBean(var dataType: String,
                        var icon: String,
                        var iconType: String,
                        var height: Int,
-                       var src: Int
-
-) : Serializable
+                       var src: Int,
+                       var actionUrl: String) : Serializable
 
 
 data class Header(var id: Int,
