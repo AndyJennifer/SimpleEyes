@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.video.presenter
 
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.ui.video.VideoDetailModel
+import com.jennifer.andy.simpleeyes.ui.video.model.VideoDetailModel
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
 
 

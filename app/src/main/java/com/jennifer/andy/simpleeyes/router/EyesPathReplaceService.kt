@@ -39,6 +39,8 @@ class EyesPathReplaceService : PathReplaceService {
                     return setWebViewUrl(split)
                 uriStr.contains("detail") -> //处理webview中点击跳转
                     return setWebVideoUrl(split)
+                uriStr.contains("ranklist") ->
+                    return setRankListUrl(split)
                 else -> {
                 }
             }
@@ -94,6 +96,17 @@ class EyesPathReplaceService : PathReplaceService {
         val uriWithoutNumber = split[1].replace(Regex("/\\d+"), "")
         return Uri.parse("$HOST$ONE_LEVEL$uriWithoutNumber?id=$id")
     }
+
+    /**
+     * 处理排行榜
+     * eyepetizer://ranklist/
+     * 替换为：eyepetizer://github.com/AndyJennifer/ranklist
+     */
+    private fun setRankListUrl(split: List<String>): Uri {
+        val str = split[1].replace("/", "")
+        return Uri.parse("$HOST$ONE_LEVEL$str")
+    }
+
 
     override fun init(context: Context?) {
 

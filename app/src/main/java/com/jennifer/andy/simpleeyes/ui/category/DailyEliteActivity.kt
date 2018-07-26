@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.category.adapter.DailyEliteAdapter
 import com.jennifer.andy.simpleeyes.ui.category.presenter.DailyElitePresenter
 import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
-import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.LinearLayoutManagerWithSmoothScroller
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
-import java.util.*
 
 
 /**
@@ -42,7 +40,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 //设置当前选择日期
                 val position = mLinearLayoutManager.findFirstVisibleItemPosition()
-                if (mDailyEliteAdapter?.getItemViewType(position) == DailyEliteAdapter.TEXT_CARD_TYPE) {
+                if (mDailyEliteAdapter?.getItemViewType(position) == BaseDataAdapter.TEXT_CARD_TYPE) {
                     mTvDate.text = mDailyEliteAdapter?.getItem(position)?.data?.text
                 }
             }
@@ -63,12 +61,6 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         if (mDailyEliteAdapter == null) {
             mDailyEliteAdapter = DailyEliteAdapter(content)
             mDailyEliteAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreResult() }, mRecycler.rootView)
-            mDailyEliteAdapter?.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
-                if (mDailyEliteAdapter?.getItemViewType(position) != DailyEliteAdapter.BANNER_TYPE) {
-                    val item = mDailyEliteAdapter?.getItem(position)
-                    VideoDetailActivity.start(mContext, item!!.data, mDailyEliteAdapter?.data as ArrayList, position)
-                }
-            }
             mLinearLayoutManager = LinearLayoutManagerWithSmoothScroller(mContext)
             mRecycler.setAdapterAndLayoutManager(mDailyEliteAdapter!!, mLinearLayoutManager)
         } else {

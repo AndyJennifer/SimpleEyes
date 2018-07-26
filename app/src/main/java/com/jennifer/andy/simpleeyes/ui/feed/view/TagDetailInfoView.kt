@@ -10,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
  * Description:
  */
 
-interface FeedDetailView : LoadMoreView<AndyInfo> {
+interface TagDetailInfoView : LoadMoreView<AndyInfo> {
 
     fun showGetTabInfoSuccess(andyInfo: AndyInfo)
 

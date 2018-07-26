@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui
+package com.jennifer.andy.simpleeyes.router
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

@@ -1,10 +1,13 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Toolbar
+import com.alibaba.android.arouter.launcher.ARouter
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
@@ -29,7 +32,7 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
     override fun initView(savedInstanceState: Bundle?) {
-        initToolBar(mToolBar, getString(R.string.all_category))
+        initToolBar(mToolBar, R.string.all_category)
         mPresenter.loadAllCategoriesInfo()
     }
 
@@ -37,6 +40,12 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
         val adapter = BaseDataAdapter(andyInfo.itemList)
         adapter.setSpanSizeLookup { _, position ->
             if (adapter.getItemViewType(position) == RECTANGLE_CARD_TYPE) 2 else 1
+        }
+        //根据actionUrl跳转到相应界面
+        adapter.onItemClickListener = BaseQuickAdapter.OnItemClickListener { _, _, position ->
+            ARouter.getInstance()
+                    .build(Uri.parse(adapter.data[position].data.actionUrl))
+                    .navigation()
         }
         mRecyclerView.layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView.adapter = adapter

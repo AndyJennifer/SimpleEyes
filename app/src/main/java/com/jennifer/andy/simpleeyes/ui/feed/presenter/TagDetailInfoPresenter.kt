@@ -3,7 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.feed.presenter
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
-import com.jennifer.andy.simpleeyes.ui.feed.view.FeedDetailView
+import com.jennifer.andy.simpleeyes.ui.feed.view.TagDetailInfoView
 
 
 /**
@@ -12,7 +12,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.FeedDetailView
  * Description:
  */
 
-class FeedDetailPresenter : BasePresenter<FeedDetailView>() {
+class TagDetailInfoPresenter : BasePresenter<TagDetailInfoView>() {
 
     private var mCategoryModel: FeedModel = FeedModel()
     private var mNextPageUrl: String? = null
@@ -25,6 +25,7 @@ class FeedDetailPresenter : BasePresenter<FeedDetailView>() {
             mView?.showContent()
             mView?.showGetTabInfoSuccess(it)
             mNextPageUrl = it.nextPageUrl
+            if (mNextPageUrl == null) mView?.showNoMore()
         }, {
             mView?.showNetError(View.OnClickListener { getDetailInfo(url) })
         }))

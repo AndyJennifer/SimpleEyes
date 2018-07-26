@@ -20,6 +20,7 @@ import com.jennifer.andy.simpleeyes.ui.category.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.TimeUtils
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
@@ -35,17 +36,18 @@ import java.util.*
  * Description: 基础信息适配器
  */
 
-class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
+open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(data) {
+
 
     /**
      * 卡片类型
      */
     companion object {
-        const val VIDEO_BANNER_TYPE = 0
-        const val VIDEO_FOLLOW_CARD_TYPE = 1
-        const val VIDEO_HORIZONTAL_SCROLL_CARD_TYPE = 2
+        const val BANNER_TYPE = 0
+        const val FOLLOW_CARD_TYPE = 1
+        const val HORIZONTAL_SCROLL_CARD_TYPE = 2
         const val VIDEO_COLLECTION_WITH_COVER_TYPE = 3
-        const val VIDEO_SQUARE_CARD_COLLECTION_TYPE = 4
+        const val SQUARE_CARD_COLLECTION_TYPE = 4
         const val VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE = 5
         const val VIDEO_COLLECTION_WITH_BRIEF_TYPE = 6
         const val TEXT_CARD_TYPE = 7
@@ -53,13 +55,14 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         const val BLANK_CARD_TYPE = 9
         const val SQUARE_CARD_TYPE = 10
         const val RECTANGLE_CARD_TYPE = 11
-        const val VIDEO_BANNER_THREE_TYPE = 12
+        const val VIDEO_TYPE = 12
+        const val VIDEO_BANNER_THREE_TYPE = 13
 
-        const val VIDEO_BANNER = "banner"
-        const val VIDEO_FOLLOW_CARD = "followCard"
-        const val VIDEO_HORIZONTAL_CARD = "horizontalScrollCard"
+        const val BANNER = "banner"
+        const val FOLLOW_CARD = "followCard"
+        const val HORIZONTAL_CARD = "horizontalScrollCard"
         const val VIDEO_COLLECTION_WITH_COVER = "videoCollectionWithCover"
-        const val VIDEO_SQUARE_CARD_COLLECTION = "squareCardCollection"
+        const val SQUARE_CARD_COLLECTION = "squareCardCollection"
         const val VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD = "videoCollectionOfHorizontalScrollCard"
         const val VIDEO_COLLECTION_WITH_BRIEF = "videoCollectionWithBrief"
         const val TEXT_CARD = "textCard"
@@ -67,6 +70,7 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         const val BLANK_CARD = "blankCard"
         const val SQUARE_CARD = "squareCard"
         const val RECTANGLE_CARD = "rectangleCard"
+        const val VIDEO = "video"
         const val VIDEO_BANNER_THREE = "banner3"
     }
 
@@ -75,11 +79,11 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         multiTypeDelegate = object : MultiTypeDelegate<Content>() {
             override fun getItemType(andyInfoItem: Content?): Int {
                 when (andyInfoItem?.type) {
-                    VIDEO_BANNER -> return VIDEO_BANNER_TYPE
-                    VIDEO_FOLLOW_CARD -> return VIDEO_FOLLOW_CARD_TYPE
-                    VIDEO_HORIZONTAL_CARD -> return VIDEO_HORIZONTAL_SCROLL_CARD_TYPE
+                    BANNER -> return BANNER_TYPE
+                    FOLLOW_CARD -> return FOLLOW_CARD_TYPE
+                    HORIZONTAL_CARD -> return HORIZONTAL_SCROLL_CARD_TYPE
                     VIDEO_COLLECTION_WITH_COVER -> return VIDEO_COLLECTION_WITH_COVER_TYPE
-                    VIDEO_SQUARE_CARD_COLLECTION -> return VIDEO_SQUARE_CARD_COLLECTION_TYPE
+                    SQUARE_CARD_COLLECTION -> return SQUARE_CARD_COLLECTION_TYPE
                     VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD -> return VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE
                     VIDEO_COLLECTION_WITH_BRIEF -> return VIDEO_COLLECTION_WITH_BRIEF_TYPE
                     TEXT_CARD -> return TEXT_CARD_TYPE
@@ -87,17 +91,18 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
                     BLANK_CARD -> return BLANK_CARD_TYPE
                     SQUARE_CARD -> return SQUARE_CARD_TYPE
                     RECTANGLE_CARD -> return RECTANGLE_CARD_TYPE
+                    VIDEO -> return VIDEO_TYPE
                     VIDEO_BANNER_THREE -> return VIDEO_BANNER_THREE_TYPE
                 }
-                return VIDEO_FOLLOW_CARD_TYPE
+                return FOLLOW_CARD_TYPE
             }
         }
         with(multiTypeDelegate) {
-            registerItemType(VIDEO_BANNER_TYPE, R.layout.layout_card_banner)
-            registerItemType(VIDEO_FOLLOW_CARD_TYPE, R.layout.layout_follow_card)
-            registerItemType(VIDEO_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
+            registerItemType(BANNER_TYPE, R.layout.layout_card_banner)
+            registerItemType(FOLLOW_CARD_TYPE, R.layout.layout_follow_card)
+            registerItemType(HORIZONTAL_SCROLL_CARD_TYPE, R.layout.layout_horizontal_scroll_card)
             registerItemType(VIDEO_COLLECTION_WITH_COVER_TYPE, R.layout.layout_collection_with_cover)
-            registerItemType(VIDEO_SQUARE_CARD_COLLECTION_TYPE, R.layout.layout_square_collection)
+            registerItemType(SQUARE_CARD_COLLECTION_TYPE, R.layout.layout_square_collection)
             registerItemType(VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE, R.layout.item_collection_of_horizontal_scroll_card)
             registerItemType(VIDEO_COLLECTION_WITH_BRIEF_TYPE, R.layout.layout_collection_with_brief)
             registerItemType(TEXT_CARD_TYPE, R.layout.layout_single_text)
@@ -105,6 +110,7 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             registerItemType(BLANK_CARD_TYPE, R.layout.layout_blank_card)
             registerItemType(SQUARE_CARD_TYPE, R.layout.item_square_card)
             registerItemType(RECTANGLE_CARD_TYPE, R.layout.item_square_card)
+            registerItemType(VIDEO_TYPE, R.layout.layout_single_video)
             registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
         }
 
@@ -112,11 +118,11 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
 
     override fun convert(helper: BaseViewHolder?, item: Content) {
         when (helper?.itemViewType) {
-            VIDEO_BANNER_TYPE -> setBannerInfo(helper, item)
-            VIDEO_FOLLOW_CARD_TYPE -> setFollowCardInfo(helper, item)
-            VIDEO_HORIZONTAL_SCROLL_CARD_TYPE -> setHorizontalScrollCardInfo(helper, item.data.itemList)
+            BANNER_TYPE -> setBannerInfo(helper, item)
+            FOLLOW_CARD_TYPE -> setFollowCardInfo(helper, item)
+            HORIZONTAL_SCROLL_CARD_TYPE -> setHorizontalScrollCardInfo(helper, item.data.itemList)
             VIDEO_COLLECTION_WITH_COVER_TYPE -> setCollectionCardWithCoverInfo(helper, item.data)
-            VIDEO_SQUARE_CARD_COLLECTION_TYPE -> setSquareCollectionInfo(helper, item.data.itemList)
+            SQUARE_CARD_COLLECTION_TYPE -> setSquareCollectionInfo(helper, item.data.itemList)
             VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE -> setCollectionOfHorizontalScrollCardInfo(helper, item.data)
             VIDEO_COLLECTION_WITH_BRIEF_TYPE -> setCollectionBriefInfo(helper, item)
             TEXT_CARD_TYPE -> setSingleText(helper, item)
@@ -124,6 +130,7 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
             BLANK_CARD_TYPE -> setBlankCardInfo(helper, item)
             SQUARE_CARD_TYPE -> setSquareCardInfo(helper, item.data)
             RECTANGLE_CARD_TYPE -> setRectangleCardInfo(helper, item.data)
+            VIDEO_TYPE -> setSingleVideoInfo(helper, item)
             VIDEO_BANNER_THREE_TYPE -> setBanner3Info(helper, item.data)
         }
     }
@@ -349,5 +356,18 @@ class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, Ba
         imageView.setImageURI(item.image)
         helper.setText(R.id.tv_title, item.title)
 
+    }
+
+    /**
+     * 设置单视频信息
+     */
+    private fun setSingleVideoInfo(helper: BaseViewHolder, item: Content) {
+        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
+        imageView.setImageURI(item.data.cover.feed)
+        helper.setText(R.id.tv_single_title, item.data.title)
+        val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+        helper.setText(R.id.tv_single_desc, description)
+        //点击跳转到视频界面
+        helper.itemView.setOnClickListener { VideoDetailActivity.start(mContext, item.data, data as ArrayList<Content>) }
     }
 }

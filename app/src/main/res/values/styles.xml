@@ -15,7 +15,7 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <!--进度调-->
+    <!--进度条-->
     <style name="ProgressBarStyle">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/seek_bar_layer</item>

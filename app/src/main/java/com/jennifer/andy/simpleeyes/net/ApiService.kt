@@ -19,26 +19,15 @@ import retrofit2.http.Url
 
 interface ApiService {
 
+    ///////////////////////////////////////////////////////////////////////////
+    // 首页相关
+    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * 首页
      */
     @GET("api/v4/tabs/selected")
     fun getCategory(): Observable<AndyInfo>
-
-    /**
-     * 获取更多信息
-     * @param url 下一页请求地址
-     */
-    @GET
-    fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>?
-
-    /**
-     * 获取更多信息
-     * @param url 下一页请求地址
-     */
-    @GET
-    fun getMoreJenniferInfo(@Url url: String?): Observable<JenniferInfo>?
 
     /**
      * 获取热门关键词
@@ -53,16 +42,45 @@ interface ApiService {
     fun searchVideoByWord(@Query("query") word: String): Observable<AndyInfo>
 
     /**
-     * 关注
+     * 每日精选旁的日历显示
      */
-    @GET("api/v4/tabs/follow")
-    fun getFollowTabs(): Observable<AndyInfo>
+    @GET("api/v3/issueNavigationList")
+    fun getIssueNaviGationList(): Observable<JenniferInfo>
 
+    ///////////////////////////////////////////////////////////////////////////
+    // 发现相关
+    ///////////////////////////////////////////////////////////////////////////
     /**
      * 发现
      */
     @GET("api/v4/discovery")
     fun getDiscoveryTab(): Observable<Tab>
+
+    /**
+     * 获取全部分类信息
+     */
+    @GET("api/v4/categories/all")
+    fun getAllCategoriesInfo(): Observable<AndyInfo>
+
+    /**
+     * 获取排行榜tab信息
+     */
+    @GET("api/v4/rankList")
+    fun getRankListTab(): Observable<Tab>
+
+    ///////////////////////////////////////////////////////////////////////////
+    // 关注相关
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 关注
+     */
+    @GET("api/v4/tabs/follow")
+    fun getFollowTabs(): Observable<AndyInfo>
+
+    ///////////////////////////////////////////////////////////////////////////
+    // 公共接口
+    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * 获取发现Tab详细数据
@@ -71,6 +89,25 @@ interface ApiService {
     @GET
     fun getTabInfo(@Url url: String?): Observable<AndyInfo>
 
+    /**
+     * 获取更多信息
+     * @param url 下一页请求地址
+     */
+    @GET
+    fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>?
+
+
+    /**
+     * 获取更多信息
+     * @param url 下一页请求地址
+     */
+    @GET
+    fun getMoreJenniferInfo(@Url url: String?): Observable<JenniferInfo>?
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // 视频相关
+    ///////////////////////////////////////////////////////////////////////////
     /**
      * 根据视频id,获取相关信息
      */
@@ -90,16 +127,5 @@ interface ApiService {
     @GET("api/v2/feed?num=3")
     fun getDailyElite(): Observable<JenniferInfo>
 
-    /**
-     * 每日精选旁的日历显示
-     */
-    @GET("api/v3/issueNavigationList")
-    fun getIssueNaviGationList(): Observable<JenniferInfo>
-
-    /**
-     * 获取全部分类信息
-     */
-    @GET("api/v4/categories/all")
-    fun getAllCategoriesInfo(): Observable<AndyInfo>
 
 }

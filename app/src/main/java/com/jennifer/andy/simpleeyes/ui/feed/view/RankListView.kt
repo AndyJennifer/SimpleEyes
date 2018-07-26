@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.feed.view
 
+import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 
@@ -9,6 +10,8 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  * Description:
  */
 
-interface RankView : BaseView {
+interface RankListView : BaseView {
+
+    fun loadTabSuccess(tabInfo: TabInfo)
 
 }

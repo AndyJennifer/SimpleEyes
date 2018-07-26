@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <!--中间跳转页-->
-        <activity android:name=".ui.SchemeFilterActivity">
+        <activity android:name=".router.SchemeFilterActivity">
             <!--Scheme-->
             <intent-filter>
                 <data android:scheme="eyepetizer"/>
@@ -91,7 +91,7 @@
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
         <!--排行榜-->
-        <activity android:name=".ui.feed.RankActivity"
+        <activity android:name=".ui.feed.RankListActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
     </application>

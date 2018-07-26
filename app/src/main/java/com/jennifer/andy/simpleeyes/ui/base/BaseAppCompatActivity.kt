@@ -3,12 +3,14 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toolbar
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.BaseAppManager
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import me.yokeyword.fragmentation.SupportActivity
 
@@ -155,15 +157,30 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     }
 
     /**
-     * 初始化工具栏
+     * 初始化工具栏,默认情况下加粗
      */
-    protected fun initToolBar(toolbar: Toolbar, title: String? = null) {
+    protected fun initToolBar(toolbar: Toolbar, title: String? = null, fontType: FontType = FontType.BOLD) {
         toolbar.setNavigationOnClickListener {
             showKeyboard(false)
             finish()
         }
         val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
+        tvTitle.setFontType(fontType)
         tvTitle.text = title
+
+    }
+
+    /**
+     * 初始化工具栏，默认情况下加粗
+     */
+    protected fun initToolBar(toolbar: Toolbar, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
+        toolbar.setNavigationOnClickListener {
+            showKeyboard(false)
+            finish()
+        }
+        val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
+        tvTitle.setFontType(fontType)
+        tvTitle.setText(id!!)
 
     }
 

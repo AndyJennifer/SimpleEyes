@@ -45,8 +45,7 @@
     <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
         android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
             android:id="@+id/tab_layout"

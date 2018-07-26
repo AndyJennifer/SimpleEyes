@@ -8,30 +8,31 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedDetailPresenter
-import com.jennifer.andy.simpleeyes.ui.feed.view.FeedDetailView
+import com.jennifer.andy.simpleeyes.ui.feed.presenter.TagDetailInfoPresenter
+import com.jennifer.andy.simpleeyes.ui.feed.view.TagDetailInfoView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 
 
 /**
  * Author:  andy.xwt
  * Date:    2018/7/3 11:29
- * Description:发现中详细的Tab界面
+ * Description:详细的Tab界面
  */
 
-class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), FeedDetailView {
+class TagDetailInfoInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoPresenter>(), TagDetailInfoView {
 
 
     private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
-    private var mCateGoryAdapter: BaseDataAdapter? = null
+    private var mAdapter: BaseDataAdapter? = null
 
     private lateinit var mApiUrl: String
 
     companion object {
 
         @JvmStatic
-        fun newInstance(apiUrl: String): FeedDetailFragment {
-            val categoryFragment = FeedDetailFragment()
+        fun newInstance(apiUrl: String): TagDetailInfoInfoFragment {
+            val categoryFragment = TagDetailInfoInfoFragment()
             val bundle = Bundle()
             bundle.putString(Extras.API_URL, apiUrl)
             categoryFragment.arguments = bundle
@@ -49,25 +50,25 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
 
 
     override fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
-        if (mCateGoryAdapter == null) {
-            mCateGoryAdapter = BaseDataAdapter(andyInfo.itemList)
-            mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreDetailInfo() }, mRecyclerView)
-
-            mRecyclerView.adapter = mCateGoryAdapter
+        if (mAdapter == null) {
+            mAdapter = BaseDataAdapter(andyInfo.itemList)
+            mAdapter?.setLoadMoreView(CustomLoadMoreView())
+            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreDetailInfo() }, mRecyclerView)
+            mRecyclerView.adapter = mAdapter
             mRecyclerView.layoutManager = LinearLayoutManager(context)
         } else {
-            mCateGoryAdapter?.setNewData(andyInfo.itemList)
+            mAdapter?.setNewData(andyInfo.itemList)
         }
     }
 
     override fun loadMoreSuccess(data: AndyInfo) {
-        mCateGoryAdapter?.addData(data.itemList)
-        mCateGoryAdapter?.loadMoreComplete()
+        mAdapter?.addData(data.itemList)
+        mAdapter?.loadMoreComplete()
     }
 
     override fun showNoMore() {
-        mCateGoryAdapter?.loadMoreEnd()
+        mAdapter?.loadMoreEnd()
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_feed_detail
+    override fun getContentViewLayoutId() = R.layout.fragment_tag_detail_info
 }

@@ -44,9 +44,7 @@ object TypefaceManager {
      */
     fun setTextTypeFace(textView: TextView, fontType: FontType?) {
         val localTypeFace = getTypeFace(fontType)
-        localTypeFace?.let {
-            setTextTypeFace(AndyApplication.INSTANCE, null, textView)
-        }
+        textView.typeface = localTypeFace
     }
 
     /**

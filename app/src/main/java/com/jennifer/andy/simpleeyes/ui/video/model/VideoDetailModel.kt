@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.video
+package com.jennifer.andy.simpleeyes.ui.video.model
 
 import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.rx.RxHelper

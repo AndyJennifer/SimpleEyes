@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.ui.feed.model
 
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.rx.RxHelper
@@ -21,18 +20,14 @@ class FeedModel : BaseModel {
      */
     fun getDiscoveryTab(): Observable<Tab> = Api.getDefault().getDiscoveryTab().compose(RxHelper.handleResult())
 
-    /**
-     * 获取tab信息
-     */
-    fun getTabInfo(url: String): Observable<AndyInfo> = Api.getDefault().getTabInfo(url).compose(RxHelper.handleResult())
-
-    /**
-     * 加载更多信息
-     */
-    fun loadMoreAndyInfo(nextPageUrl: String?) = Api.getDefault().getMoreAndyInfo(nextPageUrl)?.compose(RxHelper.handleResult())
 
     /**
      * 获取全部分类信息
      */
     fun loadAllCategoriesInfo() = Api.getDefault().getAllCategoriesInfo().compose(RxHelper.handleResult())
+
+    /**
+     * 获取排行榜tab栏
+     */
+    fun getRankListTab() = Api.getDefault().getRankListTab().compose(RxHelper.handleResult())
 }
