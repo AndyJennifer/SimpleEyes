@@ -70,6 +70,7 @@ class SplashActivity : BaseAppCompatActivity() {
             } else if (it.currentPlayTime in 1500..2000) {
                 mHeadOuter.setImageResource(R.drawable.ic_eye_black_outer)
                 mHeadInner.setImageResource(R.drawable.ic_eye_black_inner)
+
                 mName.setTextColor(resources.getColor(R.color.black_444444))
             }
 

@@ -93,7 +93,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         mDailyEliteAdapter?.loadMoreEnd()
     }
 
-    override fun initPresenter() = DailyElitePresenter()
+
 
     override fun getContentViewLayoutId() = R.layout.activity_daily_elite
 }

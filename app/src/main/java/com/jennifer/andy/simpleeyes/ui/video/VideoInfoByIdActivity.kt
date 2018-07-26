@@ -46,7 +46,6 @@ class VideoInfoByIdActivity : BaseActivity<VideoInfoByIdView, VideoInfoByIdPrese
                 })
     }
 
-    override fun initPresenter() = VideoInfoByIdPresenter()
 
     override fun getContentViewLayoutId() = R.layout.activity_videoinfo_by_id
 

@@ -555,7 +555,7 @@ public class ShortTabLayout extends HorizontalScrollView {
      * Create and return a new {@link  Tab}. You need to manually add this using
      * {@link #addTab(Tab)} or a related method.
      *
-     * @return A new Tab
+     * @return Demo new Tab
      * @see #addTab(Tab)
      */
     @NonNull
@@ -1228,7 +1228,7 @@ public class ShortTabLayout extends HorizontalScrollView {
     }
 
     /**
-     * A tab in this layout. Instances can be created via {@link #newTab()}.
+     * Demo tab in this layout. Instances can be created via {@link #newTab()}.
      */
     public static final class Tab {
 
@@ -1315,7 +1315,7 @@ public class ShortTabLayout extends HorizontalScrollView {
          * the value given to {@link #setIcon(Drawable)}.
          * </p>
          *
-         * @param resId A layout resource to inflate and use as a custom tab view
+         * @param resId Demo layout resource to inflate and use as a custom tab view
          * @return The current instance for call chaining
          */
         @NonNull
@@ -1374,7 +1374,7 @@ public class ShortTabLayout extends HorizontalScrollView {
         /**
          * Set the icon displayed on this tab.
          *
-         * @param resId A resource ID referring to the icon that should be displayed
+         * @param resId Demo resource ID referring to the icon that should be displayed
          * @return The current instance for call chaining
          */
         @NonNull
@@ -1403,7 +1403,7 @@ public class ShortTabLayout extends HorizontalScrollView {
          * Set the text displayed on this tab. Text may be truncated if there is not room to display
          * the entire string.
          *
-         * @param resId A resource ID referring to the text that should be displayed
+         * @param resId Demo resource ID referring to the text that should be displayed
          * @return The current instance for call chaining
          */
         @NonNull
@@ -1438,7 +1438,7 @@ public class ShortTabLayout extends HorizontalScrollView {
          * Set a description of this tab's content for use in accessibility support. If no content
          * description is provided the title will be used.
          *
-         * @param resId A resource ID referring to the description text
+         * @param resId Demo resource ID referring to the description text
          * @return The current instance for call chaining
          * @see #setContentDescription(CharSequence)
          * @see #getContentDescription()
@@ -2094,7 +2094,7 @@ public class ShortTabLayout extends HorizontalScrollView {
     }
 
     /**
-     * A {@link ViewPager.OnPageChangeListener} class which contains the
+     * Demo {@link ViewPager.OnPageChangeListener} class which contains the
      * necessary calls back to the provided {@link TabLayout} so that the tab position is
      * kept in sync.
      * <p>
@@ -2156,7 +2156,7 @@ public class ShortTabLayout extends HorizontalScrollView {
     }
 
     /**
-     * A {@link  OnTabSelectedListener} class which contains the necessary calls back
+     * Demo {@link  OnTabSelectedListener} class which contains the necessary calls back
      * to the provided {@link ViewPager} so that the tab position is kept in sync.
      */
     public static class ViewPagerOnTabSelectedListener implements OnTabSelectedListener {

@@ -69,8 +69,5 @@ class FeedDetailFragment : BaseFragment<FeedDetailView, FeedDetailPresenter>(), 
         mCateGoryAdapter?.loadMoreEnd()
     }
 
-    override fun initPresenter() = FeedDetailPresenter()
-
-
     override fun getContentViewLayoutId() = R.layout.fragment_feed_detail
 }

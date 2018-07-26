@@ -202,9 +202,6 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
     }
 
 
-    override fun initPresenter() = SearchPresenter()
-
-
     override fun toggleOverridePendingTransition() = true
 
     override fun getOverridePendingTransition() = TransitionMode.TOP

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.utils.SystemUtils
 
 
 /**
@@ -20,7 +21,7 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter = initPresenter()
+        mPresenter = SystemUtils.getGenericInstance(this, 1)
     }
 
 
@@ -50,9 +51,6 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
         mMultipleStateView.showContent()
     }
 
-    /**
-     * 初始化Presenter
-     */
-    abstract fun initPresenter(): T
+
 
 }

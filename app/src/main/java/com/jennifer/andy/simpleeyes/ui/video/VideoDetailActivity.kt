@@ -284,8 +284,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun getOverridePendingTransition(): TransitionMode = TransitionMode.BOTTOM
 
-    override fun initPresenter() = VideoDetailPresenter()
-
     override fun getContentViewLayoutId() = R.layout.activity_video_detail
 
 }

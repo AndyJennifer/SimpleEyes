@@ -30,7 +30,5 @@ class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>() {
 
     override fun getContentViewLayoutId() = R.layout.fragment_profile
 
-    override fun initPresenter() = ProfilePresenter()
-
 
 }

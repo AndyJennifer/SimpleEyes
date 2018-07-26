@@ -81,7 +81,5 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
         mStateView.showContent()
     }
 
-    override fun initPresenter() = FeedPresenter()
-
     override fun getContentViewLayoutId() = R.layout.fragment_feed
 }

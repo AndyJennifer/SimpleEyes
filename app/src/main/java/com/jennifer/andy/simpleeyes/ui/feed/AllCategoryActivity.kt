@@ -51,7 +51,5 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
         mStateView.showContent()
     }
 
-    override fun initPresenter() = AllCategoryPresenter()
-
     override fun getContentViewLayoutId() = R.layout.activity_all_category
 }
