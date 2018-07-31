@@ -68,6 +68,12 @@ interface ApiService {
     @GET("api/v4/rankList")
     fun getRankListTab(): Observable<Tab>
 
+    /**
+     * 获取专题信息
+     */
+    @GET("api/v3/specialTopics")
+    fun getTopicInfo(): Observable<AndyInfo>
+
     ///////////////////////////////////////////////////////////////////////////
     // 关注相关
     ///////////////////////////////////////////////////////////////////////////

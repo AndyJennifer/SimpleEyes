@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
-import android.widget.Toolbar
+import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
@@ -27,7 +27,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 @Route(path = "/AndyJennifer/ranklist")
 class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankListView {
 
-    private val mToolbar by bindView<Toolbar>(R.id.tool_bar)
+    private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
     private val mViewPager: ViewPager by bindView(R.id.view_pager)
     private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)

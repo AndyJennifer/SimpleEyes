@@ -30,4 +30,9 @@ class FeedModel : BaseModel {
      * 获取排行榜tab栏
      */
     fun getRankListTab() = Api.getDefault().getRankListTab().compose(RxHelper.handleResult())
+
+    /**
+     * 获取专题信息
+     */
+    fun getTopicInfo() = Api.getDefault().getTopicInfo().compose(RxHelper.handleResult())
 }

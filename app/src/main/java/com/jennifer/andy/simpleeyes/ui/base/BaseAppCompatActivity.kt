@@ -6,7 +6,8 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toolbar
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.BaseAppManager
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -159,11 +160,14 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 初始化工具栏,默认情况下加粗
      */
-    protected fun initToolBar(toolbar: Toolbar, title: String? = null, fontType: FontType = FontType.BOLD) {
-        toolbar.setNavigationOnClickListener {
+    protected fun initToolBar(toolbar: RelativeLayout, title: String? = null, fontType: FontType = FontType.BOLD) {
+        val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
+        ivBack.setOnClickListener {
             showKeyboard(false)
             finish()
         }
+
+
         val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
         tvTitle.setFontType(fontType)
         tvTitle.text = title
@@ -173,11 +177,13 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 初始化工具栏，默认情况下加粗
      */
-    protected fun initToolBar(toolbar: Toolbar, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
-        toolbar.setNavigationOnClickListener {
+    protected fun initToolBar(toolbar: RelativeLayout, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
+        val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
+        ivBack.setOnClickListener {
             showKeyboard(false)
             finish()
         }
+
         val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
         tvTitle.setFontType(fontType)
         tvTitle.setText(id!!)

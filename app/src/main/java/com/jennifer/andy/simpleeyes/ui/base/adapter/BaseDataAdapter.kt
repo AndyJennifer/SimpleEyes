@@ -133,6 +133,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             VIDEO_TYPE -> setSingleVideoInfo(helper, item)
             VIDEO_BANNER_THREE_TYPE -> setBanner3Info(helper, item.data)
         }
+
     }
 
 
@@ -142,6 +143,13 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     private fun setBannerInfo(helper: BaseViewHolder, item: Content) {
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.image)
+        helper.itemView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(item.data.actionUrl)
+            intent.addCategory(Intent.CATEGORY_DEFAULT)
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+            mContext.startActivity(intent)
+        }
     }
 
 

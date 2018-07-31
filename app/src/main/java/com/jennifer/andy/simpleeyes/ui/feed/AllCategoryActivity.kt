@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.Toolbar
+import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
@@ -27,7 +27,7 @@ import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 
 class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(), AllCategoryView {
 
-    private val mToolBar: Toolbar by bindView(R.id.tool_bar)
+    private val mToolBar: RelativeLayout by bindView(R.id.tool_bar)
     private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 

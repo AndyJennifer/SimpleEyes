@@ -39,9 +39,9 @@ class EyesPathReplaceService : PathReplaceService {
                     return setWebViewUrl(split)
                 uriStr.contains("detail") -> //处理webview中点击跳转
                     return setWebVideoUrl(split)
-                uriStr.contains("ranklist") ->
+                uriStr.contains("ranklist") ->//处理排行榜
                     return setRankListUrl(split)
-                uriStr.contains("campaing") ->
+                uriStr.contains("campaign") ->//处理专题
                     return setTopicUrl(split)
                 else -> {
                 }

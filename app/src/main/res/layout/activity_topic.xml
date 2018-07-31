@@ -6,8 +6,16 @@
     android:orientation="vertical">
 
     <include layout="@layout/layout_common_toolbar"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recycler"
+
+    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+        android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
+
 </LinearLayout>
