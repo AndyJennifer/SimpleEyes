@@ -41,6 +41,8 @@ class EyesPathReplaceService : PathReplaceService {
                     return setWebVideoUrl(split)
                 uriStr.contains("ranklist") ->
                     return setRankListUrl(split)
+                uriStr.contains("campaing") ->
+                    return setTopicUrl(split)
                 else -> {
                 }
             }
@@ -105,6 +107,16 @@ class EyesPathReplaceService : PathReplaceService {
     private fun setRankListUrl(split: List<String>): Uri {
         val str = split[1].replace("/", "")
         return Uri.parse("$HOST$ONE_LEVEL$str")
+    }
+
+    /**
+     * 处理热门专题，
+     * eyepetizer://campaign/list/?title=%E4%B8%93%E9%A2%98
+     * 替换为：eyepetizer://github.com/campaign/list?title=%E4%B8%93%E9%A2%98
+     */
+    private fun setTopicUrl(split: List<String>): Uri {
+        val str = split[1].replace("/?", "?")
+        return Uri.parse("$HOST$str")
     }
 
 

@@ -94,6 +94,11 @@
         <activity android:name=".ui.feed.RankListActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
+
+        <!--热门专题-->
+        <activity android:name=".ui.feed.TopicActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
