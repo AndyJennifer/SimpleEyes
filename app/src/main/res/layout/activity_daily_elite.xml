@@ -39,9 +39,17 @@
             app:font_name="lobster"/>
     </RelativeLayout>
 
-    <com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
-        android:id="@+id/rv_recycler"
+    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+        android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+
+        <com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
+            android:id="@+id/rv_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
 
 </LinearLayout>

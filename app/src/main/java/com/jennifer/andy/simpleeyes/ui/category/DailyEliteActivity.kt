@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.category
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
@@ -15,6 +16,7 @@ import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.LinearLayoutManagerWithSmoothScroller
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 
 
 /**
@@ -28,6 +30,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
     private val mBackImageView: ImageView by bindView(R.id.iv_back)
     private val mRecycler: PullToRefreshRecyclerView by bindView(R.id.rv_recycler)
     private val mTvDate: CustomFontTextView by bindView(R.id.tv_date)
+    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
     private var mDailyEliteAdapter: DailyEliteAdapter? = null
     private lateinit var mLinearLayoutManager: LinearLayoutManagerWithSmoothScroller
@@ -44,6 +47,7 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
                     mTvDate.text = mDailyEliteAdapter?.getItem(position)?.data?.text
                 }
             }
+
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
                 val layoutManager = mRecycler.rootView.layoutManager as LinearLayoutManager
                 //滚动到日期及完毕
@@ -85,7 +89,9 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         mDailyEliteAdapter?.loadMoreEnd()
     }
 
-
+    override fun showNetError(onClickListener: View.OnClickListener) {
+        mStateView.showNetError(onClickListener)
+    }
 
     override fun getContentViewLayoutId() = R.layout.activity_daily_elite
 }
