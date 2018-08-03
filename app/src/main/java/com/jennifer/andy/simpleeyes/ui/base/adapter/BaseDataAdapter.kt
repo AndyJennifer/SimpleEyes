@@ -378,10 +378,10 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
 
         //设置label
         if (item.data.label != null) {
-            helper.setVisible(R.id.tv_label, true)
+            helper.setGone(R.id.tv_label, true)
             helper.setText(R.id.tv_label, item.data.label?.text)
         } else {
-            helper.setGone(R.id.tv_label, true)
+            helper.setGone(R.id.tv_label, false)
         }
         //点击跳转到视频界面
         helper.itemView.setOnClickListener { VideoDetailActivity.start(mContext, item.data, data as ArrayList<Content>) }
