@@ -10,9 +10,7 @@
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:placeholderImage="@drawable/landing_background"
-        app:viewAspectRatio="1.33"
-    />
+        app:backgroundImage="@drawable/landing_background"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

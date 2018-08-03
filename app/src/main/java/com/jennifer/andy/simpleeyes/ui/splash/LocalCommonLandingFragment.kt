@@ -6,10 +6,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.ui.MainActivity
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -19,13 +20,13 @@ import java.util.*
 
 /**
  * Author:  andy.xwt
- * Date:    2018/2/3 10:26
- * Description:闪屏页(上升动画）
+ * Date:    2018/8/3 09:56
+ * Description:本地的加载页(上升动画）
  */
 
-class SplashActivity : BaseAppCompatActivity() {
+class LocalCommonLandingFragment : BaseAppCompatFragment() {
 
-    private val mIvBackground by bindView<ImageView>(R.id.iv_background)
+    private val mIvBackground by bindView<SimpleDraweeView>(R.id.iv_background)
     private val mLoadingContainer by bindView<RelativeLayout>(R.id.rl_loading_container)
     private val mMoveContainer by bindView<RelativeLayout>(R.id.ll_move_container)
     private val mHeadOuter by bindView<ImageView>(R.id.iv_head_outer)
@@ -37,13 +38,12 @@ class SplashActivity : BaseAppCompatActivity() {
     private val mTodayChose by bindView<CustomFontTextView>(R.id.tv_today_chose)
 
 
-    override fun getBundleExtras(extras: Bundle) {
-
+    companion object {
+        @JvmStatic
+        fun newInstance(): LocalCommonLandingFragment = LocalCommonLandingFragment()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        window.setBackgroundDrawable(null)
-//        mIvBackground.setImageURI(Uri.parse("com.jennifer.andy.simpleeyes/${R.drawable.landing_background}"))
         //如果用户没登录，执行上升动画，否则执行缩放动画
         if (!UserPreferences.getUserIsLogin()) {
             doUpAnimator()
@@ -51,7 +51,6 @@ class SplashActivity : BaseAppCompatActivity() {
         } else {
             doScaleAnimator()
         }
-
     }
 
 
@@ -59,7 +58,7 @@ class SplashActivity : BaseAppCompatActivity() {
      * 执行上升动画
      */
     private fun doUpAnimator() {
-        val moveY = DensityUtils.dip2px(this, 100f)
+        val moveY = DensityUtils.dip2px(_mActivity, 100f)
         val upAnimator = ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat())
         upAnimator.addUpdateListener {
             if (it.currentPlayTime in 600..1500) {
@@ -155,5 +154,5 @@ class SplashActivity : BaseAppCompatActivity() {
         animatorSet.start()
     }
 
-    override fun getContentViewLayoutId() = R.layout.activity_splash
+    override fun getContentViewLayoutId() = R.layout.fragment_local_coomon_landing
 }

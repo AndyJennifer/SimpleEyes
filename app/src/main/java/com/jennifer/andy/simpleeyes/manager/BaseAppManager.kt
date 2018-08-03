@@ -11,7 +11,7 @@ import android.app.Activity
 
 class BaseAppManager private constructor() {
 
-    val sActivityList = ArrayList<Activity>()
+    private val sActivityList = ArrayList<Activity>()
 
     companion object {
         fun getInstance(): BaseAppManager {

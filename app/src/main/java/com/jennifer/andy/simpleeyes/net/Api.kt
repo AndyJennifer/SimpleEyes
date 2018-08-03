@@ -7,20 +7,18 @@ package com.jennifer.andy.simpleeyes.net
  * Description:
  */
 
-class Api {
+object Api {
 
-    companion object {
 
-        /**
-         * 主域名
-         */
-        val BASE_URL: String get() = "http://baobab.kaiyanapp.com/"
+    /**
+     * 主域名
+     */
+    val BASE_URL: String get() = "http://baobab.kaiyanapp.com/"
 
-        /**
-         * 获取默认Service
-         */
-        fun getDefault() = RetrofitConfig.getDefaultService()
+    /**
+     * 获取默认Service
+     */
+    fun getDefault() = RetrofitConfig.getDefaultService()
 
-    }
 
 }

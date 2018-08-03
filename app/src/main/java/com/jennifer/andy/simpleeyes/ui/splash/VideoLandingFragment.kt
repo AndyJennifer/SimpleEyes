@@ -7,7 +7,7 @@ import com.jennifer.andy.simpleeyes.AndyApplication
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.ui.MainActivity
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
@@ -17,11 +17,11 @@ import com.rd.PageIndicatorView
 
 /**
  * Author:  andy.xwt
- * Date:    2018/5/3 10:44
+ * Date:    2018/8/3 10:08
  * Description:视频闪屏页 第一次用户安装应用的时候会走
  */
 
-class SplashVideoActivity : BaseAppCompatActivity() {
+class VideoLandingFragment : BaseAppCompatFragment() {
 
     private val mVideoView: VideoView by bindView(R.id.video_view)
     private val mViewPager: InterceptVerticalViewPager by bindView(R.id.view_pager)
@@ -34,14 +34,17 @@ class SplashVideoActivity : BaseAppCompatActivity() {
     private lateinit var mSplashVideoFragmentAdapter: SplashVideoFragmentAdapter
     private lateinit var mFragmentList: MutableList<SloganFragment>
 
-    override fun initView(savedInstanceState: Bundle?) {
-        if (UserPreferences.getUserIsFirstLogin()) {
-            initSloganText()
-            play()
-        } else {
-            readyGoThenKillSelf(SplashActivity::class.java)
-        }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): VideoLandingFragment = VideoLandingFragment()
     }
+
+    override fun initView(savedInstanceState: Bundle?) {
+        initSloganText()
+        play()
+    }
+
 
     /**
      * 这里我采用的比较暴力的方法，主要是不想写事件拦截了，想写的小伙伴，可以自己去写
@@ -58,7 +61,7 @@ class SplashVideoActivity : BaseAppCompatActivity() {
             mFragmentList.add(SloganFragment.newInstance())
         }
 
-        mSplashVideoFragmentAdapter = SplashVideoFragmentAdapter(mFragmentList, supportFragmentManager)
+        mSplashVideoFragmentAdapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
         mViewPager.verticalListener = { goMainActivity() }
 
         mViewPager.offscreenPageLimit = mFragmentList.size
@@ -93,7 +96,7 @@ class SplashVideoActivity : BaseAppCompatActivity() {
 
     private fun play() {
         val path = R.raw.landing
-        mVideoView.setVideoPath("android.resource://$packageName/$path")
+        mVideoView.setVideoPath("android.resource://${activity?.packageName}/$path")
         mVideoView.setOnPreparedListener {
             mVideoView.requestFocus()
             mVideoView.setOnCompletionListener {
@@ -126,5 +129,6 @@ class SplashVideoActivity : BaseAppCompatActivity() {
         mVideoView.stopPlayback()
     }
 
-    override fun getContentViewLayoutId() = R.layout.activity_splash_video
+    override fun getContentViewLayoutId() = R.layout.fragment_video_landing
+
 }

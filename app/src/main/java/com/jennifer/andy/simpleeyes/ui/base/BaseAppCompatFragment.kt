@@ -53,7 +53,7 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     /**
      * 跳转到相应的activity 并携带bundle数据
      */
-    open fun readyGo(clazz: Class<*>, bundle: Bundle? = null) {
+    fun readyGo(clazz: Class<*>, bundle: Bundle? = null) {
         val intent = Intent(activity, clazz)
         bundle?.let {
             intent.putExtras(bundle)
@@ -64,13 +64,27 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     /**
      * 跳转到相应的activity,并携带bundle数据，接收返回码
      */
-    open fun readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
+    fun readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
         val intent = Intent(activity, clazz)
         bundle?.let {
             intent.putExtras(bundle)
         }
         startActivityForResult(intent, requestCode)
     }
+
+    /**
+     * 跳转到相应的activity并携带bundle数据，然后干掉自己
+     *
+     */
+    fun readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) {
+        val intent = Intent(activity, clazz)
+        bundle?.let {
+            intent.putExtras(bundle)
+        }
+        startActivity(intent)
+        activity?.finish()
+    }
+
 
     /**
      * 获取bundle中相应data

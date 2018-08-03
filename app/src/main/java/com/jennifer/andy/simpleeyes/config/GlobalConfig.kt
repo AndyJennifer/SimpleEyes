@@ -47,7 +47,5 @@ class GlobalConfig {
         fun getIsAppDebug() = debug
 
 
-        //todo 这里lastChannel 是否是上次浏览的位置呢？ 以后来写
-
     }
 }
