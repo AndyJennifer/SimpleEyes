@@ -43,6 +43,8 @@ class EyesPathReplaceService : PathReplaceService {
                     return setRankListUrl(split)
                 uriStr.contains("campaign") ->//处理专题
                     return setTopicUrl(split)
+                uriStr.contains("tag") ->//处理360全景
+                    return setTagUrl(split)
                 else -> {
                 }
             }
@@ -57,7 +59,7 @@ class EyesPathReplaceService : PathReplaceService {
      * 处理视频详情url
      * eyepetizer://pgc/detail/1065/?title=DELISH%20KITCHEN%20%E5%8F%AF%E5%8F%A3%E5%8E%A8%E6%88%BF&userType=PGC&tabIndex=1
      * 替换为：
-     * eyepetizer://github.com/?title=DELISH%20KITCHEN%20%E5%8F%AF%E5%8F%A3%E5%8E%A8%E6%88%BF&userType=PGC&tabIndex=1?id=1065
+     * eyepetizer://github.com/pag/detail/?title=DELISH%20KITCHEN%20%E5%8F%AF%E5%8F%A3%E5%8E%A8%E6%88%BF&userType=PGC&tabIndex=1?id=1065
      */
     private fun setPageDetailUrl(split: List<String>): Uri {
         //获取id
@@ -69,7 +71,7 @@ class EyesPathReplaceService : PathReplaceService {
         }
         //替换/1065/为空字符串
         val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
-        return Uri.parse("$HOST$uriWithoutNumber&?id=$id")
+        return Uri.parse("$HOST$uriWithoutNumber&id=$id")
     }
 
     /**
@@ -119,6 +121,23 @@ class EyesPathReplaceService : PathReplaceService {
         return Uri.parse("$HOST$str")
     }
 
+    /**
+     * 处理360全景
+     * eyepetizer://tag/658/?title=360%C2%B0%E5%85%A8%E6%99%AF
+     * eyepetizer://github.com/AndyJennifer/tag?id=658&title=360%C2%B0%E5%85%A8%E6%99%AF
+     */
+    private fun setTagUrl(split: List<String>): Uri {
+        //获取id
+        val pt = Pattern.compile("/\\d+/")
+        val matcher = pt.matcher(split[1])
+        var id = 0
+        if (matcher.find()) {
+            id = matcher.group().replace("/", "").toInt()
+        }
+        //替换/658/为空字符串
+        val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
+        return Uri.parse("$HOST$ONE_LEVEL$uriWithoutNumber&id=$id")
+    }
 
     override fun init(context: Context?) {
 

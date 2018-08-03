@@ -20,7 +20,6 @@ class FeedModel : BaseModel {
      */
     fun getDiscoveryTab(): Observable<Tab> = Api.getDefault().getDiscoveryTab().compose(RxHelper.handleResult())
 
-
     /**
      * 获取全部分类信息
      */
@@ -35,4 +34,9 @@ class FeedModel : BaseModel {
      * 获取专题信息
      */
     fun getTopicInfo() = Api.getDefault().getTopicInfo().compose(RxHelper.handleResult())
+
+    /**
+     * 获取tag信息(360全景信息)，注意是在onNext进行设置数据
+     */
+    fun getTagInfo(tagId: String, strategy: String) = Api.getDefault().getTagInfo(tagId, strategy).compose(RxHelper.handleResult())
 }

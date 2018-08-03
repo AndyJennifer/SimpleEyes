@@ -375,7 +375,16 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         helper.setText(R.id.tv_single_title, item.data.title)
         val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
         helper.setText(R.id.tv_single_desc, description)
+
+        //设置label
+        if (item.data.label != null) {
+            helper.setVisible(R.id.tv_label, true)
+            helper.setText(R.id.tv_label, item.data.label?.text)
+        } else {
+            helper.setGone(R.id.tv_label, true)
+        }
         //点击跳转到视频界面
         helper.itemView.setOnClickListener { VideoDetailActivity.start(mContext, item.data, data as ArrayList<Content>) }
+
     }
 }

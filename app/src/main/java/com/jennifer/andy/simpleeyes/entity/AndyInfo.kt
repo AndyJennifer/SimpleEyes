@@ -61,6 +61,7 @@ data class ContentBean(var dataType: String,
                        var favoriteAdTrack: String,
                        var webAdTrack: String,
                        var date: Long,
+                       val label: Label?,
                        var labelList: MutableList<*>,
                        var descriptionEditor: String,
                        var isCollected: Boolean,
@@ -89,6 +90,9 @@ data class Header(var id: Int,
                   var description: String,
                   var time: Long) : Serializable
 
+data class Label(var text: String,
+                 var card: String,
+                 var detail: String) : Serializable
 
 data class TagsBean(var id: Int,
                     var name: String,

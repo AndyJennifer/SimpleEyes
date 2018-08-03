@@ -93,7 +93,10 @@
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
 
-
+        <!--360全景-->
+        <activity android:name=".ui.feed.TagActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

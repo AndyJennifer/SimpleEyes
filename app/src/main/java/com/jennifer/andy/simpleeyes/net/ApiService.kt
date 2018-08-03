@@ -74,6 +74,14 @@ interface ApiService {
     @GET("api/v3/specialTopics")
     fun getTopicInfo(): Observable<AndyInfo>
 
+    /**
+     * 获取tag信息
+     * @param tagId tagId
+     * @param strategy tag模式
+     */
+    @GET("api/v3/tag/videos")
+    fun getTagInfo(@Query("tagId") tagId: String, @Query("strategy") strategy: String): Observable<AndyInfo>
+
     ///////////////////////////////////////////////////////////////////////////
     // 关注相关
     ///////////////////////////////////////////////////////////////////////////

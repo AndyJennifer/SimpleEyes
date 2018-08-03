@@ -44,8 +44,20 @@
             android:textSize="13sp"
             app:font_name="normal"/>
 
-
     </LinearLayout>
 
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_label"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:background="@drawable/shape_translate_border"
+        android:gravity="center"
+        android:padding="3dp"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:visibility="gone"/>
 
 </RelativeLayout>
