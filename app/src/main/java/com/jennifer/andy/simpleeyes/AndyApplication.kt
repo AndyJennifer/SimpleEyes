@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.os.Build
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.jennifer.andy.simpleeyes.config.GlobalConfig
 import com.jennifer.andy.simpleeyes.update.CheckUpdateProtocol
 import com.jennifer.andy.simpleeyes.update.LocalUpdateService
@@ -42,11 +43,21 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
         GlobalConfig.setApplicationContext(this)
         GlobalConfig.setAppDebug(false)
         GlobalConfig.setApplicationRootDir("simpleeyes")
-        Fresco.initialize(this)
         initARoute()
+        initFresco()
         //todo 这里还要做崩溃检查 腾讯的bugly 热更新等操作
 
 
+    }
+
+    /**
+     * 初始化Fresco,打开压缩
+     */
+    private fun initFresco() {
+        val config = ImagePipelineConfig.newBuilder(this)
+                .setDownsampleEnabled(true)
+                .build()
+        Fresco.initialize(this, config)
     }
 
     /**

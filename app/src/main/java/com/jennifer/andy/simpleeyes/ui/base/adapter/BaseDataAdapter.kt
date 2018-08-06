@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.RelativeLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -144,11 +145,13 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.image)
         helper.itemView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(item.data.actionUrl)
-            intent.addCategory(Intent.CATEGORY_DEFAULT)
-            intent.addCategory(Intent.CATEGORY_BROWSABLE)
-            mContext.startActivity(intent)
+            if (!TextUtils.isEmpty(item.data.actionUrl)) {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(item.data.actionUrl)
+                intent.addCategory(Intent.CATEGORY_DEFAULT)
+                intent.addCategory(Intent.CATEGORY_BROWSABLE)
+                mContext.startActivity(intent)
+            }
         }
     }
 
