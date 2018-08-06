@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category
+package com.jennifer.andy.simpleeyes.ui.home
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -9,9 +9,9 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.category.adapter.DailyEliteAdapter
-import com.jennifer.andy.simpleeyes.ui.category.presenter.DailyElitePresenter
-import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
+import com.jennifer.andy.simpleeyes.ui.home.adapter.DailyEliteAdapter
+import com.jennifer.andy.simpleeyes.ui.home.presenter.DailyElitePresenter
+import com.jennifer.andy.simpleeyes.ui.home.view.DailyEliteView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.LinearLayoutManagerWithSmoothScroller

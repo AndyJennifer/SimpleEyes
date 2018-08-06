@@ -11,7 +11,7 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.TopIssue
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.category.DailyEliteActivity
+import com.jennifer.andy.simpleeyes.ui.home.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView

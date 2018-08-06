@@ -39,4 +39,9 @@ class FeedModel : BaseModel {
      * 获取tag信息(360全景信息)，注意是在onNext进行设置数据
      */
     fun getTagInfo(tagId: String, strategy: String) = Api.getDefault().getTagInfo(tagId, strategy).compose(RxHelper.handleResult())
+
+    /**
+     * 获取种类下tab信息
+     */
+    fun getCategoryTagIno(id: String) = Api.getDefault().getCategoryTagInfo(id).compose(RxHelper.handleResult())
 }

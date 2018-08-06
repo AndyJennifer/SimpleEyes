@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category.view
+package com.jennifer.andy.simpleeyes.ui.home.view
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseView
@@ -10,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  * Description:
  */
 
-interface CategoryView : BaseView {
+interface HomeView : BaseView {
 
     /**
      * 加载信息成功

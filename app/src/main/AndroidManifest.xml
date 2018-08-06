@@ -66,7 +66,7 @@
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
         <!--每日精选-->
-        <activity android:name=".ui.category.DailyEliteActivity"
+        <activity android:name=".ui.home.DailyEliteActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
         <!--全部分类-->
@@ -95,6 +95,11 @@
 
         <!--360全景-->
         <activity android:name=".ui.feed.TagActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
+
+        <!--种类下tab信息-->
+        <activity android:name=".ui.feed.CategoryTabActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
     </application>

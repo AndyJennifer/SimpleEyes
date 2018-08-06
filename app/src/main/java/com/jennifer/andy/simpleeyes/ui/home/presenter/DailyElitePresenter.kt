@@ -1,11 +1,11 @@
-package com.jennifer.andy.simpleeyes.ui.category.presenter
+package com.jennifer.andy.simpleeyes.ui.home.presenter
 
 import android.view.View
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.JenniferInfo
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
-import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
+import com.jennifer.andy.simpleeyes.ui.home.model.HomeModel
+import com.jennifer.andy.simpleeyes.ui.home.view.DailyEliteView
 
 
 /**
@@ -16,11 +16,11 @@ import com.jennifer.andy.simpleeyes.ui.category.view.DailyEliteView
 
 class DailyElitePresenter : BasePresenter<DailyEliteView>() {
 
-    private var mCategoryModel: CategoryModel = CategoryModel()
+    private var mHomeModel: HomeModel = HomeModel()
     private var mNextPageUrl: String? = null
 
     fun getDailyElite() {
-        mRxManager.add(mCategoryModel.getDailyElite().subscribe({
+        mRxManager.add(mHomeModel.getDailyElite().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.showGetDailySuccess(combineContentInfo(it))
@@ -35,7 +35,7 @@ class DailyElitePresenter : BasePresenter<DailyEliteView>() {
      * 刷新
      */
     fun refresh() {
-        mRxManager.add(mCategoryModel.getDailyElite().subscribe({
+        mRxManager.add(mHomeModel.getDailyElite().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.showRefreshSuccess(combineContentInfo(it))
@@ -50,7 +50,7 @@ class DailyElitePresenter : BasePresenter<DailyEliteView>() {
      * 加載更多
      */
     fun loadMoreResult() {
-        mRxManager.add(mCategoryModel.loadMoreJenniferInfo(mNextPageUrl)!!.subscribe({
+        mRxManager.add(mHomeModel.loadMoreJenniferInfo(mNextPageUrl)!!.subscribe({
             mView?.loadMoreSuccess(combineContentInfo(it))
         }, {
             mView?.showNetError(View.OnClickListener {

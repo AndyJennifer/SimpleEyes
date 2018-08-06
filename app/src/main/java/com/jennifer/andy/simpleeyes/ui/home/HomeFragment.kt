@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category
+package com.jennifer.andy.simpleeyes.ui.home
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -8,8 +8,8 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.category.presenter.CategoryPresenter
-import com.jennifer.andy.simpleeyes.ui.category.view.CategoryView
+import com.jennifer.andy.simpleeyes.ui.home.presenter.HomePresenter
+import com.jennifer.andy.simpleeyes.ui.home.view.HomeView
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
@@ -24,7 +24,7 @@ import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomRecyclerView
  * Description:首页
  */
 
-class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), CategoryView {
+class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
 
     private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_category_recycler)
     private lateinit var mHomePageHeaderView: HomePageHeaderView
@@ -32,7 +32,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
 
     companion object {
         @JvmStatic
-        fun newInstance(): CategoryFragment = CategoryFragment()
+        fun newInstance(): HomeFragment = HomeFragment()
     }
 
     override fun getBundleExtras(extras: Bundle) {
@@ -103,7 +103,7 @@ class CategoryFragment : BaseFragment<CategoryView, CategoryPresenter>(), Catego
         mPullToZoomRecycler.scrollToTop()
     }
 
-    override fun getContentViewLayoutId() = R.layout.fragment_category
+    override fun getContentViewLayoutId() = R.layout.fragment_home
 
 
 

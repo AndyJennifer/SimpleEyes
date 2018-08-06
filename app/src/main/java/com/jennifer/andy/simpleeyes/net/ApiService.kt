@@ -1,9 +1,6 @@
 package com.jennifer.andy.simpleeyes.net
 
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.entity.ContentBean
-import com.jennifer.andy.simpleeyes.entity.JenniferInfo
-import com.jennifer.andy.simpleeyes.entity.Tab
+import com.jennifer.andy.simpleeyes.entity.*
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -27,7 +24,7 @@ interface ApiService {
      * 首页
      */
     @GET("api/v4/tabs/selected")
-    fun getCategory(): Observable<AndyInfo>
+    fun getHomeInfo(): Observable<AndyInfo>
 
     /**
      * 获取热门关键词
@@ -81,6 +78,18 @@ interface ApiService {
      */
     @GET("api/v3/tag/videos")
     fun getTagInfo(@Query("tagId") tagId: String, @Query("strategy") strategy: String): Observable<AndyInfo>
+
+    /**
+     * 获取种类下tag详细信息
+     */
+    @GET("api/v4/categories/detail/tab")
+    fun getCategoryTagInfo(@Query("id") id: String): Observable<Category>
+
+    /**
+     * 获取种类下tag下列表集合
+     */
+    @GET("api/v4/categories/detail/index")
+    fun getCategroyTagListItemInfo(@Query("id") id: String): Observable<AndyInfo>
 
     ///////////////////////////////////////////////////////////////////////////
     // 关注相关

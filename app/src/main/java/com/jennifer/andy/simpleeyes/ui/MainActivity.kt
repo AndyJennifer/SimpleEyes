@@ -3,7 +3,7 @@ package com.jennifer.andy.simpleeyes.ui
 import android.os.Bundle
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.ui.category.CategoryFragment
+import com.jennifer.andy.simpleeyes.ui.home.HomeFragment
 import com.jennifer.andy.simpleeyes.ui.feed.FeedFragment
 import com.jennifer.andy.simpleeyes.ui.follow.FollowFragment
 import com.jennifer.andy.simpleeyes.ui.profile.ProfileFragment
@@ -34,7 +34,7 @@ class MainActivity : BaseAppCompatActivity() {
 
 
     override fun initView(savedInstanceState: Bundle?) {
-        mFragments[FIRST] = CategoryFragment.newInstance()
+        mFragments[FIRST] = HomeFragment.newInstance()
         mFragments[SECOND] = FeedFragment.newInstance()
         mFragments[THIRD] = FollowFragment.newInstance()
         mFragments[FOURTH] = ProfileFragment.newInstance()
@@ -71,7 +71,7 @@ class MainActivity : BaseAppCompatActivity() {
 
                 override fun onTabReselected(position: Int) {
                     if (position == FIRST) {
-                        val categoryFragment = mFragments[FIRST] as CategoryFragment
+                        val categoryFragment = mFragments[FIRST] as HomeFragment
                         categoryFragment.scrollToTop()
                     }
                 }

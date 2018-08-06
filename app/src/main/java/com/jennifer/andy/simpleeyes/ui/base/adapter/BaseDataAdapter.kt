@@ -16,8 +16,8 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
-import com.jennifer.andy.simpleeyes.ui.category.adapter.CollectionCardCoverAdapter
-import com.jennifer.andy.simpleeyes.ui.category.adapter.SquareCollectionAdapter
+import com.jennifer.andy.simpleeyes.ui.home.adapter.CollectionCardCoverAdapter
+import com.jennifer.andy.simpleeyes.ui.home.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils

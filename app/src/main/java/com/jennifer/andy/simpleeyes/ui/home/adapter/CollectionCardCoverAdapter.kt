@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category.adapter
+package com.jennifer.andy.simpleeyes.ui.home.adapter
 
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter

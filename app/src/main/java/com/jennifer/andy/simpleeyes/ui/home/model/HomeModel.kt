@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category.model
+package com.jennifer.andy.simpleeyes.ui.home.model
 
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Api
@@ -14,17 +14,17 @@ import java.util.concurrent.TimeUnit
  * Description:
  */
 
-class CategoryModel : BaseModel {
+class HomeModel : BaseModel {
 
     /**
      * 加载首页信息
      */
-    fun loadCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().compose(RxHelper.handleResult())
+    fun loadCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getHomeInfo().compose(RxHelper.handleResult())
 
     /**
      * 刷新主页信息，延迟1秒执行
      */
-    fun refreshCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getCategory().delay(1000, TimeUnit.MILLISECONDS).compose(RxHelper.handleResult())
+    fun refreshCategoryInfo(): Observable<AndyInfo> = Api.getDefault().getHomeInfo().delay(1000, TimeUnit.MILLISECONDS).compose(RxHelper.handleResult())
 
 
     /**

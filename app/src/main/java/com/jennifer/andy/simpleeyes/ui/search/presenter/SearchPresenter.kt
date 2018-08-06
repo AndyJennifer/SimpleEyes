@@ -3,7 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.search.presenter
 
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.ui.category.model.CategoryModel
+import com.jennifer.andy.simpleeyes.ui.home.model.HomeModel
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 
 
@@ -15,14 +15,14 @@ import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 
 class SearchPresenter : BasePresenter<SearchHotView>() {
 
-    private var mCategoryModel: CategoryModel = CategoryModel()
+    private var mHomeModel: HomeModel = HomeModel()
     private var mNextPageUrl: String? = null
 
     /**
      * 获取热门搜索
      */
     fun searchHot() {
-        mRxManager.add(mCategoryModel.getHotWord().subscribe {
+        mRxManager.add(mHomeModel.getHotWord().subscribe {
             mView?.getHotWordSuccess(it)
         })
     }
@@ -32,7 +32,7 @@ class SearchPresenter : BasePresenter<SearchHotView>() {
      */
     fun searchVideoByWord(word: String) {
         mView?.showLoading()
-        mRxManager.add(mCategoryModel.searchVideoByWord(word).subscribe({
+        mRxManager.add(mHomeModel.searchVideoByWord(word).subscribe({
             mView?.showContent()
             mView?.showSearchSuccess(word, it)
             mNextPageUrl = it.nextPageUrl
@@ -46,7 +46,7 @@ class SearchPresenter : BasePresenter<SearchHotView>() {
      */
     fun loadMoreSearchResult() {
         if (mNextPageUrl != null) {
-            mRxManager.add(mCategoryModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
+            mRxManager.add(mHomeModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
                 mView?.showContent()
                 if (it.nextPageUrl == null) {
                     mView?.showNoMore()

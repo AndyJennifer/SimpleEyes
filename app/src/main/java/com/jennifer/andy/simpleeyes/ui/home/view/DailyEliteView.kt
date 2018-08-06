@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category.view
+package com.jennifer.andy.simpleeyes.ui.home.view
 
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView

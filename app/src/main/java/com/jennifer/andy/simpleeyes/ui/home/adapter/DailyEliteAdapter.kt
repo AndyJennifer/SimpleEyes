@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.ui.category.adapter
+package com.jennifer.andy.simpleeyes.ui.home.adapter
 
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
