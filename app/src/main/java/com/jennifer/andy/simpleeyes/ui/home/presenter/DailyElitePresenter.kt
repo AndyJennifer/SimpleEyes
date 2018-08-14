@@ -51,6 +51,7 @@ class DailyElitePresenter : BasePresenter<DailyEliteView>() {
      */
     fun loadMoreResult() {
         mRxManager.add(mHomeModel.loadMoreJenniferInfo(mNextPageUrl)!!.subscribe({
+            mNextPageUrl = it.nextPageUrl
             mView?.loadMoreSuccess(combineContentInfo(it))
         }, {
             mView?.showNetError(View.OnClickListener {
