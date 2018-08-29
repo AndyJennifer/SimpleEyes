@@ -42,6 +42,7 @@
 
         <!--加载界面-->
         <activity android:name=".ui.splash.LandingActivity"
+                  android:screenOrientation="portrait"
                   android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
