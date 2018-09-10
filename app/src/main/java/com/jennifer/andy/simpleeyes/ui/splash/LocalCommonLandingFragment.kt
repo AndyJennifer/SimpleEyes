@@ -1,11 +1,14 @@
 package com.jennifer.andy.simpleeyes.ui.splash
 
-import android.animation.*
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.animation.doOnEnd
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
@@ -86,11 +89,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
         backgroundAnimator.addUpdateListener {
             mLoadingContainer.setBackgroundColor(it.animatedValue as Int)
         }
-        backgroundAnimator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                doTextAnimator()
-            }
-        })
+        backgroundAnimator.doOnEnd { doTextAnimator() }
         backgroundAnimator.duration = 2000
         backgroundAnimator.start()
     }
@@ -101,18 +100,15 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
     private fun doTextAnimator() {
         val alphaAnimator = ValueAnimator.ofArgb(0, 0xff444444.toInt())
         alphaAnimator.addUpdateListener {
-            var color = it.animatedValue as Int
+            val color = it.animatedValue as Int
             setTextColor(mForToday, color)
             setTextColor(mDate, color)
             setTextColor(mTodayChose, color)
             mDate.text = TimeUtils.getDateString(Date(), "- yyyy/MM/dd -")
         }
         alphaAnimator.duration = 1000
-        alphaAnimator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                doInnerEyeAnimator()
-            }
-        })
+        alphaAnimator.doOnEnd { doInnerEyeAnimator() }
+
         alphaAnimator.start()
     }
 
@@ -126,12 +122,10 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
      */
     private fun doInnerEyeAnimator() {
         val rotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
-        rotationAnimator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                readyGoThenKillSelf(MainActivity::class.java, null)
-                UserPreferences.saveUserIsLogin(true)
-            }
-        })
+        rotationAnimator.doOnEnd {
+            readyGoThenKillSelf(MainActivity::class.java, null)
+            UserPreferences.saveUserIsLogin(true)
+        }
         rotationAnimator.duration = 1000
         rotationAnimator.start()
     }
@@ -144,12 +138,10 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
         val scaleY = ObjectAnimator.ofFloat(mIvBackground, "scaleY", 1f, 1.08f)
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(scaleX, scaleY)
-        animatorSet.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                readyGoThenKillSelf(MainActivity::class.java, null)
-                UserPreferences.saveUserIsLogin(true)
-            }
-        })
+        animatorSet.doOnEnd {
+            readyGoThenKillSelf(MainActivity::class.java, null)
+            UserPreferences.saveUserIsLogin(true)
+        }
         animatorSet.duration = 2000
         animatorSet.start()
     }

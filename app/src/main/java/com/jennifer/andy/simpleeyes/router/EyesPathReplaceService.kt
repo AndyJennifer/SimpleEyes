@@ -2,6 +2,7 @@ package com.jennifer.andy.simpleeyes.router
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.facade.service.PathReplaceService
 import java.util.regex.Pattern
@@ -71,7 +72,7 @@ class EyesPathReplaceService : PathReplaceService {
         }
         //替换/1065/为空字符串
         val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
-        return Uri.parse("$HOST$uriWithoutNumber&id=$id")
+        return "$HOST$uriWithoutNumber&id=$id".toUri()
     }
 
     /**
@@ -98,7 +99,7 @@ class EyesPathReplaceService : PathReplaceService {
         }
         //替换/1065/为空字符串
         val uriWithoutNumber = split[1].replace(Regex("/\\d+"), "")
-        return Uri.parse("$HOST$ONE_LEVEL$uriWithoutNumber?id=$id")
+        return "$HOST$ONE_LEVEL$uriWithoutNumber?id=$id".toUri()
     }
 
     /**
@@ -108,7 +109,7 @@ class EyesPathReplaceService : PathReplaceService {
      */
     private fun setRankListUrl(split: List<String>): Uri {
         val str = split[1].replace("/", "")
-        return Uri.parse("$HOST$ONE_LEVEL$str")
+        return "$HOST$ONE_LEVEL$str".toUri()
     }
 
     /**
@@ -118,7 +119,7 @@ class EyesPathReplaceService : PathReplaceService {
      */
     private fun setTopicUrl(split: List<String>): Uri {
         val str = split[1].replace("/?", "?")
-        return Uri.parse("$HOST$str")
+        return "$HOST$str".toUri()
     }
 
     /**
@@ -136,7 +137,7 @@ class EyesPathReplaceService : PathReplaceService {
         }
         //替换/658/为空字符串
         val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
-        return Uri.parse("$HOST$ONE_LEVEL$uriWithoutNumber&id=$id")
+        return "$HOST$ONE_LEVEL$uriWithoutNumber&id=$id".toUri()
     }
 
     override fun init(context: Context?) {

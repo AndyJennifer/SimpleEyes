@@ -2,6 +2,7 @@ package com.jennifer.andy.simpleeyes
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 
 /**
@@ -20,18 +21,18 @@ object UserPreferences {
      * 保存用户是否登录配置
      */
     fun saveUserIsLogin(isUserLogin: Boolean) {
-        val editor = getSharedPreferences().edit()
-        editor.putBoolean(KEY_IS_USER_LOGIN, isUserLogin)
-        editor.apply()
+        getSharedPreferences().edit {
+            putBoolean(KEY_IS_USER_LOGIN, isUserLogin)
+        }
     }
 
     /**
      * 保存用户是否是第一次登录
      */
     fun saveUserIsFirstLogin(isFirstLogin: Boolean) {
-        val editor = getSharedPreferences().edit()
-        editor.putBoolean(KEY_IS_FIRST_LOGIN, isFirstLogin)
-        editor.apply()
+        getSharedPreferences().edit {
+            putBoolean(KEY_IS_FIRST_LOGIN, isFirstLogin)
+        }
     }
 
     /**
