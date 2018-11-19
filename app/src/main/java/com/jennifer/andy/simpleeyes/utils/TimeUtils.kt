@@ -14,6 +14,7 @@ object TimeUtils {
 
     /**
      * 将秒数转换为 00 00' 00''格式
+     * @seconds 秒
      */
     @JvmStatic
     fun getElapseTimeForShow(seconds: Int): String {
@@ -52,6 +53,7 @@ object TimeUtils {
 
     /**
      * 判断是否是今天
+     *
      */
     @JvmStatic
     fun isCurrentDay(time: Long): Boolean {
@@ -71,4 +73,43 @@ object TimeUtils {
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
     }
 
+
+    /**
+     * 格式化时间
+     * 如果是当天就格式化时间为 HH:mm
+     * 如果是一周前发布的就显示几天前
+     * 如果超过5天显示一周前
+     * @currentDate 当前日期
+     */
+    @JvmStatic
+    fun getTimeStr(currentDate: Date): String {
+        val todayStart = Calendar.getInstance()
+        todayStart.set(Calendar.HOUR_OF_DAY, 0)
+        todayStart.set(Calendar.MINUTE, 0)
+        todayStart.set(Calendar.SECOND, 0)
+        todayStart.set(Calendar.MILLISECOND, 0)
+        val numberBeforeCurrentDay = getNumberBeforeCurrentDay(todayStart.time, currentDate)
+        return when {
+            numberBeforeCurrentDay == 0 -> {//当天发布
+                val timeFormatter24 = SimpleDateFormat("HH:mm", Locale.getDefault())
+                timeFormatter24.format(currentDate)
+            }
+            numberBeforeCurrentDay <= 5 -> {//小于一周前
+                "$numberBeforeCurrentDay 天前"
+            }
+            else -> {//一周前
+                "1 周前"
+            }
+        }
+    }
+
+    private fun getNumberBeforeCurrentDay(todayBegin: Date, currentDate: Date): Int {
+        var index = 7
+        while (index >= 1) {
+            val date = Date(todayBegin.time - 3600 * 24 * 1000 * index)
+            if (currentDate.before(date)) break else index--
+        }
+        return index
+
+    }
 }

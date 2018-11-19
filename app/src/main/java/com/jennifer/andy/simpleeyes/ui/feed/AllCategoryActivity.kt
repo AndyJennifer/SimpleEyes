@@ -31,6 +31,7 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
     private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
+
     override fun initView(savedInstanceState: Bundle?) {
         initToolBar(mToolBar, R.string.all_category)
         mPresenter.loadAllCategoriesInfo()

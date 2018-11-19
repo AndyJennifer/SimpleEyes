@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.RelativeLayout
+import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
@@ -32,7 +34,12 @@ class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankLi
     private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
     private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
 
+    @Autowired
+    @JvmField
+    var tabIndex: String? = null//哇，这里ARouter居然不能支持Int类型
+
     override fun initView(savedInstanceState: Bundle?) {
+        ARouter.getInstance().inject(this)
         initToolBar(mToolbar, R.string.open_eyes_english, FontType.LOBSTER)
         mPresenter.getRankListTab()
     }
@@ -41,6 +48,7 @@ class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankLi
         mTabLayout.visibility = View.VISIBLE
         mViewPager.adapter = FeedFragmentAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mViewPager.offscreenPageLimit = tabInfo.tabList.size
+        tabIndex?.let { mViewPager.currentItem = it.toInt() }
         mTabLayout.setupWithViewPager(mViewPager)
     }
 

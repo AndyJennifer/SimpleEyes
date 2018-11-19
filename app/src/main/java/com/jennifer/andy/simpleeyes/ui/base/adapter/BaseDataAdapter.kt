@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.RelativeLayout
+import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
@@ -24,6 +25,8 @@ import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
 import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
+import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.jennifer.andy.simpleeyes.widget.viewpager.MarginWithIndicatorViewPager
 import com.youth.banner.Banner
@@ -167,6 +170,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             setDescription(info.header.description)
             setIconUrl(info.header.icon)
             setIconType(info.header.iconType == "round")//设置图标形状
+            setPublishTime(info.header.time)//设置发布时间
         }
 
         val eliteView = helper.getView<EliteImageView>(R.id.elite_view)
@@ -232,7 +236,11 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
      * 设置文字信息
      */
     private fun setSingleText(helper: BaseViewHolder, item: Content) {
-        helper.setText(R.id.tv_text, item.data.text)
+        val textView = helper.getView<CustomFontTextView>(R.id.tv_text)
+        if (item.data.type == "header2") {
+            textView.setFontType(FontType.BOLD)
+        }
+        textView.text = item.data.text
     }
 
     /**
@@ -337,16 +345,19 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         val squareRecycler = helper.getView<RecyclerView>(R.id.rv_square_recycler)
         val showAllContainer = helper.getView<RelativeLayout>(R.id.ll_more_container)
         squareRecycler.isNestedScrollingEnabled = false
+
         val squareCollectionAdapter = SquareCollectionAdapter(itemList)
         squareRecycler.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
         squareRecycler.adapter = squareCollectionAdapter
-        squareCollectionAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
-            //todo 跳转到分类详情
 
+        squareCollectionAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
+            ARouter.getInstance()
+                    .build(Uri.parse(itemList[position].data.actionUrl))
+                    .navigation()
         }
 
         showAllContainer.setOnClickListener {
-            //todo 查看更多
+            ARouter.getInstance().build("/AndyJennifer/ranklist").navigation()
         }
     }
 

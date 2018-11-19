@@ -10,7 +10,9 @@ import android.widget.TextView
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.utils.TimeUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import java.util.*
 
 
 /**
@@ -26,6 +28,7 @@ class CardNormalBottom : FrameLayout {
     private val mTvTitle by bindView<TextView>(R.id.tv_title)
     private val mTvDescription by bindView<TextView>(R.id.tv_desc)
     private val mBtnMoreOperate by bindView<ImageButton>(R.id.btn_reply_more)
+    private val mTvDate by bindView<TextView>(R.id.tv_date)
     private val mLine by bindView<View>(R.id.view_line)
 
     constructor(context: Context) : this(context, null)
@@ -85,9 +88,21 @@ class CardNormalBottom : FrameLayout {
         mTvDescription.text = desc
     }
 
+    /**
+     * 设置点点是否显示
+     */
     fun setMoreOperateVisible(visible: Boolean) {
         mBtnMoreOperate.visibility = if (visible) View.VISIBLE else View.GONE
+        mTvDate.visibility = View.GONE
     }
 
+    /**
+     * 设置发布时间
+     */
+    fun setPublishTime(time: Long) {
+        mBtnMoreOperate.visibility = View.GONE
+        mTvDate.visibility = View.VISIBLE
+        mTvDate.text = TimeUtils.getTimeStr(Date(time))
+    }
 
 }
