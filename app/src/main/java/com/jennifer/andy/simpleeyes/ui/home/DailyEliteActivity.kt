@@ -70,9 +70,13 @@ class DailyEliteActivity : BaseActivity<DailyEliteView, DailyElitePresenter>(), 
         } else {
             mDailyEliteAdapter?.setNewData(content)
         }
-
-        //这里发送延时消息，是因为数据还有可能没有装载完毕
-        mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
+        //这里有可能加载的每日精选，没有text类型，就会导致刷新完毕后，刷新界面没有消失
+        if (mDailyEliteAdapter!!.getCurrentDayPosition() != 0) {
+            //这里发送延时消息，是因为数据还有可能没有装载完毕
+            mRecycler.handler.postDelayed({ mRecycler.smoothScrollToPosition(mDailyEliteAdapter!!.getCurrentDayPosition()) }, 200)
+        } else {
+            mRecycler.refreshComplete()
+        }
 
     }
 
