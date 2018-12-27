@@ -23,7 +23,7 @@ object SystemUtils {
      * @return 泛型实例化对象
      */
     @JvmStatic
-    fun <T> getGenericInstance(any: Any, index: Int): T? {
+    fun <T> getGenericInstance(any: Any, index: Int): T {
         try {
             val type = any.javaClass.genericSuperclass as ParameterizedType//获取当前类的父类泛型参数
             val clazz = type.actualTypeArguments[index] as Class<T>//获取泛型class
@@ -31,7 +31,7 @@ object SystemUtils {
             return if (instance is BasePresenter<*> || instance is BaseModel) {
                 instance
             } else {
-                null
+                throw IllegalStateException("if you use mvp user must support generic!!!")
             }
         } catch (e: Exception) {
             e.printStackTrace()
