@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.manager.BaseAppManager
+import com.jennifer.andy.simpleeyes.manager.ActivityManager
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
@@ -55,7 +55,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         //获取上下文并设置log标记
         TAT_LOG = this.javaClass.simpleName
         mContext = this
-        BaseAppManager.getInstance().addActivity(this)
+        ActivityManager.getInstance().addActivity(this)
         //添加相应的布局
         if (getContentViewLayoutId() != 0) {
             mMultipleStateView = MultipleStateView(this)
@@ -99,7 +99,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     }
 
     override fun onDestroy() {
-        BaseAppManager.getInstance().removeActivity(this)
+        ActivityManager.getInstance().removeActivity(this)
         super.onDestroy()
     }
 

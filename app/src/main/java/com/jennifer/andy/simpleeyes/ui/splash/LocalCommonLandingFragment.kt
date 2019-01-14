@@ -48,7 +48,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
 
     override fun initView(savedInstanceState: Bundle?) {
         //如果用户没登录，执行上升动画，否则执行缩放动画
-        if (!UserPreferences.getUserIsLogin()) {
+        if (!UserPreferences.getShowUserAnim()) {
             doUpAnimator()
             doBackgroundAnimator()
         } else {
@@ -124,7 +124,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
         val rotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
         rotationAnimator.doOnEnd {
             readyGoThenKillSelf(MainActivity::class.java, null)
-            UserPreferences.saveUserIsLogin(true)
+            UserPreferences.saveShowUserAnim(true)
         }
         rotationAnimator.duration = 1000
         rotationAnimator.start()
@@ -140,7 +140,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
         animatorSet.playTogether(scaleX, scaleY)
         animatorSet.doOnEnd {
             readyGoThenKillSelf(MainActivity::class.java, null)
-            UserPreferences.saveUserIsLogin(true)
+            UserPreferences.saveShowUserAnim(true)
         }
         animatorSet.duration = 2000
         animatorSet.start()

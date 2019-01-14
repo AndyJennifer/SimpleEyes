@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -59,12 +61,18 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when (v.id) {
-            R.id.tv_favorite -> addFavorite()
-            R.id.tv_share -> showShare()
-            R.id.tv_reply -> addReply()
-            R.id.tv_download -> downloadVideo()
+        val userIsLogin = UserPreferences.getUserIsLogin()
+        if (!userIsLogin) //如果用户没登录，直接跳转到登录界面
+            ARouter.getInstance().build("/github/Login").navigation()
+        else {
+            when (v.id) {
+                R.id.tv_favorite -> addFavorite()
+                R.id.tv_share -> showShare()
+                R.id.tv_reply -> addReply()
+                R.id.tv_download -> downloadVideo()
+            }
         }
+
     }
 
 
@@ -72,7 +80,6 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
      * 添加收藏
      */
     private fun addFavorite() {
-
 
     }
 

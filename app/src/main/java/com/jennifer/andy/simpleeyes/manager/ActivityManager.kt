@@ -9,18 +9,18 @@ import android.app.Activity
  * Description:Activity管理类
  */
 
-class BaseAppManager private constructor() {
+class ActivityManager private constructor() {
 
     private val sActivityList = ArrayList<Activity>()
 
     companion object {
-        fun getInstance(): BaseAppManager {
+        fun getInstance(): ActivityManager {
             return BaseAppManagerHolder.instance
         }
     }
 
     private object BaseAppManagerHolder {
-        val instance = BaseAppManager()
+        val instance = ActivityManager()
     }
 
     /**
@@ -33,21 +33,24 @@ class BaseAppManager private constructor() {
     /**
      * 添加相应activity
      */
-    @Synchronized fun removeActivity(activity: Activity) {
+    @Synchronized
+    fun removeActivity(activity: Activity) {
         if (activity in sActivityList) sActivityList.remove(activity)
     }
 
     /**
      * 添加相应的activity
      */
-    @Synchronized fun addActivity(activity: Activity) {
+    @Synchronized
+    fun addActivity(activity: Activity) {
         sActivityList.add(activity)
     }
 
     /**
      * 清除栈内activity
      */
-    @Synchronized fun clear() {
+    @Synchronized
+    fun clear() {
         var i = sActivityList.size - 1
         while (i > -1) {
             val activity = sActivityList[i]
@@ -61,7 +64,8 @@ class BaseAppManager private constructor() {
     /**
      * 清除栈顶activity
      */
-    @Synchronized fun clearToTop() {
+    @Synchronized
+    fun clearToTop() {
         var i = sActivityList.size - 2
         while (i > -1) {
             val activity = sActivityList[i]
@@ -71,4 +75,18 @@ class BaseAppManager private constructor() {
             i--
         }
     }
+
+    /**
+     * 获取最上层的Activity
+     */
+    @Synchronized
+    fun getTopActivity(): Activity? {
+        return if (!sActivityList.isEmpty()) {
+            sActivityList[sActivityList.size - 1]
+        } else {
+            null
+        }
+
+    }
+
 }

@@ -57,6 +57,11 @@
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
 
+        <!--登录界面-->
+        <activity android:name=".ui.login.LoginActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
+
         <!--视频播放界面-->
         <activity android:name=".ui.video.VideoDetailActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"
