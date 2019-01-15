@@ -1,33 +1,21 @@
-# SimpleEyes
 #### 介绍
-[SimpleEyes](https://github.com/AndyJennifer/SimpleEyes)是一款基于仿开眼视频APP，力求与原始开眼App相似（附上相关app参考版本，如有需要可下载[开眼Version 3.8.1.2.216](https://pan.baidu.com/s/1xWR4fz9bXL4gH-KkQVX-RA) ）,该项目中采用**多Activity+多Fragment**开发。使用**MVP+RxJava+Retrofit**架构。主要采用语言**Kotlin**，**目前该项目持续开发中**。如果你愿意和我一起开发，或者有任何问题，请联系我。我总是在这等着你呢。O(∩_∩)O。
+[SimpleEyes](https://github.com/AndyJennifer/SimpleEyes)是一款基于仿开眼视频App，力求与原始开眼App相似（附上相关App参考版本，如有需要可下载[开眼Version 3.8.1.2.216](https://pan.baidu.com/s/1xWR4fz9bXL4gH-KkQVX-RA) ）,该项目中采用**多Activity+多Fragment**开发。使用**MVP+RxJava+Retrofit**架构。主要采用语言**Kotlin**，**目前该项目持续开发中**。如果你愿意和我一起开发，或者有任何问题，请联系我。我总是在这等着你呢。O(∩_∩)O。
 
-#### 相关截图
-
-![闪屏页.png](https://upload-images.jianshu.io/upload_images/2824145-b38796e75822e9d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+#### 切图
 
 
-![首页.png](https://upload-images.jianshu.io/upload_images/2824145-35e2de15d95ca3e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![picture_1.png](https://upload-images.jianshu.io/upload_images/2824145-9c4c8943bc9eebc7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-![搜索界面.png](https://upload-images.jianshu.io/upload_images/2824145-fa9758b494ffe6ed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![搜索结果界面.png](https://upload-images.jianshu.io/upload_images/2824145-213decd1702aaf20.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-
-![视频详情.png](https://upload-images.jianshu.io/upload_images/2824145-97902b63822b7639.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![视频全屏.png](https://upload-images.jianshu.io/upload_images/2824145-42b406955b3d6158.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
+![picture_2.png](https://upload-images.jianshu.io/upload_images/2824145-499b2c209643ce12.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ##### 目前完成的功能
 - 闪屏页实现
 - 首页部分逻辑实现
 - 视频详情界面
 - 视频搜索界面
+- 发现界面部分逻辑
+- 我的界面搭建
 
 #### 技术要点
 - 自定义底部导航栏。项目中自定义了底部导航栏。完全可以根据喜好修改。
@@ -41,14 +29,14 @@
 
 #### 感谢
 站在巨人的肩膀上。可以看得更远。该项目中运用了以下开源库，如果漏掉，请原谅我，我记性不是很好。
-- [Fresco](https://github.com/facebook/fresco)
-- [Fragmentation](https://github.com/YoKeyword/Fragmentation)
-- [RxJava](https://github.com/ReactiveX/RxJava)
-- [Retrofit](https://github.com/square/retrofit)
-- [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-- [IjkPlayer](https://github.com/Bilibili/ijkplayer)
-- [FlexBox-Layout](https://github.com/google/flexbox-layout)
-- [Banner](https://github.com/youth5201314/banner)
+[Fresco](https://github.com/facebook/fresco)
+[Fragmentation](https://github.com/YoKeyword/Fragmentation)
+[RxJava](https://github.com/ReactiveX/RxJava)
+[Retrofit](https://github.com/square/retrofit)
+[BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+[IjkPlayer](https://github.com/Bilibili/ijkplayer)
+[FlexBox-Layout](https://github.com/google/flexbox-layout)
+[Banner](https://github.com/youth5201314/banner)
 
 #### 声明
 感谢[开眼App](http://www.kaiyanapp.com)提供参考,本人是豆瓣粉丝。使用了其中的Api,并非攻击，如构成侵权，请及时通知我删除或者修改。数据来源来自开眼App,一切解释权归开眼所有。
@@ -60,4 +48,3 @@
 - QQ:443696320
 - 简书:[AndyandJennifer](https://www.jianshu.com/users/921c778fb5e1/timeline)
 - Email: [andyjennifer@126.com](andyjennifer@126.com)
-
