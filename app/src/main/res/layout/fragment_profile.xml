@@ -1,20 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
-        android:id="@+id/multiple_state_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ic_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_menu_more"/>
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/ic_more"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_default_avatar"/>
+
+    </RelativeLayout>
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_click_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/click_login"
+        app:font_name="bold"/>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_profile_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_border_bottom"
+        android:orientation="horizontal">
 
-    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_action_favorites_grey_without_padding"
+                android:drawablePadding="10dp"
+                android:text="@string/favorites"/>
+
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/divider"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_action_reply_grey_without_padding"
+                android:drawablePadding="10dp"
+                android:text="@string/commit"/>
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_profile_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"/>
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:gravity="center"
+        android:text="@string/version"
+        android:textColor="@color/gray_BBBBBB"
+        android:textSize="11sp"
+        app:font_name="normal"/>
 </LinearLayout>

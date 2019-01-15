@@ -48,6 +48,10 @@
     <string name="daily_elite_update">今日日报已更新</string>
     <string name="discover_en">Discover</string>
     <string name="login_notice">登录后即可关注作者、\n发表评论、同步收藏视频和播放记录</string>
+    <string name="click_login">点击登录即可发表评论及同步已收藏视频</string>
+    <string name="commit">评论</string>
+    <string name="favorites">收藏</string>
+    <string name="version">Version 3.8.1.2.216</string>
 
     <string-array name="slogan_array_zh">
         <item>每日编辑精选，一如既往</item>
