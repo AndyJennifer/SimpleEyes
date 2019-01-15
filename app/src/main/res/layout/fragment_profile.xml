@@ -18,14 +18,16 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_menu_more"/>
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/ic_more"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_default_avatar"/>
-
+            app:placeholderImage="@drawable/ic_default_avatar"
+            app:roundAsCircle="true"
+            app:roundingBorderColor="@color/gray_BBBBBB"
+            app:roundingBorderWidth="1dp"/>
     </RelativeLayout>
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -35,7 +37,8 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/click_login"
-        app:font_name="bold"/>
+        android:textColor="@color/black_444444"
+    />
 
 
     <LinearLayout

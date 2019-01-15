@@ -60,6 +60,14 @@
         <item>登录即可订阅、评论和同步已收藏视频</item>
     </string-array>
 
+    <string-array name="profile_setting">
+        <item>我的消息</item>
+        <item>我的关注</item>
+        <item>我的缓存</item>
+        <item>观看记录</item>
+        <item>意见反馈</item>
+        <item>我要投稿</item>
+    </string-array>
     <string-array name="slogan_array_en">
         <item>Daily appetizers for your eyes,as always</item>
         <item>Subscribe more,discover a whole lot more</item>
