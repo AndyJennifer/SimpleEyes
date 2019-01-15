@@ -29,13 +29,20 @@
 
 #### 感谢
 站在巨人的肩膀上。可以看得更远。该项目中运用了以下开源库，如果漏掉，请原谅我，我记性不是很好。
+
 [Fresco](https://github.com/facebook/fresco)
 [Fragmentation](https://github.com/YoKeyword/Fragmentation)
+
 [RxJava](https://github.com/ReactiveX/RxJava)
+
 [Retrofit](https://github.com/square/retrofit)
+
 [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+
 [IjkPlayer](https://github.com/Bilibili/ijkplayer)
+
 [FlexBox-Layout](https://github.com/google/flexbox-layout)
+
 [Banner](https://github.com/youth5201314/banner)
 
 #### 声明
