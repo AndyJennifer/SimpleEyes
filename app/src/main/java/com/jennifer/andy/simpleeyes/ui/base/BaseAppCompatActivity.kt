@@ -46,6 +46,11 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         initView(savedInstanceState)
     }
 
+    override fun onStart() {
+        super.onStart()
+        ActivityManager.getInstance().addActivity(this)
+    }
+
     private fun initData() {
         overrideTransitionAnimation()
         val extras = intent.extras
@@ -55,7 +60,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         //获取上下文并设置log标记
         TAT_LOG = this.javaClass.simpleName
         mContext = this
-        ActivityManager.getInstance().addActivity(this)
         //添加相应的布局
         if (getContentViewLayoutId() != 0) {
             mMultipleStateView = MultipleStateView(this)
@@ -98,9 +102,9 @@ abstract class BaseAppCompatActivity : SupportActivity() {
 
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
+        super.onStop()
         ActivityManager.getInstance().removeActivity(this)
-        super.onDestroy()
     }
 
 

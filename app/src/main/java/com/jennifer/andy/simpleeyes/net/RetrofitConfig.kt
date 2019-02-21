@@ -2,11 +2,9 @@ package com.jennifer.andy.simpleeyes.net
 
 import com.google.gson.GsonBuilder
 import com.jennifer.andy.simpleeyes.AndyApplication
-import com.jennifer.andy.simpleeyes.utils.NetWorkUtils
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -36,7 +34,6 @@ class RetrofitConfig private constructor() {
         private const val READ_TIME_OUT = 5000L// 读取超过时间 单位:毫秒
         private const val WRITE_TIME_OUT = 5000L//写超过时间 单位:毫秒
         private const val FILE_CACHE_SIZE = 1024 * 1024 * 100L//缓存大小100Mb
-        private const val FILE_CACHE_STALE = (60 * 60 * 24 * 2).toLong()//缓存有效期为2天
         private val Instance: RetrofitConfig by lazy { RetrofitConfig() }
 
         /**
@@ -55,7 +52,6 @@ class RetrofitConfig private constructor() {
     init {
         initRequestInterceptor()
         initLoggingInterceptor()
-        initResponseCacheTime()
         initCachePathAndSize()
         initOkHttpClient()
         initRetrofit()
@@ -103,36 +99,6 @@ class RetrofitConfig private constructor() {
         mCache = Cache(cacheFile, FILE_CACHE_SIZE)
     }
 
-    /**
-     * 配置响应缓存时间
-     */
-    private fun initResponseCacheTime() {
-        mResponseInterceptor = Interceptor { chain ->
-            val originalCacheString = chain.request().cacheControl().toString()
-            setResponseCacheTime(chain.proceed(chain.request()), originalCacheString)
-        }
-    }
-
-
-    /**
-     * 配置http响应的缓存时间 有网就根据之前设置的缓存时间去拿缓存，没网就拿之前的缓存
-     *
-     * @param response    响应
-     * @param originalCacheString 请求缓存设置
-     * @return
-     */
-    private fun setResponseCacheTime(response: Response, originalCacheString: String): Response {
-        return if (NetWorkUtils.isNetWorkConnected(AndyApplication.INSTANCE)) {
-            response.newBuilder()
-                    .header("Cache-Control", originalCacheString)
-                    .removeHeader("Pragma")
-                    .build()
-        } else {
-            response.newBuilder()
-                    .header("Cache-Control", "public, only-if-cached, max-stale=" + FILE_CACHE_STALE)
-                    .build()
-        }
-    }
 
     /**
      * 配置okHttp
