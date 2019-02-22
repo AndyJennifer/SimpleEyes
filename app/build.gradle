@@ -72,4 +72,8 @@ dependencies {
     kapt 'com.alibaba:arouter-compiler:1.2.2'
     implementation 'androidx.core:core-ktx:0.3'
 
+    //LeakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 }

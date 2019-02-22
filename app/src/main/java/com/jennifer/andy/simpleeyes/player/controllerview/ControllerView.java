@@ -132,6 +132,7 @@ public abstract class ControllerView extends FrameLayout {
         updateTogglePauseUI(mPlayer.isPlaying());
     }
 
+
     /**
      * 更新暂停切换UI
      *
@@ -147,6 +148,13 @@ public abstract class ControllerView extends FrameLayout {
         return mRootView;
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        RxBus.INSTANCE.unRegister(this);
+
+    }
+
     public boolean isDragging() {
         return isDragging;
     }
@@ -154,4 +162,6 @@ public abstract class ControllerView extends FrameLayout {
     public void setDragging(boolean dragging) {
         isDragging = dragging;
     }
+
+
 }

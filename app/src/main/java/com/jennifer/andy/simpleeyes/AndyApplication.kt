@@ -12,6 +12,7 @@ import com.jennifer.andy.simpleeyes.update.LocalUpdateService
 import com.jennifer.andy.simpleeyes.update.UpdateApplication
 import com.jennifer.andy.simpleeyes.utils.AppUtils
 import com.jennifer.andy.simpleeyes.utils.UDIDUtils
+import com.squareup.leakcanary.LeakCanary
 import java.util.*
 
 
@@ -24,9 +25,7 @@ import java.util.*
 class AndyApplication : UpdateApplication<LocalUpdateService>() {
 
     companion object {
-
         lateinit var INSTANCE: Application
-
         /**
          * 获取资源文件访问对象
          */
@@ -45,9 +44,21 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
         GlobalConfig.setApplicationRootDir("simpleeyes")
         initARoute()
         initFresco()
+        initLeakCanary()
         //todo 这里还要做崩溃检查 腾讯的bugly 热更新等操作
 
 
+    }
+
+    /**
+     * 初始化路由操作
+     */
+    private fun initARoute() {
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }
+        ARouter.init(this)
     }
 
     /**
@@ -61,14 +72,13 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
     }
 
     /**
-     * 初始化路由操作
+     * 初始化LeakCanary，检测内存泄露
      */
-    private fun initARoute() {
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog()
-            ARouter.openDebug()
+    private fun initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return
         }
-        ARouter.init(this)
+        LeakCanary.install(this)
     }
 
     override fun initUpdateParams(): LocalUpdateService.UpdateParams {

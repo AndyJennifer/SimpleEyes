@@ -39,4 +39,5 @@ abstract class UpdateApplication<T : LocalUpdateService> : Application() {
      */
     abstract fun initUpdateParams(): LocalUpdateService.UpdateParams
 
+
 }
