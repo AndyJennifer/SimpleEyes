@@ -24,7 +24,6 @@ class RetrofitConfig private constructor() {
     private lateinit var mRetrofit: Retrofit
     private lateinit var mHttpLoggingInterceptor: HttpLoggingInterceptor
     private lateinit var mRequestInterceptor: Interceptor
-    private lateinit var mResponseInterceptor: Interceptor
 
     private lateinit var mOkHttpClient: OkHttpClient
     private lateinit var mCache: Cache
@@ -109,7 +108,6 @@ class RetrofitConfig private constructor() {
                 .writeTimeout(WRITE_TIME_OUT, TimeUnit.MILLISECONDS)
                 .cache(mCache)
                 .addInterceptor(mRequestInterceptor)
-                .addInterceptor(mResponseInterceptor)
                 .addInterceptor(mHttpLoggingInterceptor)
                 .build()
     }
