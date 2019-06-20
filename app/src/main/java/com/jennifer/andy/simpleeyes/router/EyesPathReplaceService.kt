@@ -46,6 +46,8 @@ class EyesPathReplaceService : PathReplaceService {
                     return setTopicUrl(split)
                 uriStr.contains("tag") ->//处理360全景
                     return setTagUrl(split)
+                uriStr.contains("category")->
+                    return setCategoryUrl(split)
                 else -> {
                 }
             }
@@ -55,6 +57,7 @@ class EyesPathReplaceService : PathReplaceService {
         return uri
     }
 
+    
 
     /**
      * 处理视频详情url
@@ -125,7 +128,7 @@ class EyesPathReplaceService : PathReplaceService {
     /**
      * 处理360全景
      * eyepetizer://tag/658/?title=360%C2%B0%E5%85%A8%E6%99%AF
-     * eyepetizer://github.com/AndyJennifer/tag?id=658&title=360%C2%B0%E5%85%A8%E6%99%AF
+     * 替换为：eyepetizer://github.com/AndyJennifer/tag?id=658&title=360%C2%B0%E5%85%A8%E6%99%AF
      */
     private fun setTagUrl(split: List<String>): Uri {
         //获取id
@@ -136,6 +139,22 @@ class EyesPathReplaceService : PathReplaceService {
             id = matcher.group().replace("/", "").toInt()
         }
         //替换/658/为空字符串
+        val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
+        return "$HOST$ONE_LEVEL$uriWithoutNumber&id=$id".toUri()
+    }
+
+    /**
+     * 处理360全景下面的所有的种类
+     * eyepetizer://category/14/?title=%E5%B9%BF%E5%91%8A
+     * 替换换为：eyepetizer://github.com/AndyJennifer/category?id=14%title=%E5%B9%BF%E5%91%8A
+     */
+    private fun setCategoryUrl(split: List<String>): Uri {
+        val pt = Pattern.compile("/\\d+/")
+        val matcher = pt.matcher(split[1])
+        var id = 0
+        if (matcher.find()) {
+            id = matcher.group().replace("/", "").toInt()
+        }
         val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
         return "$HOST$ONE_LEVEL$uriWithoutNumber&id=$id".toUri()
     }
