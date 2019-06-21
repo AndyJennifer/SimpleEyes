@@ -16,6 +16,7 @@ import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter.Companion.RE
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.AllCategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.AllCategoryView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.GridItemDecoration
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 
 
@@ -49,6 +50,7 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
                     .navigation()
         }
         mRecyclerView.layoutManager = GridLayoutManager(mContext, 2)
+        mRecyclerView.addItemDecoration(GridItemDecoration(2, 4, true))
         mRecyclerView.adapter = adapter
     }
 
