@@ -1,8 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed.view
 
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.entity.Category
-import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
+import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 
 /**
@@ -11,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
  * Description:
  */
 
-interface CategoryTabView : LoadMoreView<AndyInfo> {
+interface CategoryTabView : BaseView {
     /**
      * 加载分类标签成功
      */

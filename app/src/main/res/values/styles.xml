@@ -30,10 +30,11 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-
+    <!--Tab文字样式-->
     <style name="TabAppearance">
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
 
 </resources>

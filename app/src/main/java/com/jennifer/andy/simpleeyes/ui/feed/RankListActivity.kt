@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
-import com.jennifer.andy.simpleeyes.ui.feed.adapter.FeedFragmentAdapter
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.RankListPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.RankListView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -46,7 +46,7 @@ class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankLi
 
     override fun loadTabSuccess(tabInfo: TabInfo) {
         mTabLayout.visibility = View.VISIBLE
-        mViewPager.adapter = FeedFragmentAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+        mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mViewPager.offscreenPageLimit = tabInfo.tabList.size
         tabIndex?.let { mViewPager.currentItem = it.toInt() }
         mTabLayout.setupWithViewPager(mViewPager)
@@ -56,7 +56,7 @@ class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankLi
     private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
         val fragments = mutableListOf<Fragment>()
         for (i in tabInfo.tabList.indices) {
-            fragments.add(TagDetailInfoInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
+            fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }
         return fragments
     }

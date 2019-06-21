@@ -67,7 +67,13 @@
     <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/black"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextAppearance="@style/TabAppearance"
+        app:tabTextColor="@color/black_alpha_4D"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

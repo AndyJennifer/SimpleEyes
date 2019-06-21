@@ -123,10 +123,10 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
     /**
      * 设置头布局的高度，与宽度，该方法必须要调用
      */
-    override fun setHeaderViewLayoutParams(lp: LinearLayout.LayoutParams) {
-        mHeaderContainer?.let {
-            mHeaderContainer.layoutParams = lp
-            mHeaderHeight = lp.height
+    override fun setHeaderViewLayoutParams(layoutParams: LinearLayout.LayoutParams) {
+        mHeaderContainer.let {
+            mHeaderContainer.layoutParams = layoutParams
+            mHeaderHeight = layoutParams.height
         }
     }
 

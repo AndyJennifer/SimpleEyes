@@ -99,5 +99,7 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     /**
      * 初始化view
      */
-    abstract fun initView(savedInstanceState: Bundle?)
+    open fun initView(savedInstanceState: Bundle?) {
+
+    }
 }

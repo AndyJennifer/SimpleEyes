@@ -20,7 +20,7 @@ import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
  * Description:详细的Tab界面
  */
 
-class TagDetailInfoInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoPresenter>(), TagDetailInfoView {
+class TagDetailInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoPresenter>(), TagDetailInfoView {
 
 
     private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
@@ -31,8 +31,8 @@ class TagDetailInfoInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoP
     companion object {
 
         @JvmStatic
-        fun newInstance(apiUrl: String): TagDetailInfoInfoFragment {
-            val categoryFragment = TagDetailInfoInfoFragment()
+        fun newInstance(apiUrl: String): TagDetailInfoFragment {
+            val categoryFragment = TagDetailInfoFragment()
             val bundle = Bundle()
             bundle.putString(Extras.API_URL, apiUrl)
             categoryFragment.arguments = bundle
@@ -44,10 +44,9 @@ class TagDetailInfoInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoP
         mApiUrl = extras.getString(Extras.API_URL)
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun onLazyInitView(savedInstanceState: Bundle?) {
         mPresenter.getDetailInfo(mApiUrl)
     }
-
 
     override fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
         if (mAdapter == null) {

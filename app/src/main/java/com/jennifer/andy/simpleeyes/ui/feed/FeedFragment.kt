@@ -8,7 +8,7 @@ import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
-import com.jennifer.andy.simpleeyes.ui.feed.adapter.FeedFragmentAdapter
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
@@ -52,7 +52,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
     }
 
     override fun loadTabSuccess(tabInfo: TabInfo) {
-        mViewPager.adapter = FeedFragmentAdapter(childFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+        mViewPager.adapter = BaseFragmentItemAdapter(childFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mViewPager.offscreenPageLimit = tabInfo.tabList.size
         mTabLayout.setupWithViewPager(mViewPager)
     }
@@ -60,7 +60,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
     private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
         val fragments = mutableListOf<Fragment>()
         for (i in tabInfo.tabList.indices) {
-            fragments.add(TagDetailInfoInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
+            fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }
         return fragments
     }

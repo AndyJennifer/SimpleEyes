@@ -88,7 +88,12 @@ data class Header(var id: Int,
                   var icon: String,
                   var iconType: String,
                   var description: String,
+                  var follow: Follow?,
                   var time: Long) : Serializable
+
+data class Follow(var itemType: String,
+                  var itemId: Int,
+                  var followed: Boolean) : Serializable
 
 data class Label(var text: String,
                  var card: String,

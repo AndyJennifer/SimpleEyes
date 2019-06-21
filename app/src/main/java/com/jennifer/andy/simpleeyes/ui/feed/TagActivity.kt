@@ -12,7 +12,7 @@ import com.jennifer.andy.simpleeyes.entity.TabDetailInfo
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.ui.feed.adapter.FeedFragmentAdapter
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 
@@ -54,7 +54,7 @@ class TagActivity : BaseAppCompatActivity() {
         tabInfoDetailList.add(TabDetailInfo(1, "按分享排序", "${Api.BASE_URL}api/v3/tag/videos?tagId=$id&strategy=shareCount"))
         val tabInfo = TabInfo(tabInfoDetailList, 0)
 
-        mViewPager.adapter = FeedFragmentAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+        mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mViewPager.offscreenPageLimit = tabInfo.tabList.size
         mTabLayout.setupWithViewPager(mViewPager)
     }
@@ -62,7 +62,7 @@ class TagActivity : BaseAppCompatActivity() {
     private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
         val fragments = mutableListOf<Fragment>()
         for (i in tabInfo.tabList.indices) {
-            fragments.add(TagDetailInfoInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
+            fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }
         return fragments
     }

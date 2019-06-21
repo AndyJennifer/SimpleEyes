@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Autowired
@@ -8,9 +9,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.entity.Category
+import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.CategoryTabPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.CategoryTabView
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -48,24 +50,34 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
         ARouter.getInstance().inject(this)
         mPresenter.getTabInfo(id!!)
         initToolBar(mToolbar, title, 0f)
-        //todo NestedScrollingChild 与NestedScrollingParent机制。来做
     }
-
 
     override fun showLoadTabSuccess(category: Category) {
         mImageView.setImageURI(category.categoryInfo.headerImage)
         mTvSubTitle.text = category.categoryInfo.name
         mTvDesc.text = category.categoryInfo.description
 
+        mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(category.tabInfo), initTitles(category.tabInfo))
+        mViewPager.offscreenPageLimit = category.tabInfo.tabList.size
+        mTabLayout.setupWithViewPager(mViewPager)
     }
 
-    override fun loadMoreSuccess(data: AndyInfo) {
-
+    private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
+        val fragments = mutableListOf<Fragment>()
+        for (i in tabInfo.tabList.indices) {
+            fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
+        }
+        return fragments
     }
 
-    override fun showNoMore() {
-
+    private fun initTitles(tabInfo: TabInfo): MutableList<String> {
+        val titles = mutableListOf<String>()
+        for (i in tabInfo.tabList.indices) {
+            titles.add(tabInfo.tabList[i].name)
+        }
+        return titles
     }
+
 
     override fun getContentViewLayoutId() = R.layout.activity_category_tab
 

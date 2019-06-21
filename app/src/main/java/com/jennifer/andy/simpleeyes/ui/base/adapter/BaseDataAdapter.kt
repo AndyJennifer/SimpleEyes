@@ -191,6 +191,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     private fun setCollectionOfHorizontalScrollCardInfo(helper: BaseViewHolder, data: ContentBean) {
         helper.setText(R.id.tv_title, data.header.title)
         helper.setText(R.id.tv_sub_title, data.header.subTitle)
+        helper.setGone(R.id.tv_focus, data.header.follow != null)
+
         val marginWithIndicatorViewPager = helper.getView<MarginWithIndicatorViewPager>(R.id.view_pager)
 
         //跳转到视频详细界面
@@ -220,10 +222,13 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         }
         //设置作者信息
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_head)
-        if (content.data.header.iconType == "round") {//判断头像类型
-            imageView.hierarchy.roundingParams = RoundingParams.asCircle()
-        } else {
-            imageView.hierarchy.roundingParams?.roundAsCircle = false
+        when {
+            content.data.header.iconType == "round" -> //圆形头像类型
+                imageView.hierarchy.roundingParams = RoundingParams.asCircle()
+            content.data.header.iconType == "squareWithPlayButton" -> {//正方形音乐带播放按钮类型
+                imageView.hierarchy.setOverlayImage(mContext.getDrawable(R.drawable.icon_cover_play_button))
+            }
+            else -> imageView.hierarchy.roundingParams?.roundAsCircle = false
         }
         imageView.setImageURI(content.data.header.icon)
         helper.setText(R.id.tv_title, content.data.header.title)
