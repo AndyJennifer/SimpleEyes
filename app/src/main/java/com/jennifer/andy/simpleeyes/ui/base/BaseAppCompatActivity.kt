@@ -179,6 +179,22 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     }
 
     /**
+     * 初始化工具栏，默认情况下加粗,默认情况下显示背景和标题
+     */
+    protected fun initToolBar(toolbar: RelativeLayout, title: String? = null, alpha: Float = 1f, fontType: FontType = FontType.BOLD) {
+        val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
+        ivBack.setOnClickListener {
+            showKeyboard(false)
+            finish()
+        }
+
+        val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
+        tvTitle.setFontType(fontType)
+        tvTitle.text = title
+        tvTitle.alpha = alpha
+    }
+
+    /**
      * 初始化工具栏，默认情况下加粗
      */
     protected fun initToolBar(toolbar: RelativeLayout, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
@@ -193,6 +209,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         tvTitle.setText(id!!)
 
     }
+
 
     abstract fun initView(savedInstanceState: Bundle?)
 

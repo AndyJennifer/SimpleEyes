@@ -48,7 +48,7 @@
             android:gravity="center"
             android:letterSpacing="0.2"
             android:padding="5dp"
-            android:text="@string/add_focus"
+            android:text="@string/add_follow"
             android:textSize="11sp"
             app:font_name="normal"
         />

@@ -43,5 +43,5 @@ class FeedModel : BaseModel {
     /**
      * 获取种类下tab信息
      */
-    fun getCategoryTagIno(id: String) = Api.getDefault().getCategoryTagInfo(id).compose(RxHelper.handleResult())
+    fun getCategoryTabIno(id: String) = Api.getDefault().getCategoryTabInfo(id).compose(RxHelper.handleResult())
 }

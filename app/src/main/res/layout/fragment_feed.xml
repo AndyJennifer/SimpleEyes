@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_action_back"
+            android:src="@drawable/ic_action_back_black"
             android:text="@string/all_category"
             app:font_name="normal"/>
 

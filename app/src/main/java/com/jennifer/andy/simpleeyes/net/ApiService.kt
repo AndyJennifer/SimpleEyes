@@ -80,16 +80,16 @@ interface ApiService {
     fun getTagInfo(@Query("tagId") tagId: String, @Query("strategy") strategy: String): Observable<AndyInfo>
 
     /**
-     * 获取种类下tag详细信息
+     * 获取种类下tab详细信息
      */
     @GET("api/v4/categories/detail/tab")
-    fun getCategoryTagInfo(@Query("id") id: String): Observable<Category>
+    fun getCategoryTabInfo(@Query("id") id: String): Observable<Category>
 
     /**
-     * 获取种类下tag下列表集合
+     * 获取种类下tab下列表集合
      */
     @GET("api/v4/categories/detail/index")
-    fun getCategroyTagListItemInfo(@Query("id") id: String): Observable<AndyInfo>
+    fun getCategroyTabListItemInfo(@Query("id") id: String): Observable<AndyInfo>
 
     ///////////////////////////////////////////////////////////////////////////
     // 关注相关
