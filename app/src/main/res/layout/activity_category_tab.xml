@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.jennifer.andy.simpleeyes.widget.StickyNavLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <RelativeLayout
+        android:id="@+id/id_sticky_nav_layout_top_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="300dp">
 
         <include layout="@layout/layout_common_toolbar"/>
 
@@ -65,7 +64,7 @@
     </RelativeLayout>
 
     <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
-        android:id="@+id/tab_layout"
+        android:id="@+id/id_sticky_nav_layout_nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -76,8 +75,8 @@
         app:tabTextColor="@color/black_alpha_4D"/>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/id_sticky_nav_layout_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-</LinearLayout>
+        android:layout_height="match_parent"/>
+
+</com.jennifer.andy.simpleeyes.widget.StickyNavLayout>

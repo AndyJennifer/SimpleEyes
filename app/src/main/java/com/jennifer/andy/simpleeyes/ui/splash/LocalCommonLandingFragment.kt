@@ -47,7 +47,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        //如果用户没登录，执行上升动画，否则执行缩放动画
+        //如果用户没有执行上升动画，则执行，反之则执行缩放动画
         if (!UserPreferences.getShowUserAnim()) {
             doUpAnimator()
             doBackgroundAnimator()

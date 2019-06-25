@@ -12,6 +12,7 @@ import com.jennifer.andy.simpleeyes.utils.SystemUtils
  * Description: 基础类activity
  */
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), BaseView {
 
 

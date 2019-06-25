@@ -24,9 +24,9 @@ class SquareCollectionAdapter(data: MutableList<Content>) : BaseQuickAdapter<Con
         if (item.type != "actionCard") {//分类
             imageView.setImageURI(item.data.image)
             helper.setText(R.id.tv_title, item.data.title)
-            coverView.foreground = mContext?.resources?.getDrawable(R.drawable.selector_item_square_foreground)
+            coverView.foreground = mContext?.resources?.getDrawable(R.drawable.selector_item_square_foreground,null)
         } else {//显示全部
-            imageView.setImageDrawable(mContext.resources.getDrawable(R.drawable.shape_show_all_border))
+            imageView.setImageDrawable(mContext.resources.getDrawable(R.drawable.shape_show_all_border,null))
             helper.setText(R.id.tv_title, item.data.text)
             helper.setTextColor(R.id.tv_title, mContext.resources.getColor(R.color.black))
             helper.setTypeface(R.id.tv_title, TypefaceManager.getTypeFace(FontType.NORMAL))

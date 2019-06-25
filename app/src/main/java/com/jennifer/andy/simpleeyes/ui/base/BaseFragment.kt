@@ -14,6 +14,7 @@ import com.jennifer.andy.simpleeyes.utils.SystemUtils
  * Description:
  */
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), BaseView {
 
     protected lateinit var mPresenter: T

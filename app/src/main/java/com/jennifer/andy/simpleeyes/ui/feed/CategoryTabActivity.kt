@@ -30,8 +30,8 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(), CategoryTabView {
 
     private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
-    private val mViewPager: ViewPager by bindView(R.id.view_pager)
-    private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
+    private val mViewPager: ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
+    private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
 
     private val mImageView: SimpleDraweeView by bindView(R.id.iv_image)
     private val mTvSubTitle: CustomFontTextView by bindView(R.id.tv_sub_title)
