@@ -9,15 +9,16 @@
     <RelativeLayout
         android:id="@+id/id_sticky_nav_layout_top_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
-
-        <include layout="@layout/layout_common_toolbar"/>
+        android:layout_height="300dp"
+        android:background="@color/black">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:actualImageScaleType="centerCrop"/>
+
+        <include layout="@layout/layout_common_white_toolbar"/>
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_sub_title"

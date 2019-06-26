@@ -49,7 +49,7 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
         mPresenter.getTabInfo(id!!)
-        initToolBar(mToolbar, title, 0f)
+        initToolBar(mToolbar, "")
     }
 
     override fun showLoadTabSuccess(category: Category) {

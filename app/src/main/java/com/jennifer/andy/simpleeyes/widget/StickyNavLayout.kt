@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.widget
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.support.v4.view.NestedScrollingParent2
 import android.support.v4.view.NestedScrollingParentHelper
@@ -8,10 +9,14 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.Scroller
 import com.jennifer.andy.simpleeyes.R
 import kotlinx.android.synthetic.main.layout_blank_card.view.*
+import kotlin.math.abs
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 
 /**
@@ -30,6 +35,8 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
     private lateinit var mNavView: View//导航view
     private lateinit var mViewPager: View//viewpager
     private var mTopViewHeight: Int = 0//头部view高度
+
+    private var mOffsetAnimator: ValueAnimator? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -73,11 +80,9 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
         val hideTop = dy > 0 && scrollY < mTopViewHeight
 
         //如果子view预向下滑动，必须要子view不能向下滑动后，才能交给父view滑动
-        Log.d("wtf", "dy---->$dy scrolly--->$scrollY")
         val showTop = dy < 0 && scrollY >= 0 && !target.canScrollVertically(-1)
 
         if (hideTop || showTop) {
-            Log.d("wtf", "hideTop--->$hideTop showTop---->$showTop  dy---->$dy")
             scrollBy(0, dy)
             consumed[1] = dy
         }
@@ -100,6 +105,69 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
         mScrollingParentHelper.onStopNestedScroll(view, type)
     }
 
+    /**
+     * 嵌套滑动时，如果父View处理了fling,那子view就没有办法处理fling了，所以这里要返回为false
+     */
+    override fun onNestedPreFling(target: View, velocityX: Float, velocityY: Float) = false
+
+    /**
+     * fling 效果就是当手指抬起的时候，如果x与y轴上的值大于系统设置的最小速度，那么就自动滑动一段距离并停止
+     */
+    override fun onNestedFling(target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
+        Log.d("wft", "velocityY---> $velocityY fling consumed---> $consumed")
+
+        //判断view是否可以向下移动,如果view不能滑动就是滑动到头了，这个时候需要慢慢的滑动下来。其他的情况还是让target自己滑
+        val viewCanScroll = target.canScrollVertically(-1)
+        if (!viewCanScroll) {
+            animateScroll(velocityY, computeDuration(0f))
+        }
+        return true
+    }
+
+    /**
+     * 根据速度计算滚动动画持续时间
+     * 注意：关于时间的算法，可以查看AppbarLayout中的animateOffsetTo方法
+     * @param velocityY 竖直方向上速度，velocityY > 0 向上滑动，反之向下滑动
+     * @return
+     */
+    private fun computeDuration(velocityY: Float): Int {
+        var velocityY = velocityY
+
+        val distance = if (velocityY > 0) {
+            abs(mTopView.height - scrollY)
+        } else {
+            abs(scrollY)
+        }
+        velocityY = abs(velocityY)
+        return if (velocityY > 0) {
+            3 * (1000 * (distance / velocityY)).roundToInt()
+        } else {
+            val distanceRatio = distance.toFloat() / height
+            ((distanceRatio + 1) * 150).toInt()
+        }
+    }
+
+    private fun animateScroll(velocityY: Float, duration: Int) {
+        val currentOffset = scrollY
+        val topHeight = mTopView.height
+        if (mOffsetAnimator == null) {
+            mOffsetAnimator = ValueAnimator()
+            mOffsetAnimator?.interpolator = DecelerateInterpolator()
+            mOffsetAnimator?.addUpdateListener { animation ->
+                if (animation.animatedValue is Int) {
+                    scrollTo(0, animation.animatedValue as Int)
+                }
+            }
+        } else {
+            mOffsetAnimator?.cancel()
+        }
+        mOffsetAnimator?.duration = min(duration, 600).toLong()
+
+        if (velocityY >= 0) {
+            mOffsetAnimator?.setIntValues(currentOffset, topHeight)
+            mOffsetAnimator?.start()
+        }
+    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
