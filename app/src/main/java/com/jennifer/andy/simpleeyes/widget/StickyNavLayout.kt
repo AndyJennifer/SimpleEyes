@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.support.v4.view.NestedScrollingParent2
 import android.support.v4.view.NestedScrollingParentHelper
+import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.util.Log
@@ -76,15 +77,16 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      *                 consumed[0] 水平消耗的距离，consumed[1] 垂直消耗的距离 好让子view做出相应的调整
      */
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
-        //如果子view欲向上滑动，则先交给父view滑动
-        val hideTop = dy > 0 && scrollY < mTopViewHeight
+        if (type == ViewCompat.TYPE_TOUCH) {//如果你要单独处理fling,且你是实现NestedScrollingParent2，那么必须判断
+            //如果子view欲向上滑动，则先交给父view滑动
+            val hideTop = dy > 0 && scrollY < mTopViewHeight
+            //如果子view预向下滑动，必须要子view不能向下滑动后，才能交给父view滑动
+            val showTop = dy < 0 && scrollY >= 0 && !target.canScrollVertically(-1)
 
-        //如果子view预向下滑动，必须要子view不能向下滑动后，才能交给父view滑动
-        val showTop = dy < 0 && scrollY >= 0 && !target.canScrollVertically(-1)
-
-        if (hideTop || showTop) {
-            scrollBy(0, dy)
-            consumed[1] = dy
+            if (hideTop || showTop) {
+                scrollBy(0, dy)
+                consumed[1] = dy
+            }
         }
     }
 
@@ -114,8 +116,7 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      * fling 效果就是当手指抬起的时候，如果x与y轴上的值大于系统设置的最小速度，那么就自动滑动一段距离并停止
      */
     override fun onNestedFling(target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
-        Log.d("wft", "velocityY---> $velocityY fling consumed---> $consumed")
-
+        Log.d("wtf", "velocityY---> $velocityY fling consumed---> $consumed")
         //判断view是否可以向下移动,如果view不能滑动就是滑动到头了，这个时候需要慢慢的滑动下来。其他的情况还是让target自己滑
         val viewCanScroll = target.canScrollVertically(-1)
         if (!viewCanScroll) {
