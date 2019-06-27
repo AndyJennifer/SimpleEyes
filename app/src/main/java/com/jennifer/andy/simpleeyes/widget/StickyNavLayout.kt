@@ -64,7 +64,7 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      * 当父view接受嵌套滑动，当onStartNestedScroll方法返回true该方法会调用
      */
     override fun onNestedScrollAccepted(child: View, target: View, axes: Int, type: Int) {
-
+        mScrollingParentHelper.onNestedScrollAccepted(child, target, axes, type)
     }
 
     /**
@@ -107,10 +107,15 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
         mScrollingParentHelper.onStopNestedScroll(view, type)
     }
 
+    override fun getNestedScrollAxes(): Int {
+        return mScrollingParentHelper.nestedScrollAxes
+    }
+
     /**
      * 嵌套滑动时，如果父View处理了fling,那子view就没有办法处理fling了，所以这里要返回为false
      */
     override fun onNestedPreFling(target: View, velocityX: Float, velocityY: Float) = false
+
 
     /**
      * fling 效果就是当手指抬起的时候，如果x与y轴上的值大于系统设置的最小速度，那么就自动滑动一段距离并停止
