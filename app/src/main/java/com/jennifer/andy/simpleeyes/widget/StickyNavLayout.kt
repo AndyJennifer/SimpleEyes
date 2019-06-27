@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.widget
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.support.v4.view.NestedScrollingParent2
 import android.support.v4.view.NestedScrollingParentHelper
@@ -9,7 +8,6 @@ import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Scroller
 import com.jennifer.andy.simpleeyes.R
 import kotlinx.android.synthetic.main.layout_blank_card.view.*
 
@@ -23,7 +21,6 @@ import kotlinx.android.synthetic.main.layout_blank_card.view.*
 class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
 
     private var mScrollingParentHelper: NestedScrollingParentHelper = NestedScrollingParentHelper(this)
-    private var mSmoothScroller: Scroller = Scroller(context)
 
     private lateinit var mTopView: View//头部view
     private lateinit var mNavView: View//导航view
@@ -31,7 +28,6 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
 
     private var mTopViewHeight: Int = 0//头部view高度
 
-    private var mOffsetAnimator: ValueAnimator? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -48,12 +44,13 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      * @param child 嵌套滑动对应的父类的子类(因为嵌套滑动对于的父View不一定是一级就能找到的，可能挑了两级父View的父View，child的辈分>=target)
      * @param target 具体嵌套滑动的那个子类
      * @param axes   支持嵌套滚动轴。水平方向，垂直方向，或者不指定
-     * @param type  导致此滚动事件的输入类型
+     * @param type  滑动类型，ViewCompat.TYPE_NON_TOUCH fling 效果ViewCompat.TYPE_TOUCH 手势滑动
      */
     override fun onStartNestedScroll(child: View, target: View, axes: Int, type: Int) = true
 
     /**
      * 当父view接受嵌套滑动，当onStartNestedScroll方法返回true该方法会调用
+     * @param type  滑动类型，ViewCompat.TYPE_NON_TOUCH fling 效果ViewCompat.TYPE_TOUCH 手势滑动
      */
     override fun onNestedScrollAccepted(child: View, target: View, axes: Int, type: Int) {
         mScrollingParentHelper.onNestedScrollAccepted(child, target, axes, type)
@@ -67,6 +64,7 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      * @param dy       垂直方向嵌套滑动的子View想要变化的距离 dy<0向下滑动 dy>0 向上滑动
      * @param consumed 这个参数要我们在实现这个函数的时候指定，回头告诉子View当前父View消耗的距离
      *                 consumed[0] 水平消耗的距离，consumed[1] 垂直消耗的距离 好让子view做出相应的调整
+     * @param type  滑动类型，ViewCompat.TYPE_NON_TOUCH fling 效果ViewCompat.TYPE_TOUCH 手势滑动
      */
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
         if (type == ViewCompat.TYPE_TOUCH) {//如果你要单独处理fling,且你是实现NestedScrollingParent2，那么必须判断
