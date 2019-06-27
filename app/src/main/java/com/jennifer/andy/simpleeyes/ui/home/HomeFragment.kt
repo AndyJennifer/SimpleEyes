@@ -106,5 +106,4 @@ class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
     override fun getContentViewLayoutId() = R.layout.fragment_home
 
 
-
 }

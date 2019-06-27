@@ -19,7 +19,7 @@ class BottomBar : LinearLayout {
     private var mCurrentPosition = 0//当前默认位置
     private var mBottomItemLayouts = mutableListOf<BottomItemLayout>()
 
-    private var mListener: onTabSelectedListener? = null
+    private var mListener: TabSelectedListener? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -30,7 +30,7 @@ class BottomBar : LinearLayout {
     }
 
     private fun init(context: Context) {
-        orientation = LinearLayout.HORIZONTAL
+        orientation = HORIZONTAL
 
         mTabLayout = LinearLayout(context)
         mTabLayout.setBackgroundColor(Color.WHITE)
@@ -49,7 +49,7 @@ class BottomBar : LinearLayout {
         mTabLayout.addView(bottomItemLayout, mTabParams)
         mBottomItemLayouts.add(bottomItemLayout)
 
-        bottomItemLayout.setOnClickListener({
+        bottomItemLayout.setOnClickListener {
             val position = bottomItemLayout.getTabPosition()
             if (position == mCurrentPosition) {
                 mListener?.onTabReselected(position)
@@ -60,18 +60,18 @@ class BottomBar : LinearLayout {
                 mBottomItemLayouts[mCurrentPosition].isSelected = false
                 mCurrentPosition = position
             }
-        })
+        }
     }
 
 
-    fun setOnTabSelectedListener(onTabSelectedListener: onTabSelectedListener) {
-        mListener = onTabSelectedListener
+    fun setOnTabSelectedListener(TabSelectedListener: TabSelectedListener) {
+        mListener = TabSelectedListener
     }
 
     /**
      * 选项卡选择监听
      */
-    interface onTabSelectedListener {
+    interface TabSelectedListener {
 
         /**
          * 当选项卡被选择
