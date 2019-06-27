@@ -7,17 +7,11 @@ import android.support.v4.view.NestedScrollingParentHelper
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.ViewConfiguration
-import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.Scroller
 import com.jennifer.andy.simpleeyes.R
 import kotlinx.android.synthetic.main.layout_blank_card.view.*
-import kotlin.math.abs
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 
 /**
@@ -29,12 +23,12 @@ import kotlin.math.roundToInt
 class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
 
     private var mScrollingParentHelper: NestedScrollingParentHelper = NestedScrollingParentHelper(this)
-    private var mSmoothScroller: Scroller
-    private var mTouchSlop: Int = 0
+    private var mSmoothScroller: Scroller = Scroller(context)
 
     private lateinit var mTopView: View//头部view
     private lateinit var mNavView: View//导航view
     private lateinit var mViewPager: View//viewpager
+
     private var mTopViewHeight: Int = 0//头部view高度
 
     private var mOffsetAnimator: ValueAnimator? = null
@@ -44,8 +38,6 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
-        mSmoothScroller = Scroller(getContext())
         orientation = VERTICAL
     }
 
@@ -99,16 +91,9 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      * @param dyConsumed   垂直方向嵌套滑动的子View滑动的距离(消耗的距离)
      * @param dxUnconsumed 水平方向嵌套滑动的子View未滑动的距离(未消耗的距离)
      * @param dyUnconsumed 垂直方向嵌套滑动的子View未滑动的距离(未消耗的距离)
+     * @param type  滑动类型，ViewCompat.TYPE_NON_TOUCH fling 效果ViewCompat.TYPE_TOUCH 手势滑动
      */
     override fun onNestedScroll(target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int, type: Int) {
-    }
-
-    override fun onStopNestedScroll(target: View, type: Int) {
-        mScrollingParentHelper.onStopNestedScroll(view, type)
-    }
-
-    override fun getNestedScrollAxes(): Int {
-        return mScrollingParentHelper.nestedScrollAxes
     }
 
     /**
@@ -116,64 +101,6 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      */
     override fun onNestedPreFling(target: View, velocityX: Float, velocityY: Float) = false
 
-
-    /**
-     * fling 效果就是当手指抬起的时候，如果x与y轴上的值大于系统设置的最小速度，那么就自动滑动一段距离并停止
-     */
-    override fun onNestedFling(target: View, velocityX: Float, velocityY: Float, consumed: Boolean): Boolean {
-        Log.d("wtf", "velocityY---> $velocityY fling consumed---> $consumed")
-        //判断view是否可以向下移动,如果view不能滑动就是滑动到头了，这个时候需要慢慢的滑动下来。其他的情况还是让target自己滑
-        val viewCanScroll = target.canScrollVertically(-1)
-        if (!viewCanScroll) {
-            animateScroll(velocityY, computeDuration(0f))
-        }
-        return true
-    }
-
-    /**
-     * 根据速度计算滚动动画持续时间
-     * 注意：关于时间的算法，可以查看AppbarLayout中的animateOffsetTo方法
-     * @param velocityY 竖直方向上速度，velocityY > 0 向上滑动，反之向下滑动
-     * @return
-     */
-    private fun computeDuration(velocityY: Float): Int {
-        var velocityY = velocityY
-
-        val distance = if (velocityY > 0) {
-            abs(mTopView.height - scrollY)
-        } else {
-            abs(scrollY)
-        }
-        velocityY = abs(velocityY)
-        return if (velocityY > 0) {
-            3 * (1000 * (distance / velocityY)).roundToInt()
-        } else {
-            val distanceRatio = distance.toFloat() / height
-            ((distanceRatio + 1) * 150).toInt()
-        }
-    }
-
-    private fun animateScroll(velocityY: Float, duration: Int) {
-        val currentOffset = scrollY
-        val topHeight = mTopView.height
-        if (mOffsetAnimator == null) {
-            mOffsetAnimator = ValueAnimator()
-            mOffsetAnimator?.interpolator = DecelerateInterpolator()
-            mOffsetAnimator?.addUpdateListener { animation ->
-                if (animation.animatedValue is Int) {
-                    scrollTo(0, animation.animatedValue as Int)
-                }
-            }
-        } else {
-            mOffsetAnimator?.cancel()
-        }
-        mOffsetAnimator?.duration = min(duration, 600).toLong()
-
-        if (velocityY >= 0) {
-            mOffsetAnimator?.setIntValues(currentOffset, topHeight)
-            mOffsetAnimator?.start()
-        }
-    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -210,10 +137,11 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
         if (adjustY != scrollY) super.scrollTo(x, adjustY)
     }
 
-    override fun computeScroll() {
-        if (mSmoothScroller.computeScrollOffset()) {
-            scrollTo(0, mSmoothScroller.currY)
-            invalidate()
-        }
+    override fun onStopNestedScroll(target: View, type: Int) {
+        mScrollingParentHelper.onStopNestedScroll(view, type)
+    }
+
+    override fun getNestedScrollAxes(): Int {
+        return mScrollingParentHelper.nestedScrollAxes
     }
 }
