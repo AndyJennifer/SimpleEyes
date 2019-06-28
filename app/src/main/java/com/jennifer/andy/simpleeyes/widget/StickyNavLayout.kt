@@ -112,7 +112,6 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         //ViewPager修改后的高度= 总高度-导航栏高度
         val layoutParams = mViewPager.layoutParams
         layoutParams.height = measuredHeight - mNavView.measuredHeight
