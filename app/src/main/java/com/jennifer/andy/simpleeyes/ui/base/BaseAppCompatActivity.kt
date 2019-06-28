@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -176,22 +177,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         tvTitle.setFontType(fontType)
         tvTitle.text = title
 
-    }
-
-    /**
-     * 初始化工具栏，默认情况下加粗,默认情况下显示背景和标题
-     */
-    protected fun initToolBar(toolbar: RelativeLayout, title: String? = null, alpha: Float = 1f, fontType: FontType = FontType.BOLD) {
-        val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
-        ivBack.setOnClickListener {
-            showKeyboard(false)
-            finish()
-        }
-
-        val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
-        tvTitle.setFontType(fontType)
-        tvTitle.text = title
-        tvTitle.alpha = alpha
     }
 
     /**

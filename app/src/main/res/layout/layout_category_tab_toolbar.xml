@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tool_bar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/normal_title_height"
     android:padding="1px">
 
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="17sp"
+        app:font_name="bold"/>
 
     <ImageView
         android:id="@+id/iv_back"
@@ -13,15 +26,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:src="@drawable/ic_action_back_white"/>
-
-    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textSize="17sp"/>
 
 </RelativeLayout>

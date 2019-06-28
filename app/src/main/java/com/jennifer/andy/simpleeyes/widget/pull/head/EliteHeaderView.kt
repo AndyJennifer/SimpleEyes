@@ -10,6 +10,7 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullRefreshView
+import kotlin.math.abs
 
 
 /**
@@ -61,7 +62,7 @@ class EliteHeaderView : PullRefreshView {
         mYDistance += dy
         if (mYDistance >= height - mLoadingMessage.bottom && mYDistance <= height - mLoadingMessage.top) {
             val argbEvaluator = ArgbEvaluator()
-            val fraction = Math.abs(mLoadingMessage.bottom - height + mYDistance) / (mLoadingMessage.height)
+            val fraction = abs(mLoadingMessage.bottom - height + mYDistance) / (mLoadingMessage.height)
             val textColor = argbEvaluator.evaluate(fraction, 0, 0xff444444.toInt()) as Int
             mLoadingMessage.setTextColor(textColor)
         }

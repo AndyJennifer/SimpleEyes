@@ -6,6 +6,7 @@ import android.support.v4.view.NestedScrollingParentHelper
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import com.jennifer.andy.simpleeyes.R
@@ -26,8 +27,9 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
     private lateinit var mNavView: View//导航view
     private lateinit var mViewPager: View//viewpager
 
-    private var mTopViewHeight: Int = 0//头部view高度
+    private var mCanScrollDistance: Float = 0f
 
+    private var mListener: ScrollChangeListener? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -69,7 +71,7 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
         if (type == ViewCompat.TYPE_TOUCH) {//如果你要单独处理fling,且你是实现NestedScrollingParent2，那么必须判断
             //如果子view欲向上滑动，则先交给父view滑动
-            val hideTop = dy > 0 && scrollY < mTopViewHeight
+            val hideTop = dy > 0 && scrollY < mCanScrollDistance
             //如果子view预向下滑动，必须要子view不能向下滑动后，才能交给父view滑动
             val showTop = dy < 0 && scrollY >= 0 && !target.canScrollVertically(-1)
 
@@ -121,14 +123,21 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        mTopViewHeight = mTopView.measuredHeight
+        //可滑动高度为，topView的高度- 标题栏的高度
+        mCanScrollDistance = (mTopView.measuredHeight - resources.getDimension(R.dimen.normal_title_height).toInt()).toFloat()
     }
 
     override fun scrollTo(x: Int, y: Int) {
-        //控制父view滑动范围为0-mTopViewHeight之间
+
+        //控制父view滑动范围为0-mCanScrollDistance.之间
         var adjustY = y
         if (y < 0) adjustY = 0
-        if (y > mTopViewHeight) adjustY = mTopViewHeight
+        if (y > mCanScrollDistance) adjustY = mCanScrollDistance.toInt()
+
+        //将移动比例传出去
+        Log.d("wtf", "adJustY--> $adjustY   $mCanScrollDistance   --->${adjustY / mCanScrollDistance}")
+        mListener?.onScroll(adjustY / mCanScrollDistance)
+
         if (adjustY != scrollY) super.scrollTo(x, adjustY)
     }
 
@@ -138,5 +147,18 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
 
     override fun getNestedScrollAxes(): Int {
         return mScrollingParentHelper.nestedScrollAxes
+    }
+
+
+    interface ScrollChangeListener {
+        /**
+         * 移动监听
+         * @param moveRatio 移动比例
+         */
+        fun onScroll(moveRatio: Float)
+    }
+
+    fun setScrollChangeListener(scrollChangeListener: ScrollChangeListener) {
+        mListener = scrollChangeListener
     }
 }
