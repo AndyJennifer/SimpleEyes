@@ -99,7 +99,7 @@ interface ApiService {
      * 关注
      */
     @GET("api/v4/tabs/follow")
-    fun getFollowTabs(): Observable<AndyInfo>
+    fun getFollowInfo(): Observable<AndyInfo>
 
     ///////////////////////////////////////////////////////////////////////////
     // 公共接口

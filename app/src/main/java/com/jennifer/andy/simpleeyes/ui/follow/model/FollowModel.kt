@@ -1,6 +1,10 @@
 package com.jennifer.andy.simpleeyes.ui.follow.model
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.Api
+import com.jennifer.andy.simpleeyes.rx.RxHelper
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
+import io.reactivex.Observable
 
 
 /**
@@ -9,4 +13,11 @@ import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
  * Description:
  */
 
-class FollowModel : BaseModel
+class FollowModel : BaseModel {
+
+
+    /**
+     * 获取关注首页信息
+     */
+    fun getFollowInfo(): Observable<AndyInfo> = Api.getDefault().getFollowInfo().compose(RxHelper.handleResult())
+}

@@ -19,7 +19,7 @@ object RxHelper {
      * 处理结果数据
      */
     fun <T> handleResult(): ObservableTransformer<T, T> {
-        return ObservableTransformer {
+        return ObservableTransformer { it ->
             it.flatMap {
                 if (it != null) {
                     createSuccessData(it)

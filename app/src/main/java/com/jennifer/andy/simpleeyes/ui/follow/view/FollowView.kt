@@ -1,5 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.follow.view
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
+
 
 /**
  * Author:  andy.xwt
@@ -7,6 +10,9 @@ package com.jennifer.andy.simpleeyes.ui.follow.view
  * Description:
  */
 
-class FollowView {
+interface FollowView : LoadMoreView<AndyInfo> {
 
+    fun loadFollowInfoSuccess(andyInfo: AndyInfo)
+
+    fun refreshSuccess(andyInfo: AndyInfo)
 }
