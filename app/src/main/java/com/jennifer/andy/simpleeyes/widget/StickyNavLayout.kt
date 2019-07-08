@@ -3,7 +3,6 @@ package com.jennifer.andy.simpleeyes.widget
 import android.content.Context
 import android.support.v4.view.NestedScrollingParent2
 import android.support.v4.view.NestedScrollingParentHelper
-import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.util.Log
@@ -69,17 +68,19 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
      * @param type  滑动类型，ViewCompat.TYPE_NON_TOUCH fling 效果ViewCompat.TYPE_TOUCH 手势滑动
      */
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
-        if (type == ViewCompat.TYPE_TOUCH) {//如果你要单独处理fling,且你是实现NestedScrollingParent2，那么必须判断
-            //如果子view欲向上滑动，则先交给父view滑动
-            val hideTop = dy > 0 && scrollY < mCanScrollDistance
-            //如果子view预向下滑动，必须要子view不能向下滑动后，才能交给父view滑动
-            val showTop = dy < 0 && scrollY >= 0 && !target.canScrollVertically(-1)
+        //这里不管是手势滑动还是fling都需要父控件处理，因为子控件可能会出现手势滑动->手势滑动->fling,
+        //如果这里只处理手势滚动，那么就会出现，父控件滚动一定距离，子控件再fling的问题。
 
-            if (hideTop || showTop) {
-                scrollBy(0, dy)
-                consumed[1] = dy
-            }
+        //如果子view欲向上滑动，则先交给父view滑动
+        val hideTop = dy > 0 && scrollY < mCanScrollDistance
+        //如果子view预向下滑动，必须要子view不能向下滑动后，才能交给父view滑动
+        val showTop = dy < 0 && scrollY >= 0 && !target.canScrollVertically(-1)
+
+        if (hideTop || showTop) {
+            scrollBy(0, dy)
+            consumed[1] = dy
         }
+
     }
 
 
