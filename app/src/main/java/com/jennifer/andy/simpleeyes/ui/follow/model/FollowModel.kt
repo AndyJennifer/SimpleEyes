@@ -20,4 +20,10 @@ class FollowModel : BaseModel {
      * 获取关注首页信息
      */
     fun getFollowInfo(): Observable<AndyInfo> = Api.getDefault().getFollowInfo().compose(RxHelper.handleResult())
+
+
+    /**
+     * 获取全部作者
+     */
+    fun getAllAuthor(): Observable<AndyInfo> = Api.getDefault().getAllAuthor().compose(RxHelper.handleResult())
 }

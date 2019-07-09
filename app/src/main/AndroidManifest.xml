@@ -108,6 +108,11 @@
         <activity android:name=".ui.feed.CategoryTabActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
+
+        <!--全部作者-->
+        <activity android:name=".ui.follow.AllAuthorActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

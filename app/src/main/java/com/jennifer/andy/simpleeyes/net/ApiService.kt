@@ -101,6 +101,13 @@ interface ApiService {
     @GET("api/v4/tabs/follow")
     fun getFollowInfo(): Observable<AndyInfo>
 
+    /**
+     * 全部作者
+     */
+    @GET("api/v4/pgcs/all")
+    fun getAllAuthor(): Observable<AndyInfo>
+
+
     ///////////////////////////////////////////////////////////////////////////
     // 公共接口
     ///////////////////////////////////////////////////////////////////////////

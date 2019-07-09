@@ -3,36 +3,32 @@ package com.jennifer.andy.simpleeyes.ui.follow.presenter
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.follow.model.FollowModel
-import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
+import com.jennifer.andy.simpleeyes.ui.follow.view.AllAuthorView
 
 
 /**
  * Author:  andy.xwt
- * Date:    2017/9/22 13:54
+ * Date:    2019-07-09 18:23
  * Description:
  */
 
-class FollowPresenter : BasePresenter<FollowView>() {
-
+class AllAuthorPresenter : BasePresenter<AllAuthorView>() {
 
     private var mFollowModel: FollowModel = FollowModel()
     private var mNextPageUrl: String? = null
 
-    fun getFollowInfo() {
-        mRxManager.add(mFollowModel.getFollowInfo().subscribe({
+
+    fun getAllAuthorInfo() {
+        mRxManager.add(mFollowModel.getAllAuthor().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
-            mView?.loadFollowInfoSuccess(it)
+            mView?.loadAllAuthorSuccess(it)
         }, {
-            mView?.showNetError(View.OnClickListener { getFollowInfo() })
+            mView?.showNetError(View.OnClickListener { getAllAuthorInfo() })
         }))
     }
 
-
-    /**
-     * 加载更多首页信息
-     */
-    fun loadMoreFollowInfo() {
+    fun loadMoreInfo() {
         if (mNextPageUrl != null) {
             mRxManager.add(mFollowModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
                 mView?.showContent()
@@ -44,21 +40,11 @@ class FollowPresenter : BasePresenter<FollowView>() {
                 }
             }, {
                 mView?.showNetError(View.OnClickListener {
-                    loadMoreFollowInfo()
+                    loadMoreInfo()
                 })
             }))
         }
     }
 
-    fun refresh() {
-        mRxManager.add(mFollowModel.getFollowInfo().subscribe({
-            mView?.showContent()
-            mNextPageUrl = it.nextPageUrl
-            mView?.refreshSuccess(it)
-        }, {
-            mView?.showNetError(View.OnClickListener {
-                refresh()
-            })
-        }))
-    }
+
 }

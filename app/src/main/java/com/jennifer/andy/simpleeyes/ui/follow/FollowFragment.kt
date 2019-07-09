@@ -49,7 +49,7 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>(), FollowView {
         }
         //跳转到全部作者界面
         mTvAllAuthor.setOnClickListener {
-            //添加实现
+            readyGo(AllAuthorActivity::class.java)
         }
 
         mRecyclerView.refreshListener = { mPresenter.refresh() }
