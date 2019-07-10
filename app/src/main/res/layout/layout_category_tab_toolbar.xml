@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tool_bar"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/normal_title_height"
-    android:padding="1px">
+    android:layout_height="@dimen/normal_title_height">
 
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
