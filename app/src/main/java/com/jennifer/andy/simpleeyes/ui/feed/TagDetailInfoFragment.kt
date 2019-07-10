@@ -52,7 +52,7 @@ class TagDetailInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoPrese
         if (mAdapter == null) {
             mAdapter = BaseDataAdapter(andyInfo.itemList)
             mAdapter?.setLoadMoreView(CustomLoadMoreView())
-            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreDetailInfo() }, mRecyclerView)
+            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreInfo() }, mRecyclerView)
             mRecyclerView.adapter = mAdapter
             mRecyclerView.layoutManager = LinearLayoutManager(context)
         } else {

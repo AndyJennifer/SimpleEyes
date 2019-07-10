@@ -1,7 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.follow.presenter
 
 import android.view.View
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.ui.follow.model.FollowModel
 import com.jennifer.andy.simpleeyes.ui.follow.view.AllAuthorView
 
@@ -12,38 +13,18 @@ import com.jennifer.andy.simpleeyes.ui.follow.view.AllAuthorView
  * Description:
  */
 
-class AllAuthorPresenter : BasePresenter<AllAuthorView>() {
+class AllAuthorPresenter : LoadMorePresenter<AndyInfo, FollowModel, AllAuthorView>() {
 
-    private var mFollowModel: FollowModel = FollowModel()
-    private var mNextPageUrl: String? = null
-
+    override var mBaseModel: FollowModel = FollowModel()
 
     fun getAllAuthorInfo() {
-        mRxManager.add(mFollowModel.getAllAuthor().subscribe({
+        mRxManager.add(mBaseModel.getAllAuthor().subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.loadAllAuthorSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener { getAllAuthorInfo() })
         }))
-    }
-
-    fun loadMoreInfo() {
-        if (mNextPageUrl != null) {
-            mRxManager.add(mFollowModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
-                mView?.showContent()
-                if (it.nextPageUrl == null) {
-                    mView?.showNoMore()
-                } else {
-                    mNextPageUrl = it.nextPageUrl
-                    mView?.loadMoreSuccess(it)
-                }
-            }, {
-                mView?.showNetError(View.OnClickListener {
-                    loadMoreInfo()
-                })
-            }))
-        }
     }
 
 

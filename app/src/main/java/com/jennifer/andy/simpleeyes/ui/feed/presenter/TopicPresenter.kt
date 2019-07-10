@@ -1,7 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.feed.presenter
 
 import android.view.View
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
 import com.jennifer.andy.simpleeyes.ui.feed.view.TopicView
 
@@ -12,16 +13,15 @@ import com.jennifer.andy.simpleeyes.ui.feed.view.TopicView
  * Description:
  */
 
-class TopicPresenter : BasePresenter<TopicView>() {
+class TopicPresenter : LoadMorePresenter<AndyInfo, FeedModel, TopicView>() {
 
-    private var mFeedModel: FeedModel = FeedModel()
-    private var mNextPageUrl: String? = null
+    override var mBaseModel: FeedModel = FeedModel()
 
     /**
      * 获取专题信息
      */
     fun getTopicInfo() {
-        mRxManager.add(mFeedModel.getTopicInfo().subscribe({
+        mRxManager.add(mBaseModel.getTopicInfo().subscribe({
             mView?.showGetTopicInfoSuccess(it.itemList)
             mNextPageUrl = it.nextPageUrl
         }, {
@@ -29,24 +29,4 @@ class TopicPresenter : BasePresenter<TopicView>() {
         }))
     }
 
-    /**
-     * 加载更多首页信息
-     */
-    fun loadMoreInfo() {
-        if (mNextPageUrl != null) {
-            mRxManager.add(mFeedModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
-                mView?.showContent()
-                if (it.nextPageUrl == null) {
-                    mView?.showNoMore()
-                } else {
-                    mNextPageUrl = it.nextPageUrl
-                    mView?.loadMoreSuccess(it)
-                }
-            }, {
-                mView?.showNetError(View.OnClickListener {
-                    loadMoreInfo()
-                })
-            }))
-        }
-    }
 }

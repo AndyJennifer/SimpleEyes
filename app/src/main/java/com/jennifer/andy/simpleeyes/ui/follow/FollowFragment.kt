@@ -59,7 +59,7 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>(), FollowView {
         if (mAdapter == null) {
             mAdapter = BaseDataAdapter(andyInfo.itemList)
             mAdapter?.setLoadMoreView(CustomLoadMoreView())
-            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreFollowInfo() }, mRecyclerView.rootView)
+            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreInfo() }, mRecyclerView.rootView)
 
             mRecyclerView.setAdapterAndLayoutManager(mAdapter!!, LinearLayoutManager(context))
         } else {

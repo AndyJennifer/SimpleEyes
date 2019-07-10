@@ -147,7 +147,7 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
             mSearchVideoAdapter.setEmptyView(R.layout.empty_search_word, mRecycler)
         }
 
-        mSearchVideoAdapter.setOnLoadMoreListener({ mPresenter.loadMoreSearchResult() }, mRecycler)
+        mSearchVideoAdapter.setOnLoadMoreListener({ mPresenter.loadMoreInfo() }, mRecycler)
         mSearchVideoAdapter.setLoadMoreView(CustomLoadMoreView())
         mRecycler.layoutManager = LinearLayoutManager(mContext)
         mRecycler.adapter = mSearchVideoAdapter
