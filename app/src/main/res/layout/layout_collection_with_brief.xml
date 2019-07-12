@@ -7,8 +7,9 @@
     android:background="@color/white"
     android:padding="5dp">
 
+
     <RelativeLayout
-        android:id="@+id/ll_more_container"
+        android:id="@+id/rl_head_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -74,7 +75,7 @@
         android:id="@+id/rv_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_more_container"/>
+        android:layout_below="@+id/rl_head_container"/>
 
     <View
         android:layout_width="match_parent"

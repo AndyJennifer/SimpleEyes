@@ -88,12 +88,9 @@ data class Header(var id: Int,
                   var icon: String,
                   var iconType: String,
                   var description: String,
-                  var follow: Follow?,
+                  var follow: FollowInfo?,
                   var time: Long) : Serializable
 
-data class Follow(var itemType: String,
-                  var itemId: Int,
-                  var followed: Boolean) : Serializable
 
 data class Label(var text: String,
                  var card: String,
@@ -131,16 +128,12 @@ data class AuthorBean(var id: Int,
                       var latestReleaseTime: Long,
                       var videoNum: Int,
                       var adTrack: String,
-                      var follow: FollowBean,
+                      var follow: FollowInfo,
                       var shield: ShieldBean,
                       var approvedNotReadyVideoCount: Int,
                       var isIfPgc: Boolean = false) : Serializable
 
 
-data class FollowBean(
-        var itemType: String,
-        var itemId: Int,
-        var isFollowed: Boolean) : Serializable
 
 data class ShieldBean(
         var itemType: String,
@@ -171,4 +164,44 @@ data class UrlListBean(var name: String,
                        var size: Int) : Serializable
 
 
+data class Category(var categoryInfo: CategoryInfo,
+                    var tabInfo: TabInfo)
 
+data class CategoryInfo(var dataType: String,
+                        var id: String,
+                        var name: String,
+                        var description: String,
+                        var headerImage: String,
+                        var actionUrl: String,
+                        var followInfo: FollowInfo)
+
+
+data class Tab(var tabInfo: TabInfo,
+               var pgcInfo: PgcInfo) : Serializable
+
+data class TabInfo(var tabList: MutableList<TabDetailInfo>,
+                   var defaultIdx: Int) : Serializable
+
+
+data class TabDetailInfo(var id: Int,
+                         var name: String,
+                         var apiUrl: String) : Serializable
+
+
+data class FollowInfo(var itemType: String,
+                      var itemId: String,
+                      var followed: Boolean) : Serializable
+
+
+data class PgcInfo(var dataType: String,
+                   var id: Int,
+                   var icon: String,
+                   var name: String,
+                   var brief: String,
+                   var description: String,
+                   var actionUrl: String,
+                   var followCount: Int,
+                   var shareCount: Int,
+                   var videoCount: Int,
+                   var collectCount: Int,
+                   var followInfo: FollowInfo) : Serializable
