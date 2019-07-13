@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_head_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_head"
+        android:layout_width="@dimen/default_card_source_icon_width"
+        android:layout_height="@dimen/default_card_source_icon_width"
+        android:layout_centerVertical="true"
+    />
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_title"
+        app:font_name="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_head"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/iv_head"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="15sp"/>
+
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/tv_desc"
+        app:font_name="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/iv_head"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxWidth="100dp"
+        android:maxLines="1"
+        android:textColor="@color/SecondaryText"
+        android:textSize="13sp"/>
+
+    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+        android:id="@+id/iv_focus"
+        app:font_name="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="@dimen/default_margin_right"
+        android:background="@drawable/shape_black_border"
+        android:gravity="center"
+        android:letterSpacing="0.2"
+        android:padding="5dp"
+        android:text="@string/add_follow"
+        android:textSize="11sp"
+    />
+
+</RelativeLayout>
+
+    <!-- header 这里根据返回的类型判断居中，是否加粗， 判断是否有follow，有就显示关注-->
+    <!-- TextCard ，type header,footer 是否加粗， 判断actionUrl 显示箭头，判断是否有follow，有就显示关注-->
