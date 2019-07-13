@@ -77,7 +77,7 @@ data class ContentBean(var dataType: String,
                        var actionUrl: String?) : Serializable
 
 
-data class Header(var id: Int,
+data class Header(var id: String,
                   var title: String,
                   var subTitle: String,
                   var font: String,
@@ -120,7 +120,7 @@ data class ProviderBean(var name: String,
                         var alias: String,
                         var icon: String) : Serializable
 
-data class AuthorBean(var id: Int,
+data class AuthorBean(var id: String,
                       var icon: String,
                       var name: String,
                       var description: String,
@@ -132,7 +132,6 @@ data class AuthorBean(var id: Int,
                       var shield: ShieldBean,
                       var approvedNotReadyVideoCount: Int,
                       var isIfPgc: Boolean = false) : Serializable
-
 
 
 data class ShieldBean(

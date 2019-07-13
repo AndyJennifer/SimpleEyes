@@ -113,6 +113,11 @@
         <activity android:name=".ui.follow.AllAuthorActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
+
+        <!--作者信息详细界面-->
+        <activity android:name=".ui.author.AuthorTagDetailActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

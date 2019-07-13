@@ -110,8 +110,8 @@ interface ApiService {
     /**
      * 作者详细信息
      */
-    @GET("api/v4/pgcs/tab")
-    fun getAuthorDetial(@Query("id") id: String): Observable<Tab>
+    @GET("api/v4/pgcs/detail/tab")
+    fun getAuthorTagDetail(@Query("id") id: String): Observable<Tab>
 
     ///////////////////////////////////////////////////////////////////////////
     // 公共接口

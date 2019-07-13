@@ -17,6 +17,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.ui.author.AuthorTagDetailActivity
 import com.jennifer.andy.simpleeyes.ui.home.adapter.CollectionCardCoverAdapter
 import com.jennifer.andy.simpleeyes.ui.home.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
@@ -61,6 +62,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         const val RECTANGLE_CARD_TYPE = 11
         const val VIDEO_TYPE = 12
         const val VIDEO_BANNER_THREE_TYPE = 13
+        const val VIDEO_SMALL_CARD_TYPE = 14
 
         const val BANNER = "banner"
         const val FOLLOW_CARD = "followCard"
@@ -76,6 +78,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         const val RECTANGLE_CARD = "rectangleCard"
         const val VIDEO = "video"
         const val VIDEO_BANNER_THREE = "banner3"
+        const val VIDEO_SMALL_CARD = "videoSmallCard"
     }
 
 
@@ -97,6 +100,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
                     RECTANGLE_CARD -> return RECTANGLE_CARD_TYPE
                     VIDEO -> return VIDEO_TYPE
                     VIDEO_BANNER_THREE -> return VIDEO_BANNER_THREE_TYPE
+                    VIDEO_SMALL_CARD -> return VIDEO_SMALL_CARD_TYPE
+
                 }
                 return FOLLOW_CARD_TYPE
             }
@@ -116,6 +121,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             registerItemType(RECTANGLE_CARD_TYPE, R.layout.item_square_card)
             registerItemType(VIDEO_TYPE, R.layout.layout_single_video)
             registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
+            registerItemType(VIDEO_SMALL_CARD_TYPE, R.layout.layout_video_small_card)
         }
 
     }
@@ -136,6 +142,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             RECTANGLE_CARD_TYPE -> setRectangleCardInfo(helper, item.data)
             VIDEO_TYPE -> setSingleVideoInfo(helper, item)
             VIDEO_BANNER_THREE_TYPE -> setBanner3Info(helper, item.data)
+            VIDEO_SMALL_CARD_TYPE -> setSmallCardInfo(helper, item.data)
         }
 
     }
@@ -175,7 +182,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
                 setIconType(info.header.iconType == "round")//设置图标形状
                 setPublishTime(info.header.time)//设置发布时间
                 setOnClickListener {
-                    // todo 点击跳转到作者详情
+                    // 点击跳转到作者详情
+                    AuthorTagDetailActivity.start(mContext, info.content!!.data.author.id)
                 }
 
             }
@@ -202,7 +210,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
 
 
             getView<RelativeLayout>(R.id.rl_head_container).setOnClickListener {
-                // todo 点击跳转到作者详情
+                // 点击跳转到作者详情
+                AuthorTagDetailActivity.start(mContext, data.header.id)
             }
 
             //跳转到视频详细界面
@@ -259,7 +268,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
 
             getView<RelativeLayout>(R.id.rl_head_container).apply {
                 setOnClickListener {
-                    // todo 点击跳转到作者详情
+                    // 点击跳转到作者详情
+                    AuthorTagDetailActivity.start(mContext, content.data.header.id)
                 }
 
             }
@@ -291,7 +301,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             setText(R.id.tv_desc, item.data.description)
             //跳转到作者详情
             itemView.setOnClickListener {
-                // todo 点击跳转到作者详情
+                // 点击跳转到作者详情
+                AuthorTagDetailActivity.start(mContext, item.data.id)
             }
 
             getView<SimpleDraweeView>(R.id.iv_source).apply {
@@ -461,4 +472,18 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
 
         }
     }
+
+    /**
+     * 设置小视频卡片信息
+     */
+    private fun setSmallCardInfo(helper: BaseViewHolder, data: ContentBean) {
+        with(helper) {
+            getView<SimpleDraweeView>(R.id.iv_image).setImageURI(data.cover.feed)
+            setText(R.id.tv_title, data.title)
+            val description = "#${data.category}   /   ${TimeUtils.getElapseTimeForShow(data.duration)}"
+            setText(R.id.tv_desc, description)
+            itemView.setOnClickListener { VideoDetailActivity.start(mContext, data, arrayListOf()) }
+        }
+    }
+
 }

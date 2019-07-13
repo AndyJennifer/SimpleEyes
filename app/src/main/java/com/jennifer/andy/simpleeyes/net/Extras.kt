@@ -19,5 +19,6 @@ object Extras {
     const val SLOGAN_ENGLISH = "slogan_english"
     const val SLOGAN_CHINESE = "slogan_chinese"
     const val API_URL = "api_url"
+    const val ID = "id";
 
 }

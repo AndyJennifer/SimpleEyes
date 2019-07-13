@@ -17,10 +17,12 @@ import com.jennifer.andy.simpleeyes.utils.TimeUtils
 class CollectionBriefAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content, BaseViewHolder>(R.layout.item_collection_brief, data) {
 
     override fun convert(helper: BaseViewHolder, item: Content) {
-        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
-        imageView.setImageURI(item.data.cover.feed)
-        helper.setText(R.id.tv_title, item.data.title)
-        val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
-        helper.setText(R.id.tv_desc, description)
+
+        with(helper) {
+            getView<SimpleDraweeView>(R.id.iv_image).setImageURI(item.data.cover.feed)
+            setText(R.id.tv_title, item.data.title)
+            val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+            setText(R.id.tv_desc, description)
+        }
     }
 }
