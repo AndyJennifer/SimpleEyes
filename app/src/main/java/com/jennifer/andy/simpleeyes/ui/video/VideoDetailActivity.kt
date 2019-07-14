@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
@@ -37,7 +36,6 @@ import java.util.*
  * Date:    2017/12/18 16:51
  * Description: 视频详细信息界面
  */
-@Route(path = "/pgc/detail")
 class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(), VideoDetailView {
 
     private val mPlaceImage by bindView<SimpleDraweeView>(R.id.iv_place_image)

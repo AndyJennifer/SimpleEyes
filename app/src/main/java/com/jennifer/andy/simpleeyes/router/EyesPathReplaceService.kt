@@ -22,6 +22,7 @@ class EyesPathReplaceService : PathReplaceService {
         const val HOST = "eyepetizer://github.com/"
         const val SCHEME = "eyepetizer"
         const val ONE_LEVEL = "AndyJennifer/"
+
     }
 
     override fun forString(path: String): String {
@@ -34,7 +35,7 @@ class EyesPathReplaceService : PathReplaceService {
             val uriStr = uri.toString()
             val split = uriStr.split("eyepetizer://")
             when {
-                uriStr.contains("pgc/detail") -> //处理详情
+                uriStr.contains("pgc/detail") -> //处理作者详情
                     return setPageDetailUrl(split)
                 uriStr.contains("webview") -> //处理webview
                     return setWebViewUrl(split)
@@ -46,7 +47,7 @@ class EyesPathReplaceService : PathReplaceService {
                     return setTopicUrl(split)
                 uriStr.contains("tag") ->//处理360全景
                     return setTagUrl(split)
-                uriStr.contains("category")->
+                uriStr.contains("category") ->
                     return setCategoryUrl(split)
                 else -> {
                 }
@@ -57,13 +58,12 @@ class EyesPathReplaceService : PathReplaceService {
         return uri
     }
 
-    
 
     /**
-     * 处理视频详情url
+     * 处理作者详情url
      * eyepetizer://pgc/detail/1065/?title=DELISH%20KITCHEN%20%E5%8F%AF%E5%8F%A3%E5%8E%A8%E6%88%BF&userType=PGC&tabIndex=1
      * 替换为：
-     * eyepetizer://github.com/pag/detail/?title=DELISH%20KITCHEN%20%E5%8F%AF%E5%8F%A3%E5%8E%A8%E6%88%BF&userType=PGC&tabIndex=1?id=1065
+     * eyepetizer://github.com/pgc/detail/?title=DELISH%20KITCHEN%20%E5%8F%AF%E5%8F%A3%E5%8E%A8%E6%88%BF&userType=PGC&tabIndex=1?id=1065
      */
     private fun setPageDetailUrl(split: List<String>): Uri {
         //获取id

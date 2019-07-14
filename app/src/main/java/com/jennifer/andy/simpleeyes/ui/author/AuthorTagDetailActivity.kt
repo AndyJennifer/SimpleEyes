@@ -1,15 +1,15 @@
 package com.jennifer.andy.simpleeyes.ui.author
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.widget.RelativeLayout
+import com.alibaba.android.arouter.facade.annotation.Autowired
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.entity.TabInfo
-import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.author.presenter.AuthorTagDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
@@ -26,6 +26,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
  * Description: 作者详细信息界面
  */
 
+@Route(path = "/pgc/detail")
 class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetailPresenter>(), AuthorTagDetailView {
 
     private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
@@ -34,38 +35,31 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
     private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
 
 
-    private lateinit var id: String
+    @Autowired
+    @JvmField
+    var tabIndex: String? = null//哇，这里ARouter居然不能支持Int类型
 
+    @Autowired
+    @JvmField
+    var title: String? = null
 
-    companion object {
-        /**
-         * 跳转道作者详细界面，id:作者id
-         */
-        @JvmStatic
-        fun start(context: Context, id: String) {
-            val bundle = Bundle()
-            bundle.putString(Extras.ID, id)
-            val starter = Intent(context, AuthorTagDetailActivity::class.java)
-            starter.putExtras(bundle)
-            context.startActivity(starter)
+    @Autowired
+    @JvmField
+    var id: String? = null
 
-        }
-    }
-
-    override fun getBundleExtras(extras: Bundle) {
-        id = extras.getString(Extras.ID)
-    }
 
     override fun initView(savedInstanceState: Bundle?) {
-        mPresenter.getAuthorTagDetail(id)
+        ARouter.getInstance().inject(this)
+        mPresenter.getAuthorTagDetail(id!!)
+        initToolBar(mToolbar, title)
     }
 
 
     override fun loadInfoSuccess(it: Tab) {
 
-        initToolBar(mToolbar, it.pgcInfo.name)
         mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(it.tabInfo), initTitles(it.tabInfo))
         mTabLayout.setupWithViewPager(mViewPager)
+        mViewPager.currentItem = tabIndex?.toInt() ?: 0
         mStickyNavLayout.setScrollChangeListener(object : StickyNavLayout.ScrollChangeListener {
             override fun onScroll(moveRatio: Float) {
 

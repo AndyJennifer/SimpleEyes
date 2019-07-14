@@ -6,12 +6,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
-import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.widget.ItemHeaderView
 import java.util.*
 
 
@@ -65,28 +65,24 @@ class SearchVideoAdapter(data: List<Content>?) : BaseQuickAdapter<Content, BaseV
      */
     private fun setCollectionBriefInfo(helper: BaseViewHolder, content: Content) {
         //设置视频集合信息
-        val recyclerView = helper.getView<RecyclerView>(R.id.rv_recycler)
-        recyclerView.isNestedScrollingEnabled = false
-        val collectionBriefAdapter = CollectionBriefAdapter(content.data.itemList)
-        recyclerView.layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = collectionBriefAdapter
-        collectionBriefAdapter.onItemClickListener = OnItemClickListener { _, _, position ->
-            //跳转到播放视频详情
-            val item = collectionBriefAdapter.getItem(position)
-            VideoDetailActivity.start(mContext, item!!.data, collectionBriefAdapter.data as ArrayList<Content>, position)
+        with(helper) {
+            getView<RecyclerView>(R.id.rv_recycler).apply {
+                isNestedScrollingEnabled = false
+                layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
+                adapter = CollectionBriefAdapter(content.data.itemList).apply {
+                    onItemClickListener = OnItemClickListener { _, _, position ->
+                        //跳转到播放视频详情
+                        val item = getItem(position)
+                        VideoDetailActivity.start(mContext, item!!.data, data as ArrayList<Content>, position)
+
+                    }
+                }
+
+            }
+            //设置头布局
+            content.data.header?.let { getView<ItemHeaderView>(R.id.item_header_view).setHeader(it, content.data.dataType) }
 
         }
-        //设置作者信息
-        val imageView = helper.getView<SimpleDraweeView>(R.id.iv_head)
-        if (content.data.header.iconType == "round") {//判断头像类型
-            imageView.hierarchy.roundingParams = RoundingParams.asCircle()
-        } else {
-            imageView.hierarchy.roundingParams?.roundAsCircle = false
-        }
-        imageView.setImageURI(content.data.header.icon)
-        helper.setText(R.id.tv_title, content.data.header.title)
-        helper.setText(R.id.tv_desc, content.data.header.description)
-
 
     }
 

@@ -52,6 +52,10 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
     @JvmField
     var id: String? = null
 
+    @Autowired
+    @JvmField
+    var tabIndex: String? = null
+
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
         mPresenter.getTabInfo(id!!)
@@ -66,7 +70,7 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
         mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(category.tabInfo), initTitles(category.tabInfo))
         mViewPager.offscreenPageLimit = category.tabInfo.tabList.size
         mTabLayout.setupWithViewPager(mViewPager)
-
+        mViewPager.currentItem = tabIndex?.toInt() ?: 0
         mStickyNavLayout.setScrollChangeListener(object : StickyNavLayout.ScrollChangeListener {
             override fun onScroll(moveRatio: Float) {
                 if (moveRatio < 1) initToolBar(R.drawable.ic_action_back_white, title, moveRatio)

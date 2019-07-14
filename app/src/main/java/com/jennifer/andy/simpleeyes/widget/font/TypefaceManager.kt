@@ -51,7 +51,7 @@ object TypefaceManager {
      * 根据名称获取字体类型
      * @return  字体类型
      */
-    fun getFontTypeByName(fontName: String): FontType? {
+    fun getFontTypeByName(fontName: String?): FontType? {
         return FontType.values().firstOrNull { it.fontName == fontName }
     }
 

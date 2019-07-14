@@ -34,10 +34,15 @@ open class CustomFontTextView : TextView {
         }
     }
 
-    fun setFontType(fontName: String) {
+    /** 根据字体名称设置，如果没有找到相应的字体，则使用默认的字体
+     * @param fontName   字体名称
+     * @param defaultFontType 默认字体
+     */
+    fun setFontType(fontName: String?, defaultFontType: FontType = FontType.BOLD) {
         if (!isInEditMode) {
             val fontType = TypefaceManager.getFontTypeByName(fontName)
-            TypefaceManager.setTextTypeFace(this, fontType)
+            TypefaceManager.setTextTypeFace(this, fontType ?: defaultFontType)
+
 
         }
     }

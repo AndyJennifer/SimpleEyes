@@ -1,61 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-    <RelativeLayout
-        android:id="@+id/rl_head_container"
+    <com.jennifer.andy.simpleeyes.widget.ItemHeaderView
+        android:id="@+id/item_header_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="@dimen/default_padding">
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:letterSpacing="0.5"
-            android:padding="5dp"
-            android:textSize="17sp"
-            app:font_name="bold"
-        />
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:textColor="@color/black_alpha_4D"
-            android:textSize="12sp"
-            app:font_name="normal"
-        />
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_focus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/shape_black_border"
-            android:gravity="center"
-            android:letterSpacing="0.2"
-            android:padding="5dp"
-            android:text="@string/add_follow"
-            android:textSize="11sp"
-            app:font_name="normal"
-        />
-
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"/>
 
     <com.jennifer.andy.simpleeyes.widget.viewpager.MarginWithIndicatorViewPager
         android:id="@+id/view_pager"

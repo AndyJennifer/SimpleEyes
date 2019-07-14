@@ -14,10 +14,17 @@
         app:actualImageScaleType="focusCrop"
         app:viewAspectRatio="1.33"/>
 
-    <com.jennifer.andy.simpleeyes.widget.CardNormalBottom
-        android:id="@+id/card_bottom"
+    <com.jennifer.andy.simpleeyes.widget.ItemHeaderView
+        android:id="@+id/item_header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_margin="5dp"
+        android:background="@color/divider"/>
 
 
 </LinearLayout>

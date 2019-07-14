@@ -91,7 +91,6 @@ object RxBus {
             mSubjects[key]?.dispose()
         }
         mSubjects.remove(key)
-        println("fuck")
     }
 
 }

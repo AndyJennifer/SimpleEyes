@@ -5,27 +5,25 @@ import android.net.Uri
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.View
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
-import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
-import com.jennifer.andy.simpleeyes.ui.author.AuthorTagDetailActivity
 import com.jennifer.andy.simpleeyes.ui.home.adapter.CollectionCardCoverAdapter
 import com.jennifer.andy.simpleeyes.ui.home.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
-import com.jennifer.andy.simpleeyes.widget.CardNormalBottom
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
+import com.jennifer.andy.simpleeyes.widget.ItemHeaderView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
@@ -132,8 +130,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             FOLLOW_CARD_TYPE -> setFollowCardInfo(helper, item)
             HORIZONTAL_SCROLL_CARD_TYPE -> setHorizontalScrollCardInfo(helper, item.data.itemList)
             VIDEO_COLLECTION_WITH_COVER_TYPE -> setCollectionCardWithCoverInfo(helper, item.data)
-            SQUARE_CARD_COLLECTION_TYPE -> setSquareCollectionInfo(helper, item.data.itemList)
-            VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE -> setCollectionOfHorizontalScrollCardInfo(helper, item.data)
+            SQUARE_CARD_COLLECTION_TYPE -> setSquareCollectionInfo(helper, item.data)
+            VIDEO_COLLECTION_OF_HORIZONTAL_SCROLL_CARD_TYPE -> setCollectionOfHorizontalScrollCardInfo(helper, item)
             VIDEO_COLLECTION_WITH_BRIEF_TYPE -> setCollectionBriefInfo(helper, item)
             TEXT_CARD_TYPE -> setSingleText(helper, item)
             BRIEF_CARD_TYPE -> setBriefCardInfo(helper, item)
@@ -174,20 +172,10 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
 
         with(helper) {
             val info = item.data
+            //设置头布局
+            info.header?.let { getView<ItemHeaderView>(R.id.item_header_view).setHeader(it, info.type) }
 
-            getView<CardNormalBottom>(R.id.card_bottom).apply {
-                setTitle(info.header.title)
-                setDescription(info.header.description)
-                setIconUrl(info.header.icon)
-                setIconType(info.header.iconType == "round")//设置图标形状
-                setPublishTime(info.header.time)//设置发布时间
-                setOnClickListener {
-                    // 点击跳转到作者详情
-                    AuthorTagDetailActivity.start(mContext, info.content!!.data.author.id)
-                }
-
-            }
-            helper.getView<EliteImageView>(R.id.elite_view).apply {
+            getView<EliteImageView>(R.id.elite_view).apply {
                 setImageUrl(info.content!!.data.cover.feed)
                 setDailyVisible(info.content!!.data.library == "DAILY")
                 setOnClickListener {
@@ -202,18 +190,12 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     /**
      * 设置水平滚动卡片集合信息
      */
-    private fun setCollectionOfHorizontalScrollCardInfo(helper: BaseViewHolder, data: ContentBean) {
+    private fun setCollectionOfHorizontalScrollCardInfo(helper: BaseViewHolder, content: Content) {
 
         with(helper) {
-            setText(R.id.tv_title, data.header.title)
-            setText(R.id.tv_sub_title, data.header.subTitle)
-
-
-            getView<RelativeLayout>(R.id.rl_head_container).setOnClickListener {
-                // 点击跳转到作者详情
-                AuthorTagDetailActivity.start(mContext, data.header.id)
-            }
-
+            //设置头布局
+            val data = content.data
+            data.header?.let { getView<ItemHeaderView>(R.id.item_header_view).setHeader(it, content.type) }
             //跳转到视频详细界面
             getView<MarginWithIndicatorViewPager>(R.id.view_pager).apply {
                 pageViewClickListener = {
@@ -237,7 +219,6 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             getView<RecyclerView>(R.id.rv_recycler).apply {
                 isNestedScrollingEnabled = false
                 layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-
                 adapter = CollectionBriefAdapter(content.data.itemList).apply {
                     onItemClickListener = OnItemClickListener { _, _, position ->
                         //跳转到播放视频详情
@@ -248,31 +229,9 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
                 }
             }
 
-            //设置头像类型
-            getView<SimpleDraweeView>(R.id.iv_head).apply {
-                when {
-                    content.data.header.iconType == "round" -> //圆形头像类型
-                        hierarchy.roundingParams = RoundingParams.asCircle()
-                    content.data.header.iconType == "squareWithPlayButton" -> {//正方形音乐带播放按钮类型
-                        hierarchy.setOverlayImage(mContext.getDrawable(R.drawable.icon_cover_play_button))
-                    }
-                    else -> hierarchy.roundingParams?.roundAsCircle = false
-                }
-                //设置头像地址
-                setImageURI(content.data.header.icon)
-            }
+            //设置头布局
+            content.data.header?.let { getView<ItemHeaderView>(R.id.item_header_view).setHeader(it, content.data.type) }
 
-            //设置标题和描述
-            setText(R.id.tv_title, content.data.header.title)
-            setText(R.id.tv_desc, content.data.header.description)
-
-            getView<RelativeLayout>(R.id.rl_head_container).apply {
-                setOnClickListener {
-                    // 点击跳转到作者详情
-                    AuthorTagDetailActivity.start(mContext, content.data.header.id)
-                }
-
-            }
         }
     }
 
@@ -283,46 +242,31 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     private fun setSingleText(helper: BaseViewHolder, item: Content) {
         helper.getView<CustomFontTextView>(R.id.tv_text).apply {
             text = item.data.text
-            if (item.data.type == "header2")
-                setFontType(FontType.BOLD)
-
+            if (item.data.type == "header2") {
+                setFontType(item.data.header?.font, FontType.BOLD)
+                gravity = Gravity.CENTER
+            } else {
+                gravity = Gravity.START
+                setFontType(item.data.header?.font, FontType.NORMAL)
+            }
         }
     }
 
     /**
      * 设置合作作者信息
      */
-    private fun setBriefCardInfo(helper: BaseViewHolder, item: Content) {
-
-        with(helper) {
-            //设置标题
-            setText(R.id.tv_title, item.data.title)
-            //设置描述
-            setText(R.id.tv_desc, item.data.description)
-            //跳转到作者详情
-            itemView.setOnClickListener {
-                // 点击跳转到作者详情
-                AuthorTagDetailActivity.start(mContext, item.data.id)
-            }
-
-            getView<SimpleDraweeView>(R.id.iv_source).apply {
-                val isCircle = item.data.iconType == "round"
-                if (isCircle) hierarchy.roundingParams = RoundingParams.asCircle()
-                else hierarchy.roundingParams?.roundAsCircle = false
-                //设置头像
-                setImageURI(item.data.icon)
-            }
-        }
+    private fun setBriefCardInfo(helper: BaseViewHolder, content: Content) {
+        helper.getView<ItemHeaderView>(R.id.item_header_view).setAuthorHeader(content.data)
 
     }
 
     /**
      * 设置空白信息高度
      */
-    private fun setBlankCardInfo(helper: BaseViewHolder, item: Content) {
+    private fun setBlankCardInfo(helper: BaseViewHolder, content: Content) {
         helper.getView<View>(R.id.view).apply {
             val lp = layoutParams
-            lp.height = DensityUtils.dip2px(mContext, item.data.height.toFloat())
+            lp.height = DensityUtils.dip2px(mContext, content.data.height.toFloat())
             layoutParams = lp
         }
     }
@@ -333,13 +277,9 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
      */
     private fun setBanner3Info(helper: BaseViewHolder, item: ContentBean) {
         with(helper) {
-            getView<CardNormalBottom>(R.id.card_bottom).apply {
-                setTitle(item.title)
-                setDescription(item.description)
-                setIconUrl(item.header.icon)
-                setIconType(item.header.iconType == "round")//设置图标形状
-                setMoreOperateVisible(false)
-            }
+            //设置头布局
+            item.header?.let { getView<ItemHeaderView>(R.id.item_header_view).setHeader(it, item.type) }
+
             getView<EliteImageView>(R.id.elite_view).apply {
                 setImageUrl(item.image)
                 setDailyVisible(false)
@@ -386,7 +326,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         with(helper) {
 
             getView<EliteImageView>(R.id.iv_image).apply {
-                setImageUrl(item.header.cover)
+                item.header?.cover?.let { setImageUrl(it) }
                 setArrowVisible(true)
             }
 
@@ -404,8 +344,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     /**
      * 设置矩形卡片信息
      */
-    private fun setSquareCollectionInfo(helper: BaseViewHolder, itemList: MutableList<Content>) {
-
+    private fun setSquareCollectionInfo(helper: BaseViewHolder, item: ContentBean) {
+        val itemList: MutableList<Content> = item.itemList
         with(helper) {
 
             getView<RecyclerView>(R.id.rv_square_recycler).apply {
@@ -420,11 +360,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
                 }
 
             }
-            getView<RelativeLayout>(R.id.ll_more_container).apply {
-                setOnClickListener {
-                    ARouter.getInstance().build("/AndyJennifer/ranklist").navigation()
-                }
-            }
+
+            item.header?.let { getView<ItemHeaderView>(R.id.item_header_view).setHeader(it, item.type) }
         }
     }
 
