@@ -40,6 +40,7 @@ class TagDetailInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoPrese
         }
     }
 
+
     override fun getBundleExtras(extras: Bundle) {
         mApiUrl = extras.getString(Extras.API_URL)
     }

@@ -56,11 +56,13 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
     @JvmField
     var tabIndex: String? = null
 
+
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
         mPresenter.getTabInfo(id!!)
         initToolBar(R.drawable.ic_action_back_white, title, 0f)
     }
+
 
     override fun showLoadTabSuccess(category: Category) {
         mImageView.setImageURI(category.categoryInfo.headerImage)
@@ -68,9 +70,9 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
         mTvDesc.text = category.categoryInfo.description
 
         mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(category.tabInfo), initTitles(category.tabInfo))
-        mViewPager.offscreenPageLimit = category.tabInfo.tabList.size
         mTabLayout.setupWithViewPager(mViewPager)
         mViewPager.currentItem = tabIndex?.toInt() ?: 0
+
         mStickyNavLayout.setScrollChangeListener(object : StickyNavLayout.ScrollChangeListener {
             override fun onScroll(moveRatio: Float) {
                 if (moveRatio < 1) initToolBar(R.drawable.ic_action_back_white, title, moveRatio)

@@ -55,24 +55,22 @@ class ItemHeaderView : FrameLayout {
         with(header) {
             //设置标题
             title?.let {
-                tvTitle.visibility = View.VISIBLE
-                tvTitle.text = it
-                tvTitle.setFontType(font)//默认标题加粗
 
                 //分类就居中
                 if (type == "videoCollectionOfHorizontalScrollCard") {
                     tvTitle.gravity = Gravity.CENTER
                     imageView.visibility = View.GONE
+                    ivMore.visibility = View.VISIBLE
                 } else {
                     tvTitle.gravity = getGravity(header.textAlign)
                 }
+                tvTitle.visibility = View.VISIBLE
+                tvTitle.text = it
+                tvTitle.setFontType(font)//默认标题加粗
             }
 
             //副标题
             subTitle?.let { it ->
-                tvSubTitle.visibility = View.VISIBLE
-                tvSubTitle.text = it
-                tvSubTitle.setFontType(subTitleFont)
 
                 //分类就居中
                 if (type == "videoCollectionOfHorizontalScrollCard") {
@@ -81,6 +79,9 @@ class ItemHeaderView : FrameLayout {
                 } else {
                     tvSubTitle.gravity = getGravity(header.textAlign)
                 }
+                tvSubTitle.visibility = View.VISIBLE
+                tvSubTitle.text = it
+                tvSubTitle.setFontType(subTitleFont)
             }
 
 
