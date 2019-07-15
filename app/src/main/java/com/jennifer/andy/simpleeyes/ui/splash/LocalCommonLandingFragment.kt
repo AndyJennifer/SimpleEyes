@@ -62,54 +62,50 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
      */
     private fun doUpAnimator() {
         val moveY = DensityUtils.dip2px(_mActivity, 100f)
-        val upAnimator = ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat())
-        upAnimator.addUpdateListener {
-            if (it.currentPlayTime in 600..1500) {
-                mHeadOuter.setImageResource(R.drawable.ic_eye_white_outer)
-                mHeadInner.setImageResource(R.drawable.ic_eye_white_inner)
-                mName.setTextColor(resources.getColor(R.color.gray_B7B9B8))
+        ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat()).apply {
+            addUpdateListener {
+                if (it.currentPlayTime in 600..1500) {
+                    mHeadOuter.setImageResource(R.drawable.ic_eye_white_outer)
+                    mHeadInner.setImageResource(R.drawable.ic_eye_white_inner)
+                    mName.setTextColor(resources.getColor(R.color.gray_B7B9B8))
 
-            } else if (it.currentPlayTime in 1500..2000) {
-                mHeadOuter.setImageResource(R.drawable.ic_eye_black_outer)
-                mHeadInner.setImageResource(R.drawable.ic_eye_black_inner)
+                } else if (it.currentPlayTime in 1500..2000) {
+                    mHeadOuter.setImageResource(R.drawable.ic_eye_black_outer)
+                    mHeadInner.setImageResource(R.drawable.ic_eye_black_inner)
 
-                mName.setTextColor(resources.getColor(R.color.black_444444))
+                    mName.setTextColor(resources.getColor(R.color.black_444444))
+                }
             }
-
-        }
-        upAnimator.duration = 2000
-        upAnimator.start()
+            duration = 2000
+        }.start()
     }
 
     /**
      * 执行背景动画
      */
     private fun doBackgroundAnimator() {
-        val backgroundAnimator = ValueAnimator.ofArgb(0, 0xffffffff.toInt())
-        backgroundAnimator.addUpdateListener {
-            mLoadingContainer.setBackgroundColor(it.animatedValue as Int)
-        }
-        backgroundAnimator.doOnEnd { doTextAnimator() }
-        backgroundAnimator.duration = 2000
-        backgroundAnimator.start()
+        ValueAnimator.ofArgb(0, 0xffffffff.toInt()).apply {
+            addUpdateListener { mLoadingContainer.setBackgroundColor(it.animatedValue as Int) }
+            doOnEnd { doTextAnimator() }
+            duration = 2000
+        }.start()
     }
 
     /**
      * 显示 today 文字与精选
      */
     private fun doTextAnimator() {
-        val alphaAnimator = ValueAnimator.ofArgb(0, 0xff444444.toInt())
-        alphaAnimator.addUpdateListener {
-            val color = it.animatedValue as Int
-            setTextColor(mForToday, color)
-            setTextColor(mDate, color)
-            setTextColor(mTodayChose, color)
-            mDate.text = TimeUtils.getDateString(Date(), "- yyyy/MM/dd -")
-        }
-        alphaAnimator.duration = 1000
-        alphaAnimator.doOnEnd { doInnerEyeAnimator() }
+        ValueAnimator.ofArgb(0, 0xff444444.toInt()).apply {
+            addUpdateListener {
+                val color = it.animatedValue as Int
+                setTextColor(mForToday, color)
+                setTextColor(mDate, color)
+                setTextColor(mTodayChose, color)
+                mDate.text = TimeUtils.getDateString(Date(), "- yyyy/MM/dd -")
+            }
 
-        alphaAnimator.start()
+            doOnEnd { doInnerEyeAnimator() }
+        }.start()
     }
 
     private fun setTextColor(textView: TextView, color: Int) {
@@ -121,13 +117,13 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
      * 执行内部眼睛动画
      */
     private fun doInnerEyeAnimator() {
-        val rotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
-        rotationAnimator.doOnEnd {
-            readyGoThenKillSelf(MainActivity::class.java, null)
-            UserPreferences.saveShowUserAnim(true)
-        }
-        rotationAnimator.duration = 1000
-        rotationAnimator.start()
+        ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f).apply {
+            doOnEnd {
+                readyGoThenKillSelf(MainActivity::class.java, null)
+                UserPreferences.saveShowUserAnim(true)
+            }
+            duration = 1000
+        }.start()
     }
 
     /**
@@ -136,14 +132,14 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
     private fun doScaleAnimator() {
         val scaleX = ObjectAnimator.ofFloat(mIvBackground, "scaleX", 1f, 1.08f)
         val scaleY = ObjectAnimator.ofFloat(mIvBackground, "scaleY", 1f, 1.08f)
-        val animatorSet = AnimatorSet()
-        animatorSet.playTogether(scaleX, scaleY)
-        animatorSet.doOnEnd {
-            readyGoThenKillSelf(MainActivity::class.java, null)
-            UserPreferences.saveShowUserAnim(true)
-        }
-        animatorSet.duration = 2000
-        animatorSet.start()
+        AnimatorSet().apply {
+            playTogether(scaleX, scaleY)
+            doOnEnd {
+                readyGoThenKillSelf(MainActivity::class.java, null)
+                UserPreferences.saveShowUserAnim(true)
+            }
+            duration = 2000
+        }.start()
     }
 
     override fun getContentViewLayoutId() = R.layout.fragment_local_coomon_landing

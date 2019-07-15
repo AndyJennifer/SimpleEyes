@@ -31,7 +31,6 @@ class VideoLandingFragment : BaseAppCompatFragment() {
 
     private var mVideoPosition = 0
     private var isHasPaused = false
-    private lateinit var mSplashVideoFragmentAdapter: SplashVideoFragmentAdapter
     private lateinit var mFragmentList: MutableList<SloganFragment>
 
 
@@ -61,29 +60,31 @@ class VideoLandingFragment : BaseAppCompatFragment() {
             mFragmentList.add(SloganFragment.newInstance())
         }
 
-        mSplashVideoFragmentAdapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
-        mViewPager.verticalListener = { goMainActivity() }
 
-        mViewPager.offscreenPageLimit = mFragmentList.size
-        mViewPager.adapter = mSplashVideoFragmentAdapter
-        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                if (position == mFragmentList.size - 2 && positionOffset >= 0.5) {
-                    goMainActivity()
+        with(mViewPager) {
+            verticalListener = { goMainActivity() }
+            offscreenPageLimit = mFragmentList.size
+            adapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
+
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    if (position == mFragmentList.size - 2 && positionOffset >= 0.5) {
+                        goMainActivity()
+                    }
+                    mIndicator.setSelected(position)
                 }
-                mIndicator.setSelected(position)
-            }
 
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                if (position in 0..3) {
-                    mTvSloganEnglish.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[position])
-                    mTvSloganChinese.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[position])
+                override fun onPageScrollStateChanged(state: Int) {
                 }
-            }
-        })
+
+                override fun onPageSelected(position: Int) {
+                    if (position in 0..3) {
+                        mTvSloganEnglish.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[position])
+                        mTvSloganChinese.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[position])
+                    }
+                }
+            })
+        }
     }
 
     /**
@@ -96,17 +97,18 @@ class VideoLandingFragment : BaseAppCompatFragment() {
 
     private fun play() {
         val path = R.raw.landing
-        mVideoView.setVideoPath("android.resource://${activity?.packageName}/$path")
-        mVideoView.setOnPreparedListener {
-            mVideoView.requestFocus()
-            mVideoView.setOnCompletionListener {
-                it.isLooping = true
-                mVideoView.start()
+        with(mVideoView) {
+            setVideoPath("android.resource://${activity?.packageName}/$path")
+            setOnPreparedListener {
+                requestFocus()
+                setOnCompletionListener {
+                    it.isLooping = true
+                    start()
+                }
+                seekTo(0)
+                start()
             }
-            mVideoView.seekTo(0)
-            mVideoView.start()
         }
-
     }
 
     override fun onResume() {
