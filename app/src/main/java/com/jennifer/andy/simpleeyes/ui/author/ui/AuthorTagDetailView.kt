@@ -11,5 +11,5 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
  */
 
 interface AuthorTagDetailView : BaseView {
-    fun loadInfoSuccess(it: Tab)
+    fun loadInfoSuccess(tab: Tab)
 }

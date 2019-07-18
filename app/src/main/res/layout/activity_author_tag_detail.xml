@@ -3,20 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <include layout="@layout/layout_share_toolbar"/>
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.jennifer.andy.simpleeyes.widget.StickyNavLayout
         android:id="@+id/stick_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <include
             android:id="@+id/id_sticky_nav_layout_top_view"
-            android:layout_width="match_parent"
-            android:layout_height="280dp"/>
+            layout="@layout/layout_author_tag_detail_header"/>
 
         <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
             android:id="@+id/id_sticky_nav_layout_nav_view"
@@ -35,4 +32,6 @@
             android:layout_height="match_parent"/>
 
     </com.jennifer.andy.simpleeyes.widget.StickyNavLayout>
+
+    <include layout="@layout/layout_left_title_share_toolbar"/>
 </RelativeLayout>

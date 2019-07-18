@@ -163,4 +163,9 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
     fun setScrollChangeListener(scrollChangeListener: ScrollChangeListener) {
         mListener = scrollChangeListener
     }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mListener = null
+    }
 }
