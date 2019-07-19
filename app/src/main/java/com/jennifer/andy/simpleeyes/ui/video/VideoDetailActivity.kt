@@ -50,7 +50,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private lateinit var mVideoListInfo: MutableList<Content>
     private var mBackPressed = false
 
-    private lateinit var mVideoDetailAdapter: VideoDetailAdapter
     private lateinit var ijkMediaController: IjkMediaController
 
 
@@ -131,19 +130,22 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     /**
      * 重置视频信息
      */
-    private fun refreshVideo(videoInfo: Content) {
-        mCurrentVideoInfo = videoInfo.data
+    private fun refreshVideo(videoInfo: Content?) {
+        videoInfo?.let {
+            mCurrentVideoInfo = videoInfo.data
 
-        mRecycler.visibility = View.INVISIBLE
-        mPlaceImage.visibility = View.VISIBLE
-        mProgress.visibility = View.VISIBLE
+            mRecycler.visibility = View.INVISIBLE
+            mPlaceImage.visibility = View.VISIBLE
+            mProgress.visibility = View.VISIBLE
 
-        mHorizontalProgress.secondaryProgress = 0
-        mHorizontalProgress.progress = 0
+            mHorizontalProgress.secondaryProgress = 0
+            mHorizontalProgress.progress = 0
 
-        initPlaceHolder()
-        mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
-        mVideoView.start()
+            initPlaceHolder()
+            mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
+            mVideoView.start()
+        }
+
     }
 
     /**
@@ -172,79 +174,90 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      * 播放视频
      */
     private fun playVideo() {
-        mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
-        mVideoView.setMediaController(ijkMediaController)
-        mVideoView.start()
-        //设置准备完成监听
-        mVideoView.setOnPreparedListener {
-            //隐藏进度条
-            mPlaceImage.handler.postDelayed({
-                mPlaceImage.visibility = View.GONE
-                mProgress.visibility = View.GONE
-            }, 500)
-            //获取相关视屏信息
-            mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
-            ijkMediaController.resetType()
 
+        with(mVideoView) {
+
+            //设置视频地址，并开始播放
+            setVideoPath(mCurrentVideoInfo.playUrl)
+            setMediaController(ijkMediaController)
+            start()
+
+            //设置准备完成监听
+            setOnPreparedListener {
+                //隐藏进度条
+                mPlaceImage.handler.postDelayed({
+                    mPlaceImage.visibility = View.GONE
+                    mProgress.visibility = View.GONE
+                }, 500)
+
+                //获取相关视屏信息
+                mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
+                ijkMediaController.resetType()
+
+            }
+
+            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
+
+            //设置失败监听
+            setOnErrorListener { p0, p1, p2 ->
+                mProgress.handler.postDelayed({
+                    mProgress.visibility = View.GONE
+                    ijkMediaController.showErrorView()
+                }, 1000)
+
+                true
+            }
+            //设置完成监听
+            setOnCompletionListener {
+
+            }
         }
-        mVideoView.toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
-
-        mVideoView.setOnErrorListener { p0, p1, p2 ->
-            mProgress.handler.postDelayed({
-                mProgress.visibility = View.GONE
-                ijkMediaController.showErrorView()
-            }, 1000)
-
-            true
-        }
-        //设置完成监听
-        mVideoView.setOnCompletionListener {
-
-        }
-
     }
+
 
     /**
      * 添加标题
      */
     private fun getVideoDetailView(): View {
-        val view = VideoDetailHeadView(mContext)
-        with(view) {
+        return VideoDetailHeadView(mContext).apply {
             setTitle(mCurrentVideoInfo.title)
             setCategoryAndTime(mCurrentVideoInfo.category, mCurrentVideoInfo.duration)
             setFavoriteCount(mCurrentVideoInfo.consumption.collectionCount)
             setShareCount(mCurrentVideoInfo.consumption.replyCount)
             setReplayCount(mCurrentVideoInfo.consumption.replyCount)
             setDescription(mCurrentVideoInfo.description)
+            startScrollAnimation()
         }
-        view.startScrollAnimation()
-        return view
+
     }
 
     /**
      * 设置相关视频信息
      */
     private fun getRelationVideoInfo(): View {
-        val view = VideoDetailAuthorView(mContext)
-        view.setVideoAuthorInfo(mCurrentVideoInfo.author)
-        return view
+        return VideoDetailAuthorView(mContext).apply { setVideoAuthorInfo(mCurrentVideoInfo.author) }
     }
 
     override fun getRelatedVideoInfoSuccess(itemList: MutableList<Content>) {
-        mRecycler.visibility = View.VISIBLE
-        mVideoDetailAdapter = VideoDetailAdapter(itemList)
-        mVideoDetailAdapter.addHeaderView(getVideoDetailView())
-        mVideoDetailAdapter.addHeaderView(getRelationVideoInfo())
-        mVideoDetailAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN)
-        mVideoDetailAdapter.setFooterView(LayoutInflater.from(mContext).inflate(R.layout.item_the_end, null))
-        mVideoDetailAdapter.setOnItemClickListener { _, _, position ->
-            if (mVideoDetailAdapter.getItemViewType(position) != BaseQuickAdapter.HEADER_VIEW) {
-                val item = mVideoDetailAdapter.getItem(position)
-                refreshVideo(item!!)
+
+        with(mRecycler) {
+            visibility = View.VISIBLE
+
+            layoutManager = LinearLayoutManager(mContext)
+
+            adapter = VideoDetailAdapter(itemList).apply {
+                addHeaderView(getVideoDetailView())
+                addHeaderView(getRelationVideoInfo())
+                openLoadAnimation(BaseQuickAdapter.ALPHAIN)
+                setFooterView(LayoutInflater.from(mContext).inflate(R.layout.item_the_end, null))
+
+                setOnItemClickListener { _, _, position ->
+                    if (getItemViewType(position) != BaseQuickAdapter.HEADER_VIEW) {
+                        refreshVideo(getItem(position))
+                    }
+                }
             }
         }
-        mRecycler.layoutManager = LinearLayoutManager(mContext)
-        mRecycler.adapter = mVideoDetailAdapter
     }
 
     override fun getRelatedVideoFail() {
