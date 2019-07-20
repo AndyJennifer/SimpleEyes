@@ -21,6 +21,7 @@ import com.jennifer.andy.simpleeyes.player.controllerview.ControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.ErrorControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
+import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 
 /**
  * Author:  andy.xwt
@@ -49,7 +50,7 @@ public class IjkMediaController extends FrameLayout {
     private int mTotalCount;
     private int mCurrentIndex;
 
-    private int mCurrentViewState = TINY_VIEW;
+    private int mCurrentViewState = TINY_VIEW;//默认情况下是小试图
     private static final int TINY_VIEW = 0;
     private static final int FULL_SCREEN_VIEW = 1;
     private static final int ERROR_VIEW = 2;
@@ -309,17 +310,13 @@ public class IjkMediaController extends FrameLayout {
     public void hide() {
         if (mAnchor == null)
             return;
-        if (mShowing) {
-            try {
-                mWindowManager.removeView(mDecor);
-            } catch (IllegalArgumentException ex) {
-                Log.w("MediaController", "already removed");
-            }
-            mShowing = false;
+        try {
+            mWindowManager.removeView(mDecor);
+        } catch (IllegalArgumentException ex) {
+            Log.w("MediaController", "already removed");
         }
-//        if (mControllerView != null) {
-//            mControllerView.cancelProgressRunnable();
-//        }
+        mShowing = false;
+
     }
 
     /**
@@ -433,6 +430,9 @@ public class IjkMediaController extends FrameLayout {
         }
     }
 
+    public void updateProgressAndTime(VideoProgressEvent videoProgressEvent){
+        mControllerView.updateProgressAndTime(videoProgressEvent);
+    }
 
     /**
      * 控制层监听

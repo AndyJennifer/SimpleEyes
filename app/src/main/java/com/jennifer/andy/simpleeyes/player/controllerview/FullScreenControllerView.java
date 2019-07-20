@@ -135,7 +135,7 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
                 updatePreNextButton();
                 break;
             case R.id.iv_min_screen://返回小界面
-                mController.toggleControllerView(new TinyControllerView(mPlayer, mController, mCurrentVideoInfo, mContext));
+                mController.toggleControllerView(new TinyControllerView(mPlayer, mController, mCurrentVideoInfo, getContext()));
                 break;
         }
 

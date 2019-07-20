@@ -9,12 +9,9 @@ import android.widget.MediaController;
 import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
-import com.jennifer.andy.simpleeyes.rx.RxBus;
 
 import java.util.Formatter;
 import java.util.Locale;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * Author:  andy.xwt
@@ -26,7 +23,6 @@ import io.reactivex.functions.Consumer;
 public abstract class ControllerView extends FrameLayout {
 
 
-    protected Context mContext;
     protected MediaController.MediaPlayerControl mPlayer;
     protected IjkMediaController mController;
     protected ContentBean mCurrentVideoInfo;
@@ -42,20 +38,10 @@ public abstract class ControllerView extends FrameLayout {
         mPlayer = player;
         mController = controller;
         mCurrentVideoInfo = currentVideoInfo;
-        mContext = context;
         mRootView = this;
-        LayoutInflater.from(mContext).inflate(setControllerLayoutId(), this, true);
+        LayoutInflater.from(context).inflate(setControllerLayoutId(), this, true);
         initView(mRootView);
         initControllerListener();
-        RxBus.INSTANCE.register(this, VideoProgressEvent.class, new Consumer<VideoProgressEvent>() {
-            @Override
-            public void accept(VideoProgressEvent videoProgressEvent) throws Exception {
-                if (!isDragging) {//没在拖动的时候跟新进度条
-                    updateProgress(videoProgressEvent.getProgress(), videoProgressEvent.getSecondaryProgress());
-                    updateTime(stringForTime(videoProgressEvent.getCurrentPosition()), stringForTime(videoProgressEvent.getDuration()));
-                }
-            }
-        });
 
     }
 
@@ -82,6 +68,12 @@ public abstract class ControllerView extends FrameLayout {
         updateTogglePauseUI(mPlayer.isPlaying());
     }
 
+    public void updateProgressAndTime(VideoProgressEvent videoProgressEvent) {
+        if (!isDragging) {//没在拖动的时候跟新进度条
+            updateProgress(videoProgressEvent.getProgress(), videoProgressEvent.getSecondaryProgress());
+            updateTime(stringForTime(videoProgressEvent.getCurrentPosition()), stringForTime(videoProgressEvent.getDuration()));
+        }
+    }
 
     /**
      * 格式化时间
@@ -148,12 +140,6 @@ public abstract class ControllerView extends FrameLayout {
         return mRootView;
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        RxBus.INSTANCE.unRegister(this);
-
-    }
 
     public boolean isDragging() {
         return isDragging;

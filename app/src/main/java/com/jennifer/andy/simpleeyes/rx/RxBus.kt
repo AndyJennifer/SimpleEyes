@@ -24,6 +24,7 @@ object RxBus {
     /**
      * 发送一个事件
      */
+    @JvmStatic
     fun post(o: Any) {
         mBus.onNext(o)
     }
@@ -73,7 +74,8 @@ object RxBus {
      * @param action    处理方式
      * @param subscribe 订阅者
      * @param <T>       事件类型泛型
-    </T> */
+     */
+    @JvmStatic
     fun <T> register(subscribe: Any, event: Class<T>, action: Consumer<T>) {
         val disposable = doSubscribe(event, action, Consumer { throwable -> throw RuntimeException(throwable.message) })
         addDisposable(subscribe, disposable)
@@ -85,12 +87,14 @@ object RxBus {
      *
      * @param subscribe 订阅者
      */
+    @JvmStatic
     fun unRegister(subscribe: Any) {
         val key = subscribe.javaClass.name
         if (mSubjects.containsKey(key) && mSubjects[key] != null) {
             mSubjects[key]?.dispose()
         }
         mSubjects.remove(key)
+        println("fuck")
     }
 
 }

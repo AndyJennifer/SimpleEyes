@@ -27,7 +27,6 @@ import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
 import com.jennifer.andy.simpleeyes.widget.pull.head.VideoDetailHeadView
 import io.reactivex.functions.Consumer
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import java.util.*
 
 
@@ -79,7 +78,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     override fun initView(savedInstanceState: Bundle?) {
         initPlaceHolder()
         initMediaController()
-        setProgressListener()
+        registerProgressEvent()
         playVideo()
     }
 
@@ -160,7 +159,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     }
 
-    private fun setProgressListener() {
+    private fun registerProgressEvent() {
         //注册进度条监听
         RxBus.register(this, VideoProgressEvent::class.java, Consumer {
             mHorizontalProgress.progress = it.progress
@@ -270,6 +269,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        //当前界面可见的时候重新注册进度条监听
+        registerProgressEvent()
+    }
+
     override fun onPause() {
         super.onPause()
         if (mVideoView.isPlaying) {
@@ -279,15 +284,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun onStop() {
         super.onStop()
-        if (mBackPressed) {
-            mVideoView.stopPlayback()
-            mVideoView.release(true)
-        }
-        IjkMediaPlayer.native_profileEnd()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+        if (mBackPressed) mVideoView.stopPlayback()
         RxBus.unRegister(this)
     }
 

@@ -7,6 +7,7 @@ import android.widget.MediaController;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.jennifer.andy.simpleeyes.AndyApplication;
 import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
@@ -94,7 +95,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
                 mController.getControllerListener().onBackClick();
                 break;
             case R.id.iv_full_screen://全屏按钮
-                mController.toggleControllerView(new FullScreenControllerView(mPlayer, mController, mCurrentVideoInfo, mContext));
+                mController.toggleControllerView(new FullScreenControllerView(mPlayer, mController, mCurrentVideoInfo, getContext()));
                 break;
 
         }
@@ -133,7 +134,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             @Override
             public void onStopTrackingTouch(SeekBar bar) {
                 //定位都拖动位置
-                if (NetWorkUtils.INSTANCE.isNetWorkConnected(mContext)) {
+                if (NetWorkUtils.isNetWorkConnected(AndyApplication.INSTANCE)) {
                     long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
                     mPlayer.seekTo((int) newPosition);
                     mController.show();//开启延时隐藏

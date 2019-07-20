@@ -326,6 +326,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             mMediaPlayer = null;
             mCurrentState = STATE_IDLE;
             mTargetState = STATE_IDLE;
+            mMediaController.hide();
+            mMediaController = null;
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
             am.abandonAudioFocus(null);
             cancelProgressRunnable();
@@ -734,6 +736,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             mMediaPlayer.reset();
             mMediaPlayer.release();
             mMediaPlayer = null;
+            mMediaController.hide();
+            mMediaController = null;
             // REMOVED: mPendingSubtitleTracks.clear();
             mCurrentState = STATE_IDLE;
             if (cleartargetstate) {
@@ -741,6 +745,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             }
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
             am.abandonAudioFocus(null);
+            cancelProgressRunnable();
         }
     }
 
@@ -1009,7 +1014,10 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                                 long progress = 1000L * position / duration;
                                 int secondProgress = getBufferPercentage() * 10;
                                 //发送进度
-                                RxBus.INSTANCE.post(new VideoProgressEvent(duration, position, (int) progress, secondProgress));
+                                VideoProgressEvent event = new VideoProgressEvent(duration, position, (int) progress, secondProgress);
+                                mMediaController.updateProgressAndTime(event);
+                                RxBus.post(event);
+
                             }
                         }
                     });
