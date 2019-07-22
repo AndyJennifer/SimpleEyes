@@ -28,12 +28,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -69,7 +69,9 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 
-public class IjkVideoView extends FrameLayout implements MediaController.MediaPlayerControl, View.OnTouchListener {
+public class IjkVideoView extends FrameLayout implements
+        MediaController.MediaPlayerControl,
+        GestureDetector.OnGestureListener {
 
     private String TAG = "IjkVideoView";
     private Uri mUri;
@@ -129,6 +131,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private int mScreenWidth;
     private int mScreenHeight;
     private AudioManager mAudioManager;
+    private GestureDetector mGestureDetector;
 
     /**
      * 视频宽高比
@@ -194,13 +197,16 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         setFocusable(true);
         setFocusableInTouchMode(true);
         requestFocus();
-        setOnTouchListener(this);
         //初始化状态
         mCurrentState = STATE_IDLE;
         mTargetState = STATE_IDLE;
-        mScreenWidth = ScreenUtils.INSTANCE.getScreenWidth(getContext());
-        mScreenHeight = ScreenUtils.INSTANCE.getScreenHeight(getContext());
+        mScreenWidth = ScreenUtils.getScreenWidth(getContext());
+        mScreenHeight = ScreenUtils.getScreenHeight(getContext());
         mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+
+        if (mGestureDetector == null) {
+            mGestureDetector = new GestureDetector(context, this);
+        }
     }
 
     /**
@@ -762,71 +768,112 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private float mScreenBrightness;
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        float x = event.getRawX();
-        float y = event.getRawY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mDownX = x;
-                mDownY = y;
-                isShowVolume = false;
-                isShowLight = false;
-                isShowPosition = false;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float deltaX = x - mDownX;
-                float deltaY = y - mDownY;
-                float absDeltaX = Math.abs(deltaX);
-                float absDeltaY = Math.abs(deltaY);
-                if (mScreenState == SCREEN_FULL_SCREEN) {//判断是否是全屏
-                    if (!isShowVolume && !isShowLight && !isShowPosition) {
-                        if (absDeltaX > MIN_SCROLL || absDeltaY > MIN_SCROLL) {
-                            if (absDeltaX >= MIN_SCROLL) {
-                                isShowPosition = true;
-                            } else {
-                                if (mDownX <= (mScreenHeight * 0.5f)) {//改变声音
-                                    isShowVolume = true;
-                                    //记录滑动时候当前的声音
-                                    mVideoCurrentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-                                } else {//改变亮度
-                                    isShowLight = true;
-                                    //记录滑动前的亮度
-                                    WindowManager.LayoutParams lp = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
-                                    if (lp.screenBrightness < 0) {
-                                        try {
-                                            mScreenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-                                        } catch (Settings.SettingNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                    } else {
-                                        mScreenBrightness = lp.screenBrightness * 255;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (isShowPosition) {
-                    showMoveToPositionDialog();
-                }
-                if (isShowVolume) {
-                    showVolumeDialog(-deltaY);
-                }
-                if (isShowLight) {
-                    showLightDialog(-deltaY);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (isInPlaybackState() && mMediaController != null && (!isShowVolume || !isShowLight || isShowPosition)) {
-                    toggleMediaControlsVisible();
-                }
-                dismissLightDialog();
-                dismissVolumeDialog();
-                break;
-        }
-        return true;
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean relVaule = mGestureDetector.onTouchEvent(event);
+        return relVaule;
     }
 
+    // TODO: 2019-07-22 xwt 准备重写这的逻辑啦
+//    public boolean onTouch(View v, MotionEvent event) {
+//        float x = event.getRawX();
+//        float y = event.getRawY();
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                mDownX = x;
+//                mDownY = y;
+//                isShowVolume = false;
+//                isShowLight = false;
+//                isShowPosition = false;
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                float deltaX = x - mDownX;
+//                float deltaY = y - mDownY;
+//                float absDeltaX = Math.abs(deltaX);
+//                float absDeltaY = Math.abs(deltaY);
+//                if (mScreenState == SCREEN_FULL_SCREEN) {//判断是否是全屏
+//                    if (!isShowVolume && !isShowLight && !isShowPosition) {
+//                        if (absDeltaX > MIN_SCROLL || absDeltaY > MIN_SCROLL) {
+//                            if (absDeltaX >= MIN_SCROLL) {
+//                                isShowPosition = true;
+//                            } else {
+//                                if (mDownX <= (mScreenHeight * 0.5f)) {//改变声音
+//                                    isShowVolume = true;
+//                                    //记录滑动时候当前的声音
+//                                    mVideoCurrentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//                                } else {//改变亮度
+//                                    isShowLight = true;
+//                                    //记录滑动前的亮度
+//                                    WindowManager.LayoutParams lp = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
+//                                    if (lp.screenBrightness < 0) {
+//                                        try {
+//                                            mScreenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+//                                        } catch (Settings.SettingNotFoundException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    } else {
+//                                        mScreenBrightness = lp.screenBrightness * 255;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                if (isShowPosition) {
+//                    showMoveToPositionDialog();
+//                }
+//                if (isShowVolume) {
+//                    showVolumeDialog(-deltaY);
+//                }
+//                if (isShowLight) {
+//                    showLightDialog(-deltaY);
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                if (isInPlaybackState() && mMediaController != null && (!isShowVolume || !isShowLight || isShowPosition)) {
+//                    toggleMediaControlsVisible();
+//                }
+//                dismissLightDialog();
+//                dismissVolumeDialog();
+//                break;
+//        }
+//        return true;
+//    }
+
+    // 单击，触摸屏按下时立刻触发
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    // 短按，触摸屏按下后片刻后抬起，会触发这个手势，如果迅速抬起则不会
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    // 抬起，手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    // 滚动，触摸屏按下后移动
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    // 长按，触摸屏按下后既不抬起也不移动，过一段时间后触发
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    // 滑动，触摸屏按下后快速移动并抬起，会先触发滚动手势，跟着触发一个滑动手势
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
+    }
 
     /**
      * 移动到相应位置
@@ -1155,9 +1202,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
      */
     public void enterFullScreen() {
         //隐藏toolbar,并横屏
-        VideoPlayerUtils.INSTANCE.hideActionBar(getContext());
-        VideoPlayerUtils.INSTANCE.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        ViewGroup contentView = VideoPlayerUtils.INSTANCE.getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
+        VideoPlayerUtils.hideActionBar(getContext());
+        VideoPlayerUtils.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        ViewGroup contentView = VideoPlayerUtils.getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
         //将视图移除
         removeView(mRenderUIView);
         //重新添加到当前视图
@@ -1170,9 +1217,9 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
      * 退出全屏
      */
     public void exitFullScreen() {
-        VideoPlayerUtils.INSTANCE.showActionBar(getContext());
-        VideoPlayerUtils.INSTANCE.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ViewGroup contentView = VideoPlayerUtils.INSTANCE.getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
+        VideoPlayerUtils.showActionBar(getContext());
+        VideoPlayerUtils.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        ViewGroup contentView = VideoPlayerUtils.getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,

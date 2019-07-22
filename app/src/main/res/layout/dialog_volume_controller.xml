@@ -15,11 +15,11 @@
 
 
     <com.jennifer.andy.simpleeyes.widget.VerticalProgressBar
-    android:id="@+id/pb_volume_progress"
-    style="@style/ProgressBarStyle"
-    android:layout_width="120dp"
-    android:layout_height="3dp"
-    android:layout_gravity="center_horizontal"/>
+        android:id="@+id/pb_volume_progress"
+        style="@style/ProgressBarStyle"
+        android:layout_width="120dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center_horizontal"/>
 
     <ImageView
         android:layout_width="wrap_content"

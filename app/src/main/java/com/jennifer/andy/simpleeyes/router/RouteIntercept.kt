@@ -17,8 +17,7 @@ import com.jennifer.andy.simpleeyes.UserPreferences
 class RouteIntercept : IInterceptor {
 
     override fun process(postcard: Postcard, callback: InterceptorCallback) {
-        val extra = postcard.extra
-        when (extra) {
+        when (postcard.extra) {
             SHOULD_LOGIN -> judgeUserIsLogin(postcard, callback)
             else -> {
                 callback.onContinue(postcard)
