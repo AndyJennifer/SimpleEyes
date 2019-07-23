@@ -12,7 +12,6 @@ import com.jennifer.andy.simpleeyes.update.LocalUpdateService
 import com.jennifer.andy.simpleeyes.update.UpdateApplication
 import com.jennifer.andy.simpleeyes.utils.AppUtils
 import com.jennifer.andy.simpleeyes.utils.UDIDUtils
-import com.squareup.leakcanary.LeakCanary
 import java.util.*
 
 
@@ -75,10 +74,10 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
      * 初始化LeakCanary，检测内存泄露
      */
     private fun initLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return
-        }
-        LeakCanary.install(this)
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return
+//        }
+//        LeakCanary.install(this)
     }
 
     override fun initUpdateParams(): LocalUpdateService.UpdateParams {

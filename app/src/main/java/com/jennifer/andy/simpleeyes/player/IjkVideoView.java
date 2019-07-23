@@ -28,6 +28,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -151,7 +152,7 @@ public class IjkVideoView extends FrameLayout implements
     public static final int RENDER_TEXTURE_VIEW = 2;
     private int mCurrentRender = RENDER_NONE;
     private View mRenderUIView;
-    private static final int MIN_SCROLL = 80;
+    private static final int MIN_SCROLL = 3;
 
 
     /**
@@ -472,7 +473,9 @@ public class IjkVideoView extends FrameLayout implements
                         // start the video here instead of in the callback.
                         if (mTargetState == STATE_PLAYING) {
                             start();
-                            mMediaController.firstShow();
+                            if (mMediaController != null) {
+                                mMediaController.firstShow();
+                            }
                         } else if (!isPlaying() &&
                                 (seekToPosition != 0 || getCurrentPosition() > 0)) {
                             if (mMediaController != null) {
@@ -755,8 +758,6 @@ public class IjkVideoView extends FrameLayout implements
         }
     }
 
-    private float mDownX;
-    private float mDownY;
     private Dialog mLightDialog;
     private ProgressBar mLightProgress;
     private Dialog mVolumeDialog;
@@ -764,112 +765,92 @@ public class IjkVideoView extends FrameLayout implements
     private boolean isShowVolume;
     private boolean isShowLight;
     private boolean isShowPosition;
-    private int mVideoCurrentVolume;
-    private float mScreenBrightness;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean relVaule = mGestureDetector.onTouchEvent(event);
-        return relVaule;
+        boolean relValue = mGestureDetector.onTouchEvent(event);
+        int action = event.getAction();
+        if (action == MotionEvent.ACTION_UP) {
+            //当手指抬起的时候
+            onUp();
+        } else if (action == MotionEvent.ACTION_CANCEL) {
+            onCancel();
+        }
+        return relValue;
     }
 
-    // TODO: 2019-07-22 xwt 准备重写这的逻辑啦
-//    public boolean onTouch(View v, MotionEvent event) {
-//        float x = event.getRawX();
-//        float y = event.getRawY();
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                mDownX = x;
-//                mDownY = y;
-//                isShowVolume = false;
-//                isShowLight = false;
-//                isShowPosition = false;
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                float deltaX = x - mDownX;
-//                float deltaY = y - mDownY;
-//                float absDeltaX = Math.abs(deltaX);
-//                float absDeltaY = Math.abs(deltaY);
-//                if (mScreenState == SCREEN_FULL_SCREEN) {//判断是否是全屏
-//                    if (!isShowVolume && !isShowLight && !isShowPosition) {
-//                        if (absDeltaX > MIN_SCROLL || absDeltaY > MIN_SCROLL) {
-//                            if (absDeltaX >= MIN_SCROLL) {
-//                                isShowPosition = true;
-//                            } else {
-//                                if (mDownX <= (mScreenHeight * 0.5f)) {//改变声音
-//                                    isShowVolume = true;
-//                                    //记录滑动时候当前的声音
-//                                    mVideoCurrentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-//                                } else {//改变亮度
-//                                    isShowLight = true;
-//                                    //记录滑动前的亮度
-//                                    WindowManager.LayoutParams lp = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
-//                                    if (lp.screenBrightness < 0) {
-//                                        try {
-//                                            mScreenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-//                                        } catch (Settings.SettingNotFoundException e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                    } else {
-//                                        mScreenBrightness = lp.screenBrightness * 255;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                if (isShowPosition) {
-//                    showMoveToPositionDialog();
-//                }
-//                if (isShowVolume) {
-//                    showVolumeDialog(-deltaY);
-//                }
-//                if (isShowLight) {
-//                    showLightDialog(-deltaY);
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                if (isInPlaybackState() && mMediaController != null && (!isShowVolume || !isShowLight || isShowPosition)) {
-//                    toggleMediaControlsVisible();
-//                }
-//                dismissLightDialog();
-//                dismissVolumeDialog();
-//                break;
-//        }
-//        return true;
-//    }
 
-    // 单击，触摸屏按下时立刻触发
     @Override
     public boolean onDown(MotionEvent e) {
-        return false;
+        // 单击，触摸屏按下时立刻触发
+        Log.i(TAG, "onDown: ");
+        return true;
     }
 
-    // 短按，触摸屏按下后片刻后抬起，会触发这个手势，如果迅速抬起则不会
+
     @Override
     public void onShowPress(MotionEvent e) {
-
+        // 短按，触摸屏按下后片刻后抬起，会触发这个手势，如果迅速抬起则不会
+        Log.i(TAG, "onShowPress: ");
     }
 
-    // 抬起，手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        return false;
+        // 抬起，手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
+        Log.i(TAG, "onSingleTapUp: ");
+        if (isInPlaybackState() && mMediaController != null && (!isShowVolume || !isShowLight || isShowPosition)) {
+            toggleMediaControlsVisible();
+        }
+        return true;
     }
 
     // 滚动，触摸屏按下后移动
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
+        Log.i(TAG, "onScroll: ");
+        if (mScreenState == SCREEN_FULL_SCREEN) {//判断是否是全屏
+            float downX = e1.getX();
+
+            float actuallyDy = e2.getY() - e1.getY();
+            float actuallyDx = e2.getX() - e1.getX();
+
+            float absDy = Math.abs(actuallyDy);
+            float absDx = Math.abs(actuallyDx);
+            //左右移动
+            if (absDx >= MIN_SCROLL && absDx > absDy) {
+                showMoveToPositionDialog();
+            }
+            //上下移动
+            if (Math.abs(distanceY) >= MIN_SCROLL && absDy > absDx) {
+                if (downX <= (mScreenHeight * 0.5f)) {
+                    //左边，改变声音
+                    Log.i(TAG, "onScroll: 开始改变声音");
+                    showVolumeDialog(distanceY);
+                } else {
+                    //右边改变亮度
+                    showLightDialog(distanceY);
+                }
+            }
+        }
+        return true;
     }
 
-    // 长按，触摸屏按下后既不抬起也不移动，过一段时间后触发
+    private void onCancel() {
+        onUp();
+    }
+
+    private void onUp() {
+        dismissLightDialog();
+        dismissVolumeDialog();
+    }
+
+
+    //手势识别中不需要使用的方法
     @Override
     public void onLongPress(MotionEvent e) {
-
     }
 
-    // 滑动，触摸屏按下后快速移动并抬起，会先触发滚动手势，跟着触发一个滑动手势
+    //手势识别中不需要使用的方法
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
@@ -880,6 +861,7 @@ public class IjkVideoView extends FrameLayout implements
      */
     private void showMoveToPositionDialog() {
         // TODO: 2018/2/26 xwt 移动到相应的位置
+        isShowPosition = true;
 
     }
 
@@ -889,16 +871,22 @@ public class IjkVideoView extends FrameLayout implements
      */
     private void showVolumeDialog(float deltaY) {
 
+        isShowVolume = true;
+        //记录滑动时候当前的声音
+        int currentVideoVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        int deltaV = (int) (maxVolume * deltaY / mScreenWidth);
-
+        if (deltaY < 0) {//向下滑动
+            currentVideoVolume--;
+        } else {//向下滑动
+            currentVideoVolume++;
+        }
         //设置声音
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mVideoCurrentVolume + deltaV, 0);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVideoVolume, 0);
 
         if (mVolumeDialog == null) {
             View view = LayoutInflater.from(mAppContext).inflate(R.layout.dialog_volume_controller, null);
             mVolumeProgress = view.findViewById(R.id.pb_volume_progress);
-            mVolumeDialog = createDialogWithView(view, Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            mVolumeDialog = createDialogWithView(view, Gravity.START | Gravity.CENTER_VERTICAL);
         }
         if (!mVolumeDialog.isShowing()) {
             mVolumeDialog.show();
@@ -913,6 +901,7 @@ public class IjkVideoView extends FrameLayout implements
             volumePercent = 0;
         }
         mVolumeProgress.setProgress(volumePercent);
+
     }
 
     /**
@@ -929,28 +918,48 @@ public class IjkVideoView extends FrameLayout implements
      * 显示控制亮度对话框
      */
     private void showLightDialog(float deltaY) {
-        WindowManager.LayoutParams params = VideoPlayerUtils.INSTANCE.getWindow(getContext()).getAttributes();
-        int deltaV = (int) (255 * deltaY / mScreenWidth);
-        if (((mScreenBrightness + deltaV) / 255) >= 1) {
-            params.screenBrightness = 1f;
-        } else if (((mScreenBrightness + deltaV) / 255) <= 0) {
-            params.screenBrightness = 0.01f;
+
+        float screenBrightness = 0;
+
+        //记录滑动前的亮度
+        WindowManager.LayoutParams lp = VideoPlayerUtils.getWindow(getContext()).getAttributes();
+        if (lp.screenBrightness < 0) {
+            try {
+                screenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
         } else {
-            params.screenBrightness = (mScreenBrightness + deltaV) / 255;
+            screenBrightness = lp.screenBrightness;
         }
-        VideoPlayerUtils.INSTANCE.getWindow(getContext()).setAttributes(params);
+
+        Log.i(TAG, "showLightDialog: --->screenBrightness" + screenBrightness);
+
+        if (deltaY < 0) {//向下滑动
+            screenBrightness -= 0.03f;
+        } else {//向下滑动
+            screenBrightness += 0.03f;
+        }
+        if (screenBrightness >= 1) {
+            lp.screenBrightness = 1f;
+        } else if (screenBrightness < 0) {
+            lp.screenBrightness = 0.1f;
+        } else {
+            lp.screenBrightness = screenBrightness;
+        }
+        VideoPlayerUtils.getWindow(getContext()).setAttributes(lp);
 
         //设置亮度百分比
         if (mLightProgress == null) {
             View view = LayoutInflater.from(mAppContext).inflate(R.layout.dialog_light_controller, null);
             mLightProgress = view.findViewById(R.id.pb_light_progress);
-            mLightDialog = createDialogWithView(view, Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            mLightDialog = createDialogWithView(view, Gravity.END | Gravity.CENTER_VERTICAL);
         }
         if (!mLightDialog.isShowing()) {
             mLightDialog.show();
         }
 
-        int lightPercent = (int) (params.screenBrightness * 100f);
+        int lightPercent = (int) (screenBrightness * 100f);
         mLightProgress.setProgress(lightPercent);
     }
 
@@ -1208,7 +1217,7 @@ public class IjkVideoView extends FrameLayout implements
         //将视图移除
         removeView(mRenderUIView);
         //重新添加到当前视图
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         contentView.addView(mRenderUIView, params);
         mScreenState = SCREEN_FULL_SCREEN;
     }

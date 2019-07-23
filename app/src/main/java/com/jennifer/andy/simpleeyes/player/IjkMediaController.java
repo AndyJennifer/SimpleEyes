@@ -22,6 +22,7 @@ import com.jennifer.andy.simpleeyes.player.controllerview.ErrorControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
+import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
 
 /**
  * Author:  andy.xwt
@@ -127,15 +128,16 @@ public class IjkMediaController extends FrameLayout {
 
         WindowManager.LayoutParams p = mDecorLayoutParams;
         p.width = mAnchor.getWidth();
+
         p.x = anchorPos[0] + (mAnchor.getWidth() - p.width) / 2;
         p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
-
 
         removeAllViews();
         ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
         if (mCurrentViewState == TINY_VIEW) {
             addTinyView(mAnchorLayoutParams);
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
+            p.height = ScreenUtils.getScreenHeight(mContext);
             addFullScreenView();
         } else {
             addErrorView();
@@ -267,7 +269,7 @@ public class IjkMediaController extends FrameLayout {
      * 第一次显示，不显示控制层
      */
     public void firstShow() {
-        if (!mShowing && mAnchor != null) {
+        if (!mShowing && mAnchor != null && mControllerView != null) {
             mControllerView.show();
         }
     }
@@ -331,6 +333,13 @@ public class IjkMediaController extends FrameLayout {
      */
     public void toggleControllerView(ControllerView controllerView) {
         removeAllViews();
+        if (mControllerListener != null) {
+            if (controllerView instanceof FullScreenControllerView) {
+                mControllerListener.onFullScreenClick();
+            } else if (controllerView instanceof TinyControllerView) {
+                mControllerListener.onTinyScreenClick();
+            }
+        }
         if (controllerView instanceof TinyControllerView) {
             addView(controllerView.getRootView(), mTinyParams);
             mCurrentViewState = TINY_VIEW;
@@ -338,13 +347,6 @@ public class IjkMediaController extends FrameLayout {
             mCurrentViewState = FULL_SCREEN_VIEW;
             ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             addView(controllerView.getRootView(), layoutParams);
-        }
-        if (mControllerListener != null) {
-            if (controllerView instanceof FullScreenControllerView) {
-                mControllerListener.onFullScreenClick();
-            } else if (controllerView instanceof TinyControllerView) {
-                mControllerListener.onTinyScreenClick();
-            }
         }
         mControllerView = controllerView;
         mControllerView.show();
@@ -355,6 +357,7 @@ public class IjkMediaController extends FrameLayout {
      * 显示网络错误布局
      */
     public void showErrorView() {
+        mCurrentViewState = ERROR_VIEW;
         removeAllViews();
         if (mErrorView == null) {
             mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
@@ -370,7 +373,6 @@ public class IjkMediaController extends FrameLayout {
             mWindowManager.addView(mDecor, mDecorLayoutParams);
             mShowing = true;
         }
-        mCurrentViewState = ERROR_VIEW;
     }
 
 
@@ -430,7 +432,7 @@ public class IjkMediaController extends FrameLayout {
         }
     }
 
-    public void updateProgressAndTime(VideoProgressEvent videoProgressEvent){
+    public void updateProgressAndTime(VideoProgressEvent videoProgressEvent) {
         mControllerView.updateProgressAndTime(videoProgressEvent);
     }
 

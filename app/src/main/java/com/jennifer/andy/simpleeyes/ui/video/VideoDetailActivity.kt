@@ -189,8 +189,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                     mProgress.visibility = View.GONE
                 }, 500)
 
-                //获取相关视屏信息
-                mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
                 ijkMediaController.resetType()
 
             }
@@ -211,6 +209,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
             }
         }
+        //获取相关视屏信息
+        mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
     }
 
 
