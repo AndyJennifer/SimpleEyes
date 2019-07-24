@@ -33,9 +33,11 @@ class VideoInfoByIdActivity : BaseActivity<VideoInfoByIdView, VideoInfoByIdPrese
     }
 
     override fun getVideoInfoSuccess(contentBean: ContentBean) {
-        val bundle = Bundle()
-        bundle.putSerializable(Extras.VIDEO_INFO, contentBean)
-        bundle.putSerializable(Extras.VIDEO_LIST_INFO, arrayListOf<Any>())
+
+        val bundle = Bundle().apply {
+            putSerializable(Extras.VIDEO_INFO, contentBean)
+            putSerializable(Extras.VIDEO_LIST_INFO, arrayListOf<Any>())
+        }
         ARouter.getInstance()
                 .build("/pgc/detail")
                 .with(bundle)

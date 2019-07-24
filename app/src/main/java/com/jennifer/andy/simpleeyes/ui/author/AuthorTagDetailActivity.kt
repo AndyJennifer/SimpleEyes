@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.entity.TabInfo
+import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.author.presenter.AuthorTagDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
@@ -58,6 +59,14 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
     @JvmField
     var id: String? = null
 
+
+    override fun getBundleExtras(extras: Bundle) {
+        with(extras) {
+            tabIndex = getString(Extras.TAB_INDEX)
+            title = getString(Extras.TITLE)
+            id = getString(Extras.ID)
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)

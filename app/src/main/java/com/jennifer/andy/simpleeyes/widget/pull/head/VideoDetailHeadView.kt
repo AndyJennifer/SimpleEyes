@@ -52,12 +52,14 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
      * 开启动画
      */
     fun startScrollAnimation() {
-        val widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        val widthSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        val heightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         measure(widthSpec, heightSpec)
-        val animator = ObjectAnimator.ofFloat(this, "translationY", -measuredHeight.toFloat(), 0f)
-        animator.duration = 300
-        animator.start()
+
+        ObjectAnimator.ofFloat(this, "translationY", -measuredHeight.toFloat(), 0f).apply {
+            duration = 300
+            start()
+        }
     }
 
     override fun onClick(v: View) {

@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingLeft="@dimen/default_padding"
+    android:paddingStart="@dimen/default_padding"
     android:paddingTop="@dimen/default_padding">
 
     <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tv_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
