@@ -32,6 +32,7 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
 
     private int mChangeProgress;
 
+    public static final int FULL_SCREEN_ID = 100;
 
     public FullScreenControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
         super(player, controller, currentVideoInfo, context);
@@ -69,6 +70,8 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
         }
 
         updatePreNextButton();
+
+        setId(FULL_SCREEN_ID);
     }
 
     //判断是否显示上一个按钮与下一个按钮
@@ -83,7 +86,7 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
         mMinScreen.setOnClickListener(this);
         mPauseButton.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
-
+        setOnClickListener(this);
         mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(SeekBar bar) {
@@ -122,6 +125,9 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case FULL_SCREEN_ID:
+                mController.hide();
+                break;
             case R.id.iv_pause://暂停按钮
                 togglePause();
                 mController.show();

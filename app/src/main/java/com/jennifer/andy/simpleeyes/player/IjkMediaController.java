@@ -310,6 +310,7 @@ public class IjkMediaController extends FrameLayout {
      * 隐藏控制器
      */
     public void hide() {
+        removeCallbacks(mFadeOut);
         if (mAnchor == null)
             return;
         try {
@@ -318,7 +319,6 @@ public class IjkMediaController extends FrameLayout {
             Log.w("MediaController", "already removed");
         }
         mShowing = false;
-
     }
 
     /**

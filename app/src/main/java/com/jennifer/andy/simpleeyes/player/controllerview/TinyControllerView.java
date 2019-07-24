@@ -66,6 +66,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             mProgress.setSecondaryProgress(secondProgress);
         }
         updatePreNextButton();
+
     }
 
     //判断是否显示上一个按钮与下一个按钮
