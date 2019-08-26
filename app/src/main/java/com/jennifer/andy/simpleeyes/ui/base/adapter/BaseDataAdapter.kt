@@ -242,12 +242,19 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     private fun setSingleText(helper: BaseViewHolder, item: Content) {
         helper.getView<CustomFontTextView>(R.id.tv_text).apply {
             text = item.data.text
-            if (item.data.type == "header2") {
-                setFontType(item.data.header?.font, FontType.BOLD)
-                gravity = Gravity.CENTER
-            } else {
-                gravity = Gravity.START
-                setFontType(item.data.header?.font, FontType.NORMAL)
+            when (item.data.type) {
+                "header1" -> {
+                    setFontType(item.data.header?.font, FontType.LOBSTER)
+                    gravity = Gravity.CENTER
+                }
+                "header2" -> {
+                    setFontType(item.data.header?.font, FontType.BOLD)
+                    gravity = Gravity.CENTER
+                }
+                else -> {
+                    gravity = Gravity.START
+                    setFontType(item.data.header?.font, FontType.NORMAL)
+                }
             }
         }
     }

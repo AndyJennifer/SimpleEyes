@@ -118,6 +118,11 @@
         <activity android:name=".ui.author.AuthorTagDetailActivity"
                   android:launchMode="singleTop"
                   android:screenOrientation="portrait"/>
+
+        <!--公共RecyclerView界面，根据url加载数据-->
+        <activity android:name=".ui.common.CommonRecyclerActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

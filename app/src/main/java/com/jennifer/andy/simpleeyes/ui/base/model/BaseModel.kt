@@ -25,7 +25,7 @@ interface BaseModel {
     fun loadMoreJenniferInfo(nextPageUrl: String?) = Api.getDefault().getMoreJenniferInfo(nextPageUrl)?.compose(RxHelper.handleResult())
 
     /**
-     * 根据tab的url,获取tab信息
+     * 根据url,获取数据
      */
-    fun getTabInfo(url: String): Observable<AndyInfo> = Api.getDefault().getTabInfo(url).compose(RxHelper.handleResult())
+    fun getDataInfoFromUrl(url: String?): Observable<AndyInfo> = Api.getDefault().getDataInfoFromUrl(url).compose(RxHelper.handleResult())
 }

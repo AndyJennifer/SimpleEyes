@@ -34,6 +34,8 @@ open class LoadMorePresenter<T, M : BaseModel, V : LoadMoreView<T>> : BasePresen
                     loadMoreInfo()
                 })
             }))
+        } else {
+            mView?.showNoMore()
         }
     }
 }

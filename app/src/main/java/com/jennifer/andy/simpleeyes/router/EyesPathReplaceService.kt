@@ -47,8 +47,10 @@ class EyesPathReplaceService : PathReplaceService {
                     return setTopicUrl(split)
                 uriStr.contains("tag") ->//处理360全景
                     return setTagUrl(split)
-                uriStr.contains("category") ->
+                uriStr.contains("category") ->//处理分类
                     return setCategoryUrl(split)
+                uriStr.contains("common") ->//处理公共RecyclerView界面
+                    return setCommonUrl(split)
                 else -> {
                 }
             }
@@ -146,7 +148,7 @@ class EyesPathReplaceService : PathReplaceService {
     /**
      * 处理360全景下面的所有的种类
      * eyepetizer://category/14/?title=%E5%B9%BF%E5%91%8A
-     * 替换换为：eyepetizer://github.com/AndyJennifer/category?id=14%title=%E5%B9%BF%E5%91%8A
+     * 替换为：eyepetizer://github.com/AndyJennifer/category?id=14%title=%E5%B9%BF%E5%91%8A
      */
     private fun setCategoryUrl(split: List<String>): Uri {
         val pt = Pattern.compile("/\\d+/")
@@ -157,6 +159,16 @@ class EyesPathReplaceService : PathReplaceService {
         }
         val uriWithoutNumber = split[1].replace(Regex("/\\d+/"), "")
         return "$HOST$ONE_LEVEL$uriWithoutNumber&id=$id".toUri()
+    }
+
+    /**
+     * 处理公共界面中包含RecyclerVie的
+     * eyepetizer://common/?title=VLOG&url=http%3A%2F%2Fbaobab.kaiyanapp.com%2Fapi%2Fv4%2Fplaylists%2F3946%2Fvideos
+     * 替换为：eyepetizer://github.com/AndyJennifer/common?title=VLOG&url=http%3A%2F%2Fbaobab.kaiyanapp.com%2Fapi%2Fv4%2Fplaylists%2F3946%2Fvideos
+     */
+    private fun setCommonUrl(split: List<String>): Uri {
+        val str = split[1].replace("/?", "?")
+        return "$HOST$ONE_LEVEL$str".toUri()
     }
 
     override fun init(context: Context?) {

@@ -118,14 +118,14 @@ interface ApiService {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * 获取发现Tab详细数据
+     * 根据url,获取数据
      * @url tab请求地址
      */
     @GET
-    fun getTabInfo(@Url url: String?): Observable<AndyInfo>
+    fun getDataInfoFromUrl(@Url url: String?): Observable<AndyInfo>
 
     /**
-     * 获取更多信息
+     * 根据url,获取更多信息
      * @param url 下一页请求地址
      */
     @GET
@@ -133,7 +133,7 @@ interface ApiService {
 
 
     /**
-     * 获取更多信息
+     * 根据url,获取更多信息
      * @param url 下一页请求地址
      */
     @GET

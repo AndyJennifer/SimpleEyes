@@ -21,7 +21,7 @@ class TagDetailInfoPresenter : LoadMorePresenter<AndyInfo, FeedModel, TagDetailI
      * 获取tab栏下信息
      */
     fun getDetailInfo(url: String) {
-        mRxManager.add(mBaseModel.getTabInfo(url).subscribe({
+        mRxManager.add(mBaseModel.getDataInfoFromUrl(url).subscribe({
             mView?.showContent()
             mView?.showGetTabInfoSuccess(it)
             mNextPageUrl = it.nextPageUrl

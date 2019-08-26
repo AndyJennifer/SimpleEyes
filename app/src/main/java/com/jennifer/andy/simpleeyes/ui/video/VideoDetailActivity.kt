@@ -196,7 +196,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
 
             //设置失败监听
-            setOnErrorListener { p0, p1, p2 ->
+            setOnErrorListener { _, _, _ ->
                 mProgress.handler.postDelayed({
                     mProgress.visibility = View.GONE
                     ijkMediaController.showErrorView()
