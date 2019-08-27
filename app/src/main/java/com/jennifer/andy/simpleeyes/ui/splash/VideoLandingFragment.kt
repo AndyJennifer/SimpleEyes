@@ -2,14 +2,15 @@ package com.jennifer.andy.simpleeyes.ui.splash
 
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import android.widget.VideoView
 import com.jennifer.andy.simpleeyes.AndyApplication
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
+import com.jennifer.andy.simpleeyes.player.render.IRenderView.AR_ASPECT_FIT_PARENT
 import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.widget.FullScreenVideoView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.viewpager.InterceptVerticalViewPager
 import com.rd.PageIndicatorView
@@ -23,7 +24,7 @@ import com.rd.PageIndicatorView
 
 class VideoLandingFragment : BaseAppCompatFragment() {
 
-    private val mVideoView: VideoView by bindView(R.id.video_view)
+    private val mVideoView: FullScreenVideoView by bindView(R.id.video_view)
     private val mViewPager: InterceptVerticalViewPager by bindView(R.id.view_pager)
     private val mTvSloganChinese: CustomFontTypeWriterTextView by bindView(R.id.tv_slogan_zh)
     private val mTvSloganEnglish: CustomFontTypeWriterTextView by bindView(R.id.tv_slogan_en)
@@ -55,22 +56,16 @@ class VideoLandingFragment : BaseAppCompatFragment() {
 
         mIndicator.count = 4
 
-        mFragmentList = mutableListOf()
-        for (position in 0..4) {//这里创建5个是因为要滑动退出
-            mFragmentList.add(SloganFragment.newInstance())
-        }
-
+        mFragmentList = List(4) { SloganFragment.newInstance() } as MutableList<SloganFragment>
 
         with(mViewPager) {
             verticalListener = { goMainActivity() }
-            offscreenPageLimit = mFragmentList.size
+            horizontalListener = { goMainActivity () }
+            mDisMissIndex = mFragmentList.size - 1
             adapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
 
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                    if (position == mFragmentList.size - 2 && positionOffset >= 0.5) {
-                        goMainActivity()
-                    }
                     mIndicator.setSelected(position)
                 }
 
@@ -98,6 +93,7 @@ class VideoLandingFragment : BaseAppCompatFragment() {
     private fun play() {
         val path = R.raw.landing
         with(mVideoView) {
+            setAspectRatio(AR_ASPECT_FIT_PARENT)
             setVideoPath("android.resource://${activity?.packageName}/$path")
             setOnPreparedListener {
                 requestFocus()
