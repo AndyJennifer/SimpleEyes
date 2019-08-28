@@ -119,11 +119,12 @@ class VideoLandingFragment : BaseAppCompatFragment() {
     override fun onPause() {
         super.onPause()
         mVideoPosition = mVideoView.currentPosition
+        mVideoView.pause()
         isHasPaused = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         mVideoView.stopPlayback()
     }
 

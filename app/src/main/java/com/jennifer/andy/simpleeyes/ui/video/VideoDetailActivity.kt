@@ -202,7 +202,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                     ijkMediaController.showErrorView()
                 }, 1000)
 
-                true
             }
             //设置完成监听
             setOnCompletionListener {
@@ -284,7 +283,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun onStop() {
         super.onStop()
-        if (mBackPressed) mVideoView.stopPlayback()
+        if (mBackPressed) {
+            //如果视频没有加载出来，就直接退出的话，这里会出现卡顿的情况，官方也没有给出解释
+            //issues: https://github.com/bilibili/ijkplayer/issues?utf8=✓&q=Anr
+            mVideoView.stopPlayback()
+            mVideoView.release(true)
+        }
         RxBus.unRegister(this)
     }
 
