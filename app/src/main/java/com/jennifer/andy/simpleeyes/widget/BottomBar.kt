@@ -2,6 +2,8 @@ package com.jennifer.andy.simpleeyes.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -15,7 +17,7 @@ import android.widget.LinearLayout
 class BottomBar : LinearLayout {
 
     private lateinit var mTabLayout: LinearLayout
-    private lateinit var mTabParams: LinearLayout.LayoutParams
+    private lateinit var mTabParams: LayoutParams
     private var mCurrentPosition = 0//当前默认位置
     private var mBottomItemLayouts = mutableListOf<BottomItemLayout>()
 
@@ -94,6 +96,57 @@ class BottomBar : LinearLayout {
      */
     fun initialise() {
         mBottomItemLayouts[mCurrentPosition].isSelected = true
+    }
+
+    internal class SavedState : BaseSavedState {
+
+        var selectPosition: Int = 0
+
+        companion object {
+
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(`in`: Parcel): SavedState {
+                    return SavedState(`in`)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
+
+        constructor(superState: Parcelable?) : super(superState)
+
+
+        private constructor(`in`: Parcel) : super(`in`) {
+            selectPosition = `in`.readInt()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeValue(selectPosition)
+        }
+        override fun toString(): String {
+            return ("CompoundButton.SavedState{"
+                    + Integer.toHexString(System.identityHashCode(this))
+                    + " checked=" + selectPosition + "}")
+        }
+
+
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        return SavedState(super.onSaveInstanceState()).apply {
+          selectPosition = mCurrentPosition
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        val ss = state as SavedState
+        super.onRestoreInstanceState(ss.superState)
+        mCurrentPosition = ss.selectPosition
+        initialise()
     }
 }
 
