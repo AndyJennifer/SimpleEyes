@@ -26,7 +26,7 @@ import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomRecyclerView
 
 class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
 
-    private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_category_recycler)
+    private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_home_recycler)
     private lateinit var mHomePageHeaderView: HomePageHeaderView
     private var mCateGoryAdapter: BaseDataAdapter? = null
 
