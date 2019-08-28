@@ -1071,7 +1071,10 @@ public class IjkVideoView extends FrameLayout implements
                                 int secondProgress = getBufferPercentage() * 10;
                                 //发送进度
                                 VideoProgressEvent event = new VideoProgressEvent(duration, position, (int) progress, secondProgress);
-                                mMediaController.updateProgressAndTime(event);
+                                //这里在更新进度条时，有可能在切换控制器，所以这里要排除空的情况
+                                if (mMediaController != null) {
+                                    mMediaController.updateProgressAndTime(event);
+                                }
                                 RxBus.post(event);
 
                             }
