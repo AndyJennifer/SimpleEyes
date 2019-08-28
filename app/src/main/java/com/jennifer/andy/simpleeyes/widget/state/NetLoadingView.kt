@@ -44,7 +44,7 @@ class NetLoadingView : FrameLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mRotationAnimator?.cancel()
+        mRotationAnimator.cancel()
 
     }
 

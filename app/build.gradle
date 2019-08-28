@@ -70,7 +70,6 @@ dependencies {
     //ARouter
     api 'com.alibaba:arouter-api:1.4.1'
     kapt 'com.alibaba:arouter-compiler:1.2.2'
-    implementation 'androidx.core:core-ktx:0.3'
 
     //LeakCanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'

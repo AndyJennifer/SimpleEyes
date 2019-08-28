@@ -2,7 +2,7 @@ package com.jennifer.andy.simpleeyes
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
+import com.jennifer.andy.simpleeyes.utils.edit
 
 
 /**

@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.animation.doOnEnd
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
@@ -16,6 +15,7 @@ import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.utils.DensityUtils
 import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.doOnEnd
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import java.util.*
