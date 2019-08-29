@@ -333,8 +333,10 @@ public class IjkVideoView extends FrameLayout implements
             mMediaPlayer = null;
             mCurrentState = STATE_IDLE;
             mTargetState = STATE_IDLE;
-            mMediaController.hide();
-            mMediaController = null;
+            if (mMediaController != null) {
+                mMediaController.hide();
+                mMediaController = null;
+            }
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
             am.abandonAudioFocus(null);
             cancelProgressRunnable();
