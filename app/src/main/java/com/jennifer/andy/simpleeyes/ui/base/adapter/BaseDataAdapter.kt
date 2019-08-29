@@ -121,7 +121,8 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
             registerItemType(VIDEO_BANNER_THREE_TYPE, R.layout.layout_follow_card)
             registerItemType(VIDEO_SMALL_CARD_TYPE, R.layout.layout_video_small_card)
         }
-
+        //设置倒数第5个开启预加载
+        setPreLoadNumber(5)
     }
 
     override fun convert(helper: BaseViewHolder?, item: Content) {
