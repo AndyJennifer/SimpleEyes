@@ -51,29 +51,14 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
 
     }
 
-    override fun createRootView(context: Context, attrs: AttributeSet?): RecyclerView = RecyclerView(context, attrs)
+    override fun createRootView(context: Context): RecyclerView = RecyclerView(context)
 
     /**
      * 判断当前recyclerView是否滑动到顶部，如果是在顶部就可以进行下拉
      */
     override fun isReadyForPullStart(): Boolean {
         val adapter = mRootView.adapter
-        val layoutManager = mRootView.layoutManager as LinearLayoutManager
-        if (adapter == null || adapter.itemCount == 0) {
-            return true
-        } else {
-            val into = intArrayOf(0, 0)
-            if (layoutManager != null)
-                into[0] = layoutManager.findFirstVisibleItemPosition()
-            if (into.isNotEmpty() && into[0] <= 1) {
-                val firstVisibleChild = mRootView.getChildAt(0)
-                if (firstVisibleChild != null) {
-                    return firstVisibleChild.top >= mRootView.top
-                }
-            }
-        }
-        return false
-
+        return if (adapter == null || adapter.itemCount == 0) true else !rootView.canScrollVertically(-1)
     }
 
     /**

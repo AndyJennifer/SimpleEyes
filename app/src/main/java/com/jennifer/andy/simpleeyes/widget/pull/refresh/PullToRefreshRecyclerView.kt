@@ -24,7 +24,7 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    override fun createRootView(context: Context, attrs: AttributeSet?): RecyclerView = RecyclerView(context, attrs)
+    override fun createRootView(context: Context): RecyclerView = RecyclerView(context)
 
 
     /**

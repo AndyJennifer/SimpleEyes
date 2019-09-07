@@ -6,6 +6,9 @@ import android.view.*
 import android.widget.LinearLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils
+import kotlin.math.abs
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 
 /**
@@ -38,7 +41,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
 
     private val DAMPING = 3f//阻尼系数
 
-    protected var mPullZoomListener: onPullZoomListener? = null
+    protected var mPullZoomListener: OnPullZoomListener? = null
 
     constructor(context: Context) : this(context, null)
 
@@ -53,14 +56,14 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
         mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
         mScreenHeight = ScreenUtils.getScreenHeight(context)
         mScreenWidth = ScreenUtils.getScreenHeight(context)
-        mRootView = createRootView(context, attrs)
+        mRootView = createRootView(context)
 
         attrs?.let {
             val layoutInflater = LayoutInflater.from(context)
-            val typeArray = context.obtainStyledAttributes(attrs, R.styleable.PullToZoomView)
-            val zoomViewResId = typeArray.getResourceId(R.styleable.PullToZoomView_zoomView, 0)
-            val headViewResId = typeArray.getResourceId(R.styleable.PullToZoomView_headView, 0)
-            isParallax = typeArray.getBoolean(R.styleable.PullToZoomView_isHeaderParallax, true)
+            val typeArray = context.obtainStyledAttributes(attrs, R.styleable.PullToZoomBase)
+            val zoomViewResId = typeArray.getResourceId(R.styleable.PullToZoomBase_zoomView, 0)
+            val headViewResId = typeArray.getResourceId(R.styleable.PullToZoomBase_headView, 0)
+            isParallax = typeArray.getBoolean(R.styleable.PullToZoomBase_isHeaderParallax, true)
             if (zoomViewResId > 0) {
                 mZoomView = layoutInflater.inflate(zoomViewResId, null, false)
             }
@@ -107,7 +110,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
                     val currentY = event.y
                     dy = currentY - mInterceptPressedY
                     dx = currentX - mInterceptPressedX
-                    if (dy > mTouchSlop && (Math.abs(dy) > Math.abs(dx))) {
+                    if (dy > mTouchSlop && (abs(dy) > abs(dx))) {
                         mInterceptPressedX = currentX
                         mInterceptPressedY = currentY
                         mIsBeingDragged = true
@@ -164,7 +167,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     /**
      * 创建根布局
      */
-    abstract fun createRootView(context: Context, attrs: AttributeSet?): T
+    abstract fun createRootView(context: Context): T
 
     /**
      * 是否准备好下拉
@@ -189,7 +192,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     /**
      * 设置头布局的高度
      */
-    abstract fun setHeaderViewLayoutParams(layoutParams: LinearLayout.LayoutParams)
+    abstract fun setHeaderViewLayoutParams(layoutParams:LayoutParams)
 
     /**
      * 设置变焦view
@@ -200,9 +203,9 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
      * 处理下拉事件
      */
     private fun dispatchPullEvent() {
-        val scrollValue = Math.round(Math.min(mTouchPressedY - mInterceptPressedY, 0f) / DAMPING)
+        val scrollValue = (min(mTouchPressedY - mInterceptPressedY, 0f) / DAMPING).roundToInt()
         pullHeadToZoom(scrollValue)
-        mPullZoomListener?.onPullZooming(Math.abs(scrollValue))
+        mPullZoomListener?.onPullZooming(abs(scrollValue))
     }
 
 
@@ -233,14 +236,14 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     }
 
 
-    fun setOnPullZoomListener(onPullZoomListener: onPullZoomListener) {
-        mPullZoomListener = onPullZoomListener
+    fun setOnPullZoomListener(OnPullZoomListener: OnPullZoomListener) {
+        mPullZoomListener = OnPullZoomListener
     }
 
     /**
      * 下拉变焦监听
      */
-    interface onPullZoomListener {
+    interface OnPullZoomListener {
         /**
          * 正在变焦
          * @param scrollValue 滑动距离
@@ -252,4 +255,5 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
          */
         fun onPullZoomEnd()
     }
+
 }

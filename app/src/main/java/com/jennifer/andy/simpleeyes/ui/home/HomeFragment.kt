@@ -35,12 +35,8 @@ class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
         fun newInstance(): HomeFragment = HomeFragment()
     }
 
-    override fun getBundleExtras(extras: Bundle) {
-
-    }
-
     override fun initView(savedInstanceState: Bundle?) {
-        mPullToZoomRecycler.setOnPullZoomListener(object : PullToZoomBase.onPullZoomListener {
+        mPullToZoomRecycler.setOnPullZoomListener(object : PullToZoomBase.OnPullZoomListener {
             override fun onPullZooming(scrollValue: Int) {
                 mHomePageHeaderView.showRefreshCover(scrollValue)
             }

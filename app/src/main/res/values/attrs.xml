@@ -32,7 +32,7 @@
         <attr name="loading_view" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="PullToZoomView">
+    <declare-styleable name="PullToZoomBase">
         <attr name="zoomView" format="reference"/>
         <attr name="headView" format="reference"/>
         <attr name="isHeaderParallax" format="boolean"/>

@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Scroller
-import java.lang.RuntimeException
+import kotlin.math.abs
 
 
 /**
@@ -97,8 +97,8 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     }
 
     private fun init(context: Context, attrs: AttributeSet?) {
-        orientation = LinearLayout.VERTICAL
-        mRootView = createRootView(context, attrs)
+        orientation = VERTICAL
+        mRootView = createRootView(context)
         mTouchSlop = ViewConfiguration.get(getContext()).scaledTouchSlop
         mSmoothScroller = Scroller(getContext())
         mRefreshView = initRefreshView()
@@ -113,7 +113,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec)
             mRefreshHeight = mRefreshView!!.measuredHeight
 
-            val layoutParams = mRefreshView?.layoutParams as LinearLayout.LayoutParams
+            val layoutParams = mRefreshView?.layoutParams as LayoutParams
             layoutParams.topMargin = -mRefreshHeight
             mRefreshView?.layoutParams = layoutParams
         } else {
@@ -172,11 +172,11 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
                         val pointerIndex = event.findPointerIndex(actionPointerId)
                         val x = event.getX(pointerIndex)
-                        val xAbs = Math.abs(x - mInitialMotionX)
+                        val xAbs = abs(x - mInitialMotionX)
 
                         val y = event.getY(pointerIndex)
                         val dy = y - mLastMotionY
-                        val yAbs = Math.abs(dy)
+                        val yAbs = abs(dy)
 
                         //如果竖直移动距离大于水平移动距离且为下拉事件，设置当前为拖动状态
                         if (yAbs > mTouchSlop && yAbs * 0.5 > xAbs && dy > 0) {
@@ -247,11 +247,11 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
 
                         val pointerIndex = event.findPointerIndex(actionPointerId)
                         val x = event.getX(pointerIndex)
-                        val xAbs = Math.abs(x - mLastMotionX)
+                        val xAbs = abs(x - mLastMotionX)
 
                         val y = event.getY(pointerIndex)
                         val dy = y - mLastMotionY
-                        val yAbs = Math.abs(dy)
+                        val yAbs = abs(dy)
 
                         //如果竖直移动距离大于水平移动距离，设置当前为拖动状态
                         if (yAbs > xAbs && scrollY <= 0) {
@@ -269,7 +269,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
             MotionEvent.ACTION_UP -> {
                 if (isBeingDragged) {
                     isBeingDragged = false
-                    if (Math.abs(scrollY) > mRefreshHeight / 2) {//如果超过一半就执行请求
+                    if (abs(scrollY) > mRefreshHeight / 2) {//如果超过一半就执行请求
                         //执行刷新请求
                         isRefreshIng = true
                         smoothScrollTo(0, -(mRefreshView!!.getDoRefreshHeight() + scrollY), 500)
@@ -301,7 +301,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
      */
     private fun performDrag(dy: Float) {
         if (scrollY - dy <= 0) {//控制滚动范围为0到headView的显示高度
-            if (Math.abs(scrollY - dy) in 0..mRefreshHeight) {
+            if (abs(scrollY - dy) in 0..mRefreshHeight) {
                 scrollBy(0, -dy.toInt())
                 dispatchValidPullEvent(dy)
             }
@@ -357,7 +357,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
      * 获取当前滑动的差值
      */
     private fun getScrollDiff(): Int {
-        return Math.abs(mSmoothScroller.finalY - mSmoothScroller.currY)
+        return abs(mSmoothScroller.finalY - mSmoothScroller.currY)
     }
 
     /**
@@ -382,7 +382,7 @@ abstract class PullToRefreshBase<T : View> : LinearLayout, PullToRefresh<T> {
     /**
      * 创建根布局
      */
-    abstract fun createRootView(context: Context, attrs: AttributeSet?): T
+    abstract fun createRootView(context: Context): T
 
 
     /**
