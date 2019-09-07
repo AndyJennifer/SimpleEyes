@@ -1,11 +1,9 @@
 package com.jennifer.andy.simpleeyes.ui.search
 
+
 import android.animation.ValueAnimator
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.view.Gravity
@@ -13,6 +11,9 @@ import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager

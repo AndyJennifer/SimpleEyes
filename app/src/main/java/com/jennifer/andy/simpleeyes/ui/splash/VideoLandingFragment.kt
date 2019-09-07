@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.splash
 
 import android.os.Bundle
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.AndyApplication
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
@@ -64,7 +64,7 @@ class VideoLandingFragment : BaseAppCompatFragment() {
             mDisMissIndex = mFragmentList.size - 1
             adapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
 
-            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                     mIndicator.setSelected(position)
                 }

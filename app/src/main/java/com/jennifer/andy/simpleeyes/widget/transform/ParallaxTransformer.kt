@@ -1,6 +1,6 @@
 package com.jennifer.andy.simpleeyes.widget.transform
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.View
 
 
@@ -10,7 +10,7 @@ import android.view.View
  * Description:视差切换效果
  */
 
-class ParallaxTransformer : ViewPager.PageTransformer {
+class ParallaxTransformer : androidx.viewpager.widget.ViewPager.PageTransformer {
     override fun transformPage(page: View, position: Float) {
         val width = page.width
         if (position < -1) {

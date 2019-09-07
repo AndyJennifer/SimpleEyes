@@ -1,11 +1,11 @@
 package com.jennifer.andy.simpleeyes.widget.pull.refresh
 
 import android.content.Context
-import android.support.v4.widget.ViewDragHelper.INVALID_POINTER
 import android.util.AttributeSet
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.Scroller
+import androidx.customview.widget.ViewDragHelper.INVALID_POINTER
 import kotlin.math.abs
 
 

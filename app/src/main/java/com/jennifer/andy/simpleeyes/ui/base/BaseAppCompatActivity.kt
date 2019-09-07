@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView

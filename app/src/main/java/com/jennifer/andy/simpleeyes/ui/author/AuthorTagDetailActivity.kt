@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.author
 import android.animation.ArgbEvaluator
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Autowired
@@ -39,7 +39,7 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
     private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
     private val mTvTitle: CustomFontTextView by bindView(R.id.tv_title)
     private val mStickyNavLayout: StickyNavLayout by bindView(R.id.stick_layout)
-    private val mViewPager: ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
+    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
     private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
 
     private val mTvName: CustomFontTextView by bindView(R.id.tv_name)
@@ -99,8 +99,8 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
 
     }
 
-    private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
-        val fragments = mutableListOf<Fragment>()
+    private fun initFragments(tabInfo: TabInfo): MutableList<androidx.fragment.app.Fragment> {
+        val fragments = mutableListOf<androidx.fragment.app.Fragment>()
         for (i in tabInfo.tabList.indices) {
             fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }

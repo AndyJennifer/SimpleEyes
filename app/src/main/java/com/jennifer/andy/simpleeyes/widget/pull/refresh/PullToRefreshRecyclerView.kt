@@ -1,10 +1,10 @@
 package com.jennifer.andy.simpleeyes.widget.pull.refresh
 
 import android.content.Context
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.widget.pull.head.EliteHeaderView
 
@@ -32,7 +32,7 @@ class PullToRefreshRecyclerView : PullToRefreshBase<RecyclerView> {
      */
     override fun isReadyForPullStart(): Boolean {
         val adapter = mRootView.adapter
-        return if (adapter == null || adapter.itemCount == 0) true else !rootView.canScrollVertically(-1)
+        return if (adapter == null || adapter.itemCount == 0) true else !mRootView.canScrollVertically(-1)
 
     }
 

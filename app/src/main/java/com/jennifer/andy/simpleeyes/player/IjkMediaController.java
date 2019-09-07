@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -23,6 +22,8 @@ import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerVi
 import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
+
+import androidx.annotation.NonNull;
 
 /**
  * Author:  andy.xwt

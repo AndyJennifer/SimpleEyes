@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.utils
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.ContextThemeWrapper
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import android.view.Window
 import android.view.WindowManager
 

@@ -2,13 +2,14 @@
 package com.jennifer.andy.simpleeyes.player;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.player.render.IRenderView;
 
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.NonNull;
 
 /**
  * 测量帮助类，根据宽高比及方向，获得测量后的宽高

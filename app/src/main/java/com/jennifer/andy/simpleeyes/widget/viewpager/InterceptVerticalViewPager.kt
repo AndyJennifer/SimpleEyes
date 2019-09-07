@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.widget.viewpager
 
 import android.content.Context
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ViewConfiguration
@@ -17,7 +17,7 @@ import kotlin.math.abs
  * 2.拦截固定角标的向左滑动
  *
  */
-class InterceptVerticalViewPager : ViewPager {
+class InterceptVerticalViewPager : androidx.viewpager.widget.ViewPager {
 
     private var mLastMotionX: Float = 0f
     private var mLastMotionY: Float = 0f

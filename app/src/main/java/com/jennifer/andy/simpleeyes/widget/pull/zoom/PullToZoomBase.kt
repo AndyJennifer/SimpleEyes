@@ -110,7 +110,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
                     val currentY = event.y
                     dy = currentY - mInterceptPressedY
                     dx = currentX - mInterceptPressedX
-                    if (dy > mTouchSlop && (abs(dy) > abs(dx))) {
+                    if (dy > mTouchSlop && (abs(dy) > abs(dx)) && isReadyForPullStart()) {
                         mInterceptPressedX = currentX
                         mInterceptPressedY = currentY
                         mIsBeingDragged = true
@@ -192,7 +192,7 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     /**
      * 设置头布局的高度
      */
-    abstract fun setHeaderViewLayoutParams(layoutParams:LayoutParams)
+    abstract fun setHeaderViewLayoutParams(layoutParams: LayoutParams)
 
     /**
      * 设置变焦view

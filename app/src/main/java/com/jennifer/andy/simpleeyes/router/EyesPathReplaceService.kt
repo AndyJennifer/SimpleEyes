@@ -2,9 +2,9 @@ package com.jennifer.andy.simpleeyes.router
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.facade.service.PathReplaceService
-import com.jennifer.andy.simpleeyes.utils.toUri
 import java.util.regex.Pattern
 
 

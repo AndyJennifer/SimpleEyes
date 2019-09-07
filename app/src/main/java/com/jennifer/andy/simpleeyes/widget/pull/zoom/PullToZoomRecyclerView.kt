@@ -3,15 +3,16 @@ package com.jennifer.andy.simpleeyes.widget.pull.zoom
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.TypedArray
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import kotlin.math.abs
 
 
 /**
@@ -58,7 +59,7 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
      */
     override fun isReadyForPullStart(): Boolean {
         val adapter = mRootView.adapter
-        return if (adapter == null || adapter.itemCount == 0) true else !rootView.canScrollVertically(-1)
+        return if (adapter == null || adapter.itemCount == 0) true else !mRootView.canScrollVertically(-1)
     }
 
     /**
@@ -71,7 +72,7 @@ class PullToZoomRecyclerView : PullToZoomBase<RecyclerView> {
             }
         }
         val lp = mHeaderContainer.layoutParams
-        lp.height = Math.abs(scrollValue) + mHeaderHeight
+        lp.height = abs(scrollValue) + mHeaderHeight
         mHeaderContainer.layoutParams = lp
     }
 

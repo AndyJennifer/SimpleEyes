@@ -3,10 +3,10 @@ package com.jennifer.andy.simpleeyes.ui.feed
 import android.animation.ArgbEvaluator
 import android.graphics.Color
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.v4.app.Fragment
-import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v4.view.ViewPager
+import androidx.annotation.DrawableRes
+import androidx.fragment.app.Fragment
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.viewpager.widget.ViewPager
 import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -36,7 +36,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(), CategoryTabView {
 
     private val mStickyNavLayout: StickyNavLayout by bindView(R.id.stick_layout)
-    private val mViewPager: ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
+    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
     private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
 
     private val mImageView: SimpleDraweeView by bindView(R.id.iv_image)
@@ -81,8 +81,8 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
         })
     }
 
-    private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
-        val fragments = mutableListOf<Fragment>()
+    private fun initFragments(tabInfo: TabInfo): MutableList<androidx.fragment.app.Fragment> {
+        val fragments = mutableListOf<androidx.fragment.app.Fragment>()
         for (i in tabInfo.tabList.indices) {
             fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }
