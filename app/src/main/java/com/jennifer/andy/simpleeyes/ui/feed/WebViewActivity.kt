@@ -1,7 +1,11 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
+import android.os.Build
 import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Autowired
@@ -61,11 +65,24 @@ class WebViewActivity : BaseAppCompatActivity() {
     }
 
     private fun initWebView() {
-        val webSettings = mWebView.settings
-        webSettings.javaScriptEnabled = true
-        webSettings.loadsImagesAutomatically = true
-        webSettings.defaultTextEncodingName = "utf-8"
-        mWebView.loadUrl(url)
+
+        mWebView.apply {
+
+            settings.apply {
+                javaScriptEnabled = true
+                loadsImagesAutomatically = true
+                defaultTextEncodingName = "utf-8"
+                //5.0以上需要支持混合模式
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                    mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                }
+            }
+
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?) = false
+            }
+
+        }.loadUrl(url)
     }
 
     override fun getContentViewLayoutId() = R.layout.activity_webview
