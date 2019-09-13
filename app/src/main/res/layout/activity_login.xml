@@ -70,7 +70,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/black_translucent_90"
         android:gravity="center"
-        android:text="登录或注册及同意开眼用户服务协议"
+        android:text="@string/user_agreement"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:font_name="normal"/>

@@ -5,9 +5,10 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseView
 
 /**
  * Author:  andy.xwt
- * Date:    2017/9/22 13:56
+ * Date:    2019-09-13 16:08
  * Description:
  */
-interface ProfileView : BaseView {
+
+interface CacheView : BaseView {
 
 }

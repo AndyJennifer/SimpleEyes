@@ -2,6 +2,7 @@ package com.jennifer.andy.simpleeyes.router
 
 import android.content.Context
 import com.alibaba.android.arouter.facade.Postcard
+import com.alibaba.android.arouter.facade.annotation.Interceptor
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback
 import com.alibaba.android.arouter.facade.template.IInterceptor
 import com.alibaba.android.arouter.launcher.ARouter
@@ -13,8 +14,13 @@ import com.jennifer.andy.simpleeyes.UserPreferences
  * Date:    2019/1/14 19:04
  * Description: 1.登录拦截,判断用户是否登录
  */
-
+@Interceptor(priority = 8, name = "登录拦截器")
 class RouteIntercept : IInterceptor {
+
+    companion object {
+        const val SHOULD_LOGIN = 1 ushr 30
+    }
+
 
     override fun process(postcard: Postcard, callback: InterceptorCallback) {
         when (postcard.extra) {
@@ -41,8 +47,5 @@ class RouteIntercept : IInterceptor {
 
     }
 
-    companion object {
-        const val SHOULD_LOGIN = 1 ushr 30
-    }
 
 }

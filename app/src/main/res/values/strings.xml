@@ -53,6 +53,9 @@
     <string name="commit">评论</string>
     <string name="favorites">收藏</string>
     <string name="version">Version 3.8.1.2.216</string>
+    <string name="user_agreement">登录或注册及同意开眼用户服务协议</string>
+    <string name="mine_cache">我的缓存</string>
+    <string name="edit">编辑</string>
 
     <string-array name="slogan_array_zh">
         <item>每日编辑精选，一如既往</item>

@@ -2,10 +2,9 @@ package com.jennifer.andy.simpleeyes.net
 
 import com.jennifer.andy.simpleeyes.entity.*
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.Url
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.*
 
 
 /**
@@ -161,6 +160,14 @@ interface ApiService {
      */
     @GET("api/v2/feed?num=3")
     fun getDailyElite(): Observable<JenniferInfo>
+
+
+    /**
+     * 下载视频
+     */
+    @Streaming
+    @GET
+    fun downloadVideo(@Url url: String): Call<ResponseBody>
 
 
 }

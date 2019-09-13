@@ -72,6 +72,7 @@
             android:background="@color/divider"/>
 
         <FrameLayout
+            android:id="@+id/fl_comment_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -83,7 +84,6 @@
                 android:drawableStart="@drawable/ic_action_reply_grey_without_padding"
                 android:drawablePadding="10dp"
                 android:text="@string/commit"/>
-
 
         </FrameLayout>
 

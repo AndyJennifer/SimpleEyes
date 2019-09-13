@@ -45,6 +45,7 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
         initARoute()
         initFresco()
         initLeakCanary()
+
         //todo 这里还要做崩溃检查 腾讯的bugly 热更新等操作
 
 

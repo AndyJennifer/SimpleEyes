@@ -18,7 +18,7 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 /**
  * Author:  andy.xwt
  * Date:    2018/2/11 18:02
- * Description:
+ * Description:包含视频的介绍视频信息，收藏、分享、回复等操作
  */
 
 class VideoDetailHeadView : FrameLayout, View.OnClickListener {
@@ -55,7 +55,6 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
         val widthSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         val heightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         measure(widthSpec, heightSpec)
-
         ObjectAnimator.ofFloat(this, "translationY", -measuredHeight.toFloat(), 0f).apply {
             duration = 300
             start()
