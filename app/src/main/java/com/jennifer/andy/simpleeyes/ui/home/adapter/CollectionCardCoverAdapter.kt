@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 
 
 /**
@@ -25,7 +25,7 @@ class CollectionCardCoverAdapter(data: MutableList<Content>) : BaseQuickAdapter<
         if (item.type != "actionCard") {//集合
             imageCover.setImageURI(item.data.cover.feed)
             title.text = item.data.title
-            val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+            val description = "#${item.data.category}   /   ${getElapseTimeForShow(item.data.duration)}"
             val elite = if (item.data.library == "DAILY")
                 "   /   ${mContext.getString(R.string.elite)}" else ""
             desc.text = description + elite

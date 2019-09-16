@@ -10,7 +10,8 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.home.presenter.HomePresenter
 import com.jennifer.andy.simpleeyes.ui.home.view.HomeView
-import com.jennifer.andy.simpleeyes.utils.ScreenUtils
+import com.jennifer.andy.simpleeyes.utils.getScreenHeight
+import com.jennifer.andy.simpleeyes.utils.getScreenWidth
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.pull.head.HomePageHeaderView
@@ -72,7 +73,7 @@ class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
 
     private fun setHeaderInfo(andyInfo: AndyInfo) {
         mHomePageHeaderView = HomePageHeaderView(context!!)
-        val lp = ViewGroup.LayoutParams(ScreenUtils.getScreenWidth(context!!), ScreenUtils.getScreenHeight(context!!) / 2)
+        val lp = ViewGroup.LayoutParams(getScreenWidth(context!!), getScreenHeight(context!!) / 2)
         mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
         mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.topIssue.data.itemList, this)
         mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)

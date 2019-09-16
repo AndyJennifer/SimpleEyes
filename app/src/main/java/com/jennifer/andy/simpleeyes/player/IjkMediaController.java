@@ -21,9 +21,10 @@ import com.jennifer.andy.simpleeyes.player.controllerview.ErrorControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.TinyControllerView;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
-import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
 
 import androidx.annotation.NonNull;
+
+import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenHeight;
 
 /**
  * Author:  andy.xwt
@@ -138,7 +139,7 @@ public class IjkMediaController extends FrameLayout {
         if (mCurrentViewState == TINY_VIEW) {
             addTinyView(mAnchorLayoutParams);
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
-            p.height = ScreenUtils.getScreenHeight(mContext);
+            p.height = getScreenHeight(mContext);
             addFullScreenView();
         } else {
             addErrorView();

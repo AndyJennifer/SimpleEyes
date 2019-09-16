@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 
 
 /**
@@ -64,7 +64,7 @@ class VideoDetailAdapter(data: MutableList<Content>) : BaseQuickAdapter<Content,
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.cover.feed)
         helper.setText(R.id.tv_title, item.data.title)
-        val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+        val description = "#${item.data.category}   /   ${getElapseTimeForShow(item.data.duration)}"
         helper.setText(R.id.tv_time, description)
 
     }

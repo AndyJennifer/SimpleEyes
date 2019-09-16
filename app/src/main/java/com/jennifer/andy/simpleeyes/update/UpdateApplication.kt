@@ -2,7 +2,7 @@ package com.jennifer.andy.simpleeyes.update
 
 import android.app.Application
 import com.jennifer.andy.simpleeyes.config.GlobalConfig
-import com.jennifer.andy.simpleeyes.utils.ProcessUtils
+import com.jennifer.andy.simpleeyes.utils.getProcessName
 import java.lang.reflect.ParameterizedType
 
 
@@ -21,7 +21,7 @@ abstract class UpdateApplication<T : LocalUpdateService> : Application() {
         super.onCreate()
         GlobalConfig.setApplicationContext(applicationContext)
         UpdateHelper.setUpdateService((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<T>)
-        val currentProcessName = ProcessUtils.getProcessName(applicationContext)
+        val currentProcessName = getProcessName(applicationContext)
         val currentPageName = applicationContext.packageName
         if (currentPageName == currentProcessName) {
             mUpdateParams = initUpdateParams()

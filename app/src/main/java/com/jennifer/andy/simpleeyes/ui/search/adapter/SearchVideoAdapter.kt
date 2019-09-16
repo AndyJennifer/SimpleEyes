@@ -10,7 +10,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.widget.ItemHeaderView
 import java.util.*
 
@@ -93,7 +93,7 @@ class SearchVideoAdapter(data: List<Content>?) : BaseQuickAdapter<Content, BaseV
         val imageView = helper.getView<SimpleDraweeView>(R.id.iv_image)
         imageView.setImageURI(item.data.cover.feed)
         helper.setText(R.id.tv_single_title, item.data.title)
-        val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+        val description = "#${item.data.category}   /   ${getElapseTimeForShow(item.data.duration)}"
         helper.setText(R.id.tv_single_desc, description)
     }
 

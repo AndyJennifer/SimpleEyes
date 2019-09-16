@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
@@ -146,7 +146,7 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
      * 设置种类与时间
      */
     fun setCategoryAndTime(category: String, duration: Int) {
-        val description = "#$category   /   ${TimeUtils.getElapseTimeForShow(duration)}"
+        val description = "#$category   /   ${getElapseTimeForShow(duration)}"
         mTvTime.text = description
     }
 

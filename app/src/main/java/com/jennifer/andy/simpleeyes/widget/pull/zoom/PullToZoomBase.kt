@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.*
 import android.widget.LinearLayout
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.ScreenUtils
+import com.jennifer.andy.simpleeyes.utils.getScreenHeight
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -54,8 +54,8 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     private fun init(context: Context, attrs: AttributeSet?) {
         gravity = Gravity.CENTER
         mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
-        mScreenHeight = ScreenUtils.getScreenHeight(context)
-        mScreenWidth = ScreenUtils.getScreenHeight(context)
+        mScreenHeight = getScreenHeight(context)
+        mScreenWidth = getScreenHeight(context)
         mRootView = createRootView(context)
 
         attrs?.let {

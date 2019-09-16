@@ -51,8 +51,6 @@ import com.jennifer.andy.simpleeyes.player.render.IRenderView;
 import com.jennifer.andy.simpleeyes.player.render.SurfaceRenderView;
 import com.jennifer.andy.simpleeyes.player.render.TextureRenderView;
 import com.jennifer.andy.simpleeyes.rx.RxBus;
-import com.jennifer.andy.simpleeyes.utils.ScreenUtils;
-import com.jennifer.andy.simpleeyes.utils.VideoPlayerUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +67,13 @@ import io.reactivex.functions.Consumer;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
+
+import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenHeight;
+import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenWidth;
+import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getActivity;
+import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getWindow;
+import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.showActionBar;
+import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.hideActionBar;
 
 public class IjkVideoView extends FrameLayout implements
         MediaController.MediaPlayerControl,
@@ -201,8 +206,8 @@ public class IjkVideoView extends FrameLayout implements
         //初始化状态
         mCurrentState = STATE_IDLE;
         mTargetState = STATE_IDLE;
-        mScreenWidth = ScreenUtils.getScreenWidth(getContext());
-        mScreenHeight = ScreenUtils.getScreenHeight(getContext());
+        mScreenWidth = getScreenWidth(getContext());
+        mScreenHeight = getScreenHeight(getContext());
         mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
 
         if (mGestureDetector == null) {
@@ -924,7 +929,7 @@ public class IjkVideoView extends FrameLayout implements
         float screenBrightness = 0;
 
         //记录滑动前的亮度
-        WindowManager.LayoutParams lp = VideoPlayerUtils.getWindow(getContext()).getAttributes();
+        WindowManager.LayoutParams lp = getWindow(getContext()).getAttributes();
         if (lp.screenBrightness < 0) {
             try {
                 screenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
@@ -949,7 +954,7 @@ public class IjkVideoView extends FrameLayout implements
         } else {
             lp.screenBrightness = screenBrightness;
         }
-        VideoPlayerUtils.getWindow(getContext()).setAttributes(lp);
+        getWindow(getContext()).setAttributes(lp);
 
         //设置亮度百分比
         if (mLightProgress == null) {
@@ -1216,9 +1221,9 @@ public class IjkVideoView extends FrameLayout implements
      */
     public void enterFullScreen() {
         //隐藏toolbar,并横屏
-        VideoPlayerUtils.hideActionBar(getContext());
-        VideoPlayerUtils.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        ViewGroup contentView = VideoPlayerUtils.getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
+        hideActionBar(getContext());
+        getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        ViewGroup contentView = getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
         //将视图移除
         removeView(mRenderUIView);
         //重新添加到当前视图
@@ -1231,9 +1236,9 @@ public class IjkVideoView extends FrameLayout implements
      * 退出全屏
      */
     public void exitFullScreen() {
-        VideoPlayerUtils.showActionBar(getContext());
-        VideoPlayerUtils.getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ViewGroup contentView = VideoPlayerUtils.getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
+        showActionBar(getContext());
+        getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        ViewGroup contentView = getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,

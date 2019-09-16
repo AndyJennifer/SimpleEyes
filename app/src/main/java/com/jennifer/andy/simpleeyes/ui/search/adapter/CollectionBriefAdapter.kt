@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 
 
 /**
@@ -21,7 +21,7 @@ class CollectionBriefAdapter(data: MutableList<Content>) : BaseQuickAdapter<Cont
         with(helper) {
             getView<SimpleDraweeView>(R.id.iv_image).setImageURI(item.data.cover.feed)
             setText(R.id.tv_title, item.data.title)
-            val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+            val description = "#${item.data.category}   /   ${getElapseTimeForShow(item.data.duration)}"
             setText(R.id.tv_desc, description)
         }
     }

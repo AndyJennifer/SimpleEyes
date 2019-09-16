@@ -20,8 +20,8 @@ import com.jennifer.andy.simpleeyes.ui.home.adapter.CollectionCardCoverAdapter
 import com.jennifer.andy.simpleeyes.ui.home.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
-import com.jennifer.andy.simpleeyes.utils.DensityUtils
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.dip2px
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
 import com.jennifer.andy.simpleeyes.widget.ItemHeaderView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -274,7 +274,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     private fun setBlankCardInfo(helper: BaseViewHolder, content: Content) {
         helper.getView<View>(R.id.view).apply {
             val lp = layoutParams
-            lp.height = DensityUtils.dip2px(mContext, content.data.height.toFloat())
+            lp.height = dip2px(mContext, content.data.height.toFloat())
             layoutParams = lp
         }
     }
@@ -401,7 +401,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         with(helper) {
             getView<SimpleDraweeView>(R.id.iv_image).setImageURI(item.data.cover.feed)
             setText(R.id.tv_single_title, item.data.title)
-            val description = "#${item.data.category}   /   ${TimeUtils.getElapseTimeForShow(item.data.duration)}"
+            val description = "#${item.data.category}   /   ${getElapseTimeForShow(item.data.duration)}"
             setText(R.id.tv_single_desc, description)
 
 
@@ -425,7 +425,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
         with(helper) {
             getView<SimpleDraweeView>(R.id.iv_image).setImageURI(data.cover.feed)
             setText(R.id.tv_title, data.title)
-            val description = "#${data.category}   /   ${TimeUtils.getElapseTimeForShow(data.duration)}"
+            val description = "#${data.category}   /   ${getElapseTimeForShow(data.duration)}"
             setText(R.id.tv_desc, description)
             itemView.setOnClickListener { VideoDetailActivity.start(mContext, data, arrayListOf()) }
         }

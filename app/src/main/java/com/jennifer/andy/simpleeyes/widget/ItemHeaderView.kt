@@ -15,7 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.entity.Header
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getTimeStr
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
@@ -105,7 +105,7 @@ class ItemHeaderView : FrameLayout {
             //设置发布时间
             time?.let {
                 mTvDate.visibility = View.VISIBLE
-                mTvDate.text = TimeUtils.getTimeStr(Date(time!!))
+                mTvDate.text = getTimeStr(Date(time!!))
             }
 
             //点击关注

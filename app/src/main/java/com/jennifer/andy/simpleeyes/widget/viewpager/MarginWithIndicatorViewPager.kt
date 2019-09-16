@@ -1,8 +1,6 @@
 package com.jennifer.andy.simpleeyes.widget.viewpager
 
 import android.content.Context
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CollectionOfHorizontalScrollCardView
 import com.rd.PageIndicatorView
@@ -49,7 +47,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
     private fun setAdapter() {
         mViewPager.adapter = MarginWithViewPagerAdapter()
         mViewPager.offscreenPageLimit = 3
-        mViewPager.pageMargin = DensityUtils.dip2px(context, 10f)
+        mViewPager.pageMargin = dip2px(context, 10f)
         mViewPager.currentItem = 10000 * mItemList.size
         mIndicator.count = mItemList.size
         mViewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {

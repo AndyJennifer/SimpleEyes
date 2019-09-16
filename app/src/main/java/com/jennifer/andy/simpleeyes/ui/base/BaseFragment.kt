@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
-import com.jennifer.andy.simpleeyes.utils.SystemUtils
+import com.jennifer.andy.simpleeyes.utils.getGenericInstance
 
 
 /**
@@ -22,7 +22,7 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter = SystemUtils.getGenericInstance(this, 1)
+        mPresenter = getGenericInstance(this, 1)
     }
 
 

@@ -7,7 +7,8 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.sp2px
+import kotlin.math.min
 
 
 /**
@@ -19,12 +20,12 @@ import com.jennifer.andy.simpleeyes.utils.DensityUtils
 class ColorTrackView : View {
 
     private var mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    var mText: String
-    var mTextSize = DensityUtils.sp2px(context, 14f)
+    var mText: String? = null
+    var mTextSize = sp2px(context, 14f)
     var mTextOriginalColor = 0xFF0000
     var mTextChangeColor = 0xFFFF00
 
-    var mProgress: Float
+    private var mProgress: Float
         set(value) {
             field = value
             invalidate()
@@ -71,7 +72,7 @@ class ColorTrackView : View {
 
     private fun measureText() {
         mTextWidth = mPaint.measureText(mText)
-        mPaint.getTextBounds(mText, 0, mText.length, mTextBound)
+        mPaint.getTextBounds(mText, 0, mText!!.length, mTextBound)
         mTextHeight = mTextBound.height().toFloat()
 
     }
@@ -89,7 +90,7 @@ class ColorTrackView : View {
                 result = (mTextWidth + paddingLeft + paddingRight).toInt()
         }
         result = if (mode == MeasureSpec.AT_MOST) {
-            Math.min(size, result)
+            min(size, result)
         } else {
             result
         }
@@ -109,7 +110,7 @@ class ColorTrackView : View {
                 result = (mTextHeight + paddingTop + paddingBottom).toInt()
         }
         result = if (mode == MeasureSpec.AT_MOST) {
-            Math.min(result, size)
+            min(result, size)
         } else {
             result
         }

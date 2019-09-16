@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.utils.TimeUtils
+import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
@@ -38,7 +38,7 @@ class CollectionOfHorizontalScrollCardView : FrameLayout {
 
     fun setData(content: Content) {
         setImageUrl(content.data.cover.feed)
-        val description = "#${content.data.category}   /   ${TimeUtils.getElapseTimeForShow(content.data.duration)}"
+        val description = "#${content.data.category}   /   ${getElapseTimeForShow(content.data.duration)}"
         setTitleAndDesc(content.data.title, description)
         setDailyVisible(content.data.library == "DAILY")
     }

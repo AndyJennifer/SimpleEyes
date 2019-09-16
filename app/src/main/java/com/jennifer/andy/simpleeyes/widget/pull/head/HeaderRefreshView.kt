@@ -11,7 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 
 
@@ -30,7 +30,7 @@ class HeaderRefreshView : FrameLayout {
     /**
      * 执行刷新阀值 50dp
      */
-    private val REFRESH_THRESHOLD_VALUE = DensityUtils.dip2px(context, 50f)
+    private val REFRESH_THRESHOLD_VALUE = dip2px(context, 50f)
 
     constructor(context: Context) : this(context, null)
 

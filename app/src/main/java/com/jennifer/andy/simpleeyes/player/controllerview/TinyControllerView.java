@@ -11,7 +11,8 @@ import com.jennifer.andy.simpleeyes.AndyApplication;
 import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
-import com.jennifer.andy.simpleeyes.utils.NetWorkUtils;
+
+import static com.jennifer.andy.simpleeyes.utils.NetWorkUtilsKt.isNetWorkConnected;
 
 /**
  * Author:  andy.xwt
@@ -135,7 +136,7 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
             @Override
             public void onStopTrackingTouch(SeekBar bar) {
                 //定位都拖动位置
-                if (NetWorkUtils.isNetWorkConnected(AndyApplication.INSTANCE)) {
+                if (isNetWorkConnected(AndyApplication.INSTANCE)) {
                     long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
                     mPlayer.seekTo((int) newPosition);
                     mController.show();//开启延时隐藏

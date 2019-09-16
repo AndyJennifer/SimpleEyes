@@ -10,8 +10,9 @@ import com.jennifer.andy.simpleeyes.config.GlobalConfig
 import com.jennifer.andy.simpleeyes.update.CheckUpdateProtocol
 import com.jennifer.andy.simpleeyes.update.LocalUpdateService
 import com.jennifer.andy.simpleeyes.update.UpdateApplication
-import com.jennifer.andy.simpleeyes.utils.AppUtils
-import com.jennifer.andy.simpleeyes.utils.UDIDUtils
+import com.jennifer.andy.simpleeyes.utils.getAppVersionCode
+import com.jennifer.andy.simpleeyes.utils.getAppVersionName
+import com.jennifer.andy.simpleeyes.utils.getRandomUUID
 import com.squareup.leakcanary.LeakCanary
 import java.util.*
 
@@ -85,9 +86,9 @@ class AndyApplication : UpdateApplication<LocalUpdateService>() {
     override fun initUpdateParams(): LocalUpdateService.UpdateParams {
         val localCheckUpdateProtocol = CheckUpdateProtocol()
         localCheckUpdateProtocol.packageName = applicationContext.packageName
-        localCheckUpdateProtocol.versionName = AppUtils.getAppVersionName(applicationContext)
-        localCheckUpdateProtocol.versionCode = AppUtils.getAppVersionCode(applicationContext)
-        localCheckUpdateProtocol.udid = UDIDUtils.getRandomUUID()
+        localCheckUpdateProtocol.versionName = getAppVersionName(applicationContext)
+        localCheckUpdateProtocol.versionCode = getAppVersionCode(applicationContext)
+        localCheckUpdateProtocol.udid = getRandomUUID()
         val localDefault = Locale.getDefault()
         localCheckUpdateProtocol.language = localDefault.displayCountry + "-" + localDefault.displayLanguage
         localCheckUpdateProtocol.rom = Build.MODEL//版本信息

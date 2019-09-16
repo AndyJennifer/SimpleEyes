@@ -26,7 +26,7 @@ import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchVideoAdapter
 import com.jennifer.andy.simpleeyes.ui.search.presenter.SearchPresenter
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
-import com.jennifer.andy.simpleeyes.utils.DensityUtils
+import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.SearchHotRemindView
@@ -197,8 +197,8 @@ class SearchHotActivity : BaseActivity<SearchHotView, SearchPresenter>(), Search
      */
     private fun setRecyclerMargin() {
         val lp = mRecycler.layoutParams as RelativeLayout.LayoutParams
-        lp.marginEnd = DensityUtils.dip2px(mContext, 30f)
-        lp.marginStart = DensityUtils.dip2px(mContext, 30f)
+        lp.marginEnd = dip2px(mContext, 30f)
+        lp.marginStart = dip2px(mContext, 30f)
         mRecycler.layoutParams = lp
     }
 
