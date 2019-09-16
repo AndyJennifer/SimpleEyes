@@ -1,10 +1,10 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
+
 import android.view.View
 import android.widget.ImageView
+import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
@@ -26,7 +26,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 
 class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
-    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.view_pager)
+    private val mViewPager: ViewPager by bindView(R.id.view_pager)
     private val mTvAllCategory: CustomFontTextView by bindView(R.id.tv_all_category)
     private val mIvSearch: ImageView by bindView(R.id.iv_search)
     private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)

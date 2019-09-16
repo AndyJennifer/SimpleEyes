@@ -64,7 +64,7 @@ class VideoLandingFragment : BaseAppCompatFragment() {
             mDisMissIndex = mFragmentList.size - 1
             adapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
 
-            addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                     mIndicator.setSelected(position)
                 }

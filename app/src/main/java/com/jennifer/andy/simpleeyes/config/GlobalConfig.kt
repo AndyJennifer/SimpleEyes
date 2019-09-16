@@ -9,43 +9,40 @@ import android.content.Context
  * Description: 全局配置
  */
 
-class GlobalConfig {
-
-    companion object {
-
-        private val ASSETS_CHANNEL_FILE_NAME = "channel.mf"
-
-        private val DEFAULT_CHANNEL = "simpleeyes_debug"
-
-        private val INTERNAL_PACKAGE_CHANNEL = "simpleeyes_internal"
-
-        private var debug = false
-
-        private var appContext: Context? = null
-
-        private var rooDir = ""
-
-        private var sLastChannel: String? = null
+object GlobalConfig {
 
 
-        fun setApplicationContext(context: Context) {
-            appContext = context
-        }
+    private val ASSETS_CHANNEL_FILE_NAME = "channel.mf"
 
-        fun getApplicationContext() = appContext
+    private val DEFAULT_CHANNEL = "simpleeyes_debug"
 
-        fun setApplicationRootDir(dir: String) {
-            rooDir = dir
-        }
+    private val INTERNAL_PACKAGE_CHANNEL = "simpleeyes_internal"
 
-        fun getAppllicationRootDir() = rooDir
+    private var debug = false
 
-        fun setAppDebug(isDebug: Boolean) {
-            debug = isDebug
-        }
+    private var appContext: Context? = null
 
-        fun getIsAppDebug() = debug
+    private var rooDir = ""
+
+    private var sLastChannel: String? = null
 
 
+    fun setApplicationContext(context: Context) {
+        appContext = context
     }
+
+    fun getApplicationContext() = appContext
+
+    fun setApplicationRootDir(dir: String) {
+        rooDir = dir
+    }
+
+    fun getAppllicationRootDir() = rooDir
+
+    fun setAppDebug(isDebug: Boolean) {
+        debug = isDebug
+    }
+
+    fun getIsAppDebug() = debug
+
 }

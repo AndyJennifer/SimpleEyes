@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.utils.dip2px
@@ -22,7 +24,7 @@ import com.rd.PageIndicatorView
 
 class MarginWithIndicatorViewPager : FrameLayout {
 
-    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.vp_indicator_pager)
+    private val mViewPager: ViewPager by bindView(R.id.vp_indicator_pager)
     private val mIndicator: PageIndicatorView by bindView(R.id.pageIndicatorView)
 
     private lateinit var mItemList: MutableList<Content>
@@ -50,7 +52,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
         mViewPager.pageMargin = dip2px(context, 10f)
         mViewPager.currentItem = 10000 * mItemList.size
         mIndicator.count = mItemList.size
-        mViewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -68,7 +70,7 @@ class MarginWithIndicatorViewPager : FrameLayout {
     /**
      * 设置无限滚动适配器
      */
-    inner class MarginWithViewPagerAdapter : androidx.viewpager.widget.PagerAdapter() {
+    inner class MarginWithViewPagerAdapter : PagerAdapter() {
 
         override fun getCount() = Int.MAX_VALUE
 

@@ -12,6 +12,7 @@ import java.lang.reflect.ParameterizedType
  * Description:
  */
 
+@Suppress("UNCHECKED_CAST")
 abstract class UpdateApplication<T : LocalUpdateService> : Application() {
 
 

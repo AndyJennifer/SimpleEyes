@@ -3,10 +3,9 @@ package com.jennifer.andy.simpleeyes.ui.author
 import android.animation.ArgbEvaluator
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -39,7 +38,7 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
     private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
     private val mTvTitle: CustomFontTextView by bindView(R.id.tv_title)
     private val mStickyNavLayout: StickyNavLayout by bindView(R.id.stick_layout)
-    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
+    private val mViewPager: ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
     private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
 
     private val mTvName: CustomFontTextView by bindView(R.id.tv_name)

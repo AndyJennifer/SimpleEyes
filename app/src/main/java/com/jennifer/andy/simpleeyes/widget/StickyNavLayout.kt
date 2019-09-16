@@ -1,13 +1,13 @@
 package com.jennifer.andy.simpleeyes.widget
 
 import android.content.Context
-import androidx.core.view.NestedScrollingParent2
-import androidx.core.view.NestedScrollingParentHelper
-import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.view.NestedScrollingParent2
+import androidx.core.view.NestedScrollingParentHelper
+import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
 import kotlinx.android.synthetic.main.layout_blank_card.view.*
 
@@ -108,7 +108,7 @@ class StickyNavLayout : LinearLayout, NestedScrollingParent2 {
         mTopView = findViewById(R.id.id_sticky_nav_layout_top_view)
         mNavView = findViewById(R.id.id_sticky_nav_layout_nav_view)
         mViewPager = findViewById(R.id.id_sticky_nav_layout_viewpager)
-        if (mViewPager !is androidx.viewpager.widget.ViewPager) {
+        if (mViewPager !is ViewPager) {
             throw  RuntimeException("id_sticky_nav_layout_viewpager should be viewpager!")
         }
 

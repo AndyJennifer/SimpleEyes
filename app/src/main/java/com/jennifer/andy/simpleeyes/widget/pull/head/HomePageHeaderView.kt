@@ -1,12 +1,12 @@
 package com.jennifer.andy.simpleeyes.widget.pull.head
 
 import android.content.Context
-import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.TopIssue
@@ -57,7 +57,7 @@ class HomePageHeaderView : FrameLayout {
      */
     private fun init() {
         //设置banner滑动监听
-        mBanner.setOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+        mBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 

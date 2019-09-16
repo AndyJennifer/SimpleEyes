@@ -3,11 +3,10 @@ package com.jennifer.andy.simpleeyes.ui.feed
 import android.animation.ArgbEvaluator
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import androidx.fragment.app.Fragment
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.viewpager.widget.ViewPager
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -36,7 +35,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(), CategoryTabView {
 
     private val mStickyNavLayout: StickyNavLayout by bindView(R.id.stick_layout)
-    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
+    private val mViewPager: ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
     private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
 
     private val mImageView: SimpleDraweeView by bindView(R.id.iv_image)

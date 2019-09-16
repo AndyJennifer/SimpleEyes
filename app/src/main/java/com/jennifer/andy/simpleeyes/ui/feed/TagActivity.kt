@@ -1,9 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import android.widget.RelativeLayout
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -28,7 +27,7 @@ class TagActivity : BaseAppCompatActivity() {
 
     private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
     private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
-    private val mViewPager: androidx.viewpager.widget.ViewPager by bindView(R.id.view_pager)
+    private val mViewPager: ViewPager by bindView(R.id.view_pager)
 
 
     @Autowired
