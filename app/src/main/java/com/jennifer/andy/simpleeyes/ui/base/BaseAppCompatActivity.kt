@@ -3,12 +3,11 @@ package com.jennifer.andy.simpleeyes.ui.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.RelativeLayout
+import androidx.annotation.StringRes
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.ActivityManager
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -165,7 +164,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 初始化工具栏,默认情况下加粗
      */
-    protected fun initToolBar(toolbar: RelativeLayout, title: String? = null, fontType: FontType = FontType.BOLD) {
+    protected fun initToolBar(toolbar: ViewGroup, title: String? = null, fontType: FontType = FontType.BOLD) {
         val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
         ivBack.setOnClickListener {
             showKeyboard(false)
@@ -182,7 +181,7 @@ abstract class BaseAppCompatActivity : SupportActivity() {
     /**
      * 初始化工具栏，默认情况下加粗
      */
-    protected fun initToolBar(toolbar: RelativeLayout, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
+    protected fun initToolBar(toolbar: ViewGroup, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
         val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
         ivBack.setOnClickListener {
             showKeyboard(false)

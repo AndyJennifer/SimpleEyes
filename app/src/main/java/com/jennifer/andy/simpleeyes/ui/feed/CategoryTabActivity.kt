@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -80,8 +81,8 @@ class CategoryTabActivity : BaseActivity<CategoryTabView, CategoryTabPresenter>(
         })
     }
 
-    private fun initFragments(tabInfo: TabInfo): MutableList<androidx.fragment.app.Fragment> {
-        val fragments = mutableListOf<androidx.fragment.app.Fragment>()
+    private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
+        val fragments = mutableListOf<Fragment>()
         for (i in tabInfo.tabList.indices) {
             fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }

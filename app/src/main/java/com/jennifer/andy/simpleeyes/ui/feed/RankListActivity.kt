@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.feed
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -52,8 +53,8 @@ class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankLi
     }
 
 
-    private fun initFragments(tabInfo: TabInfo): MutableList<androidx.fragment.app.Fragment> {
-        val fragments = mutableListOf<androidx.fragment.app.Fragment>()
+    private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
+        val fragments = mutableListOf<Fragment>()
         for (i in tabInfo.tabList.indices) {
             fragments.add(TagDetailInfoFragment.newInstance(tabInfo.tabList[i].apiUrl))
         }

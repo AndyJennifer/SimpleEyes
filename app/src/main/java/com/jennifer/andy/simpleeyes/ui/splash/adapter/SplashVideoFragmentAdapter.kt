@@ -11,7 +11,8 @@ import com.jennifer.andy.simpleeyes.ui.splash.SloganFragment
  * Description: 闪屏视频适配器
  */
 
-class SplashVideoFragmentAdapter(var mFragmentList: MutableList<SloganFragment>, fragmentManager: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
+class SplashVideoFragmentAdapter(var mFragmentList: MutableList<SloganFragment>,
+                                 fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
 
     override fun getItem(position: Int) = mFragmentList[position]
