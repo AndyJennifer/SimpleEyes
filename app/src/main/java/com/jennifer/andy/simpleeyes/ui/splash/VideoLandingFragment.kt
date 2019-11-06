@@ -16,7 +16,7 @@ import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
 /**
  * Author:  andy.xwt
  * Date:    2018/8/3 10:08
- * Description:视频闪屏页 第一次用户安装应用的时候会走
+ * Description:视频闪屏页 包含中英文口号，当上滑或者滑动到最后一页时会跳转到主界面
  */
 
 class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>() {
@@ -28,15 +28,18 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
     override fun initView(savedInstanceState: Bundle?) {
         initSloganText()
         initSloganFragments()
-        play()
+        playVideo()
     }
 
+    /**
+     * 设置初始标语
+     */
     private fun initSloganText() {
-        //设置初始标语
         mDataBinding.apply {
             tvSloganEn.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[0])
             tvSloganZh.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[0])
         }
+        mDataBinding.lifecycleOwner
     }
 
 
@@ -50,8 +53,8 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
             pageIndicatorView.count = DEFAULT_SPLASH_VIDEO_COUNT
 
             with(viewPager) {
-                verticalListener = { goMainActivity() }
-                horizontalListener = { goMainActivity() }
+                verticalListener = { goMainActivityThenFinish() }
+                horizontalListener = { goMainActivityThenFinish() }
                 mDisMissIndex = DEFAULT_SPLASH_VIDEO_COUNT - 1
                 adapter = SplashVideoFragmentAdapter(childFragmentManager)
 
@@ -75,18 +78,19 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
     }
 
 
-    private fun play() {
+    private fun playVideo() {
         val path = R.raw.landing
         with(mDataBinding.videoView) {
             setAspectRatio(AR_ASPECT_FIT_PARENT)
             setVideoPath("android.resource://${activity?.packageName}/$path")
             setOnPreparedListener {
                 requestFocus()
-                setOnCompletionListener {
-                    it.isLooping = true
-                    start()
-                }
                 seekTo(0)
+                start()
+            }
+            setOnCompletionListener {
+                //播放完毕后，循环播放视频
+                it.isLooping = true
                 start()
             }
         }
@@ -95,10 +99,9 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
     /**
      * 设置用户不是第一次登录,并跳转到主界面
      */
-    private fun goMainActivity() {
+    private fun goMainActivityThenFinish() {
         UserPreferences.saveUserIsFirstLogin(false)
-        val action = VideoLandingFragmentDirections.actionVideoLandingFragmentToMainActivity()
-        findNavController().navigate(action)
+        findNavController().navigate(VideoLandingFragmentDirections.actionVideoLandingFragmentToMainActivity())
         requireActivity().finish()
     }
 

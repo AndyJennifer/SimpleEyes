@@ -9,7 +9,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 /**
  * Author:  andy.xwt
  * Date:    2018/5/15 10:51
- * Description: 口号fragment 用于切换视频口号
+ * Description: 透明 fragment 用于切换视频中的中英文口号
  */
 
 class SloganFragment : BaseDataBindFragment<FragmentSloganBinding>() {

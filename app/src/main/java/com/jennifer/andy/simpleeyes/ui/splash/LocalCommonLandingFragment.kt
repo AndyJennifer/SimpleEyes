@@ -5,19 +5,15 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
-import com.facebook.drawee.view.SimpleDraweeView
+import androidx.navigation.fragment.findNavController
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.databinding.FragmentLocalCoomonLandingBinding
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.getDateString
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
-import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import java.util.*
 
 
@@ -28,23 +24,6 @@ import java.util.*
  */
 
 class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandingBinding>() {
-
-    private val mIvBackground by bindView<SimpleDraweeView>(R.id.iv_background)
-    private val mLoadingContainer by bindView<RelativeLayout>(R.id.rl_loading_container)
-    private val mMoveContainer by bindView<RelativeLayout>(R.id.ll_move_container)
-    private val mHeadOuter by bindView<ImageView>(R.id.iv_head_outer)
-    private val mHeadInner by bindView<ImageView>(R.id.iv_head_inner)
-    private val mName by bindView<CustomFontTextView>(R.id.tv_name)
-
-    private val mForToday by bindView<CustomFontTextView>(R.id.tv_today)
-    private val mDate by bindView<CustomFontTextView>(R.id.tv_date)
-    private val mTodayChose by bindView<CustomFontTextView>(R.id.tv_today_chose)
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): LocalCommonLandingFragment = LocalCommonLandingFragment()
-    }
 
     override fun initView(savedInstanceState: Bundle?) {
         //如果用户没有执行上升动画，则执行，反之则执行缩放动画
@@ -62,18 +41,17 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
      */
     private fun doUpAnimator() {
         val moveY = dip2px(requireActivity(), 100f)
-        ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat()).apply {
+        ObjectAnimator.ofFloat(mDataBinding.llMoveContainer, "translationY", 0f, -moveY.toFloat()).apply {
             addUpdateListener {
                 if (it.currentPlayTime in 600..1500) {
-                    mHeadOuter.setImageResource(R.drawable.ic_eye_white_outer)
-                    mHeadInner.setImageResource(R.drawable.ic_eye_white_inner)
-                    mName.setTextColor(resources.getColor(R.color.gray_B7B9B8))
+                    mDataBinding.ivHeadOuter.setImageResource(R.drawable.ic_eye_white_outer)
+                    mDataBinding.ivHeadInner.setImageResource(R.drawable.ic_eye_white_inner)
+                    mDataBinding.tvName.setTextColor(resources.getColor(R.color.gray_B7B9B8))
 
                 } else if (it.currentPlayTime in 1500..2000) {
-                    mHeadOuter.setImageResource(R.drawable.ic_eye_black_outer)
-                    mHeadInner.setImageResource(R.drawable.ic_eye_black_inner)
-
-                    mName.setTextColor(resources.getColor(R.color.black_444444))
+                    mDataBinding.ivHeadOuter.setImageResource(R.drawable.ic_eye_black_outer)
+                    mDataBinding.ivHeadInner.setImageResource(R.drawable.ic_eye_black_inner)
+                    mDataBinding.tvName.setTextColor(resources.getColor(R.color.black_444444))
                 }
             }
             duration = 2000
@@ -85,7 +63,7 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
      */
     private fun doBackgroundAnimator() {
         ValueAnimator.ofArgb(0, 0xffffffff.toInt()).apply {
-            addUpdateListener { mLoadingContainer.setBackgroundColor(it.animatedValue as Int) }
+            addUpdateListener { mDataBinding.rlLoadingContainer.setBackgroundColor(it.animatedValue as Int) }
             doOnEnd { doTextAnimator() }
             duration = 2000
         }.start()
@@ -98,10 +76,10 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
         ValueAnimator.ofArgb(0, 0xff444444.toInt()).apply {
             addUpdateListener {
                 val color = it.animatedValue as Int
-                setTextColor(mForToday, color)
-                setTextColor(mDate, color)
-                setTextColor(mTodayChose, color)
-                mDate.text = getDateString(Date(), "- yyyy/MM/dd -")
+                setTextColor(mDataBinding.tvToday, color)
+                setTextColor(mDataBinding.tvDate, color)
+                setTextColor(mDataBinding.tvTodayChose, color)
+                mDataBinding.tvDate.text = getDateString(Date(), "- yyyy/MM/dd -")
             }
 
             doOnEnd { doInnerEyeAnimator() }
@@ -117,9 +95,9 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
      * 执行内部眼睛动画
      */
     private fun doInnerEyeAnimator() {
-        ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f).apply {
+        ObjectAnimator.ofFloat(mDataBinding.ivHeadInner, "rotation", 0f, 360f).apply {
             doOnEnd {
-                //                readyGoThenKillSelf(MainActivity::class.java, null)
+                goMainActivityThenFinish()
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 1000
@@ -132,15 +110,24 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
     private fun doScaleAnimator() {
 
         AnimatorSet().apply {
-            val scaleX = ObjectAnimator.ofFloat(mIvBackground, "scaleX", 1f, 1.08f)
-            val scaleY = ObjectAnimator.ofFloat(mIvBackground, "scaleY", 1f, 1.08f)
+            val scaleX = ObjectAnimator.ofFloat(mDataBinding.ivBackground, "scaleX", 1f, 1.08f)
+            val scaleY = ObjectAnimator.ofFloat(mDataBinding.ivBackground, "scaleY", 1f, 1.08f)
             playTogether(scaleX, scaleY)
             doOnEnd {
-                //                readyGoThenKillSelf(MainActivity::class.java, null)
+                goMainActivityThenFinish()
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 2000
         }.start()
+    }
+
+
+    /**
+     * 跳转到主界面，并结束当前Activity
+     */
+    private fun goMainActivityThenFinish() {
+        findNavController().navigate(LocalCommonLandingFragmentDirections.actionLocalCommonLandingFragmentToMainActivity())
+        requireActivity().finish()
     }
 
     override fun getContentViewLayoutId() = R.layout.fragment_local_coomon_landing

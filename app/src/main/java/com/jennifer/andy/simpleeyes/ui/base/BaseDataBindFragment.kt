@@ -27,6 +27,7 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (getContentViewLayoutId() != 0) {
             mDataBinding = DataBindingUtil.inflate(inflater, getContentViewLayoutId(), container, false)
+            mDataBinding.lifecycleOwner = viewLifecycleOwner
             return mDataBinding.root
         } else throw  IllegalArgumentException("You must set layout id")
     }
@@ -50,8 +51,6 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : Fragment() {
     /**
      * 初始化view
      */
-    open fun initView(savedInstanceState: Bundle?) {
-
-    }
+    abstract fun initView(savedInstanceState: Bundle?)
 
 }
