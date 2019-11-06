@@ -12,8 +12,8 @@ import androidx.core.animation.doOnEnd
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
-import com.jennifer.andy.simpleeyes.ui.MainActivity
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
+import com.jennifer.andy.simpleeyes.databinding.FragmentLocalCoomonLandingBinding
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.getDateString
 import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
@@ -27,7 +27,7 @@ import java.util.*
  * Description:本地的加载页(上升动画）
  */
 
-class LocalCommonLandingFragment : BaseAppCompatFragment() {
+class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandingBinding>() {
 
     private val mIvBackground by bindView<SimpleDraweeView>(R.id.iv_background)
     private val mLoadingContainer by bindView<RelativeLayout>(R.id.rl_loading_container)
@@ -61,7 +61,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
      * 执行上升动画
      */
     private fun doUpAnimator() {
-        val moveY = dip2px(_mActivity, 100f)
+        val moveY = dip2px(requireActivity(), 100f)
         ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat()).apply {
             addUpdateListener {
                 if (it.currentPlayTime in 600..1500) {
@@ -119,7 +119,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
     private fun doInnerEyeAnimator() {
         ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f).apply {
             doOnEnd {
-                readyGoThenKillSelf(MainActivity::class.java, null)
+                //                readyGoThenKillSelf(MainActivity::class.java, null)
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 1000
@@ -136,7 +136,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
             val scaleY = ObjectAnimator.ofFloat(mIvBackground, "scaleY", 1f, 1.08f)
             playTogether(scaleX, scaleY)
             doOnEnd {
-                readyGoThenKillSelf(MainActivity::class.java, null)
+                //                readyGoThenKillSelf(MainActivity::class.java, null)
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 2000

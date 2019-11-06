@@ -11,9 +11,12 @@ import com.jennifer.andy.simpleeyes.ui.splash.SloganFragment
  * Description: 闪屏视频适配器
  */
 
-class SplashVideoFragmentAdapter(var mFragmentList: MutableList<SloganFragment>,
-                                 fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+const val DEFAULT_SPLASH_VIDEO_COUNT = 4
 
+class SplashVideoFragmentAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+
+    private val mFragmentList = List(DEFAULT_SPLASH_VIDEO_COUNT) { SloganFragment.newInstance() } as MutableList<SloganFragment>
 
     override fun getItem(position: Int) = mFragmentList[position]
 

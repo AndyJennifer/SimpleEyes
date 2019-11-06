@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_landing"
+    app:startDestination="@id/navigationEmptyFragment">
+
+    <fragment
+        android:id="@+id/navigationEmptyFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.splash.NavigationEmptyFragment"
+        android:label="NavigationEmptyFragment">
+        <action
+            android:id="@+id/action_navigationEmptyFragment_to_videoLandingFragment"
+            app:destination="@id/videoLandingFragment" />
+        <action
+            android:id="@+id/action_navigationEmptyFragment_to_localCommonLandingFragment"
+            app:destination="@id/localCommonLandingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/videoLandingFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.splash.VideoLandingFragment"
+        android:label="VideoLandingFragment"
+        tools:layout="@layout/fragment_video_landing" >
+        <action
+            android:id="@+id/action_videoLandingFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/localCommonLandingFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.splash.LocalCommonLandingFragment"
+        android:label="LocalCommonLandingFragment"
+        tools:layout="@layout/fragment_local_coomon_landing" >
+        <action
+            android:id="@+id/action_localCommonLandingFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.jennifer.andy.simpleeyes.ui.MainActivity"
+        android:label="MainActivity" />
+</navigation>

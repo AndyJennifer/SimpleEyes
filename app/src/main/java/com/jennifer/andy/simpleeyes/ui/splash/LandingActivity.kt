@@ -1,9 +1,11 @@
 package com.jennifer.andy.simpleeyes.ui.splash
 
 import android.os.Bundle
+import androidx.navigation.findNavController
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
+import com.jennifer.andy.simpleeyes.databinding.ActivityLandingBinding
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 
 
 /**
@@ -12,13 +14,15 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
  * Description:加载页，用于区分显示广告，还是视频，还是本地的加载页
  */
 
-class LandingActivity : BaseAppCompatActivity() {
+class LandingActivity : BaseDataBindActivity<ActivityLandingBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         if (UserPreferences.getUserIsFirstLogin()) {//如果是第一次进入就加载视频界面
-            loadRootFragment(R.id.fl_container, VideoLandingFragment.newInstance())
+            val action = NavigationEmptyFragmentDirections.actionNavigationEmptyFragmentToVideoLandingFragment()
+            findNavController(R.id.nav_host).navigate(action)
         } else {//如果不是加载常规加载界面
-            loadRootFragment(R.id.fl_container, LocalCommonLandingFragment.newInstance())
+            val action = NavigationEmptyFragmentDirections.actionNavigationEmptyFragmentToLocalCommonLandingFragment()
+            findNavController(R.id.nav_host).navigate(action)
         }
     }
 
