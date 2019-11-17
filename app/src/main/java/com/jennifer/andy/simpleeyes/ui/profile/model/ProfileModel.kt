@@ -9,6 +9,4 @@ import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
  * Description:
  */
 
-class ProfileModel : BaseModel {
-
-}
+class ProfileModel : BaseModel

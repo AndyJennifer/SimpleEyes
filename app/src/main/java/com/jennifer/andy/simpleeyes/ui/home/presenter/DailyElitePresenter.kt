@@ -50,7 +50,7 @@ class DailyElitePresenter : BasePresenter<DailyEliteView>() {
      * 加載更多
      */
     fun loadMoreResult() {
-        mRxManager.add(mHomeModel.loadMoreJenniferInfo(mNextPageUrl)!!.subscribe({
+        mRxManager.add(mHomeModel.loadMoreJenniferInfo(mNextPageUrl).subscribe({
             mNextPageUrl = it.nextPageUrl
             mView?.loadMoreSuccess(combineContentInfo(it))
         }, {

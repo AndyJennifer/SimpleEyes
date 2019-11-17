@@ -9,7 +9,7 @@ import com.jennifer.andy.simpleeyes.player.render.IRenderView.AR_ASPECT_FIT_PARE
 import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.FullScreenVideoView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.viewpager.InterceptVerticalViewPager

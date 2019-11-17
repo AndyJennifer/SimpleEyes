@@ -14,7 +14,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.home.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner

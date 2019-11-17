@@ -23,7 +23,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.video.adapter.VideoDetailAdapter
 import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoDetailView
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
 import com.jennifer.andy.simpleeyes.widget.pull.head.VideoDetailHeadView
 import io.reactivex.functions.Consumer

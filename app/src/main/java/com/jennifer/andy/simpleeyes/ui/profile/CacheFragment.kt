@@ -7,7 +7,7 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.profile.presenter.CachePresenter
 import com.jennifer.andy.simpleeyes.ui.profile.view.CacheView
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 
 
 /**

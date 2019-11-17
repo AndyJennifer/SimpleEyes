@@ -20,7 +20,7 @@ import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.TagDetailInfoFragment
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.StickyNavLayout
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType

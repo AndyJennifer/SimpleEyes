@@ -13,7 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.profile.adapter.ProfileSettingAdapter
 import com.jennifer.andy.simpleeyes.ui.profile.presenter.ProfilePresenter
 import com.jennifer.andy.simpleeyes.ui.profile.view.ProfileView
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 
 /**
  * Author:  andy.xwt

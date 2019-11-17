@@ -16,7 +16,7 @@ import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.getDateString
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import java.util.*
 

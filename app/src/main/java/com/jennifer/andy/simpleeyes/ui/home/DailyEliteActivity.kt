@@ -12,7 +12,7 @@ import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.home.adapter.DailyEliteAdapter
 import com.jennifer.andy.simpleeyes.ui.home.presenter.DailyElitePresenter
 import com.jennifer.andy.simpleeyes.ui.home.view.DailyEliteView
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.LinearLayoutManagerWithSmoothScroller
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView

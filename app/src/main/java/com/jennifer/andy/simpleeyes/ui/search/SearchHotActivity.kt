@@ -27,7 +27,7 @@ import com.jennifer.andy.simpleeyes.ui.search.presenter.SearchPresenter
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.dip2px
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.SearchHotRemindView
 import com.jennifer.andy.simpleeyes.widget.image.CenterAlignImageSpan

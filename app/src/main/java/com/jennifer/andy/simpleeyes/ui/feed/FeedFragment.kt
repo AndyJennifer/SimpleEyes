@@ -13,7 +13,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
