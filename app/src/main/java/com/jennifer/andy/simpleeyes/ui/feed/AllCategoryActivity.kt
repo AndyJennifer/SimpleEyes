@@ -15,7 +15,7 @@ import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter.Companion.RECTANGLE_CARD_TYPE
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.AllCategoryPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.AllCategoryView
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.GridItemDecoration
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 

@@ -40,12 +40,12 @@ object RxBus {
     /**
      * 订阅
      *
-     * @param eventType 事件类型
-     * @param action
-     * @param error
-     * @param <T>
+     * @param eventType 接受的事件类型
+     * @param action    处理方法
+     * @param error  错误处理方法
+     * @param <T>    接受事件的泛型
      * @return
-    </T> */
+     */
     private fun <T> doSubscribe(eventType: Class<T>, action: Consumer<T>, error: Consumer<Throwable>): Disposable {
         return toObservable(eventType)
                 .subscribeOn(Schedulers.io())

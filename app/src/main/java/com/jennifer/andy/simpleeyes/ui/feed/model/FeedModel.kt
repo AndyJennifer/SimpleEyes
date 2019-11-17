@@ -1,8 +1,11 @@
 package com.jennifer.andy.simpleeyes.ui.feed.model
 
+import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.entity.Category
 import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.net.Api
-import com.jennifer.andy.simpleeyes.rx.RxHelper
+import com.jennifer.andy.simpleeyes.rx.RxThreadHelper
+import com.jennifer.andy.simpleeyes.rx.error.globalHandleError
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
 import io.reactivex.Observable
 
@@ -18,30 +21,46 @@ class FeedModel : BaseModel {
     /**
      * 获取发现tab栏
      */
-    fun getDiscoveryTab(): Observable<Tab> = Api.getDefault().getDiscoveryTab().compose(RxHelper.handleResult())
+    fun getDiscoveryTab(): Observable<Tab> =
+            Api.getDefault()
+                    .getDiscoveryTab()
+                    .compose(globalHandleError())
+                    .compose(RxThreadHelper.switchObservableThread())
 
     /**
      * 获取全部分类信息
      */
-    fun loadAllCategoriesInfo() = Api.getDefault().getAllCategoriesInfo().compose(RxHelper.handleResult())
+    fun loadAllCategoriesInfo(): Observable<AndyInfo> =
+            Api.getDefault()
+                    .getAllCategoriesInfo()
+                    .compose(globalHandleError())
+                    .compose(RxThreadHelper.switchObservableThread())
 
     /**
      * 获取排行榜tab栏
      */
-    fun getRankListTab() = Api.getDefault().getRankListTab().compose(RxHelper.handleResult())
+    fun getRankListTab(): Observable<Tab> =
+            Api.getDefault()
+                    .getRankListTab()
+                    .compose(globalHandleError())
+                    .compose(RxThreadHelper.switchObservableThread())
 
     /**
      * 获取专题信息
      */
-    fun getTopicInfo() = Api.getDefault().getTopicInfo().compose(RxHelper.handleResult())
+    fun getTopicInfo(): Observable<AndyInfo> =
+            Api.getDefault()
+                    .getTopicInfo()
+                    .compose(globalHandleError())
+                    .compose(RxThreadHelper.switchObservableThread())
 
-    /**
-     * 获取tag信息(360全景信息)，注意是在onNext进行设置数据
-     */
-    fun getTagInfo(tagId: String, strategy: String) = Api.getDefault().getTagInfo(tagId, strategy).compose(RxHelper.handleResult())
 
     /**
      * 获取种类下tab信息
      */
-    fun getCategoryTabIno(id: String) = Api.getDefault().getCategoryTabInfo(id).compose(RxHelper.handleResult())
+    fun getCategoryTabIno(id: String): Observable<Category> =
+            Api.getDefault()
+                    .getCategoryTabInfo(id)
+                    .compose(globalHandleError())
+                    .compose(RxThreadHelper.switchObservableThread())
 }

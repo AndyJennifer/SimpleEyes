@@ -10,7 +10,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.TagDetailInfoPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.TagDetailInfoView
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 
 

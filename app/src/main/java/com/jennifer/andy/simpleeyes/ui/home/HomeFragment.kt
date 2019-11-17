@@ -10,9 +10,9 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.home.presenter.HomePresenter
 import com.jennifer.andy.simpleeyes.ui.home.view.HomeView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.utils.getScreenHeight
 import com.jennifer.andy.simpleeyes.utils.getScreenWidth
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.pull.head.HomePageHeaderView
 import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomBase

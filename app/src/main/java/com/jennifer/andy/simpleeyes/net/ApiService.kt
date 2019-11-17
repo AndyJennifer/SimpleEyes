@@ -128,7 +128,7 @@ interface ApiService {
      * @param url 下一页请求地址
      */
     @GET
-    fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>?
+    fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>
 
 
     /**
@@ -136,7 +136,7 @@ interface ApiService {
      * @param url 下一页请求地址
      */
     @GET
-    fun getMoreJenniferInfo(@Url url: String?): Observable<JenniferInfo>?
+    fun getMoreJenniferInfo(@Url url: String?): Observable<JenniferInfo>
 
 
     ///////////////////////////////////////////////////////////////////////////

@@ -11,7 +11,7 @@ import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.follow.presenter.FollowPresenter
 import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView

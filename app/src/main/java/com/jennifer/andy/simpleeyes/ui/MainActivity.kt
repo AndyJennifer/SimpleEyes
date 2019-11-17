@@ -7,7 +7,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.FeedFragment
 import com.jennifer.andy.simpleeyes.ui.follow.FollowFragment
 import com.jennifer.andy.simpleeyes.ui.home.HomeFragment
 import com.jennifer.andy.simpleeyes.ui.profile.ProfileFragment
-import com.jennifer.andy.simpleeyes.utils.kotlin.bindView
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.BottomBar
 import com.jennifer.andy.simpleeyes.widget.BottomItem
 import me.yokeyword.fragmentation.SupportFragment
@@ -80,11 +80,6 @@ class MainActivity : BaseAppCompatActivity() {
         }
 
     }
-
-    override fun getBundleExtras(extras: Bundle) {
-
-    }
-
 
     override fun getContentViewLayoutId() = R.layout.activity_main
 
