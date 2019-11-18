@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
 /**
  * Author:  andy.xwt
  * Date:    2018/2/12 14:06
- * Description:
+ * Description: 参考地址：https://mcxiaoke.gitbooks.io/rxdocs/content/Subject.html
  */
 
 object RxBus {
