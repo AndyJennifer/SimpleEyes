@@ -1,6 +1,9 @@
 package com.jennifer.andy.simpleeyes.rx
 
-import io.reactivex.*
+import io.reactivex.FlowableTransformer
+import io.reactivex.MaybeTransformer
+import io.reactivex.ObservableTransformer
+import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -18,10 +21,8 @@ object RxThreadHelper {
      * 将Observable类型的观察者切换到主线程中运行
      */
     fun <T> switchObservableThread(): ObservableTransformer<T, T> {
-        return ObservableTransformer { it ->
-            it.flatMap { Observable.just(it) }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+        return ObservableTransformer {
+            it.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
     }
 
@@ -29,10 +30,8 @@ object RxThreadHelper {
      * 将Flowable类型的观察者切换到主线程中运行
      */
     fun <T> switchFlowableThread(): FlowableTransformer<T, T> {
-        return FlowableTransformer { it ->
-            it.flatMap { Flowable.just(it) }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+        return FlowableTransformer {
+            it.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
     }
 
@@ -40,10 +39,8 @@ object RxThreadHelper {
      * 将Single类型的观察者切换到主线程中运行
      */
     fun <T> switchSingleThread(): SingleTransformer<T, T> {
-        return SingleTransformer { it ->
-            it.flatMap { Single.just(it) }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+        return SingleTransformer {
+            it.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
     }
 
@@ -52,10 +49,8 @@ object RxThreadHelper {
      * 将Maybe类型的观察者切换到主线程中运行
      */
     fun <T> switchMaybeThread(): MaybeTransformer<T, T> {
-        return MaybeTransformer { it ->
-            it.flatMap { Maybe.just(it) }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+        return MaybeTransformer {
+            it.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
     }
 }
