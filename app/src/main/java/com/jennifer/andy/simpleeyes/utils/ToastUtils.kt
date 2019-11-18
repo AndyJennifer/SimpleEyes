@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.utils
 
 import android.content.Context
+import android.os.Handler
 import android.widget.Toast
 import com.jennifer.andy.simpleeyes.AndyApplication
 
@@ -14,8 +15,8 @@ import com.jennifer.andy.simpleeyes.AndyApplication
 
 fun toast(value: () -> String) = AndyApplication.INSTANCE.toast(value)
 
-inline fun toast(value: String) = toast { value }
+fun toast(value: String) = toast { value }
 
-fun Context.toast(value: () -> String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, value(), duration).show()
+inline fun Context.toast(crossinline value: () -> String, duration: Int = Toast.LENGTH_SHORT) {
+    Handler(mainLooper).post { Toast.makeText(this, value(), duration).show() }
 }
