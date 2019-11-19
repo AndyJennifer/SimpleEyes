@@ -5,6 +5,7 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
 import com.jennifer.andy.simpleeyes.ui.feed.view.TopicView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -21,12 +22,12 @@ class TopicPresenter : LoadMorePresenter<AndyInfo, FeedModel, TopicView>() {
      * 获取专题信息
      */
     fun getTopicInfo() {
-        mRxManager.add(mBaseModel.getTopicInfo().subscribe({
+        mBaseModel.getTopicInfo().autoDispose(mScopeProvider).subscribe({
             mView?.showGetTopicInfoSuccess(it.itemList)
             mNextPageUrl = it.nextPageUrl
         }, {
             mView?.showNetError(View.OnClickListener { getTopicInfo() })
-        }))
+        })
     }
 
 }

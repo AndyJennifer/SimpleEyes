@@ -4,6 +4,7 @@ import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
 import com.jennifer.andy.simpleeyes.ui.feed.view.CategoryTabView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -17,11 +18,11 @@ class CategoryTabPresenter : BasePresenter<CategoryTabView>() {
     private var mFeedModel: FeedModel = FeedModel()
 
     fun getTabInfo(id: String) {
-        mRxManager.add(mFeedModel.getCategoryTabIno(id).subscribe({
+        mFeedModel.getCategoryTabIno(id).autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mView?.showLoadTabSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener { getTabInfo(id) })
-        }))
+        })
     }
 }

@@ -5,6 +5,7 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
 import com.jennifer.andy.simpleeyes.ui.feed.view.TagDetailInfoView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -21,15 +22,14 @@ class TagDetailInfoPresenter : LoadMorePresenter<AndyInfo, FeedModel, TagDetailI
      * 获取tab栏下信息
      */
     fun getDetailInfo(url: String) {
-        mRxManager.add(mBaseModel.getDataInfoFromUrl(url).subscribe({
+        mBaseModel.getDataInfoFromUrl(url).autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mView?.showGetTabInfoSuccess(it)
             mNextPageUrl = it.nextPageUrl
             if (mNextPageUrl == null) mView?.showNoMore()
         }, {
             mView?.showNetError(View.OnClickListener { getDetailInfo(url) })
-        }))
+        })
     }
-
 
 }

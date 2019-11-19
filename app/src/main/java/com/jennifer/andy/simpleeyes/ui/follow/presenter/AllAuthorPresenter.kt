@@ -5,6 +5,7 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.ui.follow.model.FollowModel
 import com.jennifer.andy.simpleeyes.ui.follow.view.AllAuthorView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -18,14 +19,13 @@ class AllAuthorPresenter : LoadMorePresenter<AndyInfo, FollowModel, AllAuthorVie
     override var mBaseModel: FollowModel = FollowModel()
 
     fun getAllAuthorInfo() {
-        mRxManager.add(mBaseModel.getAllAuthor().subscribe({
+        mBaseModel.getAllAuthor().autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.loadAllAuthorSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener { getAllAuthorInfo() })
-        }))
+        })
     }
-
 
 }

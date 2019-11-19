@@ -5,6 +5,7 @@ import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.ui.follow.model.FollowModel
 import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -19,18 +20,18 @@ class FollowPresenter : LoadMorePresenter<AndyInfo, FollowModel, FollowView>() {
     override var mBaseModel: FollowModel = FollowModel()
 
     fun getFollowInfo() {
-        mRxManager.add(mBaseModel.getFollowInfo().subscribe({
+        mBaseModel.getFollowInfo().autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.loadFollowInfoSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener { getFollowInfo() })
-        }))
+        })
     }
 
 
     fun refresh() {
-        mRxManager.add(mBaseModel.getFollowInfo().subscribe({
+        mBaseModel.getFollowInfo().autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.refreshSuccess(it)
@@ -38,6 +39,6 @@ class FollowPresenter : LoadMorePresenter<AndyInfo, FollowModel, FollowView>() {
             mView?.showNetError(View.OnClickListener {
                 refresh()
             })
-        }))
+        })
     }
 }

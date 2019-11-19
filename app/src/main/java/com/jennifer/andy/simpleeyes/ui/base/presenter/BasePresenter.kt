@@ -1,6 +1,8 @@
 package com.jennifer.andy.simpleeyes.ui.base.presenter
 
-import com.jennifer.andy.simpleeyes.rx.RxManager
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 
 
 /**
@@ -9,32 +11,18 @@ import com.jennifer.andy.simpleeyes.rx.RxManager
  * Description:
  */
 
-open class BasePresenter<V> {
+open class BasePresenter<V> : LifecycleObserver {
 
     protected var mView: V? = null
-    protected val mRxManager: RxManager = RxManager()
+    protected lateinit var mScopeProvider: AndroidLifecycleScopeProvider
 
     /**
      * 与view进行关联
      */
-    fun attachView(view: V) {
+    fun attachView(view: V, lifecycleOwner: LifecycleOwner) {
         this.mView = view
-
+        this.mScopeProvider = AndroidLifecycleScopeProvider.from(lifecycleOwner)
     }
-
-    /**
-     * 与view解除关联，并取消订阅
-     */
-    fun detach() {
-        mView = null
-        mRxManager.clear()
-    }
-
-
-    /**
-     * 判断当前View是否存活
-     */
-    fun isViewActive() = mView != null
 
 
 }

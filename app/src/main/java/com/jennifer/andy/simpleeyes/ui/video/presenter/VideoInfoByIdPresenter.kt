@@ -4,6 +4,7 @@ import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.video.model.VideoDetailModel
 import com.jennifer.andy.simpleeyes.ui.video.view.VideoInfoByIdView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -17,13 +18,12 @@ class VideoInfoByIdPresenter : BasePresenter<VideoInfoByIdView>() {
     private val mVideoModel = VideoDetailModel()
 
     fun getVideoInfoById(id: String) {
-        mRxManager.add(mVideoModel.getVideoInfoById(id).subscribe({
+        mVideoModel.getVideoInfoById(id).autoDispose(mScopeProvider).subscribe({
             mView?.getVideoInfoSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener {
                 getVideoInfoById(id)
             })
-        }))
+        })
     }
-
 }

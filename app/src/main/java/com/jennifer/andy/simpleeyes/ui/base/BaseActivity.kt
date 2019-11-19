@@ -21,7 +21,8 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mPresenter = getGenericInstance(this, 1)
-        mPresenter.attachView(this as V)
+        lifecycle.addObserver(mPresenter)
+        mPresenter.attachView(this as V, this)
         super.onCreate(savedInstanceState)
 
     }
@@ -43,9 +44,4 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
         mMultipleStateView.showContent()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mPresenter.detach()
-
-    }
 }
