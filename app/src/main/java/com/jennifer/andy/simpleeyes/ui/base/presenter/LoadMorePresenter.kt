@@ -3,6 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.base.presenter
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.LoadMoreView
 import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -21,7 +22,7 @@ open class LoadMorePresenter<T, M : BaseModel, V : LoadMoreView<T>> : BasePresen
 
     fun loadMoreInfo() {
         if (mNextPageUrl != null) {
-            mRxManager.add(mBaseModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
+            mBaseModel.loadMoreAndyInfo(mNextPageUrl).autoDispose(mScopeProvider).subscribe({
                 mView?.showContent()
                 if (mNextPageUrl == null) {
                     mView?.showNoMore()
@@ -33,7 +34,7 @@ open class LoadMorePresenter<T, M : BaseModel, V : LoadMoreView<T>> : BasePresen
                 mView?.showNetError(View.OnClickListener {
                     loadMoreInfo()
                 })
-            }))
+            })
         } else {
             mView?.showNoMore()
         }

@@ -4,6 +4,7 @@ import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.feed.model.FeedModel
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -20,13 +21,12 @@ class FeedPresenter : BasePresenter<FeedView>() {
      * 获取导航栏信息
      */
     fun getDiscoveryTab() {
-        mRxManager.add(mFeedModel.getDiscoveryTab().subscribe({
+        mFeedModel.getDiscoveryTab().autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mView?.loadTabSuccess(it.tabInfo)
         }, {
             mView?.showNetError(View.OnClickListener { getDiscoveryTab() })
-        }))
-
+        })
     }
 
 }

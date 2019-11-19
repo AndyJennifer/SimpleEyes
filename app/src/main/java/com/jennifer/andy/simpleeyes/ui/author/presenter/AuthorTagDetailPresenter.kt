@@ -4,6 +4,7 @@ import android.view.View
 import com.jennifer.andy.simpleeyes.ui.author.model.AuthorModel
 import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -17,12 +18,12 @@ class AuthorTagDetailPresenter : BasePresenter<AuthorTagDetailView>() {
     private var mAuthorModel: AuthorModel = AuthorModel()
 
     fun getAuthorTagDetail(id: String) {
-        mRxManager.add(mAuthorModel.getAuthorTagDetail(id).subscribe({
+        mAuthorModel.getAuthorTagDetail(id).autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mView?.loadInfoSuccess(it)
         }, {
             mView?.showNetError(View.OnClickListener { getAuthorTagDetail(id) })
-        }))
+        })
     }
 
 }

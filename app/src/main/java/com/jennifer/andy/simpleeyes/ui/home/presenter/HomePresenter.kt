@@ -4,6 +4,7 @@ import android.view.View
 import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.home.model.HomeModel
 import com.jennifer.andy.simpleeyes.ui.home.view.HomeView
+import com.uber.autodispose.autoDispose
 
 
 /**
@@ -22,7 +23,7 @@ class HomePresenter : BasePresenter<HomeView>() {
      */
     fun loadCategoryData() {
         mView?.showLoading()
-        mRxManager.add(mHomeModel.loadCategoryInfo().subscribe({
+        mHomeModel.loadCategoryInfo().autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.loadDataSuccess(it)
@@ -30,14 +31,14 @@ class HomePresenter : BasePresenter<HomeView>() {
             mView?.showNetError(View.OnClickListener {
                 loadCategoryData()
             })
-        }))
+        })
     }
 
     /**
      * 刷新首页信息延迟1秒执行
      */
     fun refreshCategoryData() {
-        mRxManager.add(mHomeModel.refreshCategoryInfo().subscribe({
+        mHomeModel.refreshCategoryInfo().autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mNextPageUrl = it.nextPageUrl
             mView?.refreshDataSuccess(it)
@@ -45,7 +46,7 @@ class HomePresenter : BasePresenter<HomeView>() {
             mView?.showNetError(View.OnClickListener {
                 refreshCategoryData()
             })
-        }))
+        })
     }
 
     /**
@@ -53,7 +54,7 @@ class HomePresenter : BasePresenter<HomeView>() {
      */
     fun loadMoreCategoryData() {
         if (mNextPageUrl != null) {
-            mRxManager.add(mHomeModel.loadMoreAndyInfo(mNextPageUrl)!!.subscribe({
+            mHomeModel.loadMoreAndyInfo(mNextPageUrl).autoDispose(mScopeProvider).subscribe({
                 mView?.showContent()
                 if (it.nextPageUrl == null) {
                     mView?.showNoMore()
@@ -65,7 +66,7 @@ class HomePresenter : BasePresenter<HomeView>() {
                 mView?.showNetError(View.OnClickListener {
                     loadMoreCategoryData()
                 })
-            }))
+            })
         }
     }
 }

@@ -27,13 +27,8 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mPresenter.attachView(this as V)
+        mPresenter.attachView(this as V, this)
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mPresenter.detach()
     }
 
     override fun showLoading() {
@@ -51,7 +46,6 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
     override fun showContent() {
         mMultipleStateView.showContent()
     }
-
 
 
 }
