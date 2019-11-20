@@ -14,6 +14,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.readyGo
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
 import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
@@ -44,7 +45,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            readyGo(SearchHotActivity::class.java, null)
+            readyGo(SearchHotActivity::class.java)
         }
         //跳转到全部分类界面
         mTvAllCategory.setOnClickListener {

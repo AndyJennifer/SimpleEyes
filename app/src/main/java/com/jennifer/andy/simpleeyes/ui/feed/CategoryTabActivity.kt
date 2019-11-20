@@ -20,6 +20,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.CategoryTabPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.CategoryTabView
 import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.widget.StickyNavLayout
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType

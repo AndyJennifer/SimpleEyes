@@ -81,7 +81,7 @@ class ActivityManager private constructor() {
      */
     @Synchronized
     fun getTopActivity(): Activity? {
-        return if (!sActivityList.isEmpty()) {
+        return if (sActivityList.isNotEmpty()) {
             sActivityList[sActivityList.size - 1]
         } else {
             null

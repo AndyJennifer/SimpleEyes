@@ -24,9 +24,7 @@ abstract class BaseActivity<V, T : BasePresenter<V>> : BaseAppCompatActivity(), 
         lifecycle.addObserver(mPresenter)
         mPresenter.attachView(this as V, this)
         super.onCreate(savedInstanceState)
-
     }
-
 
     override fun showLoading() {
         mMultipleStateView.showLoading()

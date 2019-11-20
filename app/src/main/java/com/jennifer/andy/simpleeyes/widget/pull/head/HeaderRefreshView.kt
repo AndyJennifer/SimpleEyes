@@ -11,8 +11,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.dip2px
 
 
 /**
@@ -30,7 +30,9 @@ class HeaderRefreshView : FrameLayout {
     /**
      * 执行刷新阀值 50dp
      */
-    private val REFRESH_THRESHOLD_VALUE = dip2px(context, 50f)
+    companion object {
+        private const val REFRESH_THRESHOLD_VALUE = 50f
+    }
 
     constructor(context: Context) : this(context, null)
 
@@ -50,8 +52,8 @@ class HeaderRefreshView : FrameLayout {
      * 显示刷新遮罩
      */
     fun showRefreshCover(scrollValue: Int) {
-        if (scrollValue in 1..REFRESH_THRESHOLD_VALUE) {
-            val percent = (scrollValue.toFloat() / REFRESH_THRESHOLD_VALUE.toFloat())
+        if (scrollValue in 1..getRefreshThresholdValue()) {
+            val percent = (scrollValue.toFloat() / getRefreshThresholdValue())
             mRefreshContainer.background.alpha = (percent * 255).toInt()
             mIvRefresh.imageAlpha = (percent * 255).toInt()
             mIvRefresh.scaleX = percent
@@ -69,10 +71,13 @@ class HeaderRefreshView : FrameLayout {
      */
     private fun startRefreshAnimation() {
         if (mRotateAnimation == null) {
-            mRotateAnimation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-            mRotateAnimation?.interpolator = LinearInterpolator()
-            mRotateAnimation?.repeatCount = -1
-            mRotateAnimation?.duration = 1000
+            mRotateAnimation = RotateAnimation(0f, 360f,
+                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+                    .apply {
+                        interpolator = LinearInterpolator()
+                        repeatCount = -1
+                        duration = 1000
+                    }
             mIvRefresh.startAnimation(mRotateAnimation)
         }
     }
@@ -83,20 +88,20 @@ class HeaderRefreshView : FrameLayout {
     fun hideRefreshCover() {
         mIvRefresh.clearAnimation()
         mRotateAnimation = null
-        val valueAnimator = ValueAnimator.ofFloat(1f, 0f)
-        valueAnimator.duration = 500
-        valueAnimator.start()
-        valueAnimator.addUpdateListener {
-            val animatedValue = (it.animatedValue) as Float
-            mRefreshContainer.background.alpha = (animatedValue * 255).toInt()
-            mIvRefresh.imageAlpha = animatedValue.toInt()
-        }
+        ValueAnimator.ofFloat(1f, 0f).apply {
+            duration = 500
+            addUpdateListener {
+                val animatedValue = (it.animatedValue) as Float
+                mRefreshContainer.background.alpha = (animatedValue * 255).toInt()
+                mIvRefresh.imageAlpha = animatedValue.toInt()
+            }
+        }.start()
     }
 
     /**
      * 获取刷新阀值
      */
-    fun getRefreshThresholdValue() = REFRESH_THRESHOLD_VALUE
+    fun getRefreshThresholdValue() = context.dip2px(REFRESH_THRESHOLD_VALUE)
 
 
 }

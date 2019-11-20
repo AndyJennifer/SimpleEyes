@@ -14,9 +14,10 @@ import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
+import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.utils.dip2px
 import com.jennifer.andy.simpleeyes.utils.getDateString
-import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.readyGoThenKillSelf
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import java.util.*
 
@@ -61,7 +62,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
      * 执行上升动画
      */
     private fun doUpAnimator() {
-        val moveY = dip2px(_mActivity, 100f)
+        val moveY = _mActivity.dip2px(100f)
         ObjectAnimator.ofFloat(mMoveContainer, "translationY", 0f, -moveY.toFloat()).apply {
             addUpdateListener {
                 if (it.currentPlayTime in 600..1500) {
@@ -119,7 +120,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
     private fun doInnerEyeAnimator() {
         ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f).apply {
             doOnEnd {
-                readyGoThenKillSelf(MainActivity::class.java, null)
+                readyGoThenKillSelf(MainActivity::class.java)
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 1000

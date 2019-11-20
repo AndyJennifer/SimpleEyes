@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.view.SimpleDraweeView
-import com.jennifer.andy.simpleeyes.AndyApplication
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.profile.adapter.ProfileSettingAdapter
@@ -44,28 +43,27 @@ class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>(), ProfileVi
         mIvAvatar.setOnClickListener(this)
         mFlComment.setOnClickListener(this)
         mRecycler.apply {
-            val stringArray = AndyApplication.getResource().getStringArray(R.array.profile_setting)
-            adapter = ProfileSettingAdapter(arrayListOf(*stringArray)).apply {
-                setOnItemClickListener { _, _, position ->
-                    when (position) {
-                        CACHE_POSITION -> {//我的缓存
-                            start(CacheFragment.newInstance())
+            val stringArray = resources.getStringArray(R.array.profile_setting)
+            adapter = ProfileSettingAdapter(arrayListOf(*stringArray))
+                    .apply {
+                        setOnItemClickListener { _, _, position ->
+                            when (position) {
+                                CACHE_POSITION -> {//我的缓存
+                                    start(CacheFragment.newInstance())
+                                }
+                            }
                         }
                     }
-                }
-            }
             layoutManager = LinearLayoutManager(context)
         }
     }
 
 
-    override fun onClick(view: View?) {
-        when (view?.id) {
+    override fun onClick(view: View) {
+        when (view.id) {
             R.id.iv_avatar,
             R.id.fl_comment_container -> {//跳转到登录界面
                 ARouter.getInstance().build("/github/Login").navigation()
-            }
-            else -> {
             }
         }
     }

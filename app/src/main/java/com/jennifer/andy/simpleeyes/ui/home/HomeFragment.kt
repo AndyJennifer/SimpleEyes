@@ -73,7 +73,7 @@ class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
 
     private fun setHeaderInfo(andyInfo: AndyInfo) {
         mHomePageHeaderView = HomePageHeaderView(context!!)
-        val lp = ViewGroup.LayoutParams(getScreenWidth(context!!), getScreenHeight(context!!) / 2)
+        val lp = ViewGroup.LayoutParams(context!!.getScreenWidth(), context!!.getScreenHeight() / 2)
         mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
         mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.topIssue.data.itemList, this)
         mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)

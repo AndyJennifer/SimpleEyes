@@ -1,8 +1,10 @@
 package com.jennifer.andy.simpleeyes.ui.splash
 
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager.widget.ViewPager
-import com.jennifer.andy.simpleeyes.AndyApplication
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.player.render.IRenderView.AR_ASPECT_FIT_PARENT
@@ -10,6 +12,7 @@ import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter
 import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.readyGoThenKillSelf
 import com.jennifer.andy.simpleeyes.widget.FullScreenVideoView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.viewpager.InterceptVerticalViewPager
@@ -42,7 +45,8 @@ class VideoLandingFragment : BaseAppCompatFragment() {
 
     override fun initView(savedInstanceState: Bundle?) {
         initSloganText()
-        play()
+        setVideoObserver()
+        playVideo()
     }
 
 
@@ -51,8 +55,8 @@ class VideoLandingFragment : BaseAppCompatFragment() {
      */
     private fun initSloganText() {
         //设置初始标语
-        mTvSloganEnglish.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[0])
-        mTvSloganChinese.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[0])
+        mTvSloganEnglish.printText(resources.getStringArray(R.array.slogan_array_en)[0])
+        mTvSloganChinese.printText(resources.getStringArray(R.array.slogan_array_zh)[0])
 
         mIndicator.count = 4
 
@@ -60,7 +64,7 @@ class VideoLandingFragment : BaseAppCompatFragment() {
 
         with(mViewPager) {
             verticalListener = { goMainActivity() }
-            horizontalListener = { goMainActivity () }
+            horizontalListener = { goMainActivity() }
             mDisMissIndex = mFragmentList.size - 1
             adapter = SplashVideoFragmentAdapter(mFragmentList, childFragmentManager)
 
@@ -74,8 +78,8 @@ class VideoLandingFragment : BaseAppCompatFragment() {
 
                 override fun onPageSelected(position: Int) {
                     if (position in 0..3) {
-                        mTvSloganEnglish.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[position])
-                        mTvSloganChinese.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[position])
+                        mTvSloganEnglish.printText(resources.getStringArray(R.array.slogan_array_en)[position])
+                        mTvSloganChinese.printText(resources.getStringArray(R.array.slogan_array_zh)[position])
                     }
                 }
             })
@@ -90,42 +94,47 @@ class VideoLandingFragment : BaseAppCompatFragment() {
         readyGoThenKillSelf(MainActivity::class.java)
     }
 
-    private fun play() {
+    private fun playVideo() {
         val path = R.raw.landing
         with(mVideoView) {
             setAspectRatio(AR_ASPECT_FIT_PARENT)
             setVideoPath("android.resource://${activity?.packageName}/$path")
             setOnPreparedListener {
                 requestFocus()
-                setOnCompletionListener {
-                    it.isLooping = true
-                    start()
-                }
                 seekTo(0)
+                start()
+            }
+            setOnCompletionListener {
+                it.isLooping = true
                 start()
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (isHasPaused) {
-            mVideoView.seekTo(mVideoPosition)
-            mVideoView.resume()
-            isHasPaused = false
-        }
-    }
+    private fun setVideoObserver() {
+        lifecycle.addObserver(object : LifecycleObserver {
 
-    override fun onPause() {
-        super.onPause()
-        mVideoPosition = mVideoView.currentPosition
-        mVideoView.pause()
-        isHasPaused = true
-    }
+            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            fun onVideoResume() {
+                if (isHasPaused) {
+                    mVideoView.seekTo(mVideoPosition)
+                    mVideoView.resume()
+                    isHasPaused = false
+                }
+            }
 
-    override fun onStop() {
-        super.onStop()
-        mVideoView.stopPlayback()
+            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            fun onVideoPause() {
+                mVideoPosition = mVideoView.currentPosition
+                mVideoView.pause()
+                isHasPaused = true
+            }
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+            fun onVideoStop() {
+                mVideoView.stopPlayback()
+            }
+        })
     }
 
     override fun getContentViewLayoutId() = R.layout.fragment_video_landing

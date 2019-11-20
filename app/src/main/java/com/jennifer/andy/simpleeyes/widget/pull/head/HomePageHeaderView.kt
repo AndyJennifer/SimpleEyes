@@ -15,6 +15,7 @@ import com.jennifer.andy.simpleeyes.ui.home.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.readyGo
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner
@@ -75,7 +76,7 @@ class HomePageHeaderView : FrameLayout {
         })
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            mBaseFragment.readyGo(SearchHotActivity::class.java, null)
+            mBaseFragment.readyGo(SearchHotActivity::class.java)
         }
         //跳转到每日精选
         mMoreContainer.setOnClickListener {
