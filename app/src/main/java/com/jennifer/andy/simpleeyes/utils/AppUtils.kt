@@ -8,9 +8,9 @@ import android.content.Context
  *
  * @return App版本号
  */
-fun getAppVersionName(context: Context): String {
-    val pm = context.packageManager
-    val packageInfo = pm.getPackageInfo(context.packageName, 0)
+fun Context.getAppVersionName(): String {
+    val pm = packageManager
+    val packageInfo = pm.getPackageInfo(packageName, 0)
     return packageInfo.versionName
 }
 
@@ -19,8 +19,8 @@ fun getAppVersionName(context: Context): String {
  *
  * @return App版本码
  */
-fun getAppVersionCode(context: Context): Int {
-    val pm = context.packageManager
-    val packageInfo = pm.getPackageInfo(context.packageName, 0)
+fun Context.getAppVersionCode(): Int {
+    val pm = packageManager
+    val packageInfo = pm.getPackageInfo(packageName, 0)
     return packageInfo.versionCode
 }

@@ -12,6 +12,7 @@ import com.jennifer.andy.simpleeyes.ui.follow.presenter.FollowPresenter
 import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.utils.readyGo
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
@@ -45,7 +46,7 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>(), FollowView {
 
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            readyGo(SearchHotActivity::class.java, null)
+            readyGo(SearchHotActivity::class.java)
         }
         //跳转到全部作者界面
         mTvAllAuthor.setOnClickListener {

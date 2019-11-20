@@ -1,15 +1,14 @@
 package com.jennifer.andy.simpleeyes.ui.base
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.StringRes
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.manager.ActivityManager
+import com.jennifer.andy.simpleeyes.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
@@ -28,7 +27,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
      * 上下文对象
      */
     protected lateinit var mContext: Context
-    protected lateinit var TAT_LOG: String
     protected lateinit var mMultipleStateView: MultipleStateView
 
 
@@ -57,8 +55,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         if (extras != null) {
             getBundleExtras(extras)
         }
-        //获取上下文并设置log标记
-        TAT_LOG = this.javaClass.simpleName
         mContext = this
         //添加相应的布局
         if (getContentViewLayoutId() != 0) {
@@ -109,59 +105,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
 
 
     /**
-     * 跳转到相应的activity 并携带bundle数据
-     */
-    protected fun readyGo(clazz: Class<out Any>, bundle: Bundle? = null) {
-        val intent = Intent(this, clazz)
-        bundle?.let {
-            intent.putExtras(bundle)
-        }
-        startActivity(intent)
-    }
-
-    /**
-     * 跳转到相应的activity,并携带bundle数据，接收返回码
-     */
-    protected fun readyGoForResult(clazz: Class<out Any>, bundle: Bundle? = null, requestCode: Int) {
-        val intent = Intent(this, clazz)
-        bundle?.let {
-            intent.putExtras(bundle)
-        }
-        startActivityForResult(intent, requestCode)
-    }
-
-    /**
-     * 跳转到相应的activity并携带bundle数据，然后干掉自己
-     *
-     */
-    protected fun readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) {
-        val intent = Intent(this, clazz)
-        bundle?.let {
-            intent.putExtras(bundle)
-        }
-        startActivity(intent)
-        finish()
-    }
-
-    /**
-     * 是否显示键盘
-     */
-    protected fun showKeyboard(isShow: Boolean) {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (isShow) {
-            if (currentFocus == null) {
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-            } else {
-                imm.showSoftInput(currentFocus, 0)
-            }
-        } else {
-            if (currentFocus != null) {
-                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-            }
-        }
-    }
-
-    /**
      * 初始化工具栏,默认情况下加粗
      */
     protected fun initToolBar(toolbar: ViewGroup, title: String? = null, fontType: FontType = FontType.BOLD) {
@@ -170,7 +113,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
             showKeyboard(false)
             finish()
         }
-
 
         val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
         tvTitle.setFontType(fontType)

@@ -1,6 +1,5 @@
 package com.jennifer.andy.simpleeyes.ui.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,45 +40,6 @@ abstract class BaseAppCompatFragment : SupportFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(savedInstanceState)
-    }
-
-    open fun readyGo(clazz: Class<*>) {
-        readyGo(clazz, null)
-    }
-
-    /**
-     * 跳转到相应的activity 并携带bundle数据
-     */
-    fun readyGo(clazz: Class<*>, bundle: Bundle? = null) {
-        val intent = Intent(activity, clazz)
-        bundle?.let {
-            intent.putExtras(bundle)
-        }
-        startActivity(intent)
-    }
-
-    /**
-     * 跳转到相应的activity,并携带bundle数据，接收返回码
-     */
-    fun readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
-        val intent = Intent(activity, clazz)
-        bundle?.let {
-            intent.putExtras(bundle)
-        }
-        startActivityForResult(intent, requestCode)
-    }
-
-    /**
-     * 跳转到相应的activity并携带bundle数据，然后干掉自己
-     *
-     */
-    fun readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) {
-        val intent = Intent(activity, clazz)
-        bundle?.let {
-            intent.putExtras(bundle)
-        }
-        startActivity(intent)
-        activity?.finish()
     }
 
 

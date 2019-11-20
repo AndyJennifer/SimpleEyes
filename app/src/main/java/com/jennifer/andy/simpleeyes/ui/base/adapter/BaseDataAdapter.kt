@@ -274,7 +274,7 @@ open class BaseDataAdapter(data: MutableList<Content>) : BaseQuickAdapter<Conten
     private fun setBlankCardInfo(helper: BaseViewHolder, content: Content) {
         helper.getView<View>(R.id.view).apply {
             val lp = layoutParams
-            lp.height = dip2px(mContext, content.data.height.toFloat())
+            lp.height = mContext.dip2px(content.data.height.toFloat())
             layoutParams = lp
         }
     }

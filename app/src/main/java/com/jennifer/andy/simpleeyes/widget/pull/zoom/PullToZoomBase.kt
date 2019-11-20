@@ -54,8 +54,8 @@ abstract class PullToZoomBase<T : View> : LinearLayout, PullToZoom<T> {
     private fun init(context: Context, attrs: AttributeSet?) {
         gravity = Gravity.CENTER
         mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
-        mScreenHeight = getScreenHeight(context)
-        mScreenWidth = getScreenHeight(context)
+        mScreenHeight = context.getScreenHeight()
+        mScreenWidth = context.getScreenHeight()
         mRootView = createRootView(context)
 
         attrs?.let {

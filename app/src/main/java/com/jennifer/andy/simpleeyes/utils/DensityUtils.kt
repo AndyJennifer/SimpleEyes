@@ -6,30 +6,30 @@ import android.content.Context
 /**
  * 获取设备尺寸密度
  */
-fun getDensity(context: Context) = context.resources.displayMetrics.density
+fun Context.getDensity() = resources.displayMetrics.density
 
 /**
  * 获取设备收缩密度
  */
-fun getScaleDensity(context: Context) = context.resources.displayMetrics.scaledDensity
+fun Context.getScaleDensity() = resources.displayMetrics.scaledDensity
 
 /**
  * dp转px
  */
-fun dip2px(context: Context, dipValue: Float) = (dipValue * getDensity(context) + 0.5f).toInt()
+fun Context.dip2px(dipValue: Float) = (dipValue * getDensity() + 0.5f).toInt()
 
 /**
  * px转dp
  */
-fun px2dip(context: Context, pxValue: Float) = ((pxValue / getDensity(context)) + 0.5f).toInt()
+fun Context.px2dip(pxValue: Float) = ((pxValue / getDensity()) + 0.5f).toInt()
 
 /**
  * sp转px
  */
-fun sp2px(context: Context, spValue: Float) = ((spValue * getScaleDensity(context)) + 0.5f).toInt()
+fun Context.sp2px(spValue: Float) = ((spValue * getScaleDensity()) + 0.5f).toInt()
 
 /**
  * px转sp
  */
-fun px2sp(context: Context, pxValue: Float) = (pxValue / getScaleDensity(context) + 0.5f).toInt()
+fun Context.px2sp(pxValue: Float) = (pxValue / getScaleDensity() + 0.5f).toInt()
 

@@ -4,13 +4,12 @@ import android.app.ActivityManager
 import android.content.Context
 
 
-
 /**
  * 获取当前进程名称
  */
-fun getProcessName(context: Context): String? {
-    var pid = android.os.Process.myPid()
-    val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+fun Context.getProcessName(): String? {
+    val pid = android.os.Process.myPid()
+    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     activityManager.runningAppProcesses.forEach {
         if (it.pid == pid) {
             return it.processName
