@@ -40,7 +40,7 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
      * 执行上升动画
      */
     private fun doUpAnimator() {
-        val moveY = dip2px(requireActivity(), 100f)
+        val moveY = dip2px(100f)
         ObjectAnimator.ofFloat(mDataBinding.llMoveContainer, "translationY", 0f, -moveY.toFloat()).apply {
             addUpdateListener {
                 if (it.currentPlayTime in 600..1500) {

@@ -3,7 +3,6 @@ package com.jennifer.andy.simpleeyes.ui.splash
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.jennifer.andy.simpleeyes.AndyApplication
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.databinding.FragmentVideoLandingBinding
@@ -36,8 +35,8 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
      */
     private fun initSloganText() {
         mDataBinding.apply {
-            tvSloganEn.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[0])
-            tvSloganZh.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[0])
+            tvSloganEn.printText(resources.getStringArray(R.array.slogan_array_en)[0])
+            tvSloganZh.printText(resources.getStringArray(R.array.slogan_array_zh)[0])
         }
         mDataBinding.lifecycleOwner
     }
@@ -68,8 +67,8 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
 
                     override fun onPageSelected(position: Int) {
                         if (position in 0..3) {
-                            tvSloganEn.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_en)[position])
-                            tvSloganZh.printText(AndyApplication.getResource().getStringArray(R.array.slogan_array_zh)[position])
+                            tvSloganEn.printText(resources.getStringArray(R.array.slogan_array_en)[position])
+                            tvSloganZh.printText(resources.getStringArray(R.array.slogan_array_zh)[position])
                         }
                     }
                 })

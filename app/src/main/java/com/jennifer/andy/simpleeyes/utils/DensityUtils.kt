@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.utils
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 
 
 /**
@@ -33,3 +34,11 @@ fun Context.sp2px(spValue: Float) = ((spValue * getScaleDensity()) + 0.5f).toInt
  */
 fun Context.px2sp(pxValue: Float) = (pxValue / getScaleDensity() + 0.5f).toInt()
 
+
+fun Fragment.dip2px(dipValue: Float) = requireActivity().dip2px(dipValue)
+
+fun Fragment.px2dip(pxValue: Float) = requireActivity().px2dip(pxValue)
+
+fun Fragment.sp2px(spValue: Float) = requireActivity().sp2px(spValue)
+
+fun Fragment.px2sp(pxValue: Float) = requireActivity().px2sp(pxValue)

@@ -62,7 +62,7 @@ class RetrofitConfig private constructor() {
     private fun initRequestInterceptor() {
         mRequestInterceptor = Interceptor { chain ->
             //注意全局请求参数都是死的
-            val urlBuilder = chain.request().url()
+            val urlBuilder = chain.request().url
                     .newBuilder()
                     .setEncodedQueryParameter("udid", "d0f6190461864a3a978bdbcb3fe9b48709f1f390")
                     .setEncodedQueryParameter("vc", "225")
