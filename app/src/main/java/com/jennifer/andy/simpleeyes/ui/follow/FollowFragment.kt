@@ -46,11 +46,11 @@ class FollowFragment : BaseFragment<FollowView, FollowPresenter>(), FollowView {
 
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            readyGo(SearchHotActivity::class.java)
+            readyGo<SearchHotActivity>()
         }
         //跳转到全部作者界面
         mTvAllAuthor.setOnClickListener {
-            readyGo(AllAuthorActivity::class.java)
+            readyGo<AllAuthorActivity>()
         }
 
         mRecyclerView.refreshListener = { mPresenter.refresh() }

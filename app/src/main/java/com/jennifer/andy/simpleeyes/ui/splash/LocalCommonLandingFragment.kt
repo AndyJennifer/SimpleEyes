@@ -120,7 +120,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
     private fun doInnerEyeAnimator() {
         ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f).apply {
             doOnEnd {
-                readyGoThenKillSelf(MainActivity::class.java)
+                readyGoThenKillSelf<MainActivity>()
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 1000
@@ -137,7 +137,7 @@ class LocalCommonLandingFragment : BaseAppCompatFragment() {
             val scaleY = ObjectAnimator.ofFloat(mIvBackground, "scaleY", 1f, 1.08f)
             playTogether(scaleX, scaleY)
             doOnEnd {
-                readyGoThenKillSelf(MainActivity::class.java, null)
+                readyGoThenKillSelf<MainActivity>()
                 UserPreferences.saveShowUserAnim(true)
             }
             duration = 2000

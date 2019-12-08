@@ -91,7 +91,7 @@ class VideoLandingFragment : BaseAppCompatFragment() {
      */
     private fun goMainActivity() {
         UserPreferences.saveUserIsFirstLogin(false)
-        readyGoThenKillSelf(MainActivity::class.java)
+        readyGoThenKillSelf<MainActivity>()
     }
 
     private fun playVideo() {

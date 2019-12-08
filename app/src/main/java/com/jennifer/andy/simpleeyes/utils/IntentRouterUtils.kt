@@ -1,29 +1,22 @@
 package com.jennifer.andy.simpleeyes.utils
 
 import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.jennifer.andy.simpleeyes.utils.ext.intentFor
 
 /**
  * 跳转到相应的activity 并携带bundle数据
  */
-fun Activity.readyGo(clazz: Class<*>, bundle: Bundle? = null) {
-    val intent = Intent(this, clazz)
-    bundle?.let {
-        intent.putExtras(bundle)
-    }
+inline fun <reified T : Any> Activity.readyGo(extras: Map<String, Any> = emptyMap()) {
+    val intent = intentFor<T>(extras)
     startActivity(intent)
 }
 
 /**
  * 跳转到相应的activity,并携带bundle数据，接收返回码
  */
-fun Activity.readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
-    val intent = Intent(this, clazz)
-    bundle?.let {
-        intent.putExtras(bundle)
-    }
+inline fun <reified T : Any> Activity.readyGoForResult(extras: Map<String, Any> = emptyMap(), requestCode: Int) {
+    val intent = intentFor<T>(extras)
     startActivityForResult(intent, requestCode)
 }
 
@@ -31,11 +24,8 @@ fun Activity.readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCo
  * 跳转到相应的activity并携带bundle数据，然后干掉当前Activity
  *
  */
-fun Activity.readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) {
-    val intent = Intent(this, clazz)
-    bundle?.let {
-        intent.putExtras(bundle)
-    }
+inline fun <reified T : Any> Activity.readyGoThenKillSelf(extras: Map<String, Any> = emptyMap()) {
+    val intent = intentFor<T>(extras)
     startActivity(intent)
     finish()
 }
@@ -44,22 +34,16 @@ fun Activity.readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) 
 /**
  * 跳转到相应的activity 并携带bundle数据
  */
-fun Fragment.readyGo(clazz: Class<*>, bundle: Bundle? = null) {
-    val intent = Intent(requireActivity(), clazz)
-    bundle?.let {
-        intent.putExtras(bundle)
-    }
+inline fun <reified T : Any> Fragment.readyGo(extras: Map<String, Any> = emptyMap()) {
+    val intent = intentFor<T>(extras)
     startActivity(intent)
 }
 
 /**
  * 跳转到相应的activity,并携带bundle数据，接收返回码
  */
-fun Fragment.readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCode: Int) {
-    val intent = Intent(requireActivity(), clazz)
-    bundle?.let {
-        intent.putExtras(bundle)
-    }
+inline fun <reified T : Any> Fragment.readyGoForResult(extras: Map<String, Any> = emptyMap(), requestCode: Int) {
+    val intent = intentFor<T>(extras)
     startActivityForResult(intent, requestCode)
 }
 
@@ -67,11 +51,12 @@ fun Fragment.readyGoForResult(clazz: Class<*>, bundle: Bundle? = null, requestCo
  * 跳转到相应的activity并携带bundle数据，然后干掉当前Fragment所属Activity
  *
  */
-fun Fragment.readyGoThenKillSelf(clazz: Class<out Any>, bundle: Bundle? = null) {
-    val intent = Intent(requireActivity(), clazz)
-    bundle?.let {
-        intent.putExtras(bundle)
-    }
+inline fun <reified T : Any> Fragment.readyGoThenKillSelf(extras: Map<String, Any> = emptyMap()) {
+    val intent = intentFor<T>(extras)
     startActivity(intent)
     requireActivity().finish()
 }
+
+
+
+

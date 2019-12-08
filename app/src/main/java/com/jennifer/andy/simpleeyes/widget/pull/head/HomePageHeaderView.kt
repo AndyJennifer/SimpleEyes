@@ -76,11 +76,11 @@ class HomePageHeaderView : FrameLayout {
         })
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            mBaseFragment.readyGo(SearchHotActivity::class.java)
+            mBaseFragment.readyGo<SearchHotActivity>()
         }
         //跳转到每日精选
         mMoreContainer.setOnClickListener {
-            mBaseFragment.readyGo(DailyEliteActivity::class.java)
+            mBaseFragment.readyGo<DailyEliteActivity>()
         }
 
     }

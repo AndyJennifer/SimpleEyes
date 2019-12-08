@@ -45,11 +45,11 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
 
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            readyGo(SearchHotActivity::class.java)
+            readyGo<SearchHotActivity>()
         }
         //跳转到全部分类界面
         mTvAllCategory.setOnClickListener {
-            readyGo(AllCategoryActivity::class.java)
+            readyGo<AllCategoryActivity>()
         }
     }
 
