@@ -13,6 +13,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.util.MultiTypeDelegate
 import com.facebook.drawee.view.SimpleDraweeView
+import com.jennifer.andy.base.utils.dip2px
+import com.jennifer.andy.base.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
@@ -20,8 +22,6 @@ import com.jennifer.andy.simpleeyes.ui.home.adapter.CollectionCardCoverAdapter
 import com.jennifer.andy.simpleeyes.ui.home.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
-import com.jennifer.andy.simpleeyes.utils.dip2px
-import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.widget.EliteImageView
 import com.jennifer.andy.simpleeyes.widget.ItemHeaderView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView

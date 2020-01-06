@@ -24,7 +24,7 @@ import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 
 import androidx.annotation.NonNull;
 
-import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenHeight;
+import static com.jennifer.andy.base.utils.ScreenUtilsKt.getScreenHeight;
 
 /**
  * Author:  andy.xwt

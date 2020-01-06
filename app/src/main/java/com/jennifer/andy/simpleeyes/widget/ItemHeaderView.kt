@@ -12,11 +12,11 @@ import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
+import com.jennifer.andy.base.utils.getTimeStr
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.entity.Header
 import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.utils.getTimeStr
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import java.util.*

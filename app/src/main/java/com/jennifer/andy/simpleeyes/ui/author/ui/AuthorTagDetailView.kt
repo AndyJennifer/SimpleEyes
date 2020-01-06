@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.author.ui
 
 import com.jennifer.andy.simpleeyes.entity.Tab
-import com.jennifer.andy.simpleeyes.ui.base.BaseView
+import com.jennifer.andy.simpleeyes.base.view.BaseView
 
 
 /**

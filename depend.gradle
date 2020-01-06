@@ -1,0 +1,136 @@
+//不熟悉gradle的小伙伴，可以查看Gradle权威指南第9章 9.3节
+ext {
+
+    build_version = [
+            compileSdkVersion: 28,
+            minSdkVersion    : 21,
+            targetSdkVersion : 28,
+            buildToolsVersion: "28.0.3",
+            versionCode      : 1,
+            versionName      : "1.0",
+    ]
+
+    versions = [
+            android_plugin               : '3.5.1',
+            kotlin                       : "1.3.50",
+            navigation_gradle            : "2.0.0",
+
+            appcompat                    : "1.1.0",
+            constraintlayout             : "1.1.3",
+            arch_comp_lifecycle          : '2.1.0',
+            junit                        : "4.12",
+            test_runner                  : "1.2.0",
+            espresso_core                : "3.2.0",
+            material                     : "1.0.0",
+
+            rxjava                       : "2.2.13",
+            rxandroid                    : "2.1.1",
+
+            retrofit                     : "2.6.2",
+            converter_gson               : "2.4.0",
+            logging_interceptor          : "4.2.0",
+            adapter_rxjava2              : "2.4.0",
+
+            fragmentationx               : "1.0.1",
+
+            BaseRecyclerViewAdapterHelper: "2.9.44",
+
+            fresco                       : "1.11.0",
+
+            ijk                          : "0.8.8",
+
+            loading_view                 : "2.1.3",
+            banner                       : "1.4.10",
+
+            flexbox                      : "2.0.0",
+
+            page_indicator               : "1.0.3",
+
+
+            arouter_api                  : "1.4.1",
+            arouter_compiler             : "1.2.2",
+
+            leakcanary                   : "1.6.3",
+
+
+            core_ktx                     : "1.1.0",
+
+            navigation_ui                : "2.1.0",
+
+            koin                         : "2.0.1",
+
+            autodispose                  : "1.4.0"
+    ]
+
+    build_plugins = [
+            android_gradle   : [group: 'com.android.tools.build', name: 'gradle', version: versions.android_plugin],
+            kotlin_gradle    : [group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: versions.kotlin],
+            navigation_gradle: [group: 'androidx.navigation', name: 'navigation-safe-args-gradle-plugin', version: versions.navigation_gradle]
+    ]
+
+
+    libs = [
+            kotlin_stdlib                     : [group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk7', version: versions.kotlin],
+
+            androidx_appcompat                : [group: 'androidx.appcompat', name: 'appcompat', version: versions.appcompat],
+            androidx_constraintlayout         : [group: 'androidx.constraintlayout', name: 'constraintlayout', version: versions.constraintlayout],
+            jetpack_lifecycle_extensions      : [group: 'androidx.lifecycle', name: 'lifecycle-extensions', version: versions.arch_comp_lifecycle],
+
+            junit                             : [group: 'junit', name: 'junit', version: versions.junit],
+            test_runner                       : [group: 'androidx.test', name: 'runner', version: versions.test_runner],
+            espresso_core                     : [group: 'androidx.test.espresso', name: 'espresso-core', version: versions.espresso_core],
+
+            material                          : [group: 'com.google.android.material', name: 'material', version: versions.material],
+
+            rxjava                            : [group: 'io.reactivex.rxjava2', name: 'rxjava', version: versions.rxjava],
+            rxandroid                         : [group: 'io.reactivex.rxjava2', name: 'rxandroid', version: versions.rxandroid],
+
+
+            retrofit                          : [group: 'com.squareup.retrofit2', name: 'retrofit', version: versions.retrofit],
+            converter_gson                    : [group: 'com.squareup.retrofit2', name: 'converter-gson', version: versions.converter_gson],
+            adapter_rxjava2                   : [group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: versions.adapter_rxjava2],
+            logging_interceptor               : [group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.logging_interceptor],
+
+            fragmentationx                    : [group: 'me.yokeyword', name: 'fragmentationx', version: versions.fragmentationx],
+
+            BaseRecyclerViewAdapterHelper     : [group: 'com.github.CymChad', name: 'BaseRecyclerViewAdapterHelper', version: versions.BaseRecyclerViewAdapterHelper],
+
+            fresco                            : [group: 'com.facebook.fresco', name: 'fresco', version: versions.fresco],
+
+            ijkplayer_java                    : [group: 'tv.danmaku.ijk.media', name: 'ijkplayer-java', version: versions.ijk],
+            ijkplayer_armv7a                  : [group: 'tv.danmaku.ijk.media', name: 'ijkplayer-armv7a', version: versions.ijk],
+            ijkplayer_armv5                   : [group: 'tv.danmaku.ijk.media', name: 'ijkplayer-armv5', version: versions.ijk],
+            ijkplayer_arm64                   : [group: 'tv.danmaku.ijk.media', name: 'ijkplayer-arm64', version: versions.ijk],
+            ijkplayer_x86                     : [group: 'tv.danmaku.ijk.media', name: 'ijkplayer-x86', version: versions.ijk],
+            ijkplayer_x86_64                  : [group: 'tv.danmaku.ijk.media', name: 'ijkplayer-x86_64', version: versions.ijk],
+
+            loading_view                      : [group: 'com.wang.avi', name: 'library', version: versions.loading_view],
+            banner                            : [group: 'com.youth.banner', name: 'banner', version: versions.banner],
+
+            flexbox                           : [group: 'com.google.android', name: 'flexbox', version: versions.flexbox],
+            page_indicator                    : [group: 'com.romandanylyk', name: 'pageindicatorview', version: versions.page_indicator],
+
+            arouter_api                       : [group: 'com.alibaba', name: 'arouter-api', version: versions.arouter_api],
+            arouter_compiler                  : [group: 'com.alibaba', name: 'arouter-compiler', version: versions.arouter_compiler],
+
+            leakcanary_android                : [group: 'com.squareup.leakcanary', name: 'leakcanary-android', version: versions.leakcanary],
+            leakcannary_andoid_no_op          : [group: 'com.squareup.leakcanary', name: 'leakcanary-android-no-op', version: versions.leakcanary],
+            leakcannary_support_fragment      : [group: 'com.squareup.leakcanary', name: 'leakcanary-support-fragment', version: versions.leakcanary],
+
+            core_ktx                          : [group: 'androidx.core', name: 'core-ktx', version: versions.core_ktx],
+
+            navigation_fragment_ktx           : [group: 'androidx.navigation', name: 'navigation-fragment-ktx', version: versions.navigation_ui],
+            navigation_ui_ktx                 : [group: 'androidx.navigation', name: 'navigation-ui-ktx', version: versions.navigation_ui],
+
+            koin_core                         : [group: 'org.koin', name: 'koin-core', version: versions.koin],
+            koin_android                      : [group: 'org.koin', name: 'koin-android', version: versions.koin],
+            koin_android_scope                : [group: 'org.koin', name: 'koin-androidx-scope', version: versions.koin],
+            koin_android_viewmodel            : [group: 'org.koin', name: 'koin-androidx-viewmodel', version: versions.koin],
+
+
+            autodispose_android               : [group: 'com.uber.autodispose', name: 'autodispose-android', version: versions.autodispose],
+            autodispose_android_archcomponents: [group: 'com.uber.autodispose', name: 'autodispose-android-archcomponents', version: versions.autodispose]
+
+    ]
+
+}

@@ -35,9 +35,10 @@ class NetLoadingView : FrameLayout {
      * 执行内部眼睛动画
      */
     private fun doInnerEyeAnimator() {
-        mRotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f)
-        mRotationAnimator.duration = 1000
-        mRotationAnimator.repeatCount = -1
+        mRotationAnimator = ObjectAnimator.ofFloat(mHeadInner, "rotation", 0f, 360f).apply {
+            duration = 1000
+            repeatCount = -1
+        }
         mRotationAnimator.start()
     }
 
@@ -45,7 +46,6 @@ class NetLoadingView : FrameLayout {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         mRotationAnimator.cancel()
-
     }
 
 }

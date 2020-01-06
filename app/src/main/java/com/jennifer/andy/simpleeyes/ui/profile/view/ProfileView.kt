@@ -1,6 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.profile.view
 
-import com.jennifer.andy.simpleeyes.ui.base.BaseView
+import com.jennifer.andy.simpleeyes.base.view.BaseView
 
 
 /**

@@ -4,19 +4,22 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jennifer.andy.base.utils.getScreenHeight
+import com.jennifer.andy.base.utils.getScreenWidth
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.FragmentHomeBinding
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.home.presenter.HomePresenter
-import com.jennifer.andy.simpleeyes.ui.home.view.HomeView
-import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.utils.getScreenHeight
-import com.jennifer.andy.simpleeyes.utils.getScreenWidth
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.pull.head.HomePageHeaderView
 import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomBase
-import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomRecyclerView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -25,82 +28,117 @@ import com.jennifer.andy.simpleeyes.widget.pull.zoom.PullToZoomRecyclerView
  * Description:首页
  */
 
-class HomeFragment : BaseFragment<HomeView, HomePresenter>(), HomeView {
+class HomeFragment : BaseStateViewFragment<FragmentHomeBinding>() {
 
-    private val mPullToZoomRecycler: PullToZoomRecyclerView by bindView(R.id.rv_home_recycler)
+
     private lateinit var mHomePageHeaderView: HomePageHeaderView
     private var mCateGoryAdapter: BaseDataAdapter? = null
+    private val mHomeViewModel: HomeViewModel by currentScope.viewModel(this)
 
     companion object {
-        @JvmStatic
-        fun newInstance(): HomeFragment = HomeFragment()
+        fun newInstance() = HomeFragment()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        mPullToZoomRecycler.setOnPullZoomListener(object : PullToZoomBase.OnPullZoomListener {
+        mDataBinding.rvHomeRecycler.setOnPullZoomListener(object : PullToZoomBase.OnPullZoomListener {
             override fun onPullZooming(scrollValue: Int) {
                 mHomePageHeaderView.showRefreshCover(scrollValue)
             }
 
             override fun onPullZoomEnd() {
                 if (mHomePageHeaderView.judgeCanRefresh()) {//只有达到刷新的阀值，上升才刷新，其他情况不刷新
-                    mPresenter.refreshCategoryData()
+                    mHomeViewModel.refreshCategoryData()
                 } else {
                     mHomePageHeaderView.hideRefreshCover()
                 }
             }
         })
-        mPresenter.loadCategoryData()
+
+        mHomeViewModel.loadCategoryData()//加载主页信息
+
+        mHomeViewModel.observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
     }
 
-    override fun loadDataSuccess(andyInfo: AndyInfo) {
-        if (mCateGoryAdapter == null) {
-            setHeaderInfo(andyInfo)
-            setAdapterAndListener(andyInfo)
-        } else {
-            mCateGoryAdapter?.setNewData(andyInfo.itemList)
+    private fun onNewStateArrive(viewState: ViewState<AndyInfo>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
+            }
+            Action.INIT_SUCCESS -> {
+                showContent()
+                loadDataSuccess(viewState.data!!)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mHomeViewModel.loadCategoryData() }
+            }
+            Action.REFRESH_SUCCESS -> {
+                showContent()
+                refreshDataSuccess(viewState.data!!)
+            }
+            Action.REFRESH_FAIL -> {
+                showNetError { mHomeViewModel.refreshCategoryData() }
+            }
+            Action.LOAD_MORE_SUCCESS -> {
+                loadMoreSuccess(viewState.data!!)
+            }
+            Action.HAVE_NO_MORE -> {
+                showNoMore()
+            }
+            Action.LOAD_MORE_FAIL -> {
+                showNetError { mHomeViewModel.loadMoreAndyInfo() }
+            }
         }
     }
 
-    private fun setAdapterAndListener(andyInfo: AndyInfo) {
-        val recyclerView = mPullToZoomRecycler.getPullRootView()
+    private fun loadDataSuccess(data: AndyInfo) {
+        if (mCateGoryAdapter == null) {
+            setHeaderInfo(data)
+            setAdapterAndListener(data)
+        } else {
+            mCateGoryAdapter?.setNewData(data.itemList)
+        }
+    }
+
+
+    private fun setHeaderInfo(data: AndyInfo) {
+        mHomePageHeaderView = HomePageHeaderView(requireContext())
+        val lp = ViewGroup.LayoutParams(getScreenWidth(), getScreenHeight() / 2)
+        mDataBinding.rvHomeRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
+        mHomePageHeaderView.setHeaderInfo(data.topIssue, data.topIssue.data.itemList, this)
+        mDataBinding.rvHomeRecycler.setHeaderView(mHomePageHeaderView)
+    }
+
+
+    private fun setAdapterAndListener(data: AndyInfo) {
+        val recyclerView = mDataBinding.rvHomeRecycler.getPullRootView()
         recyclerView.setItemViewCacheSize(10)
-        mCateGoryAdapter = BaseDataAdapter(andyInfo.itemList)
-        mCateGoryAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreCategoryData() }, recyclerView)
+        mCateGoryAdapter = BaseDataAdapter(data.itemList)
+        mCateGoryAdapter?.setOnLoadMoreListener({ mHomeViewModel.loadMoreAndyInfo() }, recyclerView)
         mCateGoryAdapter?.setLoadMoreView(CustomLoadMoreView())
-        mPullToZoomRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(_mActivity))
+        mDataBinding.rvHomeRecycler.setAdapterAndLayoutManager(mCateGoryAdapter!!, LinearLayoutManager(requireContext()))
     }
 
-    private fun setHeaderInfo(andyInfo: AndyInfo) {
-        mHomePageHeaderView = HomePageHeaderView(context!!)
-        val lp = ViewGroup.LayoutParams(context!!.getScreenWidth(), context!!.getScreenHeight() / 2)
-        mPullToZoomRecycler.setHeaderViewLayoutParams(LinearLayout.LayoutParams(lp))
-        mHomePageHeaderView.setHeaderInfo(andyInfo.topIssue, andyInfo.topIssue.data.itemList, this)
-        mPullToZoomRecycler.setHeaderView(mHomePageHeaderView)
-    }
-
-
-    override fun refreshDataSuccess(andyInfo: AndyInfo) {
+    private fun refreshDataSuccess(data: AndyInfo) {
         mCateGoryAdapter?.removeAllFooterView()
-        mCateGoryAdapter?.setNewData(andyInfo.itemList)
+        mCateGoryAdapter?.setNewData(data.itemList)
         mHomePageHeaderView.hideRefreshCover()
     }
 
 
-    override fun loadMoreSuccess(andyInfo: AndyInfo) {
-        mCateGoryAdapter?.addData(andyInfo.itemList)
+    private fun loadMoreSuccess(data: AndyInfo) {
+        mCateGoryAdapter?.addData(data.itemList)
         mCateGoryAdapter?.loadMoreComplete()
     }
 
-    override fun showNoMore() {
+    private fun showNoMore() {
         mCateGoryAdapter?.loadMoreEnd()
     }
 
-    fun scrollToTop() {
-        mPullToZoomRecycler.scrollToTop()
-    }
+
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.fragment_home
-
 
 }

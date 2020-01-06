@@ -2,22 +2,22 @@ package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.ActivityAllCategoryBinding
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter.Companion.RECTANGLE_CARD_TYPE
-import com.jennifer.andy.simpleeyes.ui.feed.presenter.AllCategoryPresenter
-import com.jennifer.andy.simpleeyes.ui.feed.view.AllCategoryView
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.GridItemDecoration
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -26,19 +26,37 @@ import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
  * Description: 全部分类
  */
 
-class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(), AllCategoryView {
+class AllCategoryActivity : BaseStateViewActivity<ActivityAllCategoryBinding>() {
 
-    private val mToolBar: RelativeLayout by bindView(R.id.tool_bar)
-    private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
-    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
-
+    private val mAllCategoryViewModel: AllCategoryViewModel by currentScope.viewModel(this)
 
     override fun initView(savedInstanceState: Bundle?) {
-        initToolBar(mToolBar, R.string.all_category)
-        mPresenter.loadAllCategoriesInfo()
+
+        initToolBar(mDataBinding.toolBar, R.string.all_category)
+
+        mAllCategoryViewModel.loadAllCategoriesInfo()
+
+        mAllCategoryViewModel.observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
     }
 
-    override fun loadAllCategoriesSuccess(andyInfo: AndyInfo) {
+    private fun onNewStateArrive(viewState: ViewState<AndyInfo>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
+            }
+            Action.INIT_SUCCESS -> {
+                showContent()
+                loadAllCategoriesSuccess(viewState.data!!)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mAllCategoryViewModel.loadAllCategoriesInfo() }
+            }
+        }
+    }
+
+    private fun loadAllCategoriesSuccess(andyInfo: AndyInfo) {
         val adapter = BaseDataAdapter(andyInfo.itemList)
         adapter.setSpanSizeLookup { _, position ->
             if (adapter.getItemViewType(position) == RECTANGLE_CARD_TYPE) 2 else 1
@@ -49,19 +67,14 @@ class AllCategoryActivity : BaseActivity<AllCategoryView, AllCategoryPresenter>(
                     .build(Uri.parse(adapter.data[position].data.actionUrl))
                     .navigation()
         }
-        mRecyclerView.layoutManager = GridLayoutManager(mContext, 2)
-        mRecyclerView.addItemDecoration(GridItemDecoration(2, 4, true))
-        mRecyclerView.adapter = adapter
+        mDataBinding.rvRecycler.layoutManager = GridLayoutManager(this, 2)
+        mDataBinding.rvRecycler.addItemDecoration(GridItemDecoration(2, 4, true))
+        mDataBinding.rvRecycler.adapter = adapter
     }
 
 
-    override fun showNetError(onClickListener: View.OnClickListener) {
-        mStateView.showNetError(onClickListener)
-    }
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
-    override fun showContent() {
-        mStateView.showContent()
-    }
 
     override fun getContentViewLayoutId() = R.layout.activity_all_category
 }

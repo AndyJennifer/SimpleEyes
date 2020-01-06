@@ -1,23 +1,21 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
-
-import android.view.View
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
+import com.jennifer.andy.base.utils.readyGo
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.FragmentFeedBinding
+import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.entity.TabInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
 import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
-import com.jennifer.andy.simpleeyes.ui.feed.presenter.FeedPresenter
-import com.jennifer.andy.simpleeyes.ui.feed.view.FeedView
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
-import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.utils.readyGo
-import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
-import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -26,37 +24,54 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
  * Description:发现
  */
 
-class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
+class FeedFragment : BaseStateViewFragment<FragmentFeedBinding>() {
 
-    private val mViewPager: ViewPager by bindView(R.id.view_pager)
-    private val mTvAllCategory: CustomFontTextView by bindView(R.id.tv_all_category)
-    private val mIvSearch: ImageView by bindView(R.id.iv_search)
-    private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
-    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
+    private val mFeedViewModel: FeedViewModel by currentScope.viewModel(this)
 
     companion object {
-        @JvmStatic
-        fun newInstance(): FeedFragment = FeedFragment()
+        fun newInstance() = FeedFragment()
     }
 
 
     override fun initView(savedInstanceState: Bundle?) {
-        mPresenter.getDiscoveryTab()
 
         //跳转到搜索界面
-        mIvSearch.setOnClickListener {
-            readyGo(SearchHotActivity::class.java)
+        mDataBinding.ivSearch.setOnClickListener {
+            readyGo<SearchHotActivity>()
         }
         //跳转到全部分类界面
-        mTvAllCategory.setOnClickListener {
-            readyGo(AllCategoryActivity::class.java)
+        mDataBinding.tvAllCategory.setOnClickListener {
+            readyGo<AllCategoryActivity>()
+        }
+        mFeedViewModel.getDiscoveryTab()
+        mFeedViewModel.observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
+    }
+
+
+    private fun onNewStateArrive(viewState: ViewState<Tab>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
+            }
+            Action.INIT_SUCCESS -> {
+                showContent()
+                loadTabSuccess(viewState.data!!.tabInfo)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mFeedViewModel.getDiscoveryTab() }
+            }
         }
     }
 
-    override fun loadTabSuccess(tabInfo: TabInfo) {
-        mViewPager.adapter = BaseFragmentItemAdapter(childFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
-        mViewPager.offscreenPageLimit = tabInfo.tabList.size
-        mTabLayout.setupWithViewPager(mViewPager)
+    private fun loadTabSuccess(tabInfo: TabInfo) {
+        with(mDataBinding) {
+            viewPager.adapter = BaseFragmentItemAdapter(childFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+            viewPager.offscreenPageLimit = tabInfo.tabList.size
+            tabLayout.setupWithViewPager(viewPager)
+        }
+
     }
 
     private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {
@@ -75,13 +90,7 @@ class FeedFragment : BaseFragment<FeedView, FeedPresenter>(), FeedView {
         return titles
     }
 
-    override fun showNetError(onClickListener: View.OnClickListener) {
-        mStateView.showNetError(onClickListener)
-    }
-
-    override fun showContent() {
-        mStateView.showContent()
-    }
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.fragment_feed
 }

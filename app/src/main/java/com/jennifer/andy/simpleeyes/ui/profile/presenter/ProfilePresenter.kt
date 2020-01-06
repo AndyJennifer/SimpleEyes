@@ -1,6 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.profile.presenter
 
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.presenter.BasePresenter
 import com.jennifer.andy.simpleeyes.ui.profile.view.ProfileView
 
 

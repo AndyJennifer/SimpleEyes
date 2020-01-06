@@ -18,6 +18,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.jennifer.andy.base.utils.dip2px
+import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
@@ -27,8 +29,6 @@ import com.jennifer.andy.simpleeyes.ui.search.presenter.SearchPresenter
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.utils.dip2px
-import com.jennifer.andy.simpleeyes.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.SearchHotRemindView
 import com.jennifer.andy.simpleeyes.widget.image.CenterAlignImageSpan

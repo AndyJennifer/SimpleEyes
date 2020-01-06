@@ -1,11 +1,14 @@
 package com.jennifer.andy.simpleeyes.ui.splash
 
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.databinding.FragmentVideoLandingBinding
+import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
 import com.jennifer.andy.simpleeyes.player.render.IRenderView.AR_ASPECT_FIT_PARENT
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.DEFAULT_SPLASH_VIDEO_COUNT
@@ -27,6 +30,7 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
     override fun initView(savedInstanceState: Bundle?) {
         initSloganText()
         initSloganFragments()
+        setVideoObserver()
         playVideo()
     }
 
@@ -38,7 +42,6 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
             tvSloganEn.printText(resources.getStringArray(R.array.slogan_array_en)[0])
             tvSloganZh.printText(resources.getStringArray(R.array.slogan_array_zh)[0])
         }
-        mDataBinding.lifecycleOwner
     }
 
 
@@ -76,6 +79,32 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
         }
     }
 
+    private fun setVideoObserver() {
+        lifecycle.addObserver(object : LifecycleObserver {
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            fun onVideoResume() {
+                if (isHasPaused) {
+                    mDataBinding.videoView.seekTo(mVideoPosition)
+                    mDataBinding.videoView.resume()
+                    isHasPaused = false
+                }
+            }
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            fun onVideoPause() {
+                mVideoPosition = mDataBinding.videoView.currentPosition
+                mDataBinding.videoView.pause()
+                isHasPaused = true
+            }
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+            fun onVideoStop() {
+                mDataBinding.videoView.stopPlayback()
+            }
+        })
+    }
+
 
     private fun playVideo() {
         val path = R.raw.landing
@@ -99,32 +128,11 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
      * 设置用户不是第一次登录,并跳转到主界面
      */
     private fun goMainActivityThenFinish() {
-        UserPreferences.saveUserIsFirstLogin(false)
+        UserSettingLocalDataSource.isFirstLogin = false
         findNavController().navigate(VideoLandingFragmentDirections.actionVideoLandingFragmentToMainActivity())
         requireActivity().finish()
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        if (isHasPaused) {
-            mDataBinding.videoView.seekTo(mVideoPosition)
-            mDataBinding.videoView.resume()
-            isHasPaused = false
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mVideoPosition = mDataBinding.videoView.currentPosition
-        mDataBinding.videoView.pause()
-        isHasPaused = true
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mDataBinding.videoView.stopPlayback()
-    }
 
     override fun getContentViewLayoutId() = R.layout.fragment_video_landing
 

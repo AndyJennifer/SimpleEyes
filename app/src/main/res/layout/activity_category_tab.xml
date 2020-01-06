@@ -1,90 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="280dp">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:actualImageScaleType="centerCrop"/>
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:font_name="bold"/>
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_sub_title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:letterSpacing="0.4"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:font_name="bold"/>
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_follow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_desc"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/shape_white_border"
-            android:gravity="center"
-            android:letterSpacing="0.2"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="5dp"
-            android:text="@string/add_follow"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:font_name="normal"/>
-    </RelativeLayout>
-
-    <include layout="@layout/layout_category_tab_toolbar"/>
-
-    <com.jennifer.andy.simpleeyes.widget.StickyNavLayout
-        android:id="@+id/stick_layout"
+    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+        android:id="@+id/multiple_state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <RelativeLayout
-            android:id="@+id/id_sticky_nav_layout_top_view"
             android:layout_width="match_parent"
-            android:layout_height="280dp"/>
+            android:layout_height="280dp">
 
-        <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
-            android:id="@+id/id_sticky_nav_layout_nav_view"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:actualImageScaleType="centerCrop" />
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:id="@+id/tv_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:font_name="bold" />
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_sub_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:letterSpacing="0.4"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:font_name="bold" />
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:id="@+id/tv_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_desc"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/shape_white_border"
+                android:gravity="center"
+                android:letterSpacing="0.2"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/add_follow"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:font_name="normal" />
+        </RelativeLayout>
+
+        <include layout="@layout/layout_category_tab_toolbar" />
+
+        <com.jennifer.andy.simpleeyes.widget.StickyNavLayout
+            android:id="@+id/stick_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:tabIndicatorColor="@color/black"
-            app:tabIndicatorHeight="3dp"
-            app:tabSelectedTextColor="@color/black"
-            app:tabTextAppearance="@style/TabAppearance"
-            app:tabTextColor="@color/black_alpha_4D"/>
+            android:layout_height="match_parent">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/id_sticky_nav_layout_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:id="@+id/id_sticky_nav_layout_top_view"
+                android:layout_width="match_parent"
+                android:layout_height="280dp" />
 
-    </com.jennifer.andy.simpleeyes.widget.StickyNavLayout>
-</RelativeLayout>
+            <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
+                android:id="@+id/id_sticky_nav_layout_nav_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:tabIndicatorColor="@color/black"
+                app:tabIndicatorHeight="3dp"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/TabAppearance"
+                app:tabTextColor="@color/black_alpha_4D" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/id_sticky_nav_layout_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.jennifer.andy.simpleeyes.widget.StickyNavLayout>
+    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
+</layout>

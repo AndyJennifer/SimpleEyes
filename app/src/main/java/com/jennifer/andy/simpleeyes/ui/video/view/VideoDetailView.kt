@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.video.view
 
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.ui.base.BaseView
+import com.jennifer.andy.simpleeyes.base.view.BaseView
 
 
 /**

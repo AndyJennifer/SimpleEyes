@@ -28,8 +28,7 @@ class ProfileFragment : BaseFragment<ProfileView, ProfilePresenter>(), ProfileVi
 
 
     companion object {
-        @JvmStatic
-        fun newInstance(): ProfileFragment = ProfileFragment()
+        fun newInstance() = ProfileFragment()
 
         private const val MESSAGE = 0  //我的消息
         private const val FOCUS = 1 //我的关注

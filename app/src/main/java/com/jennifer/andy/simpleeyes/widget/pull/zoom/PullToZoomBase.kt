@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.*
 import android.widget.LinearLayout
+import com.jennifer.andy.base.utils.getScreenHeight
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.getScreenHeight
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt

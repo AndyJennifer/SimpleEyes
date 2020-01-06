@@ -50,7 +50,7 @@ import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 import com.jennifer.andy.simpleeyes.player.render.IRenderView;
 import com.jennifer.andy.simpleeyes.player.render.SurfaceRenderView;
 import com.jennifer.andy.simpleeyes.player.render.TextureRenderView;
-import com.jennifer.andy.simpleeyes.rx.RxBus;
+import com.jennifer.andy.base.rx.RxBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,8 +68,8 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 
-import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenHeight;
-import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenWidth;
+import static com.jennifer.andy.base.utils.ScreenUtilsKt.getScreenHeight;
+import static com.jennifer.andy.base.utils.ScreenUtilsKt.getScreenWidth;
 import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getActivity;
 import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getWindow;
 import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.showActionBar;

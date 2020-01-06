@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.net
 
 import com.jennifer.andy.simpleeyes.entity.*
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -23,25 +23,25 @@ interface ApiService {
      * 首页
      */
     @GET("api/v4/tabs/selected")
-    fun getHomeInfo(): Observable<AndyInfo>
+    fun getHomeInfo(): Flowable<AndyInfo>
 
     /**
      * 获取热门关键词
      */
     @GET("api/v3/queries/hot")
-    fun getHotWord(): Observable<MutableList<String>>
+    fun getHotWord(): Flowable<MutableList<String>>
 
     /**
      * 关键词搜索
      */
     @GET("api/v1/search")
-    fun searchVideoByWord(@Query("query") word: String): Observable<AndyInfo>
+    fun searchVideoByWord(@Query("query") word: String): Flowable<AndyInfo>
 
     /**
      * 每日精选旁的日历显示
      */
     @GET("api/v3/issueNavigationList")
-    fun getIssueNaviGationList(): Observable<JenniferInfo>
+    fun getIssueNaviGationList(): Flowable<JenniferInfo>
 
     ///////////////////////////////////////////////////////////////////////////
     // 发现相关
@@ -50,25 +50,25 @@ interface ApiService {
      * 发现
      */
     @GET("api/v4/discovery")
-    fun getDiscoveryTab(): Observable<Tab>
+    fun getDiscoveryTab(): Flowable<Tab>
 
     /**
      * 获取全部分类信息
      */
     @GET("api/v4/categories/all")
-    fun getAllCategoriesInfo(): Observable<AndyInfo>
+    fun getAllCategoriesInfo(): Flowable<AndyInfo>
 
     /**
      * 获取排行榜tab信息
      */
     @GET("api/v4/rankList")
-    fun getRankListTab(): Observable<Tab>
+    fun getRankListTab(): Flowable<Tab>
 
     /**
      * 获取专题信息
      */
     @GET("api/v3/specialTopics")
-    fun getTopicInfo(): Observable<AndyInfo>
+    fun getTopicInfo(): Flowable<AndyInfo>
 
     /**
      * 获取tag信息
@@ -76,19 +76,19 @@ interface ApiService {
      * @param strategy tag模式
      */
     @GET("api/v3/tag/videos")
-    fun getTagInfo(@Query("tagId") tagId: String, @Query("strategy") strategy: String): Observable<AndyInfo>
+    fun getTagInfo(@Query("tagId") tagId: String, @Query("strategy") strategy: String): Flowable<AndyInfo>
 
     /**
      * 获取种类下tab详细信息
      */
     @GET("api/v4/categories/detail/tab")
-    fun getCategoryTabInfo(@Query("id") id: String): Observable<Category>
+    fun getCategoryTabInfo(@Query("id") id: String): Flowable<Category>
 
     /**
      * 获取种类下tab下列表集合
      */
     @GET("api/v4/categories/detail/index")
-    fun getCategroyTabListItemInfo(@Query("id") id: String): Observable<AndyInfo>
+    fun getCategroyTabListItemInfo(@Query("id") id: String): Flowable<AndyInfo>
 
     ///////////////////////////////////////////////////////////////////////////
     // 关注相关
@@ -98,19 +98,19 @@ interface ApiService {
      * 关注
      */
     @GET("api/v4/tabs/follow")
-    fun getFollowInfo(): Observable<AndyInfo>
+    fun getFollowInfo(): Flowable<AndyInfo>
 
     /**
      * 全部作者
      */
     @GET("api/v4/pgcs/all")
-    fun getAllAuthor(): Observable<AndyInfo>
+    fun getAllAuthor(): Flowable<AndyInfo>
 
     /**
      * 作者详细信息
      */
     @GET("api/v4/pgcs/detail/tab")
-    fun getAuthorTagDetail(@Query("id") id: String): Observable<Tab>
+    fun getAuthorTagDetail(@Query("id") id: String): Flowable<Tab>
 
     ///////////////////////////////////////////////////////////////////////////
     // 公共接口
@@ -121,14 +121,14 @@ interface ApiService {
      * @url tab请求地址
      */
     @GET
-    fun getDataInfoFromUrl(@Url url: String?): Observable<AndyInfo>
+    fun getDataFromUrl(@Url url: String): Flowable<AndyInfo>
 
     /**
      * 根据url,获取更多信息
      * @param url 下一页请求地址
      */
     @GET
-    fun getMoreAndyInfo(@Url url: String?): Observable<AndyInfo>
+    fun getMoreAndyInfo(@Url url: String): Flowable<AndyInfo>
 
 
     /**
@@ -136,7 +136,7 @@ interface ApiService {
      * @param url 下一页请求地址
      */
     @GET
-    fun getMoreJenniferInfo(@Url url: String?): Observable<JenniferInfo>
+    fun getMoreJenniferInfo(@Url url: String): Flowable<JenniferInfo>
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -146,20 +146,20 @@ interface ApiService {
      * 根据视频id,获取相关信息
      */
     @GET("api/v2/video/{id}")
-    fun getVideoInfoById(@Path("id") id: String): Observable<ContentBean>
+    fun getVideoInfoById(@Path("id") id: String): Flowable<ContentBean>
 
     /**
      * 获取相关视频信息
      * @id 视频id
      */
     @GET("api/v4/video/related")
-    fun getRelatedVideo(@Query("id") id: String): Observable<AndyInfo>
+    fun getRelatedVideo(@Query("id") id: String): Flowable<AndyInfo>
 
     /**
      * 每日编辑精选
      */
     @GET("api/v2/feed?num=3")
-    fun getDailyElite(): Observable<JenniferInfo>
+    fun getDailyElite(): Flowable<JenniferInfo>
 
 
     /**

@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.splash
 import android.os.Bundle
 import androidx.navigation.findNavController
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.databinding.ActivityLandingBinding
+import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 
 
@@ -17,7 +17,7 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 class LandingActivity : BaseDataBindActivity<ActivityLandingBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
-        if (UserPreferences.getUserIsFirstLogin()) {//如果是第一次进入就加载视频界面
+        if (UserSettingLocalDataSource.isFirstLogin) {//如果是第一次进入就加载视频界面
             val action = NavigationEmptyFragmentDirections.actionNavigationEmptyFragmentToVideoLandingFragment()
             findNavController(R.id.nav_host).navigate(action)
         } else {//如果不是加载常规加载界面

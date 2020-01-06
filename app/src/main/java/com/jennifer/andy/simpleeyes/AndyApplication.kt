@@ -1,10 +1,17 @@
 package com.jennifer.andy.simpleeyes
 
-import android.app.Application
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.core.ImagePipelineConfig
+import com.jennifer.andy.base.application.BaseApplication
+import com.jennifer.andy.simpleeyes.ui.feed.di.feedModel
+import com.jennifer.andy.simpleeyes.ui.follow.di.followModule
+import com.jennifer.andy.simpleeyes.ui.home.di.homeModule
 import com.squareup.leakcanary.LeakCanary
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 
 /**
@@ -13,20 +20,21 @@ import com.squareup.leakcanary.LeakCanary
  * Description:
  */
 
-class AndyApplication : Application() {
-
-    companion object {
-
-        lateinit var INSTANCE: Application
-
-    }
-
+class AndyApplication : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
-        INSTANCE = this
         initARoute()
         initFresco()
         initLeakCanary()
+
+        startKoin {
+            androidLogger(Level.DEBUG)
+            androidContext(this@AndyApplication)
+            modules(listOf(
+                    homeModule,
+                    feedModel,
+                    followModule))
+        }
     }
 
     /**

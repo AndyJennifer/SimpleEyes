@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.utils
 
-import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.model.BaseModel
+import com.jennifer.andy.simpleeyes.base.presenter.BasePresenter
 import java.lang.reflect.ParameterizedType
 
 

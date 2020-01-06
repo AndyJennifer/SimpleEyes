@@ -53,4 +53,5 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : Fragment() {
      */
     abstract fun initView(savedInstanceState: Bundle?)
 
+
 }

@@ -20,7 +20,6 @@ class SplashVideoFragmentAdapter(fragmentManager: FragmentManager) : FragmentPag
 
     override fun getItem(position: Int) = mFragmentList[position]
 
-
     override fun getCount() = mFragmentList.size
 
 

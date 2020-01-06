@@ -1,164 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iv_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:backgroundImage="@drawable/landing_background"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/ll_ad_container"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="100dp"
-            android:letterSpacing="0.3"
-            android:text="@string/open_eyes_chinese"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:font_name="normal"/>
-
-
-        <LinearLayout
-            android:id="@+id/ll_ad_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:orientation="vertical">
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:id="@+id/tv_ad_english"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ad_english_message"
-                android:textColor="@color/gray_B7B9B8"
-                android:textSize="14sp"
-                app:font_name="lobster"/>
-
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="@string/ad_chinese_message"
-                android:textColor="@color/gray_B7B9B8"
-                android:textSize="14sp"
-                app:font_name="normal"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_loading_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:backgroundImage="@drawable/landing_background" />
 
         <RelativeLayout
-            android:id="@+id/ll_move_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_ad_container"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="100dp"
+                android:letterSpacing="0.3"
+                android:text="@string/open_eyes_chinese"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:font_name="normal" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_ad_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
+
+                <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                    android:id="@+id/tv_ad_english"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ad_english_message"
+                    android:textColor="@color/gray_B7B9B8"
+                    android:textSize="14sp"
+                    app:font_name="lobster" />
+
+
+                <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/ad_chinese_message"
+                    android:textColor="@color/gray_B7B9B8"
+                    android:textSize="14sp"
+                    app:font_name="normal" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_loading_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <RelativeLayout
-                android:id="@+id/ll_eye_container"
+                android:id="@+id/ll_move_container"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
 
-                <ImageView
-                    android:id="@+id/iv_head_outer"
+                <RelativeLayout
+                    android:id="@+id/ll_eye_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_head_outer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_eye_white" />
+
+                    <ImageView
+                        android:id="@+id/iv_head_inner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+
+                <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_eye_white"/>
-
-                <ImageView
-                    android:id="@+id/iv_head_inner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"/>
+                    android:layout_below="@id/ll_eye_container"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/open_eyes_english"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:font_name="lobster" />
 
             </RelativeLayout>
 
             <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_today"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ll_eye_container"
-                android:layout_centerHorizontal="true"
-                android:text="@string/open_eyes_english"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/for_today"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                app:font_name="lobster"/>
+                android:visibility="invisible"
+                app:font_name="lobster" />
+
+            <LinearLayout
+                android:id="@+id/ll_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
+
+                <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/gray_B7B9B8"
+                    android:textSize="14sp"
+                    android:visibility="invisible"
+                    app:font_name="normal" />
+
+
+                <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                    android:id="@+id/tv_today_chose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:letterSpacing="0.3"
+                    android:text="@string/today_chose"
+                    android:textColor="@color/gray_B7B9B8"
+                    android:textSize="14sp"
+                    android:visibility="invisible"
+                    app:font_name="normal" />
+            </LinearLayout>
 
         </RelativeLayout>
 
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/for_today"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:visibility="invisible"
-            app:font_name="lobster"/>
-
-        <LinearLayout
-            android:id="@+id/ll_today"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:orientation="vertical">
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:textColor="@color/gray_B7B9B8"
-                android:textSize="14sp"
-                android:visibility="invisible"
-                app:font_name="normal"/>
-
-
-            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-                android:id="@+id/tv_today_chose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:letterSpacing="0.3"
-                android:text="@string/today_chose"
-                android:textColor="@color/gray_B7B9B8"
-                android:textSize="14sp"
-                android:visibility="invisible"
-                app:font_name="normal"/>
-
-        </LinearLayout>
-
-
     </RelativeLayout>
-
-
-</RelativeLayout>
 </layout>

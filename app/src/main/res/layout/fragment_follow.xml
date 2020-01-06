@@ -1,58 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/normal_title_height"
-        android:background="@color/white">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:id="@+id/tv_all_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_action_back_black"
-            android:text="@string/all_author"
-            app:font_name="normal"/>
-
-        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/Subscription_en"
-            android:textSize="20sp"
-            app:font_name="lobster"/>
-
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_action_search_black"/>
-
-    </RelativeLayout>
-
-
-    <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
-        android:id="@+id/multiple_state_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
-            android:id="@+id/rv_follow_recycler"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="@dimen/normal_title_height"
+            android:background="@color/white">
 
 
-    </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:id="@+id/tv_all_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_action_back_black"
+                android:text="@string/all_author"
+                app:font_name="normal" />
 
-</LinearLayout>
+            <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/Subscription_en"
+                android:textSize="20sp"
+                app:font_name="lobster" />
+
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_search_black" />
+
+        </RelativeLayout>
+
+
+        <com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+            android:id="@+id/multiple_state_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
+                android:id="@+id/rv_follow_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.jennifer.andy.simpleeyes.widget.state.MultipleStateView>
+
+    </LinearLayout>
+</layout>

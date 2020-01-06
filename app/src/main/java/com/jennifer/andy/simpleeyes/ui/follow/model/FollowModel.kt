@@ -1,11 +1,11 @@
 package com.jennifer.andy.simpleeyes.ui.follow.model
 
+import com.jennifer.andy.base.rx.RxThreadHelper
+import com.jennifer.andy.base.rx.error.globalHandleError
+import com.jennifer.andy.simpleeyes.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Api
-import com.jennifer.andy.simpleeyes.rx.RxThreadHelper
-import com.jennifer.andy.simpleeyes.rx.error.globalHandleError
-import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
-import io.reactivex.Observable
+import io.reactivex.Flowable
 
 
 /**
@@ -20,19 +20,19 @@ class FollowModel : BaseModel {
     /**
      * 获取关注首页信息
      */
-    fun getFollowInfo(): Observable<AndyInfo> =
+    fun getFollowInfo(): Flowable<AndyInfo> =
             Api.getDefault()
                     .getFollowInfo()
                     .compose(globalHandleError())
-                    .compose(RxThreadHelper.switchObservableThread())
+                    .compose(RxThreadHelper.switchFlowableThread())
 
 
     /**
      * 获取全部作者
      */
-    fun getAllAuthor(): Observable<AndyInfo> =
+    fun getAllAuthor(): Flowable<AndyInfo> =
             Api.getDefault()
                     .getAllAuthor()
                     .compose(globalHandleError())
-                    .compose(RxThreadHelper.switchObservableThread())
+                    .compose(RxThreadHelper.switchFlowableThread())
 }

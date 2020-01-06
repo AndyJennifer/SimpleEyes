@@ -7,8 +7,6 @@ import java.io.Serializable
  * Date:    2017/10/19 19:00
  * Description: 页面数据信息,主要是视频信息
  */
-
-
 data class AndyInfo(var count: Int,
                     var total: Int,
                     var nextPageUrl: String?,
@@ -190,7 +188,6 @@ data class Tab(var tabInfo: TabInfo,
 
 data class TabInfo(var tabList: MutableList<TabDetailInfo>,
                    var defaultIdx: Int) : Serializable
-
 
 data class TabDetailInfo(var id: Int,
                          var name: String,

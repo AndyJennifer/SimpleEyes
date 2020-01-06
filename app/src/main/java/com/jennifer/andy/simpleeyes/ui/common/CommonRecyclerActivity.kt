@@ -40,7 +40,7 @@ class CommonRecyclerActivity : BaseActivity<CommonView, CommonPresenter>(), Comm
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
         initToolBar(mToolbar, title)
-        mPresenter.loadDataInfoFromUrl(url)
+        mPresenter.loadDataInfoFromUrl(url!!)
     }
 
     override fun showLoadSuccess(itemList: MutableList<Content>) {

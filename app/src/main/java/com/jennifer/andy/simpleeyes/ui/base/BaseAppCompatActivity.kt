@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.StringRes
+import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.manager.ActivityManager
-import com.jennifer.andy.simpleeyes.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
@@ -42,11 +41,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
         super.onCreate(savedInstanceState)
         initData()
         initView(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        ActivityManager.getInstance().addActivity(this)
     }
 
     private fun initData() {
@@ -96,11 +90,6 @@ abstract class BaseAppCompatActivity : SupportActivity() {
             }
         }
 
-    }
-
-    override fun onStop() {
-        super.onStop()
-        ActivityManager.getInstance().removeActivity(this)
     }
 
 

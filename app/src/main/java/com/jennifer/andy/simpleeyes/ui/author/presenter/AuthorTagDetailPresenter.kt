@@ -3,7 +3,7 @@ package com.jennifer.andy.simpleeyes.ui.author.presenter
 import android.view.View
 import com.jennifer.andy.simpleeyes.ui.author.model.AuthorModel
 import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.presenter.BasePresenter
 import com.uber.autodispose.autoDispose
 
 

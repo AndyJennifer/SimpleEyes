@@ -43,7 +43,7 @@ class BottomBar : LinearLayout {
         addView(mTabLayout, mTabParams)
     }
 
-    fun addItem(bottomItem: BottomItem) {
+    fun addItem(bottomItem: BottomItem): BottomBar {
 
         val bottomItemLayout = BottomItemLayout(context)
         bottomItemLayout.setTabPosition(mBottomItemLayouts.size)
@@ -63,6 +63,7 @@ class BottomBar : LinearLayout {
                 mCurrentPosition = position
             }
         }
+        return this
     }
 
 
@@ -127,6 +128,7 @@ class BottomBar : LinearLayout {
             super.writeToParcel(out, flags)
             out.writeValue(selectPosition)
         }
+
         override fun toString(): String {
             return ("CompoundButton.SavedState{"
                     + Integer.toHexString(System.identityHashCode(this))
@@ -138,7 +140,7 @@ class BottomBar : LinearLayout {
 
     override fun onSaveInstanceState(): Parcelable? {
         return SavedState(super.onSaveInstanceState()).apply {
-          selectPosition = mCurrentPosition
+            selectPosition = mCurrentPosition
         }
     }
 

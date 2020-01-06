@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.net
 
 import com.google.gson.GsonBuilder
-import com.jennifer.andy.simpleeyes.AndyApplication
+import com.jennifer.andy.base.application.BaseApplication
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -94,7 +94,7 @@ class RetrofitConfig private constructor() {
      * 配置缓存大小与缓存地址
      */
     private fun initCachePathAndSize() {
-        val cacheFile = File(AndyApplication.INSTANCE.cacheDir, "cache")
+        val cacheFile = File(BaseApplication.INSTANCE.cacheDir, "cache")
         mCache = Cache(cacheFile, FILE_CACHE_SIZE)
     }
 

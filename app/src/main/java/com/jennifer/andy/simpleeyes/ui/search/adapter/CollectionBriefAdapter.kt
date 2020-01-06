@@ -3,9 +3,9 @@ package com.jennifer.andy.simpleeyes.ui.search.adapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.facebook.drawee.view.SimpleDraweeView
+import com.jennifer.andy.base.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
 
 
 /**

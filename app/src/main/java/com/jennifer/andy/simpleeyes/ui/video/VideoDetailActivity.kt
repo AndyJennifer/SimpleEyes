@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.facebook.drawee.view.SimpleDraweeView
+import com.jennifer.andy.base.rx.RxBus
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
@@ -18,7 +19,6 @@ import com.jennifer.andy.simpleeyes.player.IjkMediaController
 import com.jennifer.andy.simpleeyes.player.IjkVideoView
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent
 import com.jennifer.andy.simpleeyes.player.render.IRenderView
-import com.jennifer.andy.simpleeyes.rx.RxBus
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.video.adapter.VideoDetailAdapter
 import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoDetailPresenter

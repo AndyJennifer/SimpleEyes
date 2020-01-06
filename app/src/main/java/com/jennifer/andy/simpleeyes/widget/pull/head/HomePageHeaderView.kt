@@ -7,15 +7,15 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.viewpager.widget.ViewPager
+import com.jennifer.andy.base.utils.readyGo
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.TopIssue
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.ui.home.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
 import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.utils.readyGo
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner
@@ -39,7 +39,7 @@ class HomePageHeaderView : FrameLayout {
     private val mMoreContainer: RelativeLayout by bindView(R.id.rl_more_container)
 
     private lateinit var mTopIssue: TopIssue
-    private lateinit var mBaseFragment: BaseFragment<*, *>
+    private lateinit var mBaseFragment: BaseDataBindFragment<*>
 
     private var mScrollValue = 0
     private var currentPosition = -1
@@ -76,11 +76,11 @@ class HomePageHeaderView : FrameLayout {
         })
         //跳转到搜索界面
         mIvSearch.setOnClickListener {
-            mBaseFragment.readyGo(SearchHotActivity::class.java)
+            mBaseFragment.readyGo<SearchHotActivity>()
         }
         //跳转到每日精选
         mMoreContainer.setOnClickListener {
-            mBaseFragment.readyGo(DailyEliteActivity::class.java)
+            mBaseFragment.readyGo<DailyEliteActivity>()
         }
 
     }
@@ -88,7 +88,7 @@ class HomePageHeaderView : FrameLayout {
     /**
      * 设置头部信息
      */
-    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<Content>, baseFragment: BaseFragment<*, *>) {
+    fun setHeaderInfo(topIssue: TopIssue, videoListInfo: MutableList<Content>, baseFragment: BaseDataBindFragment<*>) {
         mTopIssue = topIssue
         mBaseFragment = baseFragment
         mBanner.setImageLoader(FrescoImageLoader())

@@ -1,6 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.common
 
-import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
+import com.jennifer.andy.simpleeyes.base.model.BaseModel
 
 
 /**
@@ -9,4 +9,4 @@ import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
  * Description:
  */
 
-class CommonModel:BaseModel
+class CommonModel: BaseModel

@@ -2,7 +2,8 @@ package com.jennifer.andy.simpleeyes.ui.base
 
 import android.os.Bundle
 import android.view.View
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.view.BaseView
 import com.jennifer.andy.simpleeyes.utils.getGenericInstance
 
 

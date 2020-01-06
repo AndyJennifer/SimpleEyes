@@ -1,10 +1,16 @@
 package com.jennifer.andy.simpleeyes.ui.base
 
-import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.jennifer.andy.base.utils.showKeyboard
+import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+import com.jennifer.andy.simpleeyes.widget.font.FontType
 
 
 /**
@@ -16,20 +22,49 @@ import androidx.databinding.ViewDataBinding
 abstract class BaseDataBindActivity<T : ViewDataBinding> : AppCompatActivity() {
 
 
-    /**
-     * 上下文对象
-     */
-    protected lateinit var mContext: Context
-
+    protected lateinit var mDataBinding: T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getBundleExtras(intent.extras)
         if (getContentViewLayoutId() != 0) {
-            DataBindingUtil.setContentView<T>(this, getContentViewLayoutId())
+            mDataBinding = DataBindingUtil.setContentView(this, getContentViewLayoutId())
+            mDataBinding.lifecycleOwner = this
             initView(savedInstanceState)
         } else
             throw  IllegalArgumentException("You must set layout id")
+    }
+
+    /**
+     * 初始化工具栏,默认情况下加粗
+     */
+    protected fun initToolBar(toolbar: View, title: String? = null, fontType: FontType = FontType.BOLD) {
+        val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
+        ivBack.setOnClickListener {
+            showKeyboard(false)
+            finish()
+        }
+
+        val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
+        tvTitle.setFontType(fontType)
+        tvTitle.text = title
+
+    }
+
+    /**
+     * 初始化工具栏，默认情况下加粗
+     */
+    protected fun initToolBar(toolbar: View, @StringRes id: Int? = null, fontType: FontType = FontType.BOLD) {
+        val ivBack = toolbar.findViewById<ImageView>(R.id.iv_back)
+        ivBack.setOnClickListener {
+            showKeyboard(false)
+            finish()
+        }
+
+        val tvTitle = toolbar.findViewById<CustomFontTextView>(R.id.tv_title)
+        tvTitle.setFontType(fontType)
+        tvTitle.setText(id!!)
+
     }
 
     /**

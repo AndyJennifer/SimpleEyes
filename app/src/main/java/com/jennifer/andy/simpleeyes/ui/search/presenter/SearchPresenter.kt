@@ -2,9 +2,10 @@ package com.jennifer.andy.simpleeyes.ui.search.presenter
 
 
 import android.view.View
+import com.jennifer.andy.simpleeyes.base.model.BaseModel
+import com.jennifer.andy.simpleeyes.base.presenter.LoadMorePresenter
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.presenter.LoadMorePresenter
-import com.jennifer.andy.simpleeyes.ui.home.model.HomeModel
+import com.jennifer.andy.simpleeyes.ui.home.domain.HomeRemoteDataSource
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 import com.uber.autodispose.autoDispose
 
@@ -15,15 +16,15 @@ import com.uber.autodispose.autoDispose
  * Description:
  */
 
-class SearchPresenter : LoadMorePresenter<AndyInfo, HomeModel, SearchHotView>() {
+class SearchPresenter : LoadMorePresenter<AndyInfo, BaseModel, SearchHotView>() {
 
-    override var mBaseModel: HomeModel = HomeModel()
+    var mBaseRemoteDataSource: HomeRemoteDataSource = HomeRemoteDataSource()
 
     /**
      * 获取热门搜索
      */
     fun searchHot() {
-        mBaseModel.getHotWord().autoDispose(mScopeProvider).subscribe {
+        mBaseRemoteDataSource.getHotWord().autoDispose(mScopeProvider).subscribe {
             mView?.getHotWordSuccess(it)
         }
     }
@@ -33,7 +34,7 @@ class SearchPresenter : LoadMorePresenter<AndyInfo, HomeModel, SearchHotView>() 
      */
     fun searchVideoByWord(word: String) {
         mView?.showLoading()
-        mBaseModel.searchVideoByWord(word).autoDispose(mScopeProvider).subscribe({
+        mBaseRemoteDataSource.searchVideoByWord(word).autoDispose(mScopeProvider).subscribe({
             mView?.showContent()
             mView?.showSearchSuccess(word, it)
             mNextPageUrl = it.nextPageUrl

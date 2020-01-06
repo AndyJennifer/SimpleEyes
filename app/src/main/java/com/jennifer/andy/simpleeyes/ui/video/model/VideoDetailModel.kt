@@ -1,12 +1,12 @@
 package com.jennifer.andy.simpleeyes.ui.video.model
 
+import com.jennifer.andy.base.rx.RxThreadHelper
+import com.jennifer.andy.base.rx.error.globalHandleError
+import com.jennifer.andy.simpleeyes.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.Api
-import com.jennifer.andy.simpleeyes.rx.RxThreadHelper
-import com.jennifer.andy.simpleeyes.rx.error.globalHandleError
-import com.jennifer.andy.simpleeyes.ui.base.model.BaseModel
-import io.reactivex.Observable
+import io.reactivex.Flowable
 
 
 /**
@@ -21,18 +21,18 @@ class VideoDetailModel : BaseModel {
     /**
      * 获取相关视频信息
      */
-    fun getRelatedVideoInfo(id: String): Observable<AndyInfo> =
+    fun getRelatedVideoInfo(id: String): Flowable<AndyInfo> =
             Api.getDefault()
                     .getRelatedVideo(id)
                     .compose(globalHandleError())
-                    .compose(RxThreadHelper.switchObservableThread())
+                    .compose(RxThreadHelper.switchFlowableThread())
 
     /**
      * 根据视频id获取视频信息
      */
-    fun getVideoInfoById(id: String): Observable<ContentBean> =
+    fun getVideoInfoById(id: String): Flowable<ContentBean> =
             Api.getDefault()
                     .getVideoInfoById(id)
                     .compose(globalHandleError())
-                    .compose(RxThreadHelper.switchObservableThread())
+                    .compose(RxThreadHelper.switchFlowableThread())
 }

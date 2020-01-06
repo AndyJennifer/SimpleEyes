@@ -1,16 +1,12 @@
 package com.jennifer.andy.simpleeyes.ui
 
 import android.os.Bundle
+import androidx.navigation.findNavController
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.ui.feed.FeedFragment
-import com.jennifer.andy.simpleeyes.ui.follow.FollowFragment
-import com.jennifer.andy.simpleeyes.ui.home.HomeFragment
-import com.jennifer.andy.simpleeyes.ui.profile.ProfileFragment
-import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.databinding.ActivityMainBinding
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 import com.jennifer.andy.simpleeyes.widget.BottomBar
 import com.jennifer.andy.simpleeyes.widget.BottomItem
-import me.yokeyword.fragmentation.SupportFragment
 
 
 /**
@@ -19,26 +15,25 @@ import me.yokeyword.fragmentation.SupportFragment
  * Description:主界面
  */
 
-class MainActivity : BaseAppCompatActivity() {
 
+class MainActivity : BaseDataBindActivity<ActivityMainBinding>() {
 
-    private var mFragments = arrayOfNulls<SupportFragment>(4)
-    private val mBottomNavigation: BottomBar by bindView(R.id.bottom_navigation_bar)
 
     companion object {
-        private const val FIRST = 0
-        private const val SECOND = 1
-        private const val THIRD = 2
-        private const val FOURTH = 3
+        private const val HOME_INDEX = 0
+        private const val FEED_INDEX = 1
+        private const val FOLLOW_INDEX = 2
+        private const val PROFILE_INDEX = 3
     }
 
+    private val mTabFragmentsDirection: Map<Int, Int> = mapOf(
+            HOME_INDEX to R.id.homeFragment,
+            FEED_INDEX to R.id.feedFragment,
+            FOLLOW_INDEX to R.id.followFragment,
+            PROFILE_INDEX to R.id.profileFragment
+    )
 
     override fun initView(savedInstanceState: Bundle?) {
-        mFragments[FIRST] = HomeFragment.newInstance()
-        mFragments[SECOND] = FeedFragment.newInstance()
-        mFragments[THIRD] = FollowFragment.newInstance()
-        mFragments[FOURTH] = ProfileFragment.newInstance()
-        loadMultipleRootFragment(R.id.fl_container, FIRST, *mFragments)
         initBottomNavigation()
     }
 
@@ -53,35 +48,28 @@ class MainActivity : BaseAppCompatActivity() {
         val mine = BottomItem(R.drawable.ic_tab_strip_icon_profile_selected, getString(R.string.mine))
         mine.setUnSelectedDrawable(R.drawable.ic_tab_strip_icon_profile)
 
-        with(mBottomNavigation) {
-            addItem(home)
-            addItem(discover)
-            addItem(focus)
-            addItem(mine)
-            initialise()
-            setOnTabSelectedListener(object : BottomBar.TabSelectedListener {
-                override fun onTabSelected(position: Int, prePosition: Int) {
-                    showHideFragment(mFragments[position])
-                }
+        mDataBinding.bottomNavigationBar
+                .addItem(home)
+                .addItem(discover)
+                .addItem(focus)
+                .addItem(mine)
+                .initialise()
 
-                override fun onTabUnselected(position: Int) {
+        mDataBinding.bottomNavigationBar.setOnTabSelectedListener(object : BottomBar.TabSelectedListener {
+            override fun onTabSelected(position: Int, prePosition: Int) {
+                findNavController(R.id.nav_host).navigate(mTabFragmentsDirection.getValue(position))
+            }
 
+            override fun onTabUnselected(position: Int) {
 
-                }
+            }
 
-                override fun onTabReselected(position: Int) {
-                    if (position == FIRST) {
-                        val categoryFragment = mFragments[FIRST] as HomeFragment
-                        categoryFragment.scrollToTop()
-                    }
-                }
-            })
-
-        }
-
+            override fun onTabReselected(position: Int) {
+            }
+        })
     }
 
-    override fun getContentViewLayoutId() = R.layout.activity_main
 
+    override fun getContentViewLayoutId() = R.layout.activity_main
 
 }

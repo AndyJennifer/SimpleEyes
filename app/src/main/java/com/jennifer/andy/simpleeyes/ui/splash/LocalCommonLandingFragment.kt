@@ -8,12 +8,12 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.navigation.fragment.findNavController
+import com.jennifer.andy.base.utils.dip2px
+import com.jennifer.andy.base.utils.getDateString
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.UserPreferences
 import com.jennifer.andy.simpleeyes.databinding.FragmentLocalCoomonLandingBinding
+import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
-import com.jennifer.andy.simpleeyes.utils.dip2px
-import com.jennifer.andy.simpleeyes.utils.getDateString
 import java.util.*
 
 
@@ -27,7 +27,7 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
 
     override fun initView(savedInstanceState: Bundle?) {
         //如果用户没有执行上升动画，则执行，反之则执行缩放动画
-        if (!UserPreferences.getShowUserAnim()) {
+        if (!UserSettingLocalDataSource.isShowUserAnim) {
             doUpAnimator()
             doBackgroundAnimator()
         } else {
@@ -98,7 +98,7 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
         ObjectAnimator.ofFloat(mDataBinding.ivHeadInner, "rotation", 0f, 360f).apply {
             doOnEnd {
                 goMainActivityThenFinish()
-                UserPreferences.saveShowUserAnim(true)
+                UserSettingLocalDataSource.isShowUserAnim = true
             }
             duration = 1000
         }.start()
@@ -115,7 +115,7 @@ class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandi
             playTogether(scaleX, scaleY)
             doOnEnd {
                 goMainActivityThenFinish()
-                UserPreferences.saveShowUserAnim(true)
+                UserSettingLocalDataSource.isShowUserAnim = true
             }
             duration = 2000
         }.start()

@@ -2,16 +2,19 @@ package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.FragmentTagDetailInfoBinding
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Extras
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.feed.presenter.TagDetailInfoPresenter
-import com.jennifer.andy.simpleeyes.ui.feed.view.TagDetailInfoView
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -20,55 +23,81 @@ import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
  * Description:详细的Tab界面
  */
 
-class TagDetailInfoFragment : BaseFragment<TagDetailInfoView, TagDetailInfoPresenter>(), TagDetailInfoView {
+class TagDetailInfoFragment : BaseStateViewFragment<FragmentTagDetailInfoBinding>() {
 
-
-    private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
     private var mAdapter: BaseDataAdapter? = null
 
     private lateinit var mApiUrl: String
 
-    companion object {
+    private val mTagDetailViewModel: TagDetailViewModel by currentScope.viewModel(this)
 
-        @JvmStatic
-        fun newInstance(apiUrl: String): TagDetailInfoFragment {
-            val categoryFragment = TagDetailInfoFragment()
-            val bundle = Bundle()
-            bundle.putString(Extras.API_URL, apiUrl)
-            categoryFragment.arguments = bundle
-            return categoryFragment
+    companion object {
+        fun newInstance(apiUrl: String) = TagDetailInfoFragment().apply {
+            arguments = Bundle().apply { putString(Extras.API_URL, apiUrl) }
+        }
+    }
+
+    override fun initView(savedInstanceState: Bundle?) {
+        // todo 处理懒加载参考SupportFragment中的onLazyInitView,查看哪里还有presenter，修改为viewmodel
+
+        mTagDetailViewModel.getDataFromUrl(mApiUrl)
+
+        mTagDetailViewModel.observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
+    }
+
+    override fun getBundleExtras(extras: Bundle?) {
+        mApiUrl = extras?.getString(Extras.API_URL).toString()
+    }
+
+    private fun onNewStateArrive(viewState: ViewState<AndyInfo>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
+            }
+            Action.INIT_SUCCESS -> {
+                showContent()
+                showGetTabInfoSuccess(viewState.data!!)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mTagDetailViewModel.getDataFromUrl(mApiUrl) }
+            }
+            Action.LOAD_MORE_SUCCESS -> {
+                loadMoreSuccess(viewState.data!!)
+            }
+            Action.HAVE_NO_MORE -> {
+                showNoMore()
+            }
+            Action.LOAD_MORE_FAIL -> {
+                showNetError { mTagDetailViewModel.loadMoreDataFromUrl() }
+            }
         }
     }
 
 
-    override fun getBundleExtras(extras: Bundle) {
-        mApiUrl = extras.getString(Extras.API_URL)
-    }
-
-    override fun onLazyInitView(savedInstanceState: Bundle?) {
-        mPresenter.getDetailInfo(mApiUrl)
-    }
-
-    override fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
+    private fun showGetTabInfoSuccess(andyInfo: AndyInfo) {
         if (mAdapter == null) {
             mAdapter = BaseDataAdapter(andyInfo.itemList)
             mAdapter?.setLoadMoreView(CustomLoadMoreView())
-            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreInfo() }, mRecyclerView)
-            mRecyclerView.adapter = mAdapter
-            mRecyclerView.layoutManager = LinearLayoutManager(context)
+            mAdapter?.setOnLoadMoreListener({ mTagDetailViewModel.loadMoreDataFromUrl() }, mDataBinding.rvRecycler)
+            mDataBinding.rvRecycler.adapter = mAdapter
+            mDataBinding.rvRecycler.layoutManager = LinearLayoutManager(context)
         } else {
             mAdapter?.setNewData(andyInfo.itemList)
         }
     }
 
-    override fun loadMoreSuccess(data: AndyInfo) {
+    fun loadMoreSuccess(data: AndyInfo) {
         mAdapter?.addData(data.itemList)
         mAdapter?.loadMoreComplete()
     }
 
-    override fun showNoMore() {
+    fun showNoMore() {
         mAdapter?.loadMoreEnd()
     }
+
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.fragment_tag_detail_info
 }

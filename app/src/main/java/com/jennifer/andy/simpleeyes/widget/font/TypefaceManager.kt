@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.widget.TextView
-import com.jennifer.andy.simpleeyes.AndyApplication
+import com.jennifer.andy.base.application.BaseApplication
 import com.jennifer.andy.simpleeyes.R
 
 
@@ -64,7 +64,7 @@ object TypefaceManager {
         return fontType?.let {
             var typeFace = mTypeFaceMap[fontType]
             if (typeFace == null) {
-                typeFace = Typeface.createFromAsset(AndyApplication.INSTANCE.assets, fontType.path)
+                typeFace = Typeface.createFromAsset(BaseApplication.INSTANCE.assets, fontType.path)
                 mTypeFaceMap[fontType] = typeFace
             }
             return typeFace

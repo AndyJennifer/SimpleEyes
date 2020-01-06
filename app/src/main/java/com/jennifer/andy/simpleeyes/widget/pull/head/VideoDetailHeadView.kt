@@ -8,8 +8,8 @@ import android.view.View
 import android.widget.FrameLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.UserPreferences
-import com.jennifer.andy.simpleeyes.utils.getElapseTimeForShow
+import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
+import com.jennifer.andy.base.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
@@ -55,25 +55,23 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
         val widthSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         val heightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         measure(widthSpec, heightSpec)
-        ObjectAnimator.ofFloat(this, "translationY", -measuredHeight.toFloat(), 0f).apply {
-            duration = 300
-            start()
-        }
+        ObjectAnimator
+                .ofFloat(this, "translationY", -measuredHeight.toFloat(), 0f)
+                .apply { duration = 300 }
+                .start()
     }
 
     override fun onClick(v: View) {
-        val userIsLogin = UserPreferences.getUserIsLogin()
-        if (!userIsLogin) //如果用户没登录，直接跳转到登录界面
-            ARouter.getInstance().build("/github/Login").navigation()
-        else {
+        if (UserSettingLocalDataSource.isUserLogin) {//如果用户已经登录
             when (v.id) {
                 R.id.tv_favorite -> addFavorite()
                 R.id.tv_share -> showShare()
                 R.id.tv_reply -> addReply()
                 R.id.tv_download -> downloadVideo()
             }
+        } else { //如果用户没登录，直接跳转到登录界面
+            ARouter.getInstance().build("/github/Login").navigation()
         }
-
     }
 
 

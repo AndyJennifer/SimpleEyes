@@ -22,8 +22,7 @@ class CacheFragment : BaseFragment<CacheView, CachePresenter>(), CacheView, View
 
 
     companion object {
-        @JvmStatic
-        fun newInstance(): CacheFragment = CacheFragment()
+        fun newInstance() = CacheFragment()
     }
 
     override fun initView(savedInstanceState: Bundle?) {

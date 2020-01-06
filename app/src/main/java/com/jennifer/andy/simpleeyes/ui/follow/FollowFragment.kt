@@ -1,22 +1,21 @@
 package com.jennifer.andy.simpleeyes.ui.follow
 
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jennifer.andy.base.utils.readyGo
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.FragmentFollowBinding
 import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragment
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.follow.presenter.FollowPresenter
-import com.jennifer.andy.simpleeyes.ui.follow.view.FollowView
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
-import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.utils.readyGo
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
-import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullToRefreshRecyclerView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Author:  andy.xwt
@@ -24,72 +23,98 @@ import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
  * Description: 关注
  */
 
-class FollowFragment : BaseFragment<FollowView, FollowPresenter>(), FollowView {
+class FollowFragment : BaseStateViewFragment<FragmentFollowBinding>() {
 
-
-    private val mTvAllAuthor: CustomFontTextView by bindView(R.id.tv_all_author)
-    private val mIvSearch: ImageView by bindView(R.id.iv_search)
-    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
-    private val mRecyclerView: PullToRefreshRecyclerView by bindView(R.id.rv_follow_recycler)
     private var mAdapter: BaseDataAdapter? = null
+    private val mFollowViewModel: FollowViewModel by currentScope.viewModel(this)
 
     companion object {
-        @JvmStatic
-        fun newInstance(): FollowFragment = FollowFragment()
+        fun newInstance() = FollowFragment()
     }
 
 
     override fun initView(savedInstanceState: Bundle?) {
         //获取主界面信息
-
-        mPresenter.getFollowInfo()
+        mFollowViewModel.getFollowInfo()
 
         //跳转到搜索界面
-        mIvSearch.setOnClickListener {
-            readyGo(SearchHotActivity::class.java)
+        mDataBinding.ivSearch.setOnClickListener {
+            readyGo<SearchHotActivity>()
         }
         //跳转到全部作者界面
-        mTvAllAuthor.setOnClickListener {
-            readyGo(AllAuthorActivity::class.java)
+        mDataBinding.tvAllAuthor.setOnClickListener {
+            readyGo<AllAuthorActivity>()
         }
 
-        mRecyclerView.refreshListener = { mPresenter.refresh() }
+        mDataBinding.rvFollowRecycler.refreshListener = { mFollowViewModel.refreshFollowInfo() }
+
+        mFollowViewModel
+                .observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
     }
 
-    override fun loadFollowInfoSuccess(andyInfo: AndyInfo) {
+
+    private fun onNewStateArrive(viewState: ViewState<AndyInfo>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
+            }
+            Action.INIT_SUCCESS -> {
+                showContent()
+                loadFollowInfoSuccess(viewState.data!!)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mFollowViewModel.getFollowInfo() }
+            }
+            Action.REFRESH_SUCCESS -> {
+                showContent()
+                refreshSuccess(viewState.data!!)
+            }
+            Action.REFRESH_FAIL -> {
+                showNetError { mFollowViewModel.refreshFollowInfo() }
+            }
+            Action.LOAD_MORE_SUCCESS -> {
+                loadMoreSuccess(viewState.data!!)
+            }
+            Action.HAVE_NO_MORE -> {
+                showNoMore()
+            }
+            Action.LOAD_MORE_FAIL -> {
+                showNetError { mFollowViewModel.loadMoreAndyInfo() }
+            }
+        }
+    }
+
+    private fun loadFollowInfoSuccess(andyInfo: AndyInfo) {
         if (mAdapter == null) {
             mAdapter = BaseDataAdapter(andyInfo.itemList)
             mAdapter?.setLoadMoreView(CustomLoadMoreView())
-            mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreInfo() }, mRecyclerView.rootView)
+            mAdapter?.setOnLoadMoreListener({ mFollowViewModel.loadMoreAndyInfo() }, mDataBinding.rvFollowRecycler.rootView)
 
-            mRecyclerView.setAdapterAndLayoutManager(mAdapter!!, LinearLayoutManager(context))
+            mDataBinding.rvFollowRecycler.setAdapterAndLayoutManager(mAdapter!!, LinearLayoutManager(context))
         } else {
             mAdapter?.setNewData(andyInfo.itemList)
         }
     }
 
-    override fun showNetError(onClickListener: View.OnClickListener) {
-        mStateView.showNetError(onClickListener)
-    }
 
-    override fun showContent() {
-        mStateView.showContent()
-    }
-
-    override fun loadMoreSuccess(data: AndyInfo) {
+    fun loadMoreSuccess(data: AndyInfo) {
         mAdapter?.addData(data.itemList)
         mAdapter?.loadMoreComplete()
     }
 
 
-    override fun showNoMore() {
+    fun showNoMore() {
         mAdapter?.loadMoreEnd()
     }
 
-    override fun refreshSuccess(andyInfo: AndyInfo) {
+    private fun refreshSuccess(andyInfo: AndyInfo) {
         loadFollowInfoSuccess(andyInfo)
-        mRecyclerView.refreshComplete()
+        mDataBinding.rvFollowRecycler.refreshComplete()
     }
+
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.fragment_follow
 

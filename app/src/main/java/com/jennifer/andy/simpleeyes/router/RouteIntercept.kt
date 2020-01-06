@@ -6,7 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Interceptor
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback
 import com.alibaba.android.arouter.facade.template.IInterceptor
 import com.alibaba.android.arouter.launcher.ARouter
-import com.jennifer.andy.simpleeyes.UserPreferences
+import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
 
 
 /**
@@ -35,7 +35,7 @@ class RouteIntercept : IInterceptor {
      * 判断用户是否登录，如果没有登录则显示登录界面
      */
     private fun judgeUserIsLogin(postcard: Postcard, callback: InterceptorCallback) {
-        val userIsLogin = UserPreferences.getUserIsLogin()
+        val userIsLogin = UserSettingLocalDataSource.isUserLogin
         if (!userIsLogin) //如果用户没登录，直接跳转到登录界面
             ARouter.getInstance().build("/github/Login").navigation()
         else

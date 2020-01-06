@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jennifer.andy.simpleeyes.ui.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.presenter.BasePresenter
+import com.jennifer.andy.simpleeyes.base.view.BaseView
 import com.jennifer.andy.simpleeyes.utils.getGenericInstance
 
 
@@ -47,5 +48,8 @@ abstract class BaseFragment<V, T : BasePresenter<V>> : BaseAppCompatFragment(), 
         mMultipleStateView.showContent()
     }
 
+    override fun onLazyInitView(savedInstanceState: Bundle?) {
+        super.onLazyInitView(savedInstanceState)
+    }
 
 }

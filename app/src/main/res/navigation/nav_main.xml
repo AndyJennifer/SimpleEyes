@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.feed.FeedFragment"
+        android:label="FeedFragment"
+        tools:layout="@layout/fragment_feed" />
+    <fragment
+        android:id="@+id/followFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.follow.FollowFragment"
+        android:label="FollowFragment"
+        tools:layout="@layout/fragment_follow" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.jennifer.andy.simpleeyes.ui.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
