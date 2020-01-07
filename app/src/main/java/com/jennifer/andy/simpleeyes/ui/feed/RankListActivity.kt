@@ -8,10 +8,10 @@ import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.presenter.RankListPresenter
 import com.jennifer.andy.simpleeyes.ui.feed.view.RankListView
 import com.jennifer.andy.simpleeyes.utils.bindView
@@ -46,7 +46,7 @@ class RankListActivity : BaseActivity<RankListView, RankListPresenter>(), RankLi
 
     override fun loadTabSuccess(tabInfo: TabInfo) {
         mTabLayout.visibility = View.VISIBLE
-        mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+        mViewPager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mViewPager.offscreenPageLimit = tabInfo.tabList.size
         tabIndex?.let { mViewPager.currentItem = it.toInt() }
         mTabLayout.setupWithViewPager(mViewPager)

@@ -39,7 +39,7 @@ class HomeFragment : BaseStateViewFragment<FragmentHomeBinding>() {
         fun newInstance() = HomeFragment()
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initViewOnCreated(savedInstanceState: Bundle?) {
         mDataBinding.rvHomeRecycler.setOnPullZoomListener(object : PullToZoomBase.OnPullZoomListener {
             override fun onPullZooming(scrollValue: Int) {
                 mHomePageHeaderView.showRefreshCover(scrollValue)

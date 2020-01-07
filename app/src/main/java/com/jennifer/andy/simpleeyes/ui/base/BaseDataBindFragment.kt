@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
+import com.jennifer.andy.base.ui.LazyFragment
 
 
 /**
@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
  * Description:
  */
 
-abstract class BaseDataBindFragment<T : ViewDataBinding> : Fragment() {
+abstract class BaseDataBindFragment<T : ViewDataBinding> : LazyFragment() {
 
     protected lateinit var mDataBinding: T
 
@@ -34,7 +34,7 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(savedInstanceState)
+        initViewOnCreated(savedInstanceState)
     }
 
 
@@ -49,9 +49,9 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : Fragment() {
     abstract fun getContentViewLayoutId(): Int
 
     /**
-     * 初始化view
+     * 在调用[onViewCreated]时调用的初始化方法，如果需要懒加载可以调用[LazyFragment.lazyInit]
      */
-    abstract fun initView(savedInstanceState: Bundle?)
+    abstract fun initViewOnCreated(savedInstanceState: Bundle?)
 
 
 }

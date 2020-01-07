@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.ActivityCategoryTabBinding
 import com.jennifer.andy.simpleeyes.entity.Category
 import com.jennifer.andy.simpleeyes.entity.TabInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action
@@ -88,7 +88,7 @@ class CategoryTabActivity : BaseStateViewActivity<ActivityCategoryTabBinding>() 
             tvSubTitle.text = category.categoryInfo.name
             tvDesc.text = category.categoryInfo.description
 
-            idStickyNavLayoutViewpager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(category.tabInfo), initTitles(category.tabInfo))
+            idStickyNavLayoutViewpager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(category.tabInfo), initTitles(category.tabInfo))
             idStickyNavLayoutNavView.setupWithViewPager(mDataBinding.idStickyNavLayoutViewpager)
             idStickyNavLayoutViewpager.currentItem = tabIndex?.toInt() ?: 0
 

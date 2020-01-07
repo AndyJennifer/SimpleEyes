@@ -2,12 +2,12 @@ package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.base.utils.readyGo
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.FragmentFeedBinding
 import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.entity.TabInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action
@@ -33,7 +33,7 @@ class FeedFragment : BaseStateViewFragment<FragmentFeedBinding>() {
     }
 
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initViewOnCreated(savedInstanceState: Bundle?) {
 
         //跳转到搜索界面
         mDataBinding.ivSearch.setOnClickListener {
@@ -67,7 +67,7 @@ class FeedFragment : BaseStateViewFragment<FragmentFeedBinding>() {
 
     private fun loadTabSuccess(tabInfo: TabInfo) {
         with(mDataBinding) {
-            viewPager.adapter = BaseFragmentItemAdapter(childFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+            viewPager.adapter = FragmentLazyPagerAdapter(childFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
             viewPager.offscreenPageLimit = tabInfo.tabList.size
             tabLayout.setupWithViewPager(viewPager)
         }

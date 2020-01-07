@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * Author:  andy.xwt
  * Date:    2018/7/3 11:29
- * Description:详细的Tab界面
+ * Description:详细的Tab界面,该fragment在ViewPager中是懒加载的，关于如何懒加载查看[com.jennifer.andy.base.ui.LazyFragment]
  */
 
 class TagDetailInfoFragment : BaseStateViewFragment<FragmentTagDetailInfoBinding>() {
@@ -37,9 +37,9 @@ class TagDetailInfoFragment : BaseStateViewFragment<FragmentTagDetailInfoBinding
         }
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
-        // todo 处理懒加载参考SupportFragment中的onLazyInitView,查看哪里还有presenter，修改为viewmodel
+    override fun initViewOnCreated(savedInstanceState: Bundle?) {}
 
+    override fun lazyInit() {
         mTagDetailViewModel.getDataFromUrl(mApiUrl)
 
         mTagDetailViewModel.observeViewState()

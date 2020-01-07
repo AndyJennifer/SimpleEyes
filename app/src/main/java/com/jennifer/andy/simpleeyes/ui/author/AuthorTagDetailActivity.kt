@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.view.SimpleDraweeView
+import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.Tab
@@ -19,7 +20,6 @@ import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.author.presenter.AuthorTagDetailPresenter
 import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.ui.feed.TagDetailInfoFragment
 import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.StickyNavLayout
@@ -79,7 +79,7 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
 
     override fun loadInfoSuccess(tab: Tab) {
 
-        mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(tab.tabInfo), initTitles(tab.tabInfo))
+        mViewPager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tab.tabInfo), initTitles(tab.tabInfo))
         mTabLayout.setupWithViewPager(mViewPager)
         mViewPager.currentItem = tabIndex?.toInt() ?: 0
 

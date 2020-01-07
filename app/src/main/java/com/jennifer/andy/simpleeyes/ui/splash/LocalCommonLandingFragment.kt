@@ -25,7 +25,7 @@ import java.util.*
 
 class LocalCommonLandingFragment : BaseDataBindFragment<FragmentLocalCoomonLandingBinding>() {
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initViewOnCreated(savedInstanceState: Bundle?) {
         //如果用户没有执行上升动画，则执行，反之则执行缩放动画
         if (!UserSettingLocalDataSource.isShowUserAnim) {
             doUpAnimator()

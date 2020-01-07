@@ -7,12 +7,12 @@ import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.entity.TabDetailInfo
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.ui.base.BaseFragmentItemAdapter
 import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
 
@@ -54,7 +54,7 @@ class TagActivity : BaseAppCompatActivity() {
         tabInfoDetailList.add(TabDetailInfo(1, "按分享排序", "${Api.BASE_URL}api/v3/tag/videos?tagId=$id&strategy=shareCount"))
         val tabInfo = TabInfo(tabInfoDetailList, 0)
 
-        mViewPager.adapter = BaseFragmentItemAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+        mViewPager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
         mViewPager.offscreenPageLimit = tabInfo.tabList.size
         mTabLayout.setupWithViewPager(mViewPager)
     }

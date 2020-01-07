@@ -27,7 +27,7 @@ class VideoLandingFragment : BaseDataBindFragment<FragmentVideoLandingBinding>()
     private var isHasPaused = false // 当前适配播放是否停止
 
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initViewOnCreated(savedInstanceState: Bundle?) {
         initSloganText()
         initSloganFragments()
         setVideoObserver()
