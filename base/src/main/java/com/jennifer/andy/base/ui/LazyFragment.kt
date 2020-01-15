@@ -15,10 +15,15 @@ open class LazyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!isLoaded) {
+        if (!isLoaded && !isHidden) {
             lazyInit()
             isLoaded = true
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isLoaded = false
     }
 
     open fun lazyInit() {}
