@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.follow.domain
 
 import com.jennifer.andy.simpleeyes.base.domain.LoadMoreRepository
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import io.reactivex.Flowable
 
 

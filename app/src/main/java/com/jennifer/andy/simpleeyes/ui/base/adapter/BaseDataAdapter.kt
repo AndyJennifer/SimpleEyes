@@ -16,8 +16,8 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.base.utils.dip2px
 import com.jennifer.andy.base.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.net.entity.Content
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean
 import com.jennifer.andy.simpleeyes.ui.home.adapter.CollectionCardCoverAdapter
 import com.jennifer.andy.simpleeyes.ui.home.adapter.SquareCollectionAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.CollectionBriefAdapter

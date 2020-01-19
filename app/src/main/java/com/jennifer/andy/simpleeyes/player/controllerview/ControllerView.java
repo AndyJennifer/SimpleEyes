@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
-import com.jennifer.andy.simpleeyes.entity.ContentBean;
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 

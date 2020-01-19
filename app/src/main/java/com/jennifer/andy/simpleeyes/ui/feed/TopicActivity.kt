@@ -7,8 +7,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.ActivityTopicBinding
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.Content
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action

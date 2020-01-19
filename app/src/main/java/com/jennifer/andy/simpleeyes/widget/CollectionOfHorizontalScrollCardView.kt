@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.jennifer.andy.base.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.Content
+import com.jennifer.andy.simpleeyes.net.entity.Content
 import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 

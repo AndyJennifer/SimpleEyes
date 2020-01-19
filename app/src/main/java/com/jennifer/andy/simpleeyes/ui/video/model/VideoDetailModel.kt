@@ -3,8 +3,8 @@ package com.jennifer.andy.simpleeyes.ui.video.model
 import com.jennifer.andy.base.rx.RxThreadHelper
 import com.jennifer.andy.base.rx.error.globalHandleError
 import com.jennifer.andy.simpleeyes.base.model.BaseModel
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.Api
 import io.reactivex.Flowable
 

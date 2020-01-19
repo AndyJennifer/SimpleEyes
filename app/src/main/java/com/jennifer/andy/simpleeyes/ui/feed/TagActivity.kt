@@ -9,8 +9,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.TabDetailInfo
-import com.jennifer.andy.simpleeyes.entity.TabInfo
+import com.jennifer.andy.simpleeyes.net.entity.TabDetailInfo
+import com.jennifer.andy.simpleeyes.net.entity.TabInfo
 import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
 import com.jennifer.andy.simpleeyes.utils.bindView

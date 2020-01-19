@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.FragmentTagDetailInfoBinding
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
 import com.jennifer.andy.simpleeyes.ui.base.ViewState

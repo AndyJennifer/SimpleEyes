@@ -1,6 +1,6 @@
 package com.jennifer.andy.simpleeyes.net
 
-import com.jennifer.andy.simpleeyes.entity.*
+import com.jennifer.andy.simpleeyes.net.entity.*
 import io.reactivex.Flowable
 import okhttp3.ResponseBody
 import retrofit2.Call

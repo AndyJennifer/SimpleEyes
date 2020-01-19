@@ -9,8 +9,8 @@ import android.widget.RelativeLayout
 import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.base.utils.readyGo
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.entity.TopIssue
+import com.jennifer.andy.simpleeyes.net.entity.Content
+import com.jennifer.andy.simpleeyes.net.entity.TopIssue
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.ui.home.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity

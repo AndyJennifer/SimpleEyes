@@ -14,8 +14,8 @@ import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.ActivityCategoryTabBinding
-import com.jennifer.andy.simpleeyes.entity.Category
-import com.jennifer.andy.simpleeyes.entity.TabInfo
+import com.jennifer.andy.simpleeyes.net.entity.Category
+import com.jennifer.andy.simpleeyes.net.entity.TabInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action

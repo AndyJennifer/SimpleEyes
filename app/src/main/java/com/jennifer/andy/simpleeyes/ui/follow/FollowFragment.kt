@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jennifer.andy.base.utils.readyGo
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.FragmentFollowBinding
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewFragment
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action

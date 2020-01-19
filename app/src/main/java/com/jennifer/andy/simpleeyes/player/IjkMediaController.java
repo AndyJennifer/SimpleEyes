@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
-import com.jennifer.andy.simpleeyes.entity.ContentBean;
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.controllerview.ControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.ErrorControllerView;
 import com.jennifer.andy.simpleeyes.player.controllerview.FullScreenControllerView;

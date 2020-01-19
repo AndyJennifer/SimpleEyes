@@ -2,7 +2,7 @@ package com.jennifer.andy.simpleeyes.ui.follow.presenter
 
 import android.view.View
 import com.jennifer.andy.simpleeyes.base.presenter.LoadMorePresenter
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.follow.model.FollowModel
 import com.jennifer.andy.simpleeyes.ui.follow.view.AllAuthorView
 import com.uber.autodispose.autoDispose

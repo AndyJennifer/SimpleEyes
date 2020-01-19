@@ -1,9 +1,9 @@
 package com.jennifer.andy.simpleeyes.ui.feed.domain
 
 import com.jennifer.andy.simpleeyes.base.data.BaseRemoteDataSource
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.entity.Category
-import com.jennifer.andy.simpleeyes.entity.Tab
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.Category
+import com.jennifer.andy.simpleeyes.net.entity.Tab
 import com.jennifer.andy.simpleeyes.net.Api
 import io.reactivex.Flowable
 

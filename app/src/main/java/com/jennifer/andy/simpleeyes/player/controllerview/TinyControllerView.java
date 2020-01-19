@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.jennifer.andy.simpleeyes.AndyApplication;
 import com.jennifer.andy.simpleeyes.R;
-import com.jennifer.andy.simpleeyes.entity.ContentBean;
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 
 import static com.jennifer.andy.base.utils.NetWorkUtilsKt.isNetWorkConnected;

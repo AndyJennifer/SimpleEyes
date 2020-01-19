@@ -4,7 +4,7 @@ package com.jennifer.andy.simpleeyes.ui.search.presenter
 import android.view.View
 import com.jennifer.andy.simpleeyes.base.model.BaseModel
 import com.jennifer.andy.simpleeyes.base.presenter.LoadMorePresenter
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.home.domain.HomeRemoteDataSource
 import com.jennifer.andy.simpleeyes.ui.search.view.SearchHotView
 import com.uber.autodispose.autoDispose

@@ -1,7 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.follow.domain
 
 import com.jennifer.andy.simpleeyes.base.data.BaseRemoteDataSource
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.net.Api
 import io.reactivex.Flowable
 

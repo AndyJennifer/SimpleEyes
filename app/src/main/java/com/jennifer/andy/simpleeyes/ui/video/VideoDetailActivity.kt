@@ -12,8 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.base.rx.RxBus
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.entity.ContentBean
+import com.jennifer.andy.simpleeyes.net.entity.Content
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.player.IjkMediaController
 import com.jennifer.andy.simpleeyes.player.IjkVideoView

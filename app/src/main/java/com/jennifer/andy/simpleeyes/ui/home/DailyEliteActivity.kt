@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.ActivityDailyEliteBinding
-import com.jennifer.andy.simpleeyes.entity.Content
-import com.jennifer.andy.simpleeyes.entity.JenniferInfo
+import com.jennifer.andy.simpleeyes.net.entity.Content
+import com.jennifer.andy.simpleeyes.net.entity.JenniferInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action

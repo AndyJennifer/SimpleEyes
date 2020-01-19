@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.entity
+package com.jennifer.andy.simpleeyes.net.entity
 
 import java.io.Serializable
 

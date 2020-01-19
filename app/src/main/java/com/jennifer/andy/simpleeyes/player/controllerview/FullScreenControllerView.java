@@ -7,7 +7,7 @@ import android.widget.MediaController;
 import android.widget.SeekBar;
 
 import com.jennifer.andy.simpleeyes.R;
-import com.jennifer.andy.simpleeyes.entity.ContentBean;
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView;
 

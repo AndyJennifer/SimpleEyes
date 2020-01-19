@@ -6,7 +6,7 @@ import com.jennifer.andy.base.viewmodel.AutoDisposeViewModel
 import com.jennifer.andy.simpleeyes.base.model.handleInit
 import com.jennifer.andy.simpleeyes.base.model.handleLoadMore
 import com.jennifer.andy.simpleeyes.base.model.handleRefresh
-import com.jennifer.andy.simpleeyes.entity.JenniferInfo
+import com.jennifer.andy.simpleeyes.net.entity.JenniferInfo
 import com.jennifer.andy.simpleeyes.net.result.Result
 import com.jennifer.andy.simpleeyes.ui.base.ViewState
 import com.jennifer.andy.simpleeyes.ui.base.action.Action

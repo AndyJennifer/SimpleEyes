@@ -21,7 +21,7 @@ import com.google.android.flexbox.JustifyContent
 import com.jennifer.andy.base.utils.dip2px
 import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.entity.AndyInfo
+import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
 import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
 import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchHotAdapter
 import com.jennifer.andy.simpleeyes.ui.search.adapter.SearchVideoAdapter
