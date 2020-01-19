@@ -1,5 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed.domain
 
+import com.jennifer.andy.simpleeyes.base.domain.LoadMoreRepository
+
 
 /**
  * Author:  andy.xwt
@@ -7,7 +9,7 @@ package com.jennifer.andy.simpleeyes.ui.feed.domain
  * Description:
  */
 
-class FeedRepository(private val feedRemoteDataSource: FeedRemoteDataSource) {
+class FeedRepository(private val feedRemoteDataSource: FeedRemoteDataSource) : LoadMoreRepository(feedRemoteDataSource) {
 
 
     /**
@@ -35,8 +37,4 @@ class FeedRepository(private val feedRemoteDataSource: FeedRemoteDataSource) {
      */
     fun getCategoryTabInfo(id: String) = feedRemoteDataSource.getCategoryTabInfo(id)
 
-    /**
-     * 根据url,获取数据
-     */
-    fun getDataFromUrl(url: String) = feedRemoteDataSource.getDataFromUrl(url)
 }

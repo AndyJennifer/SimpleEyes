@@ -1,6 +1,7 @@
 package com.jennifer.andy.simpleeyes.ui.feed.usecase
 
 import com.jennifer.andy.base.rx.error.globalHandleError
+import com.jennifer.andy.simpleeyes.base.usecase.LoadMoreUseCase
 import com.jennifer.andy.simpleeyes.net.result.Result
 import com.jennifer.andy.simpleeyes.ui.feed.domain.FeedRepository
 
@@ -11,7 +12,7 @@ import com.jennifer.andy.simpleeyes.ui.feed.domain.FeedRepository
  * Description:
  */
 
-class FeedUseCase(private val feedRepository: FeedRepository) {
+class FeedUseCase(private val feedRepository: FeedRepository):LoadMoreUseCase(feedRepository) {
 
 
     /**
@@ -65,24 +66,6 @@ class FeedUseCase(private val feedRepository: FeedRepository) {
                     .map { Result.success(it) }
                     .onErrorReturn { Result.error(it) }
 
-    /**
-     * 根据url,获取数据
-     */
-    fun getDataFromUrl(url: String) =
-            feedRepository
-                    .getDataFromUrl(url)
-                    .compose(globalHandleError())
-                    .map { Result.success(it) }
-                    .onErrorReturn { Result.error(it) }
-
-    /**
-     * 根据url,获取更多数据
-     */
-    fun loadMoreDataFromUrl(url: String) =
-            feedRepository.getDataFromUrl(url)
-                    .compose(globalHandleError())
-                    .map { Result.success(it) }
-                    .onErrorReturn { Result.error(it) }
 
 
 }

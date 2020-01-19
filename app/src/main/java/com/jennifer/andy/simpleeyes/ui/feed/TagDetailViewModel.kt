@@ -45,7 +45,7 @@ class TagDetailViewModel(private val feedUseCase: FeedUseCase) : AutoDisposeView
      */
     fun loadMoreDataFromUrl() {
         if (mNextPageUrl != null) {
-            feedUseCase.loadMoreDataFromUrl(mNextPageUrl!!)
+            feedUseCase.getDataFromUrl(mNextPageUrl!!)
                     .startWith(Result.idle())
                     .compose(RxThreadHelper.switchFlowableThread())
                     .autoDispose(this)

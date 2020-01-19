@@ -40,7 +40,7 @@ class TopicViewModel(private val feedUseCase: FeedUseCase) : AutoDisposeViewMode
 
     fun loadMoreInfo() {
         if (mNextPageUrl != null) {
-            feedUseCase.loadMoreDataFromUrl(mNextPageUrl!!)
+            feedUseCase.getDataFromUrl(mNextPageUrl!!)
                     .startWith(Result.idle())
                     .compose(RxThreadHelper.switchFlowableThread())
                     .autoDispose(this).subscribe { result ->
