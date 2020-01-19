@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.jennifer.andy.base.application.BaseApplication
+import com.jennifer.andy.simpleeyes.ui.author.di.authorModel
 import com.jennifer.andy.simpleeyes.ui.feed.di.feedModel
 import com.jennifer.andy.simpleeyes.ui.follow.di.followModule
 import com.jennifer.andy.simpleeyes.ui.home.di.homeModule
@@ -33,6 +34,7 @@ class AndyApplication : BaseApplication() {
             modules(listOf(
                     homeModule,
                     feedModel,
+                    authorModel,
                     followModule))
         }
     }

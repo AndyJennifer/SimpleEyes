@@ -4,28 +4,31 @@ import android.animation.ArgbEvaluator
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.base.utils.showKeyboard
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.ActivityAuthorTagDetailBinding
 import com.jennifer.andy.simpleeyes.entity.Tab
 import com.jennifer.andy.simpleeyes.entity.TabInfo
 import com.jennifer.andy.simpleeyes.net.Extras
-import com.jennifer.andy.simpleeyes.ui.author.presenter.AuthorTagDetailPresenter
-import com.jennifer.andy.simpleeyes.ui.author.ui.AuthorTagDetailView
-import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.feed.TagDetailInfoFragment
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.StickyNavLayout
-import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
-import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import kotlinx.android.synthetic.main.fragment_local_coomon_landing.view.tv_name
+import kotlinx.android.synthetic.main.layout_author_tag_detail_header.view.*
+import kotlinx.android.synthetic.main.layout_common_text.view.*
+import kotlinx.android.synthetic.main.layout_common_text.view.tv_desc
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -35,18 +38,9 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
  */
 
 @Route(path = "/pgc/detail")
-class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetailPresenter>(), AuthorTagDetailView {
+class AuthorTagDetailActivity : BaseStateViewActivity<ActivityAuthorTagDetailBinding>() {
 
-    private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
-    private val mTvTitle: CustomFontTextView by bindView(R.id.tv_title)
-    private val mStickyNavLayout: StickyNavLayout by bindView(R.id.stick_layout)
-    private val mViewPager: ViewPager by bindView(R.id.id_sticky_nav_layout_viewpager)
-    private val mTabLayout: ShortTabLayout by bindView(R.id.id_sticky_nav_layout_nav_view)
-
-    private val mTvName: CustomFontTextView by bindView(R.id.tv_name)
-    private val mTvDesc: CustomFontTextView by bindView(R.id.tv_desc)
-    private val mTvBrief: CustomFontTextView by bindView(R.id.tv_brief)
-    private val mIvHead: SimpleDraweeView by bindView(R.id.iv_head)
+    private val mAuthorTagViewModel: AuthorTagViewModel by currentScope.viewModel(this)
 
     @Autowired
     @JvmField
@@ -61,40 +55,66 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
     var id: String? = null
 
 
-    override fun getBundleExtras(extras: Bundle) {
-        with(extras) {
-            tabIndex = getString(Extras.TAB_INDEX)
-            title = getString(Extras.TITLE)
-            id = getString(Extras.ID)
+    override fun getBundleExtras(extras: Bundle?) {
+        extras?.let {
+            tabIndex = it.getString(Extras.TAB_INDEX)
+            title = it.getString(Extras.TITLE)
+            id = it.getString(Extras.ID)
         }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+
         ARouter.getInstance().inject(this)
+
         initToolBar(title, 0f)
-        mPresenter.getAuthorTagDetail(id!!)
+
+        mAuthorTagViewModel.getAuthorTagDetail(id!!)
+
+        mAuthorTagViewModel.observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
 
     }
 
 
-    override fun loadInfoSuccess(tab: Tab) {
-
-        mViewPager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tab.tabInfo), initTitles(tab.tabInfo))
-        mTabLayout.setupWithViewPager(mViewPager)
-        mViewPager.currentItem = tabIndex?.toInt() ?: 0
-
-        mStickyNavLayout.setScrollChangeListener(object : StickyNavLayout.ScrollChangeListener {
-            override fun onScroll(moveRatio: Float) {
-                initToolBar(title, moveRatio)
+    private fun onNewStateArrive(viewState: ViewState<Tab>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
             }
-        })
+            Action.INIT_SUCCESS -> {
+                showContent()
+                loadInfoSuccess(viewState.data!!)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mAuthorTagViewModel.getAuthorTagDetail(id!!) }
+            }
+        }
+    }
+
+
+    private fun loadInfoSuccess(tab: Tab) {
+
+        with(mDataBinding) {
+            idStickyNavLayoutViewpager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tab.tabInfo), initTitles(tab.tabInfo))
+            idStickyNavLayoutNavView.setupWithViewPager(idStickyNavLayoutViewpager)
+            idStickyNavLayoutViewpager.currentItem = tabIndex?.toInt() ?: 0
+            stickLayout.setScrollChangeListener(object : StickyNavLayout.ScrollChangeListener {
+                override fun onScroll(moveRatio: Float) {
+                    initToolBar(title, moveRatio)
+                }
+            })
+        }
 
         //设置topView信息
         with(tab.pgcInfo) {
-            mTvName.text = name
-            mTvDesc.text = description
-            mTvBrief.text = brief
-            mIvHead.setImageURI(icon)
+            with(mDataBinding.idStickyNavLayoutTopView) {
+                tv_name.text = name
+                tv_desc.text = description
+                tv_brief.text = brief
+                iv_head.setImageURI(icon)
+            }
         }
 
 
@@ -123,15 +143,18 @@ class AuthorTagDetailActivity : BaseActivity<AuthorTagDetailView, AuthorTagDetai
         }
         //设置背景渐变
         val color = ArgbEvaluator().evaluate(titleAlpha, 0x00FFFFFF, Color.WHITE) as Int
-        mToolbar.setBackgroundColor(color)
+        mDataBinding.toolBar.setBackgroundColor(color)
 
-        mTvTitle.apply {
+        mDataBinding.toolBar.tv_title.apply {
             setFontType(fontType = FontType.BOLD)
             text = title
             alpha = titleAlpha
         }
 
     }
+
+
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.activity_author_tag_detail
 }

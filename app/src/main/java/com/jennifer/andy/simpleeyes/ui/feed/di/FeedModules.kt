@@ -38,4 +38,11 @@ val feedModel = module {
     scope(named<TagDetailInfoFragment>()) {
         viewModel { TagDetailViewModel(get()) }
     }
+
+    scope(named<RankListActivity>()) {
+        viewModel { RankListViewModel(get()) }
+    }
+    scope(named<TopicActivity>()) {
+        viewModel { TopicViewModel(get()) }
+    }
 }
