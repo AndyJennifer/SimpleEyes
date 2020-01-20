@@ -72,8 +72,8 @@ import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenHeight;
 import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenWidth;
 import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getActivity;
 import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getWindow;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.showActionBar;
 import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.hideActionBar;
+import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.showActionBar;
 
 public class IjkVideoView extends FrameLayout implements
         MediaController.MediaPlayerControl,
@@ -138,6 +138,7 @@ public class IjkVideoView extends FrameLayout implements
     private int mScreenHeight;
     private AudioManager mAudioManager;
     private GestureDetector mGestureDetector;
+    private ViewGroup parent;
 
     /**
      * 视频宽高比
@@ -209,7 +210,6 @@ public class IjkVideoView extends FrameLayout implements
         mScreenWidth = getScreenWidth(getContext());
         mScreenHeight = getScreenHeight(getContext());
         mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-
         if (mGestureDetector == null) {
             mGestureDetector = new GestureDetector(context, this);
         }
@@ -1225,10 +1225,11 @@ public class IjkVideoView extends FrameLayout implements
         getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         ViewGroup contentView = getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
         //将视图移除
-        removeView(mRenderUIView);
+        parent = (ViewGroup) getParent();
+        parent.removeView(this);
         //重新添加到当前视图
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        contentView.addView(mRenderUIView, params);
+        contentView.addView(this, params);
         mScreenState = SCREEN_FULL_SCREEN;
     }
 
@@ -1243,9 +1244,9 @@ public class IjkVideoView extends FrameLayout implements
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
-        mRenderUIView.setLayoutParams(lp);
-        contentView.removeView(mRenderUIView);
-        addView(mRenderUIView);
+        this.setLayoutParams(lp);
+        contentView.removeView(this);
+        parent.addView(this);
         mScreenState = SCREEN_TINY;
     }
 
