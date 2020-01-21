@@ -18,35 +18,23 @@
 package com.jennifer.andy.simpleeyes.player;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 
-import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 import com.jennifer.andy.simpleeyes.player.render.IRenderView;
 import com.jennifer.andy.simpleeyes.player.render.SurfaceRenderView;
@@ -60,7 +48,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -69,16 +56,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
 
-import static com.jennifer.andy.base.utils.ScreenUtilsKt.getScreenHeight;
-import static com.jennifer.andy.base.utils.ScreenUtilsKt.getScreenWidth;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getActivity;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getWindow;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.hideActionBar;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.showActionBar;
-
-public class IjkVideoView extends FrameLayout implements
-        MediaController.MediaPlayerControl,
-        GestureDetector.OnGestureListener {
+public class IjkVideoView extends FrameLayout implements MediaController.MediaPlayerControl {
 
     private String TAG = "IjkVideoView";
     private Uri mUri;
@@ -100,8 +78,8 @@ public class IjkVideoView extends FrameLayout implements
     /**
      * 视频画面状态
      */
-    private static final int SCREEN_TINY = 0;
-    private static final int SCREEN_FULL_SCREEN = 1;
+    public static final int SCREEN_TINY = 0;
+    public static final int SCREEN_FULL_SCREEN = 1;
     private int mScreenState = SCREEN_TINY;
 
     private IRenderView.ISurfaceHolder mSurfaceHolder = null;
@@ -130,11 +108,6 @@ public class IjkVideoView extends FrameLayout implements
     private int mVideoSarNum;
     private int mVideoSarDen;
 
-    private int mScreenHeight;
-    private AudioManager mAudioManager;
-    private GestureDetector mGestureDetector;
-    private ViewGroup parent;
-
     /**
      * 视频宽高比
      */
@@ -153,7 +126,7 @@ public class IjkVideoView extends FrameLayout implements
     public static final int RENDER_TEXTURE_VIEW = 2;
     private int mCurrentRender = RENDER_NONE;
     private View mRenderUIView;
-    private static final int MIN_SCROLL = 3;
+    public static final int MIN_SCROLL = 3;
 
 
     /**
@@ -168,23 +141,15 @@ public class IjkVideoView extends FrameLayout implements
 
 
     public IjkVideoView(Context context) {
-        super(context);
-        initVideoView(context);
+        this(context, null);
     }
 
     public IjkVideoView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initVideoView(context);
+        this(context, attrs, 0);
     }
 
     public IjkVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initVideoView(context);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public IjkVideoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         initVideoView(context);
     }
 
@@ -202,12 +167,7 @@ public class IjkVideoView extends FrameLayout implements
         //初始化状态
         mCurrentState = STATE_IDLE;
         mTargetState = STATE_IDLE;
-        mScreenHeight = getScreenHeight(getContext());
-        mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-        if (mGestureDetector == null) {
-            mGestureDetector = new GestureDetector(context, this);
-        }
-        setBackgroundColor(Color.BLACK);
+        setBackground(new ColorDrawable(Color.BLACK));
     }
 
     /**
@@ -410,6 +370,10 @@ public class IjkVideoView extends FrameLayout implements
         attachMediaController();
     }
 
+    public IjkMediaController getMediaController() {
+        return mMediaController;
+    }
+
     private void attachMediaController() {
         if (mMediaPlayer != null && mMediaController != null) {
             mMediaController.setMediaPlayer(this);
@@ -573,37 +537,6 @@ public class IjkVideoView extends FrameLayout implements
                         }
                     }
 
-                    /* Otherwise, pop up an error dialog so the user knows that
-                     * something bad has happened. Only try and pop up the dialog
-                     * if we're attached to a window. When we're going away and no
-                     * longer have a window, don't bother showing the user an error.
-                     */
-                    if (getWindowToken() != null) {
-                        Resources r = mAppContext.getResources();
-                        int messageId;
-
-                        if (framework_err == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
-                            messageId = R.string.VideoView_error_text_invalid_progressive_playback;
-                        } else {
-                            messageId = R.string.VideoView_error_text_unknown;
-                        }
-
-                        new AlertDialog.Builder(getContext())
-                                .setMessage(messageId)
-                                .setPositiveButton(R.string.VideoView_error_button,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                /* If we get here, there is no onError listener, so
-                                                 * at least inform them that the video is over.
-                                                 */
-                                                if (mOnCompletionListener != null) {
-                                                    mOnCompletionListener.onCompletion(mMediaPlayer);
-                                                }
-                                            }
-                                        })
-                                .setCancelable(false)
-                                .show();
-                    }
                     return true;
                 }
             };
@@ -752,240 +685,6 @@ public class IjkVideoView extends FrameLayout implements
         }
     }
 
-    private Dialog mLightDialog;
-    private ProgressBar mLightProgress;
-    private Dialog mVolumeDialog;
-    private ProgressBar mVolumeProgress;
-    private boolean isShowVolume;
-    private boolean isShowLight;
-    private boolean isShowPosition;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        boolean relValue = mGestureDetector.onTouchEvent(event);
-        int action = event.getAction();
-        if (action == MotionEvent.ACTION_UP) {
-            //当手指抬起的时候
-            onUp();
-        } else if (action == MotionEvent.ACTION_CANCEL) {
-            onCancel();
-        }
-        return relValue;
-    }
-
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        // 单击，触摸屏按下时立刻触发
-        Log.i(TAG, "onDown: ");
-        return true;
-    }
-
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        // 短按，触摸屏按下后片刻后抬起，会触发这个手势，如果迅速抬起则不会
-        Log.i(TAG, "onShowPress: ");
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        // 抬起，手指离开触摸屏时触发(长按、滚动、滑动时，不会触发这个手势)
-        Log.i(TAG, "onSingleTapUp: ");
-        if (isInPlaybackState() && mMediaController != null && (!isShowVolume || !isShowLight || isShowPosition)) {
-            toggleMediaControlsVisible();
-        }
-        return true;
-    }
-
-    // 滚动，触摸屏按下后移动
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.i(TAG, "onScroll: ");
-        if (mScreenState == SCREEN_FULL_SCREEN) {//判断是否是全屏
-            float downX = e1.getX();
-
-            float actuallyDy = e2.getY() - e1.getY();
-            float actuallyDx = e2.getX() - e1.getX();
-
-            float absDy = Math.abs(actuallyDy);
-            float absDx = Math.abs(actuallyDx);
-            //左右移动
-            if (absDx >= MIN_SCROLL && absDx > absDy) {
-                showMoveToPositionDialog();
-            }
-            //上下移动
-            if (Math.abs(distanceY) >= MIN_SCROLL && absDy > absDx) {
-                if (downX <= (mScreenHeight * 0.5f)) {
-                    //左边，改变声音
-                    Log.i(TAG, "onScroll: 开始改变声音");
-                    showVolumeDialog(distanceY);
-                } else {
-                    //右边改变亮度
-                    showLightDialog(distanceY);
-                }
-            }
-        }
-        return true;
-    }
-
-    private void onCancel() {
-        onUp();
-    }
-
-    private void onUp() {
-        dismissLightDialog();
-        dismissVolumeDialog();
-    }
-
-
-    //手势识别中不需要使用的方法
-    @Override
-    public void onLongPress(MotionEvent e) {
-    }
-
-    //手势识别中不需要使用的方法
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
-    }
-
-    /**
-     * 移动到相应位置
-     */
-    private void showMoveToPositionDialog() {
-        // TODO: 2018/2/26 xwt 移动到相应的位置
-        isShowPosition = true;
-
-    }
-
-
-    /**
-     * 显示声音控制对话框
-     */
-    private void showVolumeDialog(float deltaY) {
-
-        isShowVolume = true;
-        //记录滑动时候当前的声音
-        int currentVideoVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        if (deltaY < 0) {//向下滑动
-            currentVideoVolume--;
-        } else {//向下滑动
-            currentVideoVolume++;
-        }
-        //设置声音
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVideoVolume, 0);
-
-        if (mVolumeDialog == null) {
-            View view = LayoutInflater.from(mAppContext).inflate(R.layout.dialog_volume_controller, null);
-            mVolumeProgress = view.findViewById(R.id.pb_volume_progress);
-            mVolumeDialog = createDialogWithView(view, Gravity.START | Gravity.CENTER_VERTICAL);
-        }
-        if (!mVolumeDialog.isShowing()) {
-            mVolumeDialog.show();
-        }
-
-        //设置进度条
-        int nextVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        int volumePercent = (int) ((nextVolume * 1f / maxVolume) * 100f);
-        if (volumePercent > 100) {
-            volumePercent = 100;
-        } else if (volumePercent < 0) {
-            volumePercent = 0;
-        }
-        mVolumeProgress.setProgress(volumePercent);
-
-    }
-
-    /**
-     * 隐藏声音对话框
-     */
-    private void dismissVolumeDialog() {
-        if (mVolumeDialog != null) {
-            mVolumeDialog.dismiss();
-            isShowVolume = false;
-        }
-    }
-
-
-    /**
-     * 显示控制亮度对话框
-     */
-    private void showLightDialog(float deltaY) {
-        isShowLight = true;
-        float screenBrightness = 0;
-        //记录滑动前的亮度
-        WindowManager.LayoutParams lp = getWindow(getContext()).getAttributes();
-        if (lp.screenBrightness < 0) {
-            try {
-                screenBrightness = Settings.System.getInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            screenBrightness = lp.screenBrightness;
-        }
-
-        Log.i(TAG, "showLightDialog: --->screenBrightness" + screenBrightness);
-
-        if (deltaY < 0) {//向下滑动
-            screenBrightness -= 0.03f;
-        } else {//向下滑动
-            screenBrightness += 0.03f;
-        }
-        if (screenBrightness >= 1) {
-            lp.screenBrightness = 1f;
-        } else if (screenBrightness < 0) {
-            lp.screenBrightness = 0.1f;
-        } else {
-            lp.screenBrightness = screenBrightness;
-        }
-        getWindow(getContext()).setAttributes(lp);
-
-        //设置亮度百分比
-        if (mLightProgress == null) {
-            View view = LayoutInflater.from(mAppContext).inflate(R.layout.dialog_light_controller, null);
-            mLightProgress = view.findViewById(R.id.pb_light_progress);
-            mLightDialog = createDialogWithView(view, Gravity.END | Gravity.CENTER_VERTICAL);
-        }
-        if (!mLightDialog.isShowing()) {
-            mLightDialog.show();
-        }
-
-        int lightPercent = (int) (screenBrightness * 100f);
-        mLightProgress.setProgress(lightPercent);
-    }
-
-    private void dismissLightDialog() {
-        if (mLightDialog != null) {
-            mLightDialog.dismiss();
-            isShowLight = false;
-        }
-    }
-
-
-    /**
-     * 根据View与位置创建dialog
-     *
-     * @param localView 内容布局
-     * @param gravity   位置
-     */
-    public Dialog createDialogWithView(View localView, int gravity) {
-        Dialog dialog = new Dialog(getContext(), R.style.VideoProgress);
-        dialog.setContentView(localView);
-        Window window = dialog.getWindow();
-        window.addFlags(Window.FEATURE_ACTION_BAR);
-        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        window.setLayout(-2, -2);
-        window.setBackgroundDrawable(new ColorDrawable());
-        WindowManager.LayoutParams localLayoutParams = window.getAttributes();
-        localLayoutParams.gravity = gravity;
-        window.setAttributes(localLayoutParams);
-        return dialog;
-    }
-
 
     /**
      * 处理轨迹球事件
@@ -1039,7 +738,7 @@ public class IjkVideoView extends FrameLayout implements
         return super.onKeyDown(keyCode, event);
     }
 
-    private void toggleMediaControlsVisible() {
+    public void toggleMediaControlsVisible() {
         if (mMediaController.isShowing()) {
             mMediaController.hide();
         } else {
@@ -1159,7 +858,7 @@ public class IjkVideoView extends FrameLayout implements
         return 0;
     }
 
-    private boolean isInPlaybackState() {
+    public boolean isInPlaybackState() {
         return (mMediaPlayer != null &&
                 mCurrentState != STATE_ERROR &&
                 mCurrentState != STATE_IDLE &&
@@ -1203,39 +902,11 @@ public class IjkVideoView extends FrameLayout implements
         return ijkMediaPlayer;
     }
 
-    /**
-     * 进入全屏
-     */
-    public void enterFullScreen() {
-        //隐藏toolbar,并横屏
-        hideActionBar(getContext());
-        getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        ViewGroup contentView = getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
-        //将视图移除
-        parent = (ViewGroup) getParent();
-        parent.removeView(this);
-        //重新添加到当前视图
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        contentView.addView(this, params);
-        mScreenState = SCREEN_FULL_SCREEN;
+    public void setScreenState(int screenState) {
+        mScreenState = screenState;
     }
 
-    /**
-     * 退出全屏
-     */
-    public void exitFullScreen() {
-        showActionBar(getContext());
-        getActivity(getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ViewGroup contentView = getActivity(getContext()).findViewById(Window.ID_ANDROID_CONTENT);
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER);
-        contentView.removeView(this);
-        parent.addView(this, lp);
-        // 重写IjkVideoView,把事件监听等操作写在外层类中 这里不显示 遮罩是因为覆盖了。
-        mScreenState = SCREEN_TINY;
+    public int getScreenState() {
+        return mScreenState;
     }
-
-
 }

@@ -4,10 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.jennifer.andy.simpleeyes.AndyApplication;
 import com.jennifer.andy.simpleeyes.R;
 import com.jennifer.andy.simpleeyes.net.entity.ContentBean;
 import com.jennifer.andy.simpleeyes.player.IjkMediaController;
@@ -28,13 +26,10 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
     private ImageView mBackButton;
     private ImageView mNextButton;
     private ImageView mFullScreen;
-    private SeekBar mProgress;
 
     private TextView mEndTime;
     private TextView mCurrentTime;
 
-
-    private int mChangeProgress;
 
     public TinyControllerView(MediaController.MediaPlayerControl player, IjkMediaController controller, ContentBean currentVideoInfo, Context context) {
         super(player, controller, currentVideoInfo, context);
@@ -48,7 +43,6 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
         mBackButton = rootView.findViewById(R.id.iv_back);
         mNextButton = rootView.findViewById(R.id.iv_next);
         mFullScreen = rootView.findViewById(R.id.iv_full_screen);
-        mProgress = rootView.findViewById(R.id.sb_progress);
         mCurrentTime = rootView.findViewById(R.id.tv_currentTime);
         mEndTime = rootView.findViewById(R.id.tv_end_time);
 
@@ -58,14 +52,6 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
         mCurrentTime.setText(stringForTime(position));
         mEndTime.setText("/" + stringForTime(duration));
 
-        //初始化进度条
-        mProgress.setMax(1000);
-        if (duration >= 0 && mPlayer.getBufferPercentage() > 0) {
-            long progress = 1000L * position / duration;
-            int secondProgress = mPlayer.getBufferPercentage() * 10;
-            mProgress.setProgress((int) progress);
-            mProgress.setSecondaryProgress(secondProgress);
-        }
         updatePreNextButton();
 
     }
@@ -111,54 +97,10 @@ public class TinyControllerView extends ControllerView implements View.OnClickLi
         mNextButton.setOnClickListener(this);
         mBackButton.setOnClickListener(this);
         mFullScreen.setOnClickListener(this);
-
-        mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onStartTrackingTouch(SeekBar bar) {
-                //控制的时候停止更新进度条，同时禁止隐藏
-                setDragging(true);
-                mController.show(3600000);
-                mController.cancelFadeOut();
-
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar bar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    //更新当前播放时间
-                    long duration = mPlayer.getDuration();
-                    long newPosition = (duration * progress) / 1000L;
-                    mChangeProgress = progress;
-                    mCurrentTime.setText(stringForTime((int) newPosition));
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar bar) {
-                //定位都拖动位置
-                if (isNetWorkConnected(AndyApplication.INSTANCE)) {
-                    long newPosition = (mPlayer.getDuration() * mChangeProgress) / 1000L;
-                    mPlayer.seekTo((int) newPosition);
-                    mController.show();//开启延时隐藏
-                    setDragging(false);
-                } else {
-                    mPlayer.pause();
-                    mController.showErrorView();
-                }
-
-
-            }
-        });
-        mProgress.setPadding(0, 0, 0, 0);
-        mProgress.setMax(1000);
-
-
     }
 
     @Override
     public void updateProgress(int progress, int secondaryProgress) {
-        mProgress.setProgress(progress);
-        mProgress.setSecondaryProgress(secondaryProgress);
     }
 
     @Override
