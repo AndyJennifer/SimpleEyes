@@ -119,7 +119,6 @@ public class FullScreenControllerView extends ControllerView implements View.OnC
         });
         mProgress.setPadding(0, 0, 0, 0);
         mProgress.setMax(1000);
-
     }
 
     @Override
