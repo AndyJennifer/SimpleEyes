@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -129,12 +130,6 @@ public class IjkVideoView extends FrameLayout implements
     private int mVideoSarNum;
     private int mVideoSarDen;
 
-    private long mPrepareStartTime = 0;
-    private long mPrepareEndTime = 0;
-
-    private long mSeekStartTime = 0;
-    private long mSeekEndTime = 0;
-    private int mScreenWidth;
     private int mScreenHeight;
     private AudioManager mAudioManager;
     private GestureDetector mGestureDetector;
@@ -207,12 +202,12 @@ public class IjkVideoView extends FrameLayout implements
         //初始化状态
         mCurrentState = STATE_IDLE;
         mTargetState = STATE_IDLE;
-        mScreenWidth = getScreenWidth(getContext());
         mScreenHeight = getScreenHeight(getContext());
         mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
         if (mGestureDetector == null) {
             mGestureDetector = new GestureDetector(context, this);
         }
+        setBackgroundColor(Color.BLACK);
     }
 
     /**
@@ -244,6 +239,7 @@ public class IjkVideoView extends FrameLayout implements
                     renderView.setAspectRatio(mCurrentAspectRatio);
                 }
                 setRenderView(renderView);
+
                 break;
             }
             case RENDER_SURFACE_VIEW: {//surfaceView
@@ -360,7 +356,6 @@ public class IjkVideoView extends FrameLayout implements
         // we shouldn't clear the target state, because somebody might have
         // called start() previously
         release(false);
-
         AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
         am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
@@ -390,7 +385,6 @@ public class IjkVideoView extends FrameLayout implements
             bindSurfaceHolder(mMediaPlayer, mSurfaceHolder);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setScreenOnWhilePlaying(true);
-            mPrepareStartTime = System.currentTimeMillis();
             mMediaPlayer.prepareAsync();
 
 
@@ -419,8 +413,7 @@ public class IjkVideoView extends FrameLayout implements
     private void attachMediaController() {
         if (mMediaPlayer != null && mMediaController != null) {
             mMediaController.setMediaPlayer(this);
-            View anchorView = this.getParent() instanceof View ?
-                    (View) this.getParent() : this;
+            View anchorView = this.getParent() instanceof View ? (View) this.getParent() : this;
             mMediaController.setAnchorView(anchorView);
             mMediaController.setEnabled(isInPlaybackState());
         }
@@ -449,7 +442,6 @@ public class IjkVideoView extends FrameLayout implements
      */
     IMediaPlayer.OnPreparedListener mPreparedListener = new IMediaPlayer.OnPreparedListener() {
         public void onPrepared(IMediaPlayer mp) {
-            mPrepareEndTime = System.currentTimeMillis();
             mCurrentState = STATE_PREPARED;
 
             // Get the capabilities of the player for this stream
@@ -573,9 +565,6 @@ public class IjkVideoView extends FrameLayout implements
                     Log.d(TAG, "Error: " + framework_err + "," + impl_err);
                     mCurrentState = STATE_ERROR;
                     mTargetState = STATE_ERROR;
-//                    if (mMediaController != null) {
-//                        mMediaController.hide();
-//                    }
 
                     /* If an error handler has been supplied, use it and finish. */
                     if (mOnErrorListener != null) {
@@ -630,7 +619,6 @@ public class IjkVideoView extends FrameLayout implements
 
         @Override
         public void onSeekComplete(IMediaPlayer mp) {
-            mSeekEndTime = System.currentTimeMillis();
         }
     };
 
@@ -753,12 +741,11 @@ public class IjkVideoView extends FrameLayout implements
             mMediaPlayer.release();
             mMediaPlayer = null;
             mMediaController.hide();
-            mMediaController = null;
-            // REMOVED: mPendingSubtitleTracks.clear();
-            mCurrentState = STATE_IDLE;
             if (cleartargetstate) {
                 mTargetState = STATE_IDLE;
             }
+            setRenderView(null);
+            initRenders();
             AudioManager am = (AudioManager) mAppContext.getSystemService(Context.AUDIO_SERVICE);
             am.abandonAudioFocus(null);
             cancelProgressRunnable();
@@ -917,6 +904,7 @@ public class IjkVideoView extends FrameLayout implements
     private void dismissVolumeDialog() {
         if (mVolumeDialog != null) {
             mVolumeDialog.dismiss();
+            isShowVolume = false;
         }
     }
 
@@ -925,9 +913,8 @@ public class IjkVideoView extends FrameLayout implements
      * 显示控制亮度对话框
      */
     private void showLightDialog(float deltaY) {
-
+        isShowLight = true;
         float screenBrightness = 0;
-
         //记录滑动前的亮度
         WindowManager.LayoutParams lp = getWindow(getContext()).getAttributes();
         if (lp.screenBrightness < 0) {
@@ -973,6 +960,7 @@ public class IjkVideoView extends FrameLayout implements
     private void dismissLightDialog() {
         if (mLightDialog != null) {
             mLightDialog.dismiss();
+            isShowLight = false;
         }
     }
 
@@ -1151,7 +1139,6 @@ public class IjkVideoView extends FrameLayout implements
     @Override
     public void seekTo(int msec) {
         if (isInPlaybackState()) {
-            mSeekStartTime = System.currentTimeMillis();
             mMediaPlayer.seekTo(msec);
             mSeekWhenPrepared = 0;
         } else {
@@ -1244,9 +1231,9 @@ public class IjkVideoView extends FrameLayout implements
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER);
-        this.setLayoutParams(lp);
         contentView.removeView(this);
-        parent.addView(this);
+        parent.addView(this, lp);
+        // 重写IjkVideoView,把事件监听等操作写在外层类中 这里不显示 遮罩是因为覆盖了。
         mScreenState = SCREEN_TINY;
     }
 
