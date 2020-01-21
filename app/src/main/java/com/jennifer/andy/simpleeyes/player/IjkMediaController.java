@@ -24,8 +24,6 @@ import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent;
 
 import androidx.annotation.NonNull;
 
-import static com.jennifer.andy.simpleeyes.utils.ScreenUtilsKt.getScreenHeight;
-
 /**
  * Author:  andy.xwt
  * Date:    2018/1/9 22:29
@@ -53,15 +51,16 @@ public class IjkMediaController extends FrameLayout {
     private int mTotalCount;
     private int mCurrentIndex;
 
-    private int mCurrentViewState = TINY_VIEW;//默认情况下是小试图
+    private int mCurrentViewState = TINY_VIEW;//默认情况下是小视图
     private static final int TINY_VIEW = 0;
     private static final int FULL_SCREEN_VIEW = 1;
     private static final int ERROR_VIEW = 2;
 
-    private LayoutParams mTinyParams;
 
     private static final int sDefaultTimeout = 3500;//默认消失时间 3.5秒
     private ErrorControllerView mErrorView;
+
+    private static final String TAG = "IjkMediaController";
 
     /**
      * @param currentIndex     当前视频角标
@@ -119,36 +118,27 @@ public class IjkMediaController extends FrameLayout {
         requestFocus();
     }
 
-    //动态更新根布局的高度与宽度，注意：需要mAnchor != NULL
+    /**
+     * 当锚点布局发生改变是，动态更新根布局的高度与宽度
+     */
     private void updateFloatingWindowLayout() {
         int[] anchorPos = new int[2];
         mAnchor.getLocationOnScreen(anchorPos);
 
+
+        Log.i(TAG, "更新时: 锚点的宽--->" + mAnchor.getWidth() + "高---->" + mAnchor.getHeight());
+
+        //重新测量控制层的宽高
         mDecor.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(mAnchor.getHeight(), MeasureSpec.AT_MOST));
-        // TODO: 2020-01-21 xwt 获取锚点的位置，重新设置位置。
         WindowManager.LayoutParams p = mDecorLayoutParams;
         p.width = mAnchor.getWidth();
         p.x = anchorPos[0];
         p.y = anchorPos[1];
-        if (mCurrentViewState == TINY_VIEW) {
-            addTinyView();
-        } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
-            p.height = getScreenHeight(mContext);
-            addFullScreenView();
-        } else {
-            addErrorView();
-        }
-
-
+        p.height = mAnchor.getHeight();
+        Log.i(TAG, "更新后Window: 宽---->" + mAnchor.getWidth() + "高---->" + p.height);
     }
 
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mControllerView.initControllerListener();
-    }
 
     // 当锚点view布局发生改变的时候会调用
     private final OnLayoutChangeListener mLayoutChangeListener =
@@ -159,6 +149,7 @@ public class IjkMediaController extends FrameLayout {
                                            int oldBottom) {
                     updateFloatingWindowLayout();
                     if (mShowing) {
+                        updateControllerView();
                         mWindowManager.updateViewLayout(mDecor, mDecorLayoutParams);
                     }
                 }
@@ -183,28 +174,30 @@ public class IjkMediaController extends FrameLayout {
 
     public void setMediaPlayer(MediaController.MediaPlayerControl player) {
         mPlayer = player;
-        if (mControllerView != null) {
-            mControllerView.togglePause();
-        }
+        //在设置播放器的时候，默认设置为小视图
+        addTinyView();
+        mControllerView.togglePause();
     }
 
 
     /**
-     * 将控制层view与视屏播放view进行关联
+     * 将控制层view与锚点的关联
      */
     public void setAnchorView(View view) {
         if (mAnchor != null) {
             mAnchor.removeOnLayoutChangeListener(mLayoutChangeListener);
         }
-        mAnchor = (View) view.getParent();
+        mAnchor = view;
         if (mAnchor != null) {
             mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
         }
 
-        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
-        if (mTinyParams == null) {
-            mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
-        }
+        updateFloatingWindowLayout();
+        Log.i(TAG, "setAnchorView: 设置锚点时的宽高--->width--->" + "state" + mCurrentViewState + mDecorLayoutParams.width + "height--->" + mDecorLayoutParams.height);
+
+    }
+
+    private void updateControllerView() {
         if (mCurrentViewState == TINY_VIEW) {
             addTinyView();
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
@@ -212,20 +205,20 @@ public class IjkMediaController extends FrameLayout {
         } else {
             addErrorView();
         }
-
     }
 
     /**
      * 添加错误界面
      */
     private void addErrorView() {
-        mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        if (mErrorView == null) {
+            mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        }
         removeAllViews();
         if (mControllerView instanceof TinyControllerView) {
-            addView(mErrorView, mTinyParams);
+            addView(mErrorView);
         } else {
-            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            addView(mErrorView, layoutParams);
+            addView(mErrorView);
         }
     }
 
@@ -234,23 +227,24 @@ public class IjkMediaController extends FrameLayout {
      * 添加竖直控制层
      */
     private void addTinyView() {
+        mCurrentViewState = TINY_VIEW;
         if (mControllerView == null) {
             mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
         }
         removeAllViews();
-        addView(mControllerView.getRootView(), mTinyParams);
+        addView(mControllerView.getRootView());
     }
 
     /**
      * 添加全屏界面
      */
     private void addFullScreenView() {
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mCurrentViewState = FULL_SCREEN_VIEW;
         if (mControllerView == null) {
             mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
         }
         removeAllViews();
-        addView(mControllerView.getRootView(), layoutParams);
+        addView(mControllerView.getRootView());
     }
 
 
@@ -289,7 +283,6 @@ public class IjkMediaController extends FrameLayout {
      */
     public void show(int timeout) {
         if (!mShowing && mAnchor != null) {
-            updateFloatingWindowLayout();
             mWindowManager.addView(mDecor, mDecorLayoutParams);
             mShowing = true;
         }
@@ -298,6 +291,10 @@ public class IjkMediaController extends FrameLayout {
             postDelayed(mFadeOut, timeout);
         }
         mControllerView.show();
+
+        if (mControllerListener != null) {
+            mControllerListener.onShowController(true);
+        }
     }
 
     /**
@@ -320,6 +317,9 @@ public class IjkMediaController extends FrameLayout {
             Log.w("MediaController", "already removed");
         }
         mShowing = false;
+        if (mControllerListener != null) {
+            mControllerListener.onShowController(false);
+        }
     }
 
     /**
@@ -342,12 +342,11 @@ public class IjkMediaController extends FrameLayout {
             }
         }
         if (controllerView instanceof TinyControllerView) {
-            addView(controllerView.getRootView(), mTinyParams);
             mCurrentViewState = TINY_VIEW;
+            addView(controllerView.getRootView());
         } else {
             mCurrentViewState = FULL_SCREEN_VIEW;
-            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            addView(controllerView.getRootView(), layoutParams);
+            addView(controllerView.getRootView());
         }
         mControllerView = controllerView;
         mControllerView.show();
@@ -358,19 +357,17 @@ public class IjkMediaController extends FrameLayout {
      * 显示网络错误布局
      */
     public void showErrorView() {
-        mCurrentViewState = ERROR_VIEW;
-        removeAllViews();
         if (mErrorView == null) {
             mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
         }
+        removeAllViews();
+        mCurrentViewState = ERROR_VIEW;
         if (mControllerView instanceof TinyControllerView) {
-            addView(mErrorView, mTinyParams);
+            addView(mErrorView, mDecorLayoutParams);
         } else {
-            ViewGroup.LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            addView(mErrorView, layoutParams);
+            addView(mErrorView, mDecorLayoutParams);
         }
         if (!mShowing && mAnchor != null) {
-            updateFloatingWindowLayout();
             mWindowManager.addView(mDecor, mDecorLayoutParams);
             mShowing = true;
         }
@@ -408,6 +405,10 @@ public class IjkMediaController extends FrameLayout {
         return mTotalCount;
     }
 
+    public ControllerView getControllerView() {
+        return mControllerView;
+    }
+
     /**
      * 判断是否拥有上一个视频
      */
@@ -434,7 +435,14 @@ public class IjkMediaController extends FrameLayout {
     }
 
     public void updateProgressAndTime(VideoProgressEvent videoProgressEvent) {
-        mControllerView.updateProgressAndTime(videoProgressEvent);
+        if (mControllerView != null)
+            mControllerView.updateProgressAndTime(videoProgressEvent);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mControllerView.initControllerListener();
     }
 
     /**
@@ -471,5 +479,7 @@ public class IjkMediaController extends FrameLayout {
         //错误界面点击
         void onErrorViewClick();
 
+        //是否显示控制层
+        void onShowController(boolean isShowController);
     }
 }

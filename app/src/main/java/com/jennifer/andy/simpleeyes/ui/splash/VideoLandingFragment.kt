@@ -7,7 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.UserPreferences
-import com.jennifer.andy.simpleeyes.player.render.IRenderView.AR_ASPECT_FIT_PARENT
+import com.jennifer.andy.simpleeyes.player.render.IRenderView.Companion.AR_ASPECT_FIT_PARENT
 import com.jennifer.andy.simpleeyes.ui.MainActivity
 import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter

@@ -2,10 +2,12 @@ package com.jennifer.andy.simpleeyes.ui.video
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ProgressBar
+import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -15,7 +17,7 @@ import com.jennifer.andy.simpleeyes.entity.Content
 import com.jennifer.andy.simpleeyes.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.Extras
 import com.jennifer.andy.simpleeyes.player.IjkMediaController
-import com.jennifer.andy.simpleeyes.player.IjkVideoView
+import com.jennifer.andy.simpleeyes.player.IjkVideoViewWrapper
 import com.jennifer.andy.simpleeyes.player.event.VideoProgressEvent
 import com.jennifer.andy.simpleeyes.player.render.IRenderView
 import com.jennifer.andy.simpleeyes.rx.RxBus
@@ -27,6 +29,7 @@ import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.VideoDetailAuthorView
 import com.jennifer.andy.simpleeyes.widget.pull.head.VideoDetailHeadView
 import io.reactivex.functions.Consumer
+import tv.danmaku.ijk.media.player.IMediaPlayer
 import java.util.*
 
 
@@ -37,11 +40,9 @@ import java.util.*
  */
 class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(), VideoDetailView {
 
-    private val mPlaceImage by bindView<SimpleDraweeView>(R.id.iv_place_image)
     private val mBlurredImage by bindView<SimpleDraweeView>(R.id.iv_blurred)
-    private val mVideoView by bindView<IjkVideoView>(R.id.video_view)
-    private val mProgress by bindView<ProgressBar>(R.id.progress)
-    private val mHorizontalProgress by bindView<ProgressBar>(R.id.sb_progress)
+    private val ijkVideoViewWrapper by bindView<IjkVideoViewWrapper>(R.id.video_view_wrapper)
+    private val mSeekBar by bindView<SeekBar>(R.id.seek_bar)
     private val mRecycler by bindView<RecyclerView>(R.id.rv_video_recycler)
 
     private lateinit var mCurrentVideoInfo: ContentBean
@@ -50,6 +51,8 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private var mBackPressed = false
 
     private lateinit var ijkMediaController: IjkMediaController
+
+    private var mChangeProgress: Int = 0
 
 
     companion object {
@@ -78,20 +81,20 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     override fun initView(savedInstanceState: Bundle?) {
         initPlaceHolder()
         initMediaController()
+        initSeekBar()
         registerProgressEvent()
         playVideo()
     }
 
 
     private fun initPlaceHolder() {
-        mPlaceImage.setImageURI(mCurrentVideoInfo.cover.detail)
+        ijkVideoViewWrapper.setPlaceImageUrl(mCurrentVideoInfo.cover.detail)
         mBlurredImage.setImageURI(mCurrentVideoInfo.cover.blurred)
-        mHorizontalProgress.max = 1000
     }
 
-
     private fun initMediaController() {
-        ijkMediaController = IjkMediaController(mCurrentIndex, mVideoListInfo.size, mCurrentVideoInfo, mContext)
+        ijkMediaController = IjkMediaController(this)
+        ijkMediaController.initData(mCurrentIndex, mVideoListInfo.size, mCurrentVideoInfo)
         ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
             override fun onBackClick() {
                 finish()
@@ -104,11 +107,11 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             }
 
             override fun onFullScreenClick() {
-                mVideoView.enterFullScreen()
+                ijkVideoViewWrapper.enterFullScreen()
             }
 
             override fun onTinyScreenClick() {
-                mVideoView.exitFullScreen()
+                ijkVideoViewWrapper.exitFullScreen()
             }
 
             override fun onPreClick() {
@@ -121,8 +124,44 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
                 ijkMediaController.hide()
                 refreshVideo(getFutureVideo())
             }
+
+            override fun onShowController(isShowController: Boolean) {
+                mSeekBar.thumb = if (isShowController)
+                    getDrawable(R.drawable.ic_player_progress_handle)
+                else ColorDrawable(Color.TRANSPARENT)
+            }
+
         }
     }
+
+
+    private fun initSeekBar() {
+        mSeekBar.thumb = ColorDrawable(Color.TRANSPARENT)
+        mSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(bar: SeekBar) {
+                //控制的时候停止更新进度条，同时禁止隐藏
+                ijkVideoViewWrapper.setDragging(true)
+                ijkVideoViewWrapper.showControllerAllTheTime()
+
+            }
+
+            override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    //更新当前播放时间
+                    mChangeProgress = progress
+                }
+            }
+
+            override fun onStopTrackingTouch(bar: SeekBar) {
+                //定位都拖动位置
+                val newPosition = ijkVideoViewWrapper.getDuration() * mChangeProgress / 1000L
+                ijkVideoViewWrapper.seekTo(newPosition.toInt())
+                ijkVideoViewWrapper.showController()
+                ijkVideoViewWrapper.setDragging(false)
+            }
+        })
+    }
+
 
     /**
      * 重置视频信息
@@ -132,17 +171,16 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             mCurrentVideoInfo = videoInfo.data
 
             mRecycler.visibility = View.INVISIBLE
-            mPlaceImage.visibility = View.VISIBLE
-            mProgress.visibility = View.VISIBLE
+            ijkVideoViewWrapper.togglePlaceImage(true)
 
-            mHorizontalProgress.secondaryProgress = 0
-            mHorizontalProgress.progress = 0
+            mSeekBar.secondaryProgress = 0
+            mSeekBar.progress = 0
 
             initPlaceHolder()
 
             //重置视频播放信息
-            mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
-            mVideoView.start()
+            ijkVideoViewWrapper.setVideoPath(mCurrentVideoInfo.playUrl)
+            ijkVideoViewWrapper.start()
             //获取关联视频信息
             mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
         }
@@ -164,8 +202,11 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     private fun registerProgressEvent() {
         //注册进度条监听
         RxBus.register(this, VideoProgressEvent::class.java, Consumer {
-            mHorizontalProgress.progress = it.progress
-            mHorizontalProgress.secondaryProgress = it.secondaryProgress
+            //如果正在拖动的话，不更新进度条
+            if (!ijkVideoViewWrapper.isDragging()) {
+                mSeekBar.progress = it.progress
+            }
+            mSeekBar.secondaryProgress = it.secondaryProgress
         })
 
     }
@@ -175,40 +216,28 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      * 播放视频
      */
     private fun playVideo() {
+        with(ijkVideoViewWrapper) {
+            //设置视频准备完成监听
+            setOnPreparedListener(IMediaPlayer.OnPreparedListener {
+                resetType()
+                hidePlaceImage()
+            })
 
-        with(mVideoView) {
+            //设置视频播放失败监听
+            setOnErrorListener(IMediaPlayer.OnErrorListener { _, _, _ ->
+                showErrorView()
+                true
+            })
 
+            //设置视频播放完成监听
+            setOnCompletionListener(IMediaPlayer.OnCompletionListener {
+               mSeekBar.thumb = null
+            })
             //设置视频地址，并开始播放
             setVideoPath(mCurrentVideoInfo.playUrl)
+            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
             setMediaController(ijkMediaController)
             start()
-
-            //设置准备完成监听
-            setOnPreparedListener {
-                //隐藏进度条
-                mPlaceImage.handler.postDelayed({
-                    mPlaceImage.visibility = View.GONE
-                    mProgress.visibility = View.GONE
-                }, 500)
-
-                ijkMediaController.resetType()
-
-            }
-
-            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
-
-            //设置失败监听
-            setOnErrorListener { _, _, _ ->
-                mProgress.handler.postDelayed({
-                    mProgress.visibility = View.GONE
-                    ijkMediaController.showErrorView()
-                }, 1000)
-
-            }
-            //设置完成监听
-            setOnCompletionListener {
-
-            }
         }
         //获取相关视频信息
         mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
@@ -219,7 +248,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      * 添加标题
      */
     private fun getVideoDetailView(): View {
-        return VideoDetailHeadView(mContext).apply {
+        return VideoDetailHeadView(this).apply {
             setTitle(mCurrentVideoInfo.title)
             setCategoryAndTime(mCurrentVideoInfo.category, mCurrentVideoInfo.duration)
             setFavoriteCount(mCurrentVideoInfo.consumption.collectionCount)
@@ -235,21 +264,20 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
      * 设置相关视频信息
      */
     private fun getRelationVideoInfo(): View {
-        return VideoDetailAuthorView(mContext).apply { setVideoAuthorInfo(mCurrentVideoInfo.author) }
+        return VideoDetailAuthorView(this).apply { setVideoAuthorInfo(mCurrentVideoInfo.author) }
     }
 
     override fun getRelatedVideoInfoSuccess(itemList: MutableList<Content>) {
-
         with(mRecycler) {
             visibility = View.VISIBLE
 
-            layoutManager = LinearLayoutManager(mContext)
+            layoutManager = LinearLayoutManager(this@VideoDetailActivity)
 
             adapter = VideoDetailAdapter(itemList).apply {
                 addHeaderView(getVideoDetailView())
                 addHeaderView(getRelationVideoInfo())
                 openLoadAnimation(BaseQuickAdapter.ALPHAIN)
-                setFooterView(LayoutInflater.from(mContext).inflate(R.layout.item_the_end, null))
+                setFooterView(LayoutInflater.from(this@VideoDetailActivity).inflate(R.layout.item_the_end, null))
 
                 setOnItemClickListener { _, _, position ->
                     if (getItemViewType(position) != BaseQuickAdapter.HEADER_VIEW) {
@@ -278,16 +306,16 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
     override fun onPause() {
         super.onPause()
-        if (mVideoView.isPlaying) {
-            mVideoView.pause()
+        if (ijkVideoViewWrapper.isPlaying()) {
+            ijkVideoViewWrapper.pause()
         }
     }
 
     override fun onStop() {
         super.onStop()
         if (mBackPressed) {
-            mVideoView.stopPlayback()
-            mVideoView.release(true)
+            ijkVideoViewWrapper.stopPlayback()
+            ijkVideoViewWrapper.release(true)
         }
         RxBus.unRegister(this)
     }
