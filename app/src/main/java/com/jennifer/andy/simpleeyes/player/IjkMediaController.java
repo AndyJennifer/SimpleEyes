@@ -59,7 +59,6 @@ public class IjkMediaController extends FrameLayout {
     private static final int ERROR_VIEW = 2;
 
     private LayoutParams mTinyParams;
-    private LayoutParams mFullParams;
 
     private static final int sDefaultTimeout = 3500;//默认消失时间 3.5秒
     private ErrorControllerView mErrorView;
@@ -127,17 +126,13 @@ public class IjkMediaController extends FrameLayout {
 
         mDecor.measure(MeasureSpec.makeMeasureSpec(mAnchor.getWidth(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(mAnchor.getHeight(), MeasureSpec.AT_MOST));
-
+        // TODO: 2020-01-21 xwt 获取锚点的位置，重新设置位置。
         WindowManager.LayoutParams p = mDecorLayoutParams;
         p.width = mAnchor.getWidth();
-
-        p.x = anchorPos[0] + (mAnchor.getWidth() - p.width) / 2;
-        p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
-
-        removeAllViews();
-        ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
+        p.x = anchorPos[0];
+        p.y = anchorPos[1];
         if (mCurrentViewState == TINY_VIEW) {
-            addTinyView(mAnchorLayoutParams);
+            addTinyView();
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
             p.height = getScreenHeight(mContext);
             addFullScreenView();
@@ -195,7 +190,7 @@ public class IjkMediaController extends FrameLayout {
 
 
     /**
-     * 将控制层view与视屏播放view进行关联，并且将视屏播放view添加进控制层view
+     * 将控制层view与视屏播放view进行关联
      */
     public void setAnchorView(View view) {
         if (mAnchor != null) {
@@ -206,10 +201,12 @@ public class IjkMediaController extends FrameLayout {
             mAnchor.addOnLayoutChangeListener(mLayoutChangeListener);
         }
 
-        removeAllViews();
         ViewGroup.LayoutParams mAnchorLayoutParams = mAnchor.getLayoutParams();
+        if (mTinyParams == null) {
+            mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
+        }
         if (mCurrentViewState == TINY_VIEW) {
-            addTinyView(mAnchorLayoutParams);
+            addTinyView();
         } else if (mCurrentViewState == FULL_SCREEN_VIEW) {
             addFullScreenView();
         } else {
@@ -223,6 +220,7 @@ public class IjkMediaController extends FrameLayout {
      */
     private void addErrorView() {
         mErrorView = new ErrorControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
+        removeAllViews();
         if (mControllerView instanceof TinyControllerView) {
             addView(mErrorView, mTinyParams);
         } else {
@@ -235,11 +233,11 @@ public class IjkMediaController extends FrameLayout {
     /**
      * 添加竖直控制层
      */
-    private void addTinyView(ViewGroup.LayoutParams mAnchorLayoutParams) {
-        mTinyParams = new LayoutParams(mAnchorLayoutParams.width, mAnchorLayoutParams.height);
+    private void addTinyView() {
         if (mControllerView == null) {
             mControllerView = new TinyControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
         }
+        removeAllViews();
         addView(mControllerView.getRootView(), mTinyParams);
     }
 
@@ -247,11 +245,12 @@ public class IjkMediaController extends FrameLayout {
      * 添加全屏界面
      */
     private void addFullScreenView() {
-        mFullParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         if (mControllerView == null) {
             mControllerView = new FullScreenControllerView(mPlayer, this, mCurrentVideoInfo, mContext);
         }
-        addView(mControllerView.getRootView(), mFullParams);
+        removeAllViews();
+        addView(mControllerView.getRootView(), layoutParams);
     }
 
 
@@ -424,7 +423,7 @@ public class IjkMediaController extends FrameLayout {
     }
 
     /**
-     * 重置状态，最小化，与全屏
+     * 重置状态，最小化
      */
     public void resetType() {
         if (mControllerView instanceof TinyControllerView) {

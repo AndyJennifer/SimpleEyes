@@ -100,7 +100,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             override fun onNextClick() {
                 mCurrentIndex = ++mCurrentIndex
                 ijkMediaController.currentIndex = mCurrentIndex
-                ijkMediaController.hide()
                 refreshVideo(getFutureVideo())
             }
 
@@ -115,7 +114,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             override fun onPreClick() {
                 mCurrentIndex = --mCurrentIndex
                 ijkMediaController.currentIndex = mCurrentIndex
-                ijkMediaController.hide()
                 refreshVideo(getFutureVideo())
             }
 
@@ -141,8 +139,12 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
             mHorizontalProgress.progress = 0
 
             initPlaceHolder()
+
+            //重置视频播放信息
             mVideoView.setVideoPath(mCurrentVideoInfo.playUrl)
             mVideoView.start()
+            //获取关联视频信息
+            mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
         }
 
     }
@@ -208,7 +210,7 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
 
             }
         }
-        //获取相关视屏信息
+        //获取相关视频信息
         mPresenter.getRelatedVideoInfo(mCurrentVideoInfo.id)
     }
 
@@ -284,8 +286,6 @@ class VideoDetailActivity : BaseActivity<VideoDetailView, VideoDetailPresenter>(
     override fun onStop() {
         super.onStop()
         if (mBackPressed) {
-            //如果视频没有加载出来，就直接退出的话，这里会出现卡顿的情况，官方也没有给出解释
-            //issues: https://github.com/bilibili/ijkplayer/issues?utf8=✓&q=Anr
             mVideoView.stopPlayback()
             mVideoView.release(true)
         }
