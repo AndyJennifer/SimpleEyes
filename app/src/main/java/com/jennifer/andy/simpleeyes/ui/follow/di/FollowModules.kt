@@ -1,5 +1,6 @@
 package com.jennifer.andy.simpleeyes.ui.follow.di
 
+import com.jennifer.andy.simpleeyes.ui.follow.AllAuthorActivity
 import com.jennifer.andy.simpleeyes.ui.follow.FollowFragment
 import com.jennifer.andy.simpleeyes.ui.follow.FollowViewModel
 import com.jennifer.andy.simpleeyes.ui.follow.domain.FollowRemoteDataSource
@@ -23,6 +24,11 @@ val followModule = module {
     single { FollowUseCase(get()) }
 
     scope(named<FollowFragment>()) {
+        viewModel {
+            FollowViewModel(get())
+        }
+    }
+    scope(named<AllAuthorActivity>()) {
         viewModel {
             FollowViewModel(get())
         }

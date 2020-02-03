@@ -1,19 +1,19 @@
 package com.jennifer.andy.simpleeyes.ui.follow
 
 import android.os.Bundle
-import android.view.View
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.ActivityAllAuthorBinding
 import com.jennifer.andy.simpleeyes.net.entity.AndyInfo
-import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
 import com.jennifer.andy.simpleeyes.ui.base.adapter.BaseDataAdapter
-import com.jennifer.andy.simpleeyes.ui.follow.presenter.AllAuthorPresenter
-import com.jennifer.andy.simpleeyes.ui.follow.view.AllAuthorView
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.CustomLoadMoreView
 import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -22,46 +22,67 @@ import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
  * Description: 全部作者
  */
 
-class AllAuthorActivity : BaseActivity<AllAuthorView, AllAuthorPresenter>(), AllAuthorView {
+class AllAuthorActivity : BaseStateViewActivity<ActivityAllAuthorBinding>() {
 
-    private val mToolBar: RelativeLayout by bindView(R.id.tool_bar)
-    private val mStateView: MultipleStateView by bindView(R.id.multiple_state_view)
-    private val mRecyclerView: RecyclerView by bindView(R.id.rv_recycler)
     private var mAdapter: BaseDataAdapter? = null
 
+    private val mFollowViewModel: FollowViewModel by currentScope.viewModel(this)
+
     override fun initView(savedInstanceState: Bundle?) {
-        initToolBar(mToolBar, R.string.all_author)
-        mPresenter.getAllAuthorInfo()
+        initToolBar(mDataBinding.toolBar, R.string.all_author)
+        mFollowViewModel.getAllAuthor()
+        mFollowViewModel.observeViewState()
+                .autoDispose(this)
+                .subscribe(this::onNewStateArrive)
     }
 
 
-    override fun loadAllAuthorSuccess(it: AndyInfo) {
+    private fun onNewStateArrive(viewState: ViewState<AndyInfo>) {
+        when (viewState.action) {
+            Action.INIT -> {
+                showLoading()
+            }
+            Action.INIT_SUCCESS -> {
+                showContent()
+                loadAllAuthorSuccess(viewState.data!!)
+            }
+            Action.INIT_FAIL -> {
+                showNetError { mFollowViewModel.getFollowInfo() }
+            }
+            Action.LOAD_MORE_SUCCESS -> {
+                loadMoreSuccess(viewState.data!!)
+            }
+            Action.HAVE_NO_MORE -> {
+                showNoMore()
+            }
+            Action.LOAD_MORE_FAIL -> {
+                showNetError { mFollowViewModel.loadMoreAndyInfo() }
+            }
+        }
+    }
+
+    private fun loadAllAuthorSuccess(it: AndyInfo) {
         mAdapter = BaseDataAdapter(it.itemList)
         mAdapter?.setLoadMoreView(CustomLoadMoreView())
-        mAdapter?.setOnLoadMoreListener({ mPresenter.loadMoreInfo() }, mRecyclerView)
-        mRecyclerView.adapter = mAdapter
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mAdapter?.setOnLoadMoreListener({ mFollowViewModel.loadMoreAndyInfo() }, mDataBinding.rvRecycler)
+
+        mDataBinding.rvRecycler.adapter = mAdapter
+        mDataBinding.rvRecycler.layoutManager = LinearLayoutManager(this)
 
     }
 
-    override fun showNetError(onClickListener: View.OnClickListener) {
-        mStateView.showNetError(onClickListener)
-    }
 
-    override fun showContent() {
-        mStateView.showContent()
-    }
-
-    override fun loadMoreSuccess(data: AndyInfo) {
+    private fun loadMoreSuccess(data: AndyInfo) {
         mAdapter?.addData(data.itemList)
         mAdapter?.loadMoreComplete()
     }
 
 
-    override fun showNoMore() {
+    private fun showNoMore() {
         mAdapter?.loadMoreEnd()
     }
 
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.activity_all_author
 
