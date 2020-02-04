@@ -67,6 +67,65 @@ abstract class BaseDataBindActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     }
 
+
+    /**
+     * 设置当前 Activity 启动或者退出的动画模式
+     */
+    enum class TransitionMode {
+        LEFT,
+        RIGHT,
+        TOP,
+        BOTTOM,
+        SCALE,
+        FADE
+    }
+
+    /**
+     * 设置当前 Activity 进场动画
+     */
+    private fun overrideTransitionAnimation() {
+        if (toggleOverridePendingTransition()) {
+            when (getOverridePendingTransition()) {
+                TransitionMode.TOP -> overridePendingTransition(R.anim.top_in, R.anim.no_anim)
+                TransitionMode.BOTTOM -> overridePendingTransition(R.anim.bottom_in, R.anim.no_anim)
+                TransitionMode.LEFT -> overridePendingTransition(R.anim.left_in, R.anim.no_anim)
+                TransitionMode.RIGHT -> overridePendingTransition(R.anim.right_in, R.anim.no_anim)
+                TransitionMode.FADE -> overridePendingTransition(R.anim.fade_in, R.anim.no_anim)
+                TransitionMode.SCALE -> overridePendingTransition(R.anim.scale_in, R.anim.no_anim)
+            }
+        }
+    }
+
+    /**
+     * 设置当前 Activity 出场动画
+     */
+    override fun finish() {
+        super.finish()
+        if (toggleOverridePendingTransition()) {
+            when (getOverridePendingTransition()) {
+                TransitionMode.TOP -> overridePendingTransition(0, R.anim.top_out)
+                TransitionMode.BOTTOM -> overridePendingTransition(0, R.anim.bottom_out)
+                TransitionMode.LEFT -> overridePendingTransition(0, R.anim.left_out)
+                TransitionMode.RIGHT -> overridePendingTransition(0, R.anim.right_out)
+                TransitionMode.FADE -> overridePendingTransition(0, R.anim.fade_out)
+                TransitionMode.SCALE -> overridePendingTransition(0, R.anim.scale_out)
+            }
+        }
+
+    }
+
+
+    /**
+     * 是否有切换动画
+     */
+    protected open fun toggleOverridePendingTransition() = false
+
+    /**
+     * 获得切换动画的模式
+     */
+    protected open fun getOverridePendingTransition(): TransitionMode? = null
+
+
     /**
      * 初始化数据
      */

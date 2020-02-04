@@ -1,37 +1,37 @@
-package com.jennifer.andy.simpleeyes.ui.home.usecase
+package com.jennifer.andy.simpleeyes.ui.search.usecase
 
 import com.jennifer.andy.base.rx.error.globalHandleError
 import com.jennifer.andy.simpleeyes.base.usecase.LoadMoreUseCase
 import com.jennifer.andy.simpleeyes.net.result.Result
-import com.jennifer.andy.simpleeyes.ui.home.domain.HomeRepository
+import com.jennifer.andy.simpleeyes.ui.search.domain.SearchRepository
+
 
 /**
  * Author:  andy.xwt
- * Date:    2019-12-08 19:33
+ * Date:    2020-02-04 23:05
  * Description:
  */
-class HomeUseCase(private val homeRepository: HomeRepository) : LoadMoreUseCase(homeRepository) {
+
+class SearchUseCase(private val searchRepository: SearchRepository) : LoadMoreUseCase(searchRepository) {
 
 
     /**
-     * 加载首页信息
+     * 根据关键字搜索视频
      */
-    fun loadCategoryData() =
-            homeRepository
-                    .loadCategoryData()
+    fun searchVideoByWord(word: String) =
+            searchRepository.searchVideoByWord(word)
                     .compose(globalHandleError())
                     .map { Result.success(it) }
                     .onErrorReturn { Result.error(it) }
 
 
     /**
-     * 获取每日编辑精选
+     * 获取热门关键词
      */
-    fun getDailyElite() =
-            homeRepository.getDailyElite()
+    fun getHotWord() =
+            searchRepository.getHotWord()
                     .compose(globalHandleError())
                     .map { Result.success(it) }
                     .onErrorReturn { Result.error(it) }
-
 
 }

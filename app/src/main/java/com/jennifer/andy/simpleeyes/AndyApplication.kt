@@ -8,6 +8,7 @@ import com.jennifer.andy.simpleeyes.ui.author.di.authorModel
 import com.jennifer.andy.simpleeyes.ui.feed.di.feedModel
 import com.jennifer.andy.simpleeyes.ui.follow.di.followModule
 import com.jennifer.andy.simpleeyes.ui.home.di.homeModule
+import com.jennifer.andy.simpleeyes.ui.search.di.searchModule
 import com.squareup.leakcanary.LeakCanary
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -35,7 +36,8 @@ class AndyApplication : BaseApplication() {
                     homeModule,
                     feedModel,
                     authorModel,
-                    followModule))
+                    followModule,
+                    searchModule))
         }
     }
 

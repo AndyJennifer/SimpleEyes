@@ -18,10 +18,6 @@ class HomeRepository(private val homeRemoteDataSource: HomeRemoteDataSource)
      */
     fun loadCategoryData() = homeRemoteDataSource.loadCategoryInfo()
 
-    /**
-     * 根据关键字搜索视频
-     */
-    fun searchVideoByWord(word: String) = homeRemoteDataSource.searchVideoByWord(word)
 
     /**
      * 获取每日编辑精选
