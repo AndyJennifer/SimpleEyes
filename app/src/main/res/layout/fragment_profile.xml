@@ -1,108 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/ic_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_menu_more"/>
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_avatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_below="@+id/ic_more"
-            android:layout_centerHorizontal="true"
-            app:placeholderImage="@drawable/ic_default_avatar"
-            app:roundAsCircle="true"
-            app:roundingBorderColor="@color/gray_BBBBBB"
-            app:roundingBorderWidth="1dp"/>
-    </RelativeLayout>
-
-    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-        android:id="@+id/tv_click_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/click_login"
-        android:textColor="@color/black_444444"
-    />
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/shape_border_bottom"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
+            <ImageView
+                android:id="@+id/ic_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableStart="@drawable/ic_action_favorites_grey_without_padding"
-                android:drawablePadding="10dp"
-                android:text="@string/favorites"/>
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_menu_more" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_avatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_below="@+id/ic_more"
+                android:layout_centerHorizontal="true"
+                app:placeholderImage="@drawable/ic_default_avatar"
+                app:roundAsCircle="true"
+                app:roundingBorderColor="@color/gray_BBBBBB"
+                app:roundingBorderWidth="1dp" />
+        </RelativeLayout>
+
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:id="@+id/tv_click_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/click_login"
+            android:textColor="@color/black_444444" />
 
 
-        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_border_bottom"
+            android:orientation="horizontal">
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableStart="@drawable/ic_action_favorites_grey_without_padding"
+                    android:drawablePadding="10dp"
+                    android:text="@string/favorites" />
+
+
+            </FrameLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/divider" />
+
+            <FrameLayout
+                android:id="@+id/fl_comment_container"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableStart="@drawable/ic_action_reply_grey_without_padding"
+                    android:drawablePadding="10dp"
+                    android:text="@string/commit" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_profile_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/divider"/>
+            android:layout_weight="1" />
 
-        <FrameLayout
-            android:id="@+id/fl_comment_container"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableStart="@drawable/ic_action_reply_grey_without_padding"
-                android:drawablePadding="10dp"
-                android:text="@string/commit"/>
-
-        </FrameLayout>
-
+        <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:gravity="center"
+            android:text="@string/version"
+            android:textColor="@color/gray_BBBBBB"
+            android:textSize="11sp"
+            app:font_name="normal" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_profile_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"/>
-
-    <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:gravity="center"
-        android:text="@string/version"
-        android:textColor="@color/gray_BBBBBB"
-        android:textSize="11sp"
-        app:font_name="normal"/>
-</LinearLayout>
+</layout>

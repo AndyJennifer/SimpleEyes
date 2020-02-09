@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jennifer.andy.simpleeyes">
+    package="com.jennifer.andy.simpleeyes">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".AndyApplication"
@@ -19,110 +19,136 @@
         <activity android:name=".router.SchemeFilterActivity">
             <!--Scheme-->
             <intent-filter>
-                <data android:scheme="eyepetizer"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="eyepetizer" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
 
 
             <!-- 网页跳转到App-->
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="www.kaiyanapp.com"
-                    android:scheme="http"/>
+                    android:scheme="http" />
                 <data
                     android:host="www.kaiyanapp.com/"
-                    android:scheme="https"/>
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
         <!--加载界面-->
-        <activity android:name=".ui.splash.LandingActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/SplashTheme">
+        <activity
+            android:name=".ui.splash.LandingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
 
         <!--主界面-->
-        <activity android:name=".ui.MainActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--登录界面-->
-        <activity android:name=".ui.login.LoginActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--视频播放界面-->
-        <activity android:name=".ui.video.VideoDetailActivity"
-                  android:configChanges="orientation|keyboardHidden|screenSize"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.video.VideoDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <!--搜索界面-->
-        <activity android:name=".ui.search.SearchHotActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.search.SearchHotActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <!--每日精选-->
-        <activity android:name=".ui.home.DailyEliteActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.home.DailyEliteActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <!--全部分类-->
-        <activity android:name=".ui.feed.AllCategoryActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.AllCategoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--网页展示Activity-->
-        <activity android:name=".ui.feed.WebViewActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.WebViewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--根据视频id获取视频信息-->
-        <activity android:name=".ui.video.VideoInfoByIdActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.video.VideoInfoByIdActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <!--排行榜-->
-        <activity android:name=".ui.feed.RankListActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.RankListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--热门专题-->
-        <activity android:name=".ui.feed.TopicActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.TopicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--360全景-->
-        <activity android:name=".ui.feed.TagActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.TagActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--种类下tab信息-->
-        <activity android:name=".ui.feed.CategoryTabActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.CategoryTabActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--全部作者-->
-        <activity android:name=".ui.follow.AllAuthorActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.follow.AllAuthorActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--作者信息详细界面-->
-        <activity android:name=".ui.author.AuthorTagDetailActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.author.AuthorTagDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <!--缓存界面-->
+        <activity
+            android:name=".ui.profile.CacheActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!--公共RecyclerView界面，根据url加载数据-->
-        <activity android:name=".ui.common.CommonRecyclerActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.common.CommonRecyclerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
