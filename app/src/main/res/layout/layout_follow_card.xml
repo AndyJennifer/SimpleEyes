@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -10,9 +8,7 @@
     <com.jennifer.andy.simpleeyes.widget.EliteImageView
         android:id="@+id/elite_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:actualImageScaleType="focusCrop"
-        app:viewAspectRatio="1.33"/>
+        android:layout_height="wrap_content" />
 
     <com.jennifer.andy.simpleeyes.widget.ItemHeaderView
         android:id="@+id/item_header_view"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +19,7 @@
             android:layout_width="130dp"
             android:layout_height="80dp"
             android:layout_centerVertical="true"
-        />
+            app:actualImageScaleType="centerCrop" />
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
             android:id="@+id/tv_title"
@@ -32,7 +31,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textSize="15sp"
-            app:font_name="bold"/>
+            app:font_name="bold" />
 
 
         <com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
@@ -50,7 +49,7 @@
             android:maxLines="1"
             android:textColor="@color/SecondaryText"
             android:textSize="13sp"
-            app:font_name="normal"/>
+            app:font_name="normal" />
 
 
     </RelativeLayout>
@@ -60,5 +59,5 @@
         android:layout_height="1px"
         android:layout_below="@id/rl_head_container"
         android:layout_marginTop="10dp"
-        android:background="@color/divider"/>
+        android:background="@color/divider" />
 </RelativeLayout>

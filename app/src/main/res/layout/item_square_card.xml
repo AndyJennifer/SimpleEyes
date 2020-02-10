@@ -15,7 +15,7 @@
             android:id="@+id/iv_simple_image"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            app:actualImageScaleType="focusCrop"
+            app:actualImageScaleType="centerCrop"
             android:foreground="@drawable/selector_item_square_foreground"
             app:viewAspectRatio="1.33"/>
 

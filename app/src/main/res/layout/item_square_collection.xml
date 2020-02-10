@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="2dp"
-    android:layout_marginStart="2dp">
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp">
 
 
     <FrameLayout
@@ -17,8 +16,7 @@
             android:id="@+id/iv_simple_image"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            app:actualImageScaleType="focusCrop"
-            app:viewAspectRatio="1.33"/>
+            app:actualImageScaleType="centerCrop" />
 
     </FrameLayout>
 
@@ -29,6 +27,6 @@
         android:layout_centerInParent="true"
         android:textColor="@color/selector_item_square_text"
         android:textSize="14sp"
-        app:font_name="bold"/>
+        app:font_name="bold" />
 
 </RelativeLayout>
