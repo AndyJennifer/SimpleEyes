@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import com.jennifer.andy.base.utils.getElapseTimeForShow
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.net.entity.Content
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 
@@ -19,9 +18,9 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 class CollectionOfHorizontalScrollCardView : FrameLayout {
 
-    private val mEliteImageView by bindView<EliteImageView>(R.id.scroll_elite_view)
-    private val mTvTitle by bindView<CustomFontTextView>(R.id.scroll_tv_title)
-    private val mTvDesc by bindView<CustomFontTextView>(R.id.scroll_tv_desc)
+    private lateinit var mEliteImageView: EliteImageView
+    private lateinit var mTvTitle: CustomFontTextView
+    private lateinit var mTvDesc: CustomFontTextView
 
     constructor(context: Context) : this(context, null)
 
@@ -33,6 +32,9 @@ class CollectionOfHorizontalScrollCardView : FrameLayout {
 
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.layout_collection_of_horizontal_scroll_card, this, true)
+        mEliteImageView = findViewById(R.id.scroll_elite_view)
+        mTvTitle = findViewById(R.id.scroll_tv_title)
+        mTvDesc = findViewById(R.id.scroll_tv_desc)
     }
 
 

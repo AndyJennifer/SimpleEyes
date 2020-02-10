@@ -1,20 +1,17 @@
 package com.jennifer.andy.simpleeyes.ui.feed
 
 import android.os.Bundle
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.base.adapter.FragmentLazyPagerAdapter
 import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.databinding.ActivityTagBinding
+import com.jennifer.andy.simpleeyes.net.Api
 import com.jennifer.andy.simpleeyes.net.entity.TabDetailInfo
 import com.jennifer.andy.simpleeyes.net.entity.TabInfo
-import com.jennifer.andy.simpleeyes.net.Api
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.utils.bindView
-import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 
 
 /**
@@ -24,11 +21,7 @@ import com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
  */
 
 @Route(path = "/AndyJennifer/tag")
-class TagActivity : BaseAppCompatActivity() {
-
-    private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
-    private val mTabLayout: ShortTabLayout by bindView(R.id.tab_layout)
-    private val mViewPager: ViewPager by bindView(R.id.view_pager)
+class TagActivity : BaseDataBindActivity<ActivityTagBinding>() {
 
 
     @Autowired
@@ -41,7 +34,7 @@ class TagActivity : BaseAppCompatActivity() {
 
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
-        initToolBar(mToolbar, title)
+        initToolBar(mDataBinding.toolBar, title)
         initTabInfo()
     }
 
@@ -49,14 +42,18 @@ class TagActivity : BaseAppCompatActivity() {
         /**
          * 这里拼数据，是因为抓包的时候，没有发现获取tab信息的接口，所以自己拼的数据
          */
-        val tabInfoDetailList = mutableListOf<TabDetailInfo>()
-        tabInfoDetailList.add(TabDetailInfo(0, "按时间排序", "${Api.BASE_URL}api/v3/tag/videos?tagId=$id&strategy=date"))
-        tabInfoDetailList.add(TabDetailInfo(1, "按分享排序", "${Api.BASE_URL}api/v3/tag/videos?tagId=$id&strategy=shareCount"))
+        val tabInfoDetailList = mutableListOf<TabDetailInfo>().apply {
+            add(TabDetailInfo(0, "按时间排序", "${Api.BASE_URL}api/v3/tag/videos?tagId=$id&strategy=date"))
+            add(TabDetailInfo(1, "按分享排序", "${Api.BASE_URL}api/v3/tag/videos?tagId=$id&strategy=shareCount"))
+        }
+
         val tabInfo = TabInfo(tabInfoDetailList, 0)
 
-        mViewPager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
-        mViewPager.offscreenPageLimit = tabInfo.tabList.size
-        mTabLayout.setupWithViewPager(mViewPager)
+        with(mDataBinding) {
+            viewPager.adapter = FragmentLazyPagerAdapter(supportFragmentManager, initFragments(tabInfo), initTitles(tabInfo))
+            viewPager.offscreenPageLimit = tabInfo.tabList.size
+            mDataBinding.tabLayout.setupWithViewPager(mDataBinding.viewPager)
+        }
     }
 
     private fun initFragments(tabInfo: TabInfo): MutableList<Fragment> {

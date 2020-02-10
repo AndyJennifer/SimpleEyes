@@ -12,7 +12,7 @@ import com.jennifer.andy.base.utils.dip2px
 import com.jennifer.andy.base.utils.getDateString
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.FragmentLocalCoomonLandingBinding
-import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
+import com.jennifer.andy.simpleeyes.base.data.UserSettingLocalDataSource
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import java.util.*
 

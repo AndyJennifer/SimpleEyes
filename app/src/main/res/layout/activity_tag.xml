@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/layout_center_title_share_toolbar"/>
-
-
-    <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_border_bottom"
-        app:tabIndicatorColor="@color/black"
-        app:tabIndicatorHeight="3dp"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextAppearance="@style/TabAppearance"
-        app:tabTextColor="@color/black_alpha_4D">
-    </com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout>
-
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_layout"/>
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/layout_center_title_share_toolbar" />
+
+        <com.jennifer.andy.simpleeyes.widget.tab.ShortTabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_border_bottom"
+            app:tabIndicatorColor="@color/black"
+            app:tabIndicatorHeight="3dp"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextAppearance="@style/TabAppearance"
+            app:tabTextColor="@color/black_alpha_4D" />
 
 
-</LinearLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+</layout>

@@ -30,10 +30,10 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import static com.jennifer.andy.base.utils.ScreenUtilsKt.getScreenHeight;
 import static com.jennifer.andy.simpleeyes.player.IjkVideoView.SCREEN_FULL_SCREEN;
 import static com.jennifer.andy.simpleeyes.player.IjkVideoView.SCREEN_TINY;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getActivity;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.getWindow;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.hideActionBar;
-import static com.jennifer.andy.simpleeyes.utils.VideoPlayerUtilsKt.showActionBar;
+import static com.jennifer.andy.simpleeyes.player.VideoPlayerUtilsKt.getActivity;
+import static com.jennifer.andy.simpleeyes.player.VideoPlayerUtilsKt.getWindow;
+import static com.jennifer.andy.simpleeyes.player.VideoPlayerUtilsKt.hideActionBar;
+import static com.jennifer.andy.simpleeyes.player.VideoPlayerUtilsKt.showActionBar;
 
 /**
  * Author:  andy.xwt

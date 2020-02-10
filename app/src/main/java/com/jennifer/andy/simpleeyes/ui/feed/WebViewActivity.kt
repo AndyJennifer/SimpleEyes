@@ -6,14 +6,12 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ImageView
-import android.widget.RelativeLayout
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.databinding.ActivityWebviewBinding
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 
 
 /**
@@ -23,11 +21,7 @@ import com.jennifer.andy.simpleeyes.utils.bindView
  * jvmField注解注释的不会生成get与set方法。且为public
  */
 @Route(path = "/AndyJennifer/webview/")
-class WebViewActivity : BaseAppCompatActivity() {
-
-    private val mToolbar: RelativeLayout by bindView(R.id.tool_bar)
-    private val mIvShare: ImageView by bindView(R.id.iv_share)
-    private val mWebView: WebView by bindView(R.id.web_view)
+class WebViewActivity : BaseDataBindActivity<ActivityWebviewBinding>() {
 
     @Autowired
     @JvmField
@@ -57,16 +51,15 @@ class WebViewActivity : BaseAppCompatActivity() {
     @JvmField
     var shareable: Boolean? = false
 
-
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
-        initToolBar(mToolbar, title)
+        initToolBar(mDataBinding.toolBar, title)
         initWebView()
     }
 
     private fun initWebView() {
 
-        mWebView.apply {
+        mDataBinding.webView.apply {
 
             settings.apply {
                 javaScriptEnabled = true

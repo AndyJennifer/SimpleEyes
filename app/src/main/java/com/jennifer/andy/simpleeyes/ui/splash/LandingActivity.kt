@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.databinding.ActivityLandingBinding
-import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
+import com.jennifer.andy.simpleeyes.base.data.UserSettingLocalDataSource
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 
 

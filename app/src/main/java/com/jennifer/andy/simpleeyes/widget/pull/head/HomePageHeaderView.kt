@@ -15,7 +15,6 @@ import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.ui.home.DailyEliteActivity
 import com.jennifer.andy.simpleeyes.ui.search.SearchHotActivity
 import com.jennifer.andy.simpleeyes.ui.video.VideoDetailActivity
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 import com.jennifer.andy.simpleeyes.widget.image.imageloader.FrescoImageLoader
 import com.youth.banner.Banner
@@ -31,12 +30,12 @@ import java.util.*
 
 class HomePageHeaderView : FrameLayout {
 
-    private val mBanner: Banner by bindView(R.id.head_banner)
-    private val mTitle: CustomFontTypeWriterTextView by bindView(R.id.tv_title)
-    private val mText: CustomFontTypeWriterTextView by bindView(R.id.tv_text)
-    private val mHeadRefreshView: HeaderRefreshView by bindView(R.id.head_refresh)
-    private val mIvSearch: ImageView by bindView(R.id.iv_search)
-    private val mMoreContainer: RelativeLayout by bindView(R.id.rl_more_container)
+    private val mBanner: Banner
+    private val mTitle: CustomFontTypeWriterTextView
+    private val mText: CustomFontTypeWriterTextView
+    private val mHeadRefreshView: HeaderRefreshView
+    private val mIvSearch: ImageView
+    private val mMoreContainer: RelativeLayout
 
     private lateinit var mTopIssue: TopIssue
     private lateinit var mBaseFragment: BaseDataBindFragment<*>
@@ -50,6 +49,12 @@ class HomePageHeaderView : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.layout_category_head_view, this, true)
+        mBanner = findViewById(R.id.head_banner)
+        mTitle = findViewById(R.id.tv_title)
+        mText = findViewById(R.id.tv_text)
+        mHeadRefreshView = findViewById(R.id.head_refresh)
+        mIvSearch = findViewById(R.id.iv_search)
+        mMoreContainer = findViewById(R.id.rl_more_container)
         init()
     }
 

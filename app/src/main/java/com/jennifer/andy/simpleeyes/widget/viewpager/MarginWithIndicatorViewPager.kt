@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.jennifer.andy.base.utils.dip2px
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.net.entity.Content
-import com.jennifer.andy.base.utils.dip2px
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.CollectionOfHorizontalScrollCardView
 import com.rd.PageIndicatorView
 
@@ -24,8 +23,8 @@ import com.rd.PageIndicatorView
 
 class MarginWithIndicatorViewPager : FrameLayout {
 
-    private val mViewPager: ViewPager by bindView(R.id.vp_indicator_pager)
-    private val mIndicator: PageIndicatorView by bindView(R.id.pageIndicatorView)
+    private val mViewPager: ViewPager
+    private val mIndicator: PageIndicatorView
 
     private lateinit var mItemList: MutableList<Content>
     lateinit var pageViewClickListener: (position: Int) -> Unit
@@ -36,6 +35,8 @@ class MarginWithIndicatorViewPager : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.layout_margin_with_indicator_pager, this, true)
+        mViewPager = findViewById(R.id.vp_indicator_pager)
+        mIndicator = findViewById(R.id.pageIndicatorView)
     }
 
     /**

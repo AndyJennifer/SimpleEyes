@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.pull.refresh.PullRefreshView
 import kotlin.math.abs
@@ -21,10 +20,10 @@ import kotlin.math.abs
 
 class EliteHeaderView : PullRefreshView {
 
-    private val mHeadInner: ImageView by bindView(R.id.iv_head_inner)
-    private val mHeadOuter: ImageView by bindView(R.id.iv_head_outer)
+    private lateinit var mHeadInner: ImageView
+    private lateinit var mHeadOuter: ImageView
+    private lateinit var mLoadingMessage: CustomFontTextView
 
-    private val mLoadingMessage: CustomFontTextView by bindView(R.id.tv_loading_msg)
     private var mRotationAnimator: ValueAnimator? = null
 
     private var mYDistance = 0f
@@ -43,6 +42,9 @@ class EliteHeaderView : PullRefreshView {
 
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.refresh_daily_elite_header, this, true)
+        mHeadInner = findViewById(R.id.iv_head_inner)
+        mHeadOuter = findViewById(R.id.iv_head_outer)
+        mLoadingMessage = findViewById(R.id.tv_loading_msg)
     }
 
     /**

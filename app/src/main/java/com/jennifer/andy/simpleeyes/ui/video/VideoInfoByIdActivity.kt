@@ -7,11 +7,16 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.alibaba.android.arouter.launcher.ARouter
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.net.entity.ContentBean
+import com.jennifer.andy.simpleeyes.databinding.ActivityVideoinfoByIdBinding
 import com.jennifer.andy.simpleeyes.net.Extras
-import com.jennifer.andy.simpleeyes.ui.base.BaseActivity
-import com.jennifer.andy.simpleeyes.ui.video.presenter.VideoInfoByIdPresenter
-import com.jennifer.andy.simpleeyes.ui.video.view.VideoInfoByIdView
+import com.jennifer.andy.simpleeyes.net.entity.ContentBean
+import com.jennifer.andy.simpleeyes.ui.base.BaseStateViewActivity
+import com.jennifer.andy.simpleeyes.ui.base.ViewState
+import com.jennifer.andy.simpleeyes.ui.base.action.Action
+import com.jennifer.andy.simpleeyes.widget.state.MultipleStateView
+import com.uber.autodispose.android.lifecycle.autoDispose
+import org.koin.androidx.scope.currentScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
@@ -21,23 +26,48 @@ import com.jennifer.andy.simpleeyes.ui.video.view.VideoInfoByIdView
  */
 
 @Route(path = "/AndyJennifer/detail")
-class VideoInfoByIdActivity : BaseActivity<VideoInfoByIdView, VideoInfoByIdPresenter>(), VideoInfoByIdView {
+class VideoInfoByIdActivity : BaseStateViewActivity<ActivityVideoinfoByIdBinding>() {
+
 
     @Autowired
     @JvmField
     var id: String? = null
 
+    private val mVideoViewModel: VideoViewModel by currentScope.viewModel(this)
+
     override fun initView(savedInstanceState: Bundle?) {
         ARouter.getInstance().inject(this)
-        mPresenter.getVideoInfoById(id!!)
+        bindObserve()
+        mVideoViewModel.getVideoInfoById(id!!)
     }
 
-    override fun getVideoInfoSuccess(contentBean: ContentBean) {
+    private fun bindObserve() {
+        mVideoViewModel.observeVideoInfo()
+                .autoDispose(this)
+                .subscribe(this::onRelativeVideoInfoStateArrive)
+    }
+
+    private fun onRelativeVideoInfoStateArrive(viewState: ViewState<ContentBean>) {
+        when (viewState.action) {
+            Action.INIT_SUCCESS -> {
+                getVideoInfoSuccess(viewState.data!!)
+            }
+
+            Action.INIT_FAIL -> {
+                showNetError { mVideoViewModel.getVideoInfoById(id!!) }
+            }
+
+        }
+    }
+
+
+    private fun getVideoInfoSuccess(contentBean: ContentBean) {
 
         val bundle = Bundle().apply {
             putSerializable(Extras.VIDEO_INFO, contentBean)
             putSerializable(Extras.VIDEO_LIST_INFO, arrayListOf<Any>())
         }
+
         ARouter.getInstance()
                 .build("/pgc/detail")
                 .with(bundle)
@@ -48,6 +78,7 @@ class VideoInfoByIdActivity : BaseActivity<VideoInfoByIdView, VideoInfoByIdPrese
                 })
     }
 
+    override fun getMultipleStateView(): MultipleStateView = mDataBinding.multipleStateView
 
     override fun getContentViewLayoutId() = R.layout.activity_videoinfo_by_id
 

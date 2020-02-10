@@ -1,11 +1,10 @@
 package com.jennifer.andy.simpleeyes.ui.login
 
 import android.os.Bundle
-import android.widget.ImageView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.ui.base.BaseAppCompatActivity
-import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.databinding.ActivityLoginBinding
+import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindActivity
 
 
 /**
@@ -14,13 +13,10 @@ import com.jennifer.andy.simpleeyes.utils.bindView
  * Description:
  */
 @Route(path = "/github/Login")
-class LoginActivity : BaseAppCompatActivity() {
-
-    private val mIvClose: ImageView by bindView(R.id.iv_close)
-
+class LoginActivity : BaseDataBindActivity<ActivityLoginBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
-        mIvClose.setOnClickListener { finish() }
+        mDataBinding.ivClose.setOnClickListener { finish() }
     }
 
     override fun getContentViewLayoutId() = R.layout.activity_login

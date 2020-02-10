@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.bindView
 
 
 /**
@@ -18,7 +17,7 @@ import com.jennifer.andy.simpleeyes.utils.bindView
 
 class NetLoadingView : FrameLayout {
 
-    private val mHeadInner by bindView<ImageView>(R.id.iv_head_inner)
+    private val mHeadInner: ImageView
     private lateinit var mRotationAnimator: ObjectAnimator
 
     constructor(context: Context) : this(context, null)
@@ -27,6 +26,7 @@ class NetLoadingView : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_loading_view, this)
+        mHeadInner = findViewById(R.id.iv_head_inner)
         doInnerEyeAnimator()
     }
 

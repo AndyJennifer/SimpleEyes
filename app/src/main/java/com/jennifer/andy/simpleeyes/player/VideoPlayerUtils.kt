@@ -1,4 +1,4 @@
-package com.jennifer.andy.simpleeyes.utils
+package com.jennifer.andy.simpleeyes.player
 
 import android.app.Activity
 import android.content.Context

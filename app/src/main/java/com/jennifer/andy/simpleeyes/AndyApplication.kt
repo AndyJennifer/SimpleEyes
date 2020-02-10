@@ -5,10 +5,12 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.jennifer.andy.base.application.BaseApplication
 import com.jennifer.andy.simpleeyes.ui.author.di.authorModel
+import com.jennifer.andy.simpleeyes.ui.common.di.commonModel
 import com.jennifer.andy.simpleeyes.ui.feed.di.feedModel
 import com.jennifer.andy.simpleeyes.ui.follow.di.followModule
 import com.jennifer.andy.simpleeyes.ui.home.di.homeModule
 import com.jennifer.andy.simpleeyes.ui.search.di.searchModule
+import com.jennifer.andy.simpleeyes.ui.video.di.videoModule
 import com.squareup.leakcanary.LeakCanary
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -23,22 +25,13 @@ import org.koin.core.logger.Level
  */
 
 class AndyApplication : BaseApplication() {
+
     override fun onCreate() {
         super.onCreate()
         initARoute()
         initFresco()
         initLeakCanary()
-
-        startKoin {
-            androidLogger(Level.DEBUG)
-            androidContext(this@AndyApplication)
-            modules(listOf(
-                    homeModule,
-                    feedModel,
-                    authorModel,
-                    followModule,
-                    searchModule))
-        }
+        initKoin()
     }
 
     /**
@@ -70,6 +63,17 @@ class AndyApplication : BaseApplication() {
             return
         }
         LeakCanary.install(this)
+    }
+
+    private fun initKoin() {
+        startKoin {
+            androidLogger(Level.DEBUG)
+            androidContext(this@AndyApplication)
+            modules(listOf(
+                    homeModule, feedModel, authorModel,
+                    followModule, searchModule, videoModule,
+                    commonModel))
+        }
     }
 
 

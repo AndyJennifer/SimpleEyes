@@ -1,77 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="200dp">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/iv_blurred"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:actualImageScaleType="focusCrop"
-                app:failureImage="@drawable/shape_video_detail_placeholder"
-                app:placeholderImage="@drawable/shape_video_detail_placeholder"
-                app:placeholderImageScaleType="focusCrop" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/video_player_bg_color" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_video_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="220dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="match_parent">
 
-            <com.jennifer.andy.simpleeyes.player.IjkVideoViewWrapper
-                android:id="@+id/video_view_wrapper"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="200dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_blurred"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:actualImageScaleType="focusCrop"
+                    app:failureImage="@drawable/shape_video_detail_placeholder"
+                    app:placeholderImage="@drawable/shape_video_detail_placeholder"
+                    app:placeholderImageScaleType="focusCrop" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/video_player_bg_color" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_video_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="11dp">
+            android:layout_height="220dp">
 
-            <SeekBar
-                android:id="@+id/sb_progress"
-                style="@style/ProgressBarStyle"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@color/black_translucent_60"
-                android:max="1000"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp" />
-        </FrameLayout>
+                android:layout_height="200dp">
 
-    </RelativeLayout>
+                <com.jennifer.andy.simpleeyes.player.IjkVideoViewWrapper
+                    android:id="@+id/video_view_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="11dp">
+
+                <SeekBar
+                    android:id="@+id/seek_bar"
+                    style="@style/ProgressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/black_translucent_60"
+                    android:max="1000"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp" />
+            </FrameLayout>
+
+        </RelativeLayout>
 
 
-</FrameLayout>
+    </FrameLayout>
+</layout>

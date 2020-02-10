@@ -31,7 +31,6 @@ ext {
             logging_interceptor          : "4.2.0",
             adapter_rxjava2              : "2.4.0",
 
-            fragmentationx               : "1.0.1",
 
             BaseRecyclerViewAdapterHelper: "2.9.44",
 
@@ -90,8 +89,6 @@ ext {
             converter_gson                    : [group: 'com.squareup.retrofit2', name: 'converter-gson', version: versions.converter_gson],
             adapter_rxjava2                   : [group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: versions.adapter_rxjava2],
             logging_interceptor               : [group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: versions.logging_interceptor],
-
-            fragmentationx                    : [group: 'me.yokeyword', name: 'fragmentationx', version: versions.fragmentationx],
 
             BaseRecyclerViewAdapterHelper     : [group: 'com.github.CymChad', name: 'BaseRecyclerViewAdapterHelper', version: versions.BaseRecyclerViewAdapterHelper],
 

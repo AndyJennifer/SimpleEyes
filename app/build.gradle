@@ -72,10 +72,6 @@ dependencies {
     //constraintlayout
     implementation libs.androidx_constraintlayout
 
-
-    //fragmentation
-    implementation libs.fragmentationx
-
     //recyclerView
     implementation libs.BaseRecyclerViewAdapterHelper
 

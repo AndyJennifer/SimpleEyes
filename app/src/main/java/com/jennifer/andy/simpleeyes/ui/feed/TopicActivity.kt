@@ -77,7 +77,6 @@ class TopicActivity : BaseStateViewActivity<ActivityTopicBinding>() {
     private fun showGetTopicInfoSuccess(itemList: MutableList<Content>) {
         if (mAdapter == null) {
             mAdapter = BaseDataAdapter(itemList)
-            mDataBinding.rvRecycler
             mAdapter?.setOnLoadMoreListener({ mTopicViewModel.loadMoreInfo() }, mDataBinding.rvRecycler)
             mAdapter?.setLoadMoreView(CustomLoadMoreView())
             mDataBinding.rvRecycler.adapter = mAdapter

@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.bindView
 
 
 /**
@@ -24,8 +23,9 @@ class BottomItemLayout : LinearLayout {
     private var mSelectedTextColor = resources.getColor(R.color.colorPrimaryDark)
     private var mUnselectedTextColor = resources.getColor(R.color.SecondaryText)
 
-    private val mIcon by bindView<ImageView>(R.id.iv_image)
-    private val mIconTitle by bindView<TextView>(R.id.tv_title)
+    private lateinit var mIcon: ImageView
+    private lateinit var mIconTitle: TextView
+
     private var mSelectedDrawable: Drawable? = null
     private var mUnSelectedDrawable: Drawable? = null
     private var mTitle: String? = null
@@ -42,6 +42,8 @@ class BottomItemLayout : LinearLayout {
 
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.layout_bottom_item, this, true)
+        mIcon = findViewById(R.id.iv_image)
+        mIconTitle = findViewById(R.id.tv_title)
         gravity = Gravity.CENTER
     }
 

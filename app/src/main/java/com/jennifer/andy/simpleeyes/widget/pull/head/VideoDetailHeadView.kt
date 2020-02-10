@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.alibaba.android.arouter.launcher.ARouter
-import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.datasource.UserSettingLocalDataSource
 import com.jennifer.andy.base.utils.getElapseTimeForShow
-import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.R
+import com.jennifer.andy.simpleeyes.base.data.UserSettingLocalDataSource
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 
@@ -23,13 +22,12 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTypeWriterTextView
 
 class VideoDetailHeadView : FrameLayout, View.OnClickListener {
 
-    private val mTitle by bindView<CustomFontTypeWriterTextView>(R.id.tv_title)
-    private val mTvTime by bindView<CustomFontTypeWriterTextView>(R.id.tv_time)
-    private val mDescription by bindView<CustomFontTypeWriterTextView>(R.id.tv_desc)
-
-    private val mFavorite by bindView<CustomFontTextView>(R.id.tv_favorite)
-    private val mShare by bindView<CustomFontTextView>(R.id.tv_share)
-    private val mReply by bindView<CustomFontTextView>(R.id.tv_reply)
+    private lateinit var mTitle: CustomFontTypeWriterTextView
+    private lateinit var mTvTime: CustomFontTypeWriterTextView
+    private lateinit var mDescription: CustomFontTypeWriterTextView
+    private lateinit var mFavorite: CustomFontTextView
+    private lateinit var mShare: CustomFontTextView
+    private lateinit var mReply: CustomFontTextView
 
     constructor(context: Context) : this(context, null)
 
@@ -41,6 +39,14 @@ class VideoDetailHeadView : FrameLayout, View.OnClickListener {
 
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.layout_video_detail_head, this, true)
+
+        mTitle = findViewById(R.id.tv_title)
+        mTvTime = findViewById(R.id.tv_time)
+        mDescription = findViewById(R.id.tv_desc)
+        mFavorite = findViewById(R.id.tv_favorite)
+        mShare = findViewById(R.id.tv_share)
+        mReply = findViewById(R.id.tv_reply)
+
         mFavorite.setOnClickListener(this)
         mShare.setOnClickListener(this)
         mReply.setOnClickListener(this)

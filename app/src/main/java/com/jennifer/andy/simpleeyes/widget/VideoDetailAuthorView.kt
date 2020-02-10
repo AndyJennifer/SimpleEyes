@@ -9,9 +9,8 @@ import android.widget.FrameLayout
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.view.SimpleDraweeView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.net.entity.AuthorBean
 import com.jennifer.andy.simpleeyes.net.Extras
-import com.jennifer.andy.simpleeyes.utils.bindView
+import com.jennifer.andy.simpleeyes.net.entity.AuthorBean
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 
@@ -23,10 +22,10 @@ import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 
 class VideoDetailAuthorView : FrameLayout, View.OnClickListener {
 
-    private val mIvImage by bindView<SimpleDraweeView>(R.id.iv_image)
-    private val mTvTitle by bindView<CustomFontTextView>(R.id.tv_title)
-    private val mDescription by bindView<CustomFontTextView>(R.id.tv_desc)
-    private val mAddFollow by bindView<CustomFontTextView>(R.id.tv_follow)
+    private lateinit var mIvImage: SimpleDraweeView
+    private lateinit var mTvTitle: CustomFontTextView
+    private lateinit var mDescription: CustomFontTextView
+    private lateinit var mAddFollow: CustomFontTextView
 
 
     private lateinit var mTitle: String
@@ -42,6 +41,10 @@ class VideoDetailAuthorView : FrameLayout, View.OnClickListener {
 
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.layout_video_author_head, this, true)
+        mIvImage = findViewById(R.id.iv_image)
+        mTvTitle = findViewById(R.id.tv_title)
+        mDescription = findViewById(R.id.tv_desc)
+        mAddFollow = findViewById(R.id.tv_follow)
         setOnClickListener(this)
     }
 

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
 import com.alibaba.android.arouter.launcher.ARouter
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.drawee.view.SimpleDraweeView
@@ -16,7 +15,6 @@ import com.jennifer.andy.base.utils.getTimeStr
 import com.jennifer.andy.simpleeyes.R
 import com.jennifer.andy.simpleeyes.net.entity.ContentBean
 import com.jennifer.andy.simpleeyes.net.entity.Header
-import com.jennifer.andy.simpleeyes.utils.bindView
 import com.jennifer.andy.simpleeyes.widget.font.CustomFontTextView
 import com.jennifer.andy.simpleeyes.widget.font.FontType
 import java.util.*
@@ -29,13 +27,14 @@ import java.util.*
  */
 class ItemHeaderView : FrameLayout {
 
-    private val tvTitle by bindView<CustomFontTextView>(R.id.tv_title)
-    private val tvSubTitle by bindView<CustomFontTextView>(R.id.tv_sub_title)
-    private val tvDesc by bindView<CustomFontTextView>(R.id.tv_desc)
-    private val tvFocus by bindView<CustomFontTextView>(R.id.tv_focus)
-    private val ivMore by bindView<ImageView>(R.id.iv_more)
-    private val imageView by bindView<SimpleDraweeView>(R.id.iv_source)
-    private val mTvDate by bindView<TextView>(R.id.tv_date)
+    private lateinit var tvTitle: CustomFontTextView
+    private lateinit var tvSubTitle: CustomFontTextView
+    private lateinit var tvDesc: CustomFontTextView
+    private lateinit var tvFocus: CustomFontTextView
+
+    private lateinit var ivMore: ImageView
+    private lateinit var imageView: SimpleDraweeView
+    private lateinit var mTvDate: CustomFontTextView
 
     constructor(context: Context) : this(context, null)
 
@@ -47,6 +46,13 @@ class ItemHeaderView : FrameLayout {
 
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.layout_common_text, this, true)
+        tvTitle = findViewById(R.id.tv_title)
+        tvSubTitle = findViewById(R.id.tv_sub_title)
+        tvDesc = findViewById(R.id.tv_desc)
+        tvFocus = findViewById(R.id.tv_focus)
+        ivMore = findViewById(R.id.iv_more)
+        imageView = findViewById(R.id.iv_source)
+        mTvDate = findViewById(R.id.tv_date)
     }
 
 

@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.utils.bindView
 
 
 /**
@@ -18,8 +17,8 @@ import com.jennifer.andy.simpleeyes.utils.bindView
 
 class SearchHotRemindView : FrameLayout {
 
-    private val mTitle: TextView by bindView(R.id.tv_title)
-    private val mResult: TextView by bindView(R.id.tv_result)
+    private val mTitle: TextView
+    private val mResult: TextView
 
     constructor(context: Context) : this(context, null)
 
@@ -27,6 +26,8 @@ class SearchHotRemindView : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.layout_search_hot_remind_view, this)
+        mTitle = findViewById(R.id.tv_title)
+        mResult = findViewById(R.id.tv_result)
     }
 
     /**
