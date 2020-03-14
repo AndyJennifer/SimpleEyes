@@ -1,5 +1,7 @@
 ## SimpleEyes
 
+[![CircleCI](https://circleci.com/gh/AndyJennifer/SimpleEyes.svg?style=svg)](https://circleci.com/gh/AndyJennifer/SimpleEyes)
+
 SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两个分支:
 
 - [master 分支](https://github.com/AndyJennifer/SimpleEyes/tree/master) ：MVP + Retrofit + Rxjava
