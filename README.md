@@ -1,6 +1,6 @@
-## SimpleEyes
+# SimpleEyes
 
-[![CircleCI](https://circleci.com/gh/AndyJennifer/SimpleEyes.svg?style=svg)](https://circleci.com/gh/AndyJennifer/SimpleEyes)
+[![CircleCI](https://circleci.com/gh/AndyJennifer/SimpleEyes.svg?style=shield)](https://circleci.com/gh/AndyJennifer/SimpleEyes)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
 SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两个分支:
