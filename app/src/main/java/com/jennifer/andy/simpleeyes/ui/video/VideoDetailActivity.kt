@@ -30,6 +30,7 @@ import com.uber.autodispose.android.lifecycle.autoDispose
 import io.reactivex.functions.Consumer
 import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import tv.danmaku.ijk.media.player.IMediaPlayer
 import java.util.*
 
 
@@ -76,8 +77,6 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
         registerProgressEvent()
         playVideo()
         bindObserve()
-
-
     }
 
     private fun bindObserve() {
@@ -105,7 +104,8 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
     }
 
     private fun initMediaController() {
-        ijkMediaController = IjkMediaController(mCurrentIndex, mVideoListInfo.size, mCurrentVideoInfo, this)
+        ijkMediaController = IjkMediaController(this)
+        ijkMediaController.initData(mCurrentIndex, mVideoListInfo.size, mCurrentVideoInfo)
         ijkMediaController.controllerListener = object : IjkMediaController.ControllerListener {
             override fun onBackClick() {
                 finish()
@@ -151,7 +151,7 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
         mDataBinding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(bar: SeekBar) {
                 //控制的时候停止更新进度条，同时禁止隐藏
-                mDataBinding.videoViewWrapper.isDragging = true
+                mDataBinding.videoViewWrapper.setDragging(true)
                 mDataBinding.videoViewWrapper.showControllerAllTheTime()
 
             }
@@ -165,10 +165,10 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
 
             override fun onStopTrackingTouch(bar: SeekBar) {
                 //定位都拖动位置
-                val newPosition = mDataBinding.videoViewWrapper.duration * mChangeProgress / 1000L
+                val newPosition = mDataBinding.videoViewWrapper.getDuration() * mChangeProgress / 1000L
                 mDataBinding.videoViewWrapper.seekTo(newPosition.toInt())
                 mDataBinding.videoViewWrapper.showController()
-                mDataBinding.videoViewWrapper.isDragging = false
+                mDataBinding.videoViewWrapper.setDragging(false)
             }
         })
     }
@@ -216,7 +216,7 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
         //注册进度条监听
         RxBus.register(this, VideoProgressEvent::class.java, Consumer {
             //如果正在拖动的话，不更新进度条
-            if (!mDataBinding.videoViewWrapper.isDragging) {
+            if (!mDataBinding.videoViewWrapper.isDragging()) {
                 mDataBinding.seekBar.progress = it.progress
             }
             mDataBinding.seekBar.secondaryProgress = it.secondaryProgress
@@ -229,31 +229,28 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
      * 播放视频
      */
     private fun playVideo() {
-
         with(mDataBinding.videoViewWrapper) {
-
-            //设置视频地址，并开始播放
-            setVideoPath(mCurrentVideoInfo.playUrl)
-            setMediaController(ijkMediaController)
-            start()
-
-            //设置准备完成监听
-            setOnPreparedListener {
+            //设置视频准备完成监听
+            setOnPreparedListener(IMediaPlayer.OnPreparedListener {
                 resetType()
                 hidePlaceImage()
-            }
+            })
 
-            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
-
-            //设置失败监听
-            setOnErrorListener { _, _, _ ->
+            //设置视频播放失败监听
+            setOnErrorListener(IMediaPlayer.OnErrorListener { _, _, _ ->
                 showErrorView()
+                true
+            })
 
-            }
-            //设置完成监听
-            setOnCompletionListener {
+            //设置视频播放完成监听
+            setOnCompletionListener(IMediaPlayer.OnCompletionListener {
                 mDataBinding.seekBar.thumb = null
-            }
+            })
+            //设置视频地址，并开始播放
+            setVideoPath(mCurrentVideoInfo.playUrl)
+            toggleAspectRatio(IRenderView.AR_MATCH_PARENT)
+            setMediaController(ijkMediaController)
+            start()
         }
         //获取相关视频信息
         mVideoViewModel.getRelatedVideoInfo(mCurrentVideoInfo.id)
@@ -322,7 +319,7 @@ class VideoDetailActivity : BaseDataBindActivity<ActivityVideoDetailBinding>() {
 
     override fun onPause() {
         super.onPause()
-        if (mDataBinding.videoViewWrapper.isPlaying) {
+        if (mDataBinding.videoViewWrapper.isPlaying()) {
             mDataBinding.videoViewWrapper.pause()
         }
     }

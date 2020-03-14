@@ -7,9 +7,9 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.jennifer.andy.simpleeyes.R
-import com.jennifer.andy.simpleeyes.databinding.FragmentVideoLandingBinding
 import com.jennifer.andy.simpleeyes.base.data.UserSettingLocalDataSource
-import com.jennifer.andy.simpleeyes.player.render.IRenderView.AR_ASPECT_FIT_PARENT
+import com.jennifer.andy.simpleeyes.databinding.FragmentVideoLandingBinding
+import com.jennifer.andy.simpleeyes.player.render.IRenderView.Companion.AR_ASPECT_FIT_PARENT
 import com.jennifer.andy.simpleeyes.ui.base.BaseDataBindFragment
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.DEFAULT_SPLASH_VIDEO_COUNT
 import com.jennifer.andy.simpleeyes.ui.splash.adapter.SplashVideoFragmentAdapter

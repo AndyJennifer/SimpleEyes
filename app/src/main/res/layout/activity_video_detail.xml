@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/black_translucent_60"
+                    android:background="@color/black_translucent_80"
                     android:max="1000"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp" />

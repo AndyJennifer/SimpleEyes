@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="11.8dp"
             android:background="@null"
             android:src="@drawable/ic_action_full_screen" />
     </RelativeLayout>
