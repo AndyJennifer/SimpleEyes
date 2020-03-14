@@ -2,7 +2,7 @@ package com.jennifer.andy.simpleeyes.widget.font
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 
 
 /**
@@ -11,7 +11,7 @@ import android.widget.TextView
  * Description:自定义字体textView
  */
 
-open class CustomFontTextView : TextView {
+open class CustomFontTextView : AppCompatTextView {
 
     constructor(context: Context) : this(context, null)
 
