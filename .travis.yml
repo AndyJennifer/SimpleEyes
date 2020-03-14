@@ -24,9 +24,6 @@ android:
     # if you need to run emulator(s) during your tests
     - sys-img-x86-android-26
     - sys-img-armeabi-v7a-android-17
-  licenses:
-    - android-sdk-license-.+
-    - '.+'
 
 before_script:
   # Create and start emulator
@@ -36,8 +33,24 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
-  - "./gradlew assembleRelease"
-  - "./gradlew :app:createDebugAndroidTestCoverageReport --info --stacktrace"
+  set +e
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  bootanim=""
+  failcounter=0
+  timeout_in_sec=360
+
+  until [[ "$bootanim" =~ "stopped" ]]; do
+  bootanim=`adb -e shell getprop init.svc.bootanim 2>&1 &`
+  if [[ "$bootanim" =~ "device not found" || "$bootanim" =~ "device offline"
+  || "$bootanim" =~ "running" ]]; then
+  let "failcounter += 1"
+  echo "Waiting for emulator to start"
+  if [[ $failcounter -gt timeout_in_sec ]]; then
+  echo "Timeout ($timeout_in_sec seconds) reached; failed to start emulator"
+  exit 1
+  fi
+  fi
+  sleep 1
+  done
+
+  echo "Emulator is ready"
