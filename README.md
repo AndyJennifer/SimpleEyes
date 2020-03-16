@@ -10,11 +10,11 @@ SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两�
 
 你可以根据自己的需要，选择不同的分支。
 
-### 项目展示 ☘
+## 项目展示 ☘
 
 ![picture_1.png](https://upload-images.jianshu.io/upload_images/2824145-9c4c8943bc9eebc7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-### 闪光点 ✨✨
+## 闪光点 ✨✨
 
 - 100% 纯 Kotlin 开发。巧妙了运用了 Kotlin 的诸多特性，如扩展函数，数据类，委托等。
 - 丰富的动画与自定义View。如下拉刷新、视差动画、TextView打字动画、嵌套滑动，状态布局。
@@ -24,7 +24,7 @@ SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两�
 - 良好的设计模式与架构。
 - .....
 
-### 完成的功能  💼
+## 完成的功能  💼
 
 - 闪屏页实现
   - [x] 开场短视频
@@ -44,11 +44,10 @@ SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两�
   - [x] 全部作者
   - [x] 作者简介及视频
 - 我的
-    - [ ] 我的消息
-    - [ ] 我的缓存
+  - [ ] 我的消息
+  - [ ] 我的缓存
 
-
-#### 使用的库 💪
+## 使用的库 💪
 
 站在巨人的肩膀上。可以看得更远。该项目中运用了以下开源库：
 
@@ -64,15 +63,15 @@ SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两�
 - [Android KTX](https://developer.android.google.cn/kotlin/ktx)
 - [Koin](https://github.com/InsertKoinIO/koin)
 
-#### 声明 📢
+## 声明 📢
 
 感谢 [开眼App](http://www.kaiyanapp.com) 提供参考，本人是豆瓣粉丝，使用了其中的 Api ，并非攻击。如构成侵权，请及时通知我删除或者修改。数据来源来自[开眼](https://www.kaiyanapp.com/) ，一切解释权归开眼所有。
 
-#### 最后
+## 最后
 
 注意：此开源项目仅做学习交流使用。如用到实际项目，还需多考虑其他因素，请多多斟酌。如果你觉得该项目不错，欢迎点击 star ❤️，follow，也可以帮忙分享给你更多的朋友。你的支持与鼓励是给我继续做好该项目的最大动力。
 
-#### 联系我
+## 联系我
 
 - QQ:443696320
 - 简书：[AndyandJennifer](https://www.jianshu.com/users/921c778fb5e1/timeline)
