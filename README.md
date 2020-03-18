@@ -1,57 +1,128 @@
-#### 介绍
-[SimpleEyes](https://github.com/AndyJennifer/SimpleEyes)是一款基于仿开眼视频App，力求与原始开眼App相似（附上相关App参考版本，如有需要可下载[开眼Version 3.8.1.2.216](https://pan.baidu.com/s/1xWR4fz9bXL4gH-KkQVX-RA) ）,该项目中采用**多Activity+多Fragment**开发。使用**MVP+RxJava+Retrofit**架构。主要采用语言**Kotlin**，**目前该项目持续开发中**。如果你愿意和我一起开发，或者有任何问题，请联系我。我总是在这等着你呢。O(∩_∩)O。
+# SimpleEyes
 
-#### 切图
+[![CircleCI](https://circleci.com/gh/AndyJennifer/SimpleEyes.svg?style=shield)](https://circleci.com/gh/AndyJennifer/SimpleEyes)
+[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
+SimpleEyes-Jetpack 分支基于 [Android Jetpack](https://developer.android.google.cn/jetpack)，并使用了 Google 推荐的 [应用架构指南](https://developer.android.google.cn/jetpack/docs/guide)。如果你正打算学习[Android Jetpack](https://developer.android.google.cn/jetpack)，相信该项目正好能帮助到你。
 
-![picture_1.png](https://upload-images.jianshu.io/upload_images/2824145-9c4c8943bc9eebc7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+## 项目中使用到的 Jetpack 组件✨
 
+- [x] DataBinding
+- [ ] LiveData
+- [x] Navigation
+- [ ] Paging
+- [x] VideModel
+- [x] Lifecycles
+- [ ] WorkManager
 
-![picture_2.png](https://upload-images.jianshu.io/upload_images/2824145-499b2c209643ce12.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+在项目中，因为个人喜好原因，并没有使用 [LiveData](https://developer.android.google.cn/topic/libraries/architecture/livedata#work_livedata) ，而是使用更为灵活的 RxJava。没有使用 Paging 与 WorkManager 的原因，是因为项目暂时还在开发中，故没有机会使用这些组件。
 
-##### 目前完成的功能
-- 闪屏页实现
-- 首页部分逻辑实现
-- 视频详情界面
-- 视频搜索界面
-- 发现界面部分逻辑
-- 我的界面搭建
+## 项目整体架构 🚌
 
-#### 技术要点
-- 自定义底部导航栏。项目中自定义了底部导航栏。完全可以根据喜好修改。
-- 自定义字体TextView, 对项目中常用的字体进行了封装。轻松转换字体。
-- 自定义文字显示中的打字效果。
-- 对播放界面进行封装。实现了全屏切换。音量控制，亮度控制等逻辑。
-- 分装了项目请求过程中的，加载中，加载错误。加载空界面的封装。力求做到丝滑过度
-- .....
+![项目整体.jpg](https://upload-images.jianshu.io/upload_images/2824145-c766f88b8a3b028c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-项目中对很多内容进行了封装，我自己也不知道我封装了那些（就是这么傲娇），项目中运用到了很多动画。每个效果如果大家去仔细研究，我相信大家能和我一样学到很多东西。反正这个项目是大家学习**Kotlin**练手的必备良器。
+<table>
 
-#### 感谢
-站在巨人的肩膀上。可以看得更远。该项目中运用了以下开源库，如果漏掉，请原谅我，我记性不是很好。
+<tr>
+	<td>组件</td>
+	<td>角色</td>
+	<td>依赖</td>
+	<td>输入</td>
+	<td>输出</td>
+</tr>
 
-[Fresco](https://github.com/facebook/fresco)
-[Fragmentation](https://github.com/YoKeyword/Fragmentation)
+<tr>
+	<td>RemoteDataSource</td>
+	<td>构建请求数据以及从 API 获取数据</td>
+	<td>API service</td>
+	<td>请求信息</td>
+	<td>请求响应</td>
+</tr>
 
-[RxJava](https://github.com/ReactiveX/RxJava)
+<tr>
+	<td>LocalDataSource</td>
+	<td>本地数据存储</td>
+	<td>SharedPreferences or Database</td>
+	<td>用于存储的数据</td>
+	<td>将数据进行存储</td>
+</tr>
 
-[Retrofit](https://github.com/square/retrofit)
+<tr>
+	<td>Repository(数据仓库）</td>
+	<td>用于存储或获取数据，同时也可以作为内存及的缓存(可选）</td>
+	<td>RemoteDataSoruce and/or LocalDataSource</td>
+	<td>检索数据或存储数据</td>
+	<td></td>
+</tr>
 
-[BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+<tr>
+	<td>UserCase</td>
+	<td>根据自己的业务逻辑来处理数据</td>
+	<td>Repository and/or UserCase</td>
+	<td>ids</td>
+	<td></td>
+</tr>
 
-[IjkPlayer](https://github.com/Bilibili/ijkplayer)
+<tr>
+	<td>ViewModel</td>
+	<td>用于提供UI所需要的数据，同时根据用户不操作触发不同的响应</td>
+	<td>UserCase</td>
+	<td>ids 或者用户行为</td>
+	<td>Livedata< T ></td>
+</tr>
 
-[FlexBox-Layout](https://github.com/google/flexbox-layout)
+<tr>
+	<td>UI:Activity/xml</td>
+	<td>用于展示数据，同时把用户操作传递给 ViewModel</td>
+	<td>ViewModel</td>
+	<td>ids 或者用户操作</td>
+	<td>无</td>
+</tr>
+</table>
 
-[Banner](https://github.com/youth5201314/banner)
+如果你对该该架构不是很熟悉，可以观看官方视频--> [Kotlin 语言帮助开发者更好的构建应用](https://v.qq.com/x/page/q3006tgkwbk.html) 了解更多内容。
 
-#### 声明
-感谢[开眼App](http://www.kaiyanapp.com)提供参考,本人是豆瓣粉丝。使用了其中的Api,并非攻击，如构成侵权，请及时通知我删除或者修改。数据来源来自开眼App,一切解释权归开眼所有。
+## 额外使用的库 💪
 
-#### 最后
-注意：此开源项目仅做学习交流使用，如用到实际项目还需多考虑其他因素如并发等，请多多斟酌。如果你觉得不错，对你有帮助，欢迎点个star，follow，也可以帮忙分享给你更多的朋友，这是给我最大的动力与支持
+- [koin](https://github.com/InsertKoinIO/koin)
+- [AutoDispose](https://github.com/uber/AutoDispose)
 
-#### 关于我
+## 参考
+
+感谢以下开源项目提供的灵感与思路：
+
+- [sunflower](https://github.com/android/sunflower)
+- [rx-mvvm-android](https://github.com/ffgiraldez/rx-mvvm-android)
+
+## 声明 📢
+
+感谢 [开眼App](http://www.kaiyanapp.com) 提供参考，本人是豆瓣粉丝，使用了其中的 Api ，并非攻击。如构成侵权，请及时通知我删除或者修改。数据来源来自[开眼](https://www.kaiyanapp.com/) ，一切解释权归开眼所有。
+
+## 最后
+
+注意：此开源项目仅做学习交流使用。如用到实际项目，还需多考虑其他因素，请多多斟酌。如果你觉得该项目不错，欢迎点击 star ❤️，follow，也可以帮忙分享给你更多的朋友。你的支持与鼓励是给我继续做好该项目的最大动力。
+
+## 联系我
+
 - QQ:443696320
-- 简书:[AndyandJennifer](https://www.jianshu.com/users/921c778fb5e1/timeline)
+- 简书：[AndyandJennifer](https://www.jianshu.com/users/921c778fb5e1/timeline)
+- 掘金：[AndyandJennifer](https://juejin.im/user/5acc1ea06fb9a028bc2e0fc1)
 - Email: [andyjennifer@126.com](andyjennifer@126.com)
+
+## License
+
+```text
+   Copyright [2019] [AndyJennifer]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
