@@ -71,6 +71,13 @@ SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两�
 
 注意：此开源项目仅做学习交流使用。如用到实际项目，还需多考虑其他因素，请多多斟酌。如果你觉得该项目不错，欢迎点击 star ❤️，follow，也可以帮忙分享给你更多的朋友。你的支持与鼓励是给我继续做好该项目的最大动力。
 
+## 联系我
+
+- QQ:443696320
+- 简书：[AndyandJennifer](https://www.jianshu.com/users/921c778fb5e1/timeline)
+- 掘金：[AndyandJennifer](https://juejin.im/user/5acc1ea06fb9a028bc2e0fc1)
+- Email: [andyjennifer@126.com](andyjennifer@126.com)
+
 ## License
 
 ```text
@@ -88,10 +95,3 @@ SimpleEyes 一款基于 Kotlin 开发的短视频项目。该项目为如下两�
    See the License for the specific language governing permissions and
    limitations under the License.
 ```
-
-## 联系我
-
-- QQ:443696320
-- 简书：[AndyandJennifer](https://www.jianshu.com/users/921c778fb5e1/timeline)
-- 掘金：[AndyandJennifer](https://juejin.im/user/5acc1ea06fb9a028bc2e0fc1)
-- Email: [andyjennifer@126.com](andyjennifer@126.com)
