@@ -15,7 +15,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 fun hideActionBar(context: Context?) {
     val supportActionBar = getAppCompatActivity(context)?.supportActionBar
     supportActionBar?.let {
-        supportActionBar.setShowHideAnimationEnabled(false)
         supportActionBar.hide()
     }
     getActivity(context)?.window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -27,7 +26,6 @@ fun hideActionBar(context: Context?) {
 fun showActionBar(context: Context?) {
     val supportActionBar = getAppCompatActivity(context)?.supportActionBar
     supportActionBar?.let {
-        supportActionBar.setShowHideAnimationEnabled(false)
         supportActionBar.show()
     }
     getActivity(context)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
