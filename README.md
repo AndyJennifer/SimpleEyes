@@ -1,6 +1,6 @@
 # SimpleEyes
 
-[![CircleCI](https://circleci.com/gh/AndyJennifer/SimpleEyes.svg?style=shield)](https://circleci.com/gh/AndyJennifer/SimpleEyes)
+[![CircleCI](https://circleci.com/gh/AndyJennifer/SimpleEyes/tree/simpleeyes-jetpack.svg?style=shield)](https://circleci.com/gh/AndyJennifer/SimpleEyes/tree/simpleeyes-jetpack)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 
 SimpleEyes-Jetpack 分支基于 [Android Jetpack](https://developer.android.google.cn/jetpack)，并使用了 Google 推荐的 [应用架构指南](https://developer.android.google.cn/jetpack/docs/guide)。如果你正打算学习[Android Jetpack](https://developer.android.google.cn/jetpack)，相信该项目正好能帮助到你。
