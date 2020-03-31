@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jennifer.andy.simpleeyes">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,9 +12,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="n">
 
         <!--中间跳转页-->
         <activity android:name=".router.SchemeFilterActivity">
@@ -47,7 +50,8 @@
         <activity
             android:name=".ui.splash.LandingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,12 +64,14 @@
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--登录界面-->
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--视频播放界面-->
@@ -73,80 +79,94 @@
             android:name=".ui.video.VideoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <!--搜索界面-->
         <activity
             android:name=".ui.search.SearchHotActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <!--每日精选-->
         <activity
             android:name=".ui.home.DailyEliteActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <!--全部分类-->
         <activity
             android:name=".ui.feed.AllCategoryActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--网页展示Activity-->
         <activity
             android:name=".ui.feed.WebViewActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--根据视频id获取视频信息-->
         <activity
             android:name=".ui.video.VideoInfoByIdActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <!--排行榜-->
         <activity
             android:name=".ui.feed.RankListActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--热门专题-->
         <activity
             android:name=".ui.feed.TopicActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--360全景-->
         <activity
             android:name=".ui.feed.TagActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--种类下tab信息-->
         <activity
             android:name=".ui.feed.CategoryTabActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--全部作者-->
         <activity
             android:name=".ui.follow.AllAuthorActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--作者信息详细界面-->
         <activity
             android:name=".ui.author.AuthorTagDetailActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--缓存界面-->
         <activity
             android:name=".ui.profile.CacheActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <!--公共RecyclerView界面，根据url加载数据-->
         <activity
             android:name=".ui.common.CommonRecyclerActivity"
             android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
     </application>
