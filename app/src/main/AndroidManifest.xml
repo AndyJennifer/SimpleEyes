@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jennifer.andy.simpleeyes">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.jennifer.andy.simpleeyes">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,7 +15,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute">
 
         <!--中间跳转页-->
         <activity android:name=".router.SchemeFilterActivity">
@@ -45,9 +47,11 @@
         </activity>
 
         <!--加载界面-->
-        <activity android:name=".ui.splash.LandingActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/SplashTheme">
+        <activity
+            android:name=".ui.splash.LandingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,76 +61,106 @@
 
 
         <!--主界面-->
-        <activity android:name=".ui.MainActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--登录界面-->
-        <activity android:name=".ui.login.LoginActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--视频播放界面-->
-        <activity android:name=".ui.video.VideoDetailActivity"
-                  android:configChanges="orientation|keyboardHidden|screenSize"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.video.VideoDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <!--搜索界面-->
-        <activity android:name=".ui.search.SearchHotActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.search.SearchHotActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <!--每日精选-->
-        <activity android:name=".ui.home.DailyEliteActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.home.DailyEliteActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <!--全部分类-->
-        <activity android:name=".ui.feed.AllCategoryActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.AllCategoryActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--网页展示Activity-->
-        <activity android:name=".ui.feed.WebViewActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.WebViewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--根据视频id获取视频信息-->
-        <activity android:name=".ui.video.VideoInfoByIdActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.video.VideoInfoByIdActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <!--排行榜-->
-        <activity android:name=".ui.feed.RankListActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.RankListActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--热门专题-->
-        <activity android:name=".ui.feed.TopicActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.TopicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--360全景-->
-        <activity android:name=".ui.feed.TagActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.TagActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--种类下tab信息-->
-        <activity android:name=".ui.feed.CategoryTabActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.feed.CategoryTabActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--全部作者-->
-        <activity android:name=".ui.follow.AllAuthorActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.follow.AllAuthorActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--作者信息详细界面-->
-        <activity android:name=".ui.author.AuthorTagDetailActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.author.AuthorTagDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!--公共RecyclerView界面，根据url加载数据-->
-        <activity android:name=".ui.common.CommonRecyclerActivity"
-                  android:launchMode="singleTop"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.common.CommonRecyclerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>
