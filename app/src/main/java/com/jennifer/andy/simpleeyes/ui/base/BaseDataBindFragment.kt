@@ -34,7 +34,7 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : LazyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewOnCreated(savedInstanceState)
+        initViewCreated(savedInstanceState)
     }
 
 
@@ -51,7 +51,7 @@ abstract class BaseDataBindFragment<T : ViewDataBinding> : LazyFragment() {
     /**
      * 在调用[onViewCreated]时调用的初始化方法，如果需要懒加载可以调用[LazyFragment.lazyInit]
      */
-    abstract fun initViewOnCreated(savedInstanceState: Bundle?)
+    abstract fun initViewCreated(savedInstanceState: Bundle?)
 
 
 }

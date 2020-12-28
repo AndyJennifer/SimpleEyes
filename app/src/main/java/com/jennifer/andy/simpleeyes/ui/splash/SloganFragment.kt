@@ -21,7 +21,7 @@ class SloganFragment : BaseDataBindFragment<FragmentSloganBinding>() {
     }
 
 
-    override fun initViewOnCreated(savedInstanceState: Bundle?) {
+    override fun initViewCreated(savedInstanceState: Bundle?) {
 
     }
 

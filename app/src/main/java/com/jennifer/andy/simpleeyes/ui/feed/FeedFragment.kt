@@ -33,7 +33,7 @@ class FeedFragment : BaseStateViewFragment<FragmentFeedBinding>() {
     }
 
 
-    override fun initViewOnCreated(savedInstanceState: Bundle?) {
+    override fun initViewCreated(savedInstanceState: Bundle?) {
 
         //跳转到搜索界面
         mDataBinding.ivSearch.setOnClickListener {

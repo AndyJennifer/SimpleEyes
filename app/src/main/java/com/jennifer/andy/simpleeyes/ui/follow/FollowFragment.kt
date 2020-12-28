@@ -33,7 +33,7 @@ class FollowFragment : BaseStateViewFragment<FragmentFollowBinding>() {
     }
 
 
-    override fun initViewOnCreated(savedInstanceState: Bundle?) {
+    override fun initViewCreated(savedInstanceState: Bundle?) {
         //获取主界面信息
         mFollowViewModel.getFollowInfo()
 

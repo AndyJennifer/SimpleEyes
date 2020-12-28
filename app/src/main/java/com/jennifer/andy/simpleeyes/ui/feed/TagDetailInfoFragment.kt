@@ -37,7 +37,7 @@ class TagDetailInfoFragment : BaseStateViewFragment<FragmentTagDetailInfoBinding
         }
     }
 
-    override fun initViewOnCreated(savedInstanceState: Bundle?) {}
+    override fun initViewCreated(savedInstanceState: Bundle?) {}
 
     override fun lazyInit() {
         mTagDetailViewModel.getDataFromUrl(mApiUrl)

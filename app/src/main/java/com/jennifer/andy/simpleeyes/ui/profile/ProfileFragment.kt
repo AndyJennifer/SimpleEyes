@@ -27,7 +27,7 @@ class ProfileFragment : BaseDataBindFragment<FragmentProfileBinding>(), View.OnC
         private const val WATCH_HISTORY = 3//观看记录
     }
 
-    override fun initViewOnCreated(savedInstanceState: Bundle?) {
+    override fun initViewCreated(savedInstanceState: Bundle?) {
         with(mDataBinding) {
             ivAvatar.setOnClickListener(this@ProfileFragment)
             flCommentContainer.setOnClickListener(this@ProfileFragment)
