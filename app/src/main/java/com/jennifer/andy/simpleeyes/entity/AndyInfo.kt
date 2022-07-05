@@ -170,7 +170,7 @@ data class PlayInfoBean(var height: Int,
 
 data class UrlListBean(var name: String,
                        var url: String,
-                       var size: Int) : Serializable
+                       var size: Double) : Serializable
 
 
 data class Category(var categoryInfo: CategoryInfo,
